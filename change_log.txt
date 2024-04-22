@@ -1,0 +1,82 @@
+### 1.0 | 2024-04-09
+- Added debug log feature to the plugin.
+- Added the ability to activate the configured integration on the last step of the setup wizard.
+- Added uninstallation feature to remove all plugin data.
+- Fixed a bug that causes pagination issues when the activity log is cleared.
+- Fixed some issues with RTL layouts.
+- Fixed a bug that causes configured integrations in the Setup Wizard to always be activated.
+- Fixed a bug that causes the analytics toggle in the Setup Wizard to not reflect its true state.
+- Updated headers data on log detail to be hidden by default.
+- Updated the Setup Wizard to import a valid Gravity Forms key if present on initial setup.
+- Updated button attributes in various areas for better accessibility.
+
+### 1.0-rc-5 | 2024-03-07
+- Added ability to preview emails from the activity log.
+- Added bulk delete functionality to the activity log.
+- Added search to the activity log.
+- Added the first layer of roles and capabilities to the plugin.
+
+### 1.0-rc-4 | 2024-02-22
+- Added optional usage analytics to the plugin.
+- Added the Google connector.
+- Added ajax pagination to the activity log.
+- Added recipient and gravatar plus full recipient count to the activity log.
+- Added caching to the settings area to prevent repeated calls for licence checks resulting in long load times.
+- Updated test email image urls to come from the plugin.
+- Updated the system report page to be part of the tools page.
+- Updated the position of the screen navigation buttons in the setup wizard.
+
+### 1.0-rc-3 | 2024-02-06
+- Added a source column to the activity log to show where the activity originated from.
+- Fixed an issue with recipient formatting that causes issues with a select amount of other plugins.
+- Fixed an issue that can cause fatal errors when the email log is accessed in some conditions.
+
+### 1.0-rc-2 | 2024-01-25
+- Fixed an issue that causes restricted api keys in SendGrid to falsely report they are invalid keys on validation.
+- Fixed an issue that causes the Brevo connector to fail to send emails in certain cases.
+- Fixed an issue with our translations class that causes a missing variable notice on certain admin screens.
+- Fixed an issue that causes the Custom SMTP connector to send emails to the wrong recipients when sending multiple emails.
+- Fixed an issue that causes custom headers to be dropped when sending emails.
+- Updated Activity Log to properly translate all strings.
+- Updated the SendGrid api key validation to also confirm the key has mail send capabilities.
+- Updated the authentication toggle position in the Custom SMTP connector settings.
+
+### 1.0-rc-1 | 2024-01-18
+- Added translation support with TranslationsPress.
+- Fixed a bug with Postmark that causes html emails to send as plain text.
+- Fixed a bug that shows the activity log as disabled by default when it actually is enabled.
+- Fixed a bug that causes the Custom SMTP connector to show auto tls and authentication toggles as enabled by default in the setup wizard, when they are actually not.
+- Fixed various accessibility issues with the setup wizard.
+- Update some icons in the setup wizard.
+- Updated copy for the plugin.
+
+### 1.0-beta-3 | 2024-01-05
+- Added new sections to the technical information on the log details page.
+- Added the Brevo connector.
+- Fixed various issues with app screen layouts and modals that prevent the WordPress navigation from being scrollable in some cases.
+- Fixed an issue where every connector is sending an API verification request on page load.
+- Fixed an issue with character encoding in the custom SMTP connector.
+- Updated test emails to use an HTML email format instead of plain text.
+
+### 1.0-beta-2 | 2023-12-19
+- Added email previews to the log details screen.
+- Added force email address and name settings to all integrations.
+- Fixed an issue that causes some constants to not correctly override when set.
+- Fixed some accessibility issues with various screens.
+- Updated all string prefixes throughout the codebase and database from gsmtp to gravitysmtp. Note: updating to beta-2 will result in losing all previously stored settings and logs.
+- Updated the suggest an integration link.
+- Updated license handling.
+- Updated sidebar menu name to SMTP.
+
+### 1.0-beta-1 | 2023-12-07
+- Added update icon to dashboard screen.
+- Added connector settings validation and ui messaging.
+- Added pagination to the log details screen.
+- Added a link to the settings page from the manage plugins screen.
+- Added setup wizard.
+- Added the ability to log emails when all integrations are disabled.
+- Fixed an incompatibility with the Stop Emails plugin.
+- Fixed an issue that causes failed Mailgun test emails to not display their error message correctly.
+- Updated data grid to display 20 entries per page by default.
+- Updated plugin branding to match new branding.
+- Updated the log schema to be agnostic of activity type.
