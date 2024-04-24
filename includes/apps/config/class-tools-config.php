@@ -205,7 +205,7 @@ class Tools_Config extends Config {
 
 		return array(
 			self::SETTING_DEBUG_LOG_ENABLED   => $plugin_data_store->get_plugin_setting( self::SETTING_DEBUG_LOG_ENABLED, false ),
-			self::SETTING_DEBUG_LOG_RETENTION => $plugin_data_store->get_plugin_setting( self::SETTING_DEBUG_LOG_RETENTION, 0 ),
+			self::SETTING_DEBUG_LOG_RETENTION => $plugin_data_store->get_plugin_setting( self::SETTING_DEBUG_LOG_RETENTION, '7' ),
 		);
 	}
 
@@ -658,7 +658,7 @@ class Tools_Config extends Config {
 		 */
 		$plugin_data_store = $container->get( Connector_Service_Provider::DATA_STORE_ROUTER );
 		$enabled           = $plugin_data_store->get_plugin_setting( Tools_Config::SETTING_DEBUG_LOG_ENABLED, false );
-		$retention         = $plugin_data_store->get_plugin_setting( Tools_Config::SETTING_DEBUG_LOG_RETENTION, 0 );
+		$retention         = $plugin_data_store->get_plugin_setting( Tools_Config::SETTING_DEBUG_LOG_RETENTION, '7' );
 		$link              = 'N/A';
 
 		if ( $enabled ) {

@@ -18,6 +18,7 @@ class Auto_Updater {
 	protected $_full_path;
 	protected $_path;
 	protected $_url;
+	protected $_is_forms;
 
 	/**
 	 * @var Common
@@ -30,7 +31,7 @@ class Auto_Updater {
 	protected $license_connector;
 
 
-	public function __construct( $slug, $version, $title, $full_path, $path, $url, $update_icon, $common, $license_connector ) {
+	public function __construct( $slug, $version, $title, $full_path, $path, $url, $update_icon, $common, $license_connector, $is_forms = true ) {
 		$this->_slug             = $slug;
 		$this->_version          = $version;
 		$this->_title            = $title;
@@ -40,6 +41,7 @@ class Auto_Updater {
 		$this->_update_icon      = $update_icon;
 		$this->common            = $common;
 		$this->license_connector = $license_connector;
+		$this->_is_forms         = $is_forms;
 	}
 
 	/**
@@ -54,7 +56,9 @@ class Auto_Updater {
 			add_action( 'install_plugins_pre_plugin-information', array( $this, 'display_changelog' ), 9 );
 			add_action( 'gform_after_check_update', array( $this, 'flush_version_info' ) );
 			add_action( 'gform_updates', array( $this, 'display_updates' ) );
-			add_filter( 'gform_updates_list', array( $this, 'get_update_info' ) );
+			if ( $this->_is_forms ) {
+				add_filter( 'gform_updates_list', array( $this, 'get_update_info' ) );
+			}
 
 			if ( in_array( RG_CURRENT_PAGE, array( 'admin-ajax.php' ) ) ) {
 				add_action( 'wp_ajax_gf_get_changelog', array( $this, 'ajax_display_changelog' ) );

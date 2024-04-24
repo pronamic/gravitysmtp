@@ -53,7 +53,7 @@ class Updates_Service_Provider extends Service_Provider {
 			$common            = $container->get( Utils_Service_Provider::COMMON );
 			$license_connector = $container->get( self::LICENSE_API_CONNECTOR );
 
-			return new Auto_Updater( 'gravitysmtp', GF_GRAVITY_SMTP_VERSION, 'Gravity SMTP', $this->full_path, 'gravitysmtp/gravitysmtp.php', 'https://gravityforms.com', 'https://cdn.gravity.com/gravitysmtp/icon-256x256.gif', $common, $license_connector );
+			return new Auto_Updater( 'gravitysmtp', GF_GRAVITY_SMTP_VERSION, 'Gravity SMTP', $this->full_path, 'gravitysmtp/gravitysmtp.php', 'https://gravityforms.com', 'https://cdn.gravity.com/gravitysmtp/icon-256x256.gif', $common, $license_connector, false );
 		} );
 	}
 

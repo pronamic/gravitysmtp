@@ -1,3 +1,10 @@
+### 1.0.1 | 2024-04-23
+- Added status headers for test mode and debug mode to all screens.
+- Fixed a bug that causes the plugin to appear in the Gravity Forms updates screen.
+- Fixed a bug that causes incorrect display of the debug log retention time on the system status screen.
+- Fixed a number of small display issues in various screens.
+- Updated the debug logger to hide the license key in the debug log.
+
 ### 1.0 | 2024-04-09
 - Added debug log feature to the plugin.
 - Added the ability to activate the configured integration on the last step of the setup wizard.

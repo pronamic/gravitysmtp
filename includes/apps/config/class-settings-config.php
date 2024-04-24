@@ -96,7 +96,7 @@ class Settings_Config extends Config {
 								'test_mode_box_content_1'                                       => esc_html__( 'When test mode is on, your site will not send out any emails. If you turn on %semail logging%s, all emails will be stored in the Email Logs.', 'gravitysmtp' ),
 								'test_mode_box_toggle_help_text'                                => esc_html__( 'Note: Some WordPress plugins use their own email delivery system instead of the standard wp_mail() function. Test mode might not block emails sent by these plugins. Consult their documentation to learn how to enable test emails.', 'gravitysmtp' ),
 								'test_mode_box_toggle_label'                                    => esc_html__( 'Enable Test Mode', 'gravitysmtp' ),
-								'general_settings_box_heading'                                  => esc_html__( 'Usage Analytics', 'gravitysmtp' ),
+								'general_settings_box_heading'                                  => esc_html__( 'General Settings', 'gravitysmtp' ),
 								'uninstall_box_heading'                                         => esc_html__( 'Uninstall', 'gravitysmtp' ),
 								'uninstall_box_content'                                         => esc_html__( 'This operation deletes ALL Gravity SMTP settings. If you continue, you will NOT be able to retrieve these settings.', 'gravitysmtp' ),
 								'uninstall_box_button_label'                                    => esc_html__( 'Erase ALL Gravity SMTP Data', 'gravitysmtp' ),
