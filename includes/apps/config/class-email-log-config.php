@@ -6,6 +6,7 @@ use Gravity_Forms\Gravity_SMTP\Apps\App_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Plugin_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Data_Store_Router;
+use Gravity_Forms\Gravity_SMTP\Enums\Integration_Enum;
 use Gravity_Forms\Gravity_SMTP\Enums\Status_Enum;
 use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
 use Gravity_Forms\Gravity_SMTP\Users\Roles;
@@ -2331,6 +2332,19 @@ class Email_Log_Config extends Config {
 			//				'sortable'  => true,
 			//			),
 			array(
+				'cellClasses'     => 'gravitysmtp-activity-log-app__activity-log-table-integration',
+				'component'       => 'Text',
+				'hideAt'          => 960,
+				'hideWhenLoading' => true,
+				'key'             => 'integration',
+				'props'           => array(
+					'content' => esc_html__( 'Integration', 'gravitysmtp' ),
+					'size'    => 'text-sm',
+					'weight'  => 'medium',
+				),
+				'sortable'        => true,
+			),
+			array(
 				'component'       => 'Text',
 				'hideAt'          => 640,
 				'hideWhenLoading' => false,
@@ -2360,14 +2374,15 @@ class Email_Log_Config extends Config {
 
 	public function get_column_style_props() {
 		$props = array(
-			'subject' => array( 'flexBasis' => '292px' ),
-			'status'  => array( 'flex' => '0 0 122px' ),
-			'from'    => array( 'flexBasis' => '160px' ),
-			'to'      => array( 'flexBasis' => '160px' ),
-			'source'  => array( 'flexBasis' => '104px' ),
-//			'clicked' => array( 'flexBasis' => '90px' ),
-			'date'    => array( 'flexBasis' => '250px' ),
-			'actions' => array( 'flex' => '0 0 130px' ),
+			'subject'     => array( 'flexBasis' => '292px' ),
+			'status'      => array( 'flex' => '0 0 122px' ),
+			'from'        => array( 'flexBasis' => '160px' ),
+			'to'          => array( 'flexBasis' => '160px' ),
+			'source'      => array( 'flexBasis' => '104px' ),
+			'integration' => array( 'flex' => '0 0 122px' ),
+			//			'clicked' => array( 'flexBasis' => '90px' ),
+			'date'        => array( 'flexBasis' => '250px' ),
+			'actions'     => array( 'flex' => '0 0 130px' ),
 		);
 
 		return apply_filters( 'gravitysmtp_email_log_column_style_props', $props );
@@ -2490,13 +2505,6 @@ class Email_Log_Config extends Config {
 						'hasDot' => false,
 					),
 				),
-				'source'  => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => $row['source'],
-						'size'    => 'text-sm',
-					),
-				),
 				'to'      => array(
 					'component'  => 'Box',
 					'props'      => array(
@@ -2547,6 +2555,15 @@ class Email_Log_Config extends Config {
 					'props'     => array(
 						'content' => $row['source'],
 						'size'    => 'text-sm',
+					),
+				),
+				'integration'  => array(
+					'external' => true,
+					'key'      => $row['service'] . '_logo',
+					'props'     => array(
+						'height' => 24,
+						'title' => Integration_Enum::svg_title( $row['service'] ),
+						'width'  => 24,
 					),
 				),
 				'date'    => array(

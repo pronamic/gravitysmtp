@@ -141,17 +141,17 @@
         },
         {
             "name": "google/apiclient-services",
-            "version": "v0.345.0",
-            "version_normalized": "0.345.0.0",
+            "version": "v0.353.0",
+            "version_normalized": "0.353.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-api-php-client-services.git",
-                "reference": "a975dae4c06d304b020eda3f53e7c3402b32132d"
+                "reference": "fd11c75d0303b3a4237f65482324cf987950b126"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/a975dae4c06d304b020eda3f53e7c3402b32132d",
-                "reference": "a975dae4c06d304b020eda3f53e7c3402b32132d",
+                "url": "https://api.github.com/repos/googleapis/google-api-php-client-services/zipball/fd11c75d0303b3a4237f65482324cf987950b126",
+                "reference": "fd11c75d0303b3a4237f65482324cf987950b126",
                 "shasum": ""
             },
             "require": {
@@ -160,7 +160,7 @@
             "require-dev": {
                 "phpunit/phpunit": "^5.7||^8.5.13"
             },
-            "time": "2024-04-21T01:02:15+00:00",
+            "time": "2024-05-07T05:10:51+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -182,7 +182,7 @@
             ],
             "support": {
                 "issues": "https://github.com/googleapis/google-api-php-client-services/issues",
-                "source": "https://github.com/googleapis/google-api-php-client-services/tree/v0.345.0"
+                "source": "https://github.com/googleapis/google-api-php-client-services/tree/v0.353.0"
             },
             "install-path": "../google/apiclient-services"
         },

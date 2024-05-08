@@ -480,6 +480,8 @@ class Connector_Generic extends Connector_Base {
 		$this->configure_phpmailer();
 
 		try {
+			// @todo - this can be adjusted if we find it's causing correct-but-slow configurations to fail.
+			$this->php_mailer->Timeout = 10;
 			$this->php_mailer->smtpConnect();
 		} catch ( \Exception $e ) {
 			$error            = new \WP_Error( 'invalid_configuration', $e->getMessage() );

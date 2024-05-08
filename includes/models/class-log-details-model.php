@@ -5,6 +5,7 @@ namespace Gravity_Forms\Gravity_SMTP\Models;
 use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Plugin_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Plugin_Opts_Data_Store;
+use Gravity_Forms\Gravity_SMTP\Enums\Status_Enum;
 use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
 use Gravity_Forms\Gravity_SMTP\Utils\Recipient_Collection;
 use Gravity_Forms\Gravity_Tools\Utils\Utils_Service_Provider;
@@ -136,7 +137,6 @@ class Log_Details_Model {
 
 		$row     = $email[0];
 		$extra   = strpos( $row['extra'], '{' ) === 0 ? json_decode( $row['extra'], true ) : unserialize( $row['extra'] );
-		$headers = isset( $extra['headers'] ) ? $extra['headers'] : array();
 
 		foreach ( $data as $val ) {
 			$log_rows[] = $val['log_value'];
@@ -148,12 +148,6 @@ class Log_Details_Model {
 		$params = isset( $extra['params'] ) ? $extra['params'] : array();
 		$to     = $parser->parse( $extra['to'] );
 		$to     = $to->as_string( true );
-
-		$statuses = array(
-			'sent'      => 'active',
-			'failed'    => 'error',
-			'sandboxed' => 'warning',
-		);
 
 		$clean_from_email = $this->extract_email( $extra['from'] );
 
@@ -170,8 +164,7 @@ class Log_Details_Model {
 			),
 			'status'                => array(
 				'label'  => ucfirst( $row['status'] ),
-				'status' => isset( $statuses[ strtolower( $row['status'] ) ] ) ? $statuses[ strtolower( $row['status'] ) ] : 'error',
-				// todo this needs to be finalized, cant use string matching
+				'status' => Status_Enum::indicator( $row['status'] ),
 				'hasDot' => false,
 			),
 			'service'               => empty( $map[ $row['service'] ] ) ? $row['service'] : $map[ $row['service'] ],

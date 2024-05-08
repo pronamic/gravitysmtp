@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Gravity SMTP 1.0.1\n"
+"Project-Id-Version: Gravity SMTP 1.0.2\n"
 "Report-Msgid-Bugs-To: https://gravityforms.com/support\n"
 "Last-Translator: Gravity Forms <support@gravityforms.com>\n"
 "Language-Team: Gravity Forms <support@gravityforms.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-04-23T15:29:57+00:00\n"
+"POT-Creation-Date: 2024-05-07T17:27:02+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: gravitysmtp\n"
@@ -41,7 +41,7 @@ msgid "Collapse"
 msgstr ""
 
 #: includes/apps/config/class-apps-config.php:33
-#: includes/apps/config/class-email-log-config.php:2428
+#: includes/apps/config/class-email-log-config.php:2443
 #: includes/apps/config/class-settings-config.php:125
 msgid "Cancel"
 msgstr ""
@@ -146,67 +146,71 @@ msgstr ""
 msgid "Test mode is enabled, emails will not be sent."
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:51
+#: includes/apps/config/class-email-log-config.php:52
 #: includes/logging/endpoints/get-paginated-debug-log-items.php:106
-#: includes/logging/endpoints/get-paginated-items.php:212
+#: includes/logging/endpoints/get-paginated-items.php:215
 msgid "View email log"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:70
+#: includes/apps/config/class-email-log-config.php:71
 #: includes/logging/endpoints/get-paginated-debug-log-items.php:125
-#: includes/logging/endpoints/get-paginated-items.php:231
+#: includes/logging/endpoints/get-paginated-items.php:234
 msgid "View email"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:89
+#: includes/apps/config/class-email-log-config.php:90
 #: includes/logging/endpoints/get-paginated-debug-log-items.php:144
-#: includes/logging/endpoints/get-paginated-items.php:250
+#: includes/logging/endpoints/get-paginated-items.php:253
 msgid "Delete email log"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:2251
+#: includes/apps/config/class-email-log-config.php:2252
 msgid "Bulk Actions"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:2255
-#: includes/apps/config/class-email-log-config.php:2427
+#: includes/apps/config/class-email-log-config.php:2256
+#: includes/apps/config/class-email-log-config.php:2442
 #: includes/apps/config/class-settings-config.php:105
 #: includes/apps/config/class-settings-config.php:159
 msgid "Delete"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:2268
+#: includes/apps/config/class-email-log-config.php:2269
 #: includes/apps/config/class-email-log-single-config.php:59
 #: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:90
 msgid "Subject"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:2280
+#: includes/apps/config/class-email-log-config.php:2281
 #: includes/apps/config/class-tools-config.php:847
 #: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:92
 #: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:93
 msgid "Status"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:2303
+#: includes/apps/config/class-email-log-config.php:2304
 msgid "Recipient"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:2315
+#: includes/apps/config/class-email-log-config.php:2316
 msgid "Source"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:2339
+#: includes/apps/config/class-email-log-config.php:2341
+msgid "Integration"
+msgstr ""
+
+#: includes/apps/config/class-email-log-config.php:2353
 #: includes/apps/config/class-email-log-single-config.php:56
 msgid "Date Sent"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:2350
+#: includes/apps/config/class-email-log-config.php:2364
 #: includes/apps/config/class-tools-config.php:883
 msgid "Actions"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:2378
+#: includes/apps/config/class-email-log-config.php:2393
 #: includes/apps/config/class-email-log-single-config.php:42
 #: includes/apps/config/class-settings-config.php:64
 #: includes/apps/config/class-tools-config.php:133
@@ -214,13 +218,13 @@ msgstr ""
 msgid "Error Saving"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:2380
+#: includes/apps/config/class-email-log-config.php:2395
 #: includes/apps/config/class-email-log-single-config.php:43
 #: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:76
 msgid "Could not save; please check your logs."
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:2381
+#: includes/apps/config/class-email-log-config.php:2396
 #: includes/apps/config/class-email-log-single-config.php:44
 #: includes/apps/config/class-settings-config.php:66
 #: includes/apps/config/class-tools-config.php:135
@@ -229,149 +233,149 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:2383
+#: includes/apps/config/class-email-log-config.php:2398
 #: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:86
 #: includes/pages/class-admin-page.php:14
 msgid "Email Log"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:2385
+#: includes/apps/config/class-email-log-config.php:2400
 msgid "Activity"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:2386
+#: includes/apps/config/class-email-log-config.php:2401
 #: includes/apps/config/class-tools-config.php:140
 msgid "Clear search"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:2387
+#: includes/apps/config/class-email-log-config.php:2402
 msgid "No emails yet"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:2388
+#: includes/apps/config/class-email-log-config.php:2403
 msgid "As soon as your site sends some emails, you will see them here!"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:2389
+#: includes/apps/config/class-email-log-config.php:2404
 msgid "Select bulk actions"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:2390
+#: includes/apps/config/class-email-log-config.php:2405
 msgid "Apply"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:2391
-#: includes/apps/config/class-email-log-config.php:2392
+#: includes/apps/config/class-email-log-config.php:2406
+#: includes/apps/config/class-email-log-config.php:2407
 #: includes/apps/config/class-tools-config.php:143
 #: includes/apps/config/class-tools-config.php:144
 msgid "Search"
 msgstr ""
 
 #. translators: 1: number of selected entries.
-#: includes/apps/config/class-email-log-config.php:2394
+#: includes/apps/config/class-email-log-config.php:2409
 msgid "All %1$s emails on this page are selected"
 msgstr ""
 
 #. translators: 1: number of selected entries.
-#: includes/apps/config/class-email-log-config.php:2396
+#: includes/apps/config/class-email-log-config.php:2411
 msgid "All %1$s emails in the email log are selected"
 msgstr ""
 
 #. translators: 1: number of entries to be selected.
-#: includes/apps/config/class-email-log-config.php:2398
+#: includes/apps/config/class-email-log-config.php:2413
 msgid "Select All %1$s Emails"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:2399
+#: includes/apps/config/class-email-log-config.php:2414
 msgid "Clear Selection"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:2400
+#: includes/apps/config/class-email-log-config.php:2415
 #: includes/apps/config/class-tools-config.php:145
 #: includes/apps/setup-wizard/config/class-setup-wizard-config.php:88
 #: includes/apps/setup-wizard/config/class-setup-wizard-config.php:101
 msgid "Next"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:2401
+#: includes/apps/config/class-email-log-config.php:2416
 #: includes/apps/config/class-tools-config.php:146
 msgid "Previous"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:2402
+#: includes/apps/config/class-email-log-config.php:2417
 #: includes/apps/config/class-tools-config.php:147
 msgid "Next Page"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:2403
+#: includes/apps/config/class-email-log-config.php:2418
 #: includes/apps/config/class-tools-config.php:148
 msgid "Previous Page"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:2404
+#: includes/apps/config/class-email-log-config.php:2419
 #: includes/apps/config/class-tools-config.php:149
 msgid "No results found"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:2405
+#: includes/apps/config/class-email-log-config.php:2420
 #: includes/apps/config/class-tools-config.php:150
 msgid "No results found for your search"
 msgstr ""
 
 #. translators: %1$s is the body of the ajax request.
-#: includes/apps/config/class-email-log-config.php:2409
+#: includes/apps/config/class-email-log-config.php:2424
 msgid "Deleting activity log rows: %1$s"
 msgstr ""
 
 #. translators: %1$s is the error.
-#: includes/apps/config/class-email-log-config.php:2411
+#: includes/apps/config/class-email-log-config.php:2426
 msgid "Error deleting activity log rows: %1$s"
 msgstr ""
 
 #. translators: %1$s is the body of the ajax request.
-#: includes/apps/config/class-email-log-config.php:2413
+#: includes/apps/config/class-email-log-config.php:2428
 msgid "Deleting activity log: %1$s"
 msgstr ""
 
 #. translators: %1$s is the error.
-#: includes/apps/config/class-email-log-config.php:2415
+#: includes/apps/config/class-email-log-config.php:2430
 msgid "Error deleting activity log: %1$s"
 msgstr ""
 
 #. translators: %1$s is the body of the ajax request.
-#: includes/apps/config/class-email-log-config.php:2417
+#: includes/apps/config/class-email-log-config.php:2432
 msgid "Fetching activity log page: %1$s"
 msgstr ""
 
 #. translators: %1$s is the error.
-#: includes/apps/config/class-email-log-config.php:2419
+#: includes/apps/config/class-email-log-config.php:2434
 msgid "Error fetching activity log page: %1$s"
 msgstr ""
 
 #. translators: %1$s is the body of the ajax request.
-#: includes/apps/config/class-email-log-config.php:2421
+#: includes/apps/config/class-email-log-config.php:2436
 msgid "Fetching activity log details: %1$s"
 msgstr ""
 
 #. translators: %1$s is the error.
-#: includes/apps/config/class-email-log-config.php:2423
+#: includes/apps/config/class-email-log-config.php:2438
 msgid "Error fetching activity log details: %1$s"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:2425
+#: includes/apps/config/class-email-log-config.php:2440
 msgid "Delete Email"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:2426
+#: includes/apps/config/class-email-log-config.php:2441
 msgid "Are you sure you want to delete this email log?"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:2429
+#: includes/apps/config/class-email-log-config.php:2444
 msgid "Confirm Deletion"
 msgstr ""
 
 #. translators: 1: number of selected entries.
-#: includes/apps/config/class-email-log-config.php:2431
+#: includes/apps/config/class-email-log-config.php:2446
 msgid "Are you sure you want to delete %1$s entries? This action is irreversible, and all records will be permanently removed from the database."
 msgstr ""
 
@@ -1709,7 +1713,7 @@ msgid "No API Key provided."
 msgstr ""
 
 #: includes/connectors/types/class-connector-brevo.php:355
-#: includes/connectors/types/class-connector-mailgun.php:515
+#: includes/connectors/types/class-connector-mailgun.php:523
 #: includes/connectors/types/class-connector-postmark.php:318
 #: includes/connectors/types/class-connector-sendgrid.php:323
 msgid "Invalid API Key provided."
@@ -1887,7 +1891,7 @@ msgstr ""
 msgid "Verify your Mailgun domain name. %1$sView domains%2$s."
 msgstr ""
 
-#: includes/connectors/types/class-connector-mailgun.php:539
+#: includes/connectors/types/class-connector-mailgun.php:547
 msgid "Invalid sending domain provided."
 msgstr ""
 
@@ -1935,6 +1939,16 @@ msgstr ""
 
 #: includes/connectors/types/class-connector-sendgrid.php:329
 msgid "API Key does not have permission to send mail."
+msgstr ""
+
+#. translators: 1: the name of the integration.
+#: includes/enums/class-integration-enum.php:73
+msgid "The default WordPress mailer was used to send this email"
+msgstr ""
+
+#. translators: 1: the name of the integration.
+#: includes/enums/class-integration-enum.php:73
+msgid "The %1$s integration was used to send this email"
 msgstr ""
 
 #: includes/enums/class-status-enum.php:52
@@ -2007,7 +2021,7 @@ msgid "Info"
 msgstr ""
 
 #: includes/models/class-event-model.php:319
-#: includes/models/class-log-details-model.php:185
+#: includes/models/class-log-details-model.php:178
 #: includes/utils/class-source-parser.php:26
 #: includes/utils/class-source-parser.php:89
 msgid "N/A"

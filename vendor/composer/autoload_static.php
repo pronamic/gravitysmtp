@@ -174,6 +174,7 @@ class ComposerStaticInitb7578a2a4418537ee77a442cea7a907f
         'Gravity_Forms\\Gravity_SMTP\\Data_Store\\Data_Store_Router' => __DIR__ . '/../..' . '/includes/datastore/class-data-store-router.php',
         'Gravity_Forms\\Gravity_SMTP\\Data_Store\\Opts_Data_Store' => __DIR__ . '/../..' . '/includes/datastore/class-opts-data-store.php',
         'Gravity_Forms\\Gravity_SMTP\\Data_Store\\Plugin_Opts_Data_Store' => __DIR__ . '/../..' . '/includes/datastore/class-plugin-opts-data-store.php',
+        'Gravity_Forms\\Gravity_SMTP\\Enums\\Integration_Enum' => __DIR__ . '/../..' . '/includes/enums/class-integration-enum.php',
         'Gravity_Forms\\Gravity_SMTP\\Enums\\Status_Enum' => __DIR__ . '/../..' . '/includes/enums/class-status-enum.php',
         'Gravity_Forms\\Gravity_SMTP\\Environment\\Config\\Environment_Endpoints_Config' => __DIR__ . '/../..' . '/includes/environment/config/class-environment-endpoints-config.php',
         'Gravity_Forms\\Gravity_SMTP\\Environment\\Endpoints\\Uninstall_Endpoint' => __DIR__ . '/../..' . '/includes/environment/endpoints/class-uninstall-endpoint.php',

@@ -1,3 +1,8 @@
+### 1.0.2 | 2024-05-07
+- Added integration column to the data grid to show which service sent an email.
+- Fixed a bug that allows incorrect credentials for Custom SMTP to cause the Settings page to hang.
+- Fixed a bug that causes domain level mailgun api keys to not validate.
+
 ### 1.0.1 | 2024-04-23
 - Added status headers for test mode and debug mode to all screens.
 - Fixed a bug that causes the plugin to appear in the Gravity Forms updates screen.

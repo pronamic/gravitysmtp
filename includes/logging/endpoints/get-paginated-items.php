@@ -14,6 +14,7 @@ function run() {
 	require '../../utils/class-recipient.php';
 	require '../../utils/class-recipient-collection.php';
 	require '../../utils/class-recipient-parser.php';
+	require '../../enums/class-integration-enum.php';
 	require '../../enums/class-status-enum.php';
 	require '../../models/hydrators/interface-hydrator.php';
 	require '../../models/hydrators/class-hydrator-wp-mail.php';
@@ -118,13 +119,6 @@ function get_formatted_data_rows( $data ) {
 					'hasDot' => false,
 				),
 			),
-			'source'  => array(
-				'component' => 'Text',
-				'props'     => array(
-					'content' => $row['source'],
-					'size'    => 'text-sm',
-				),
-			),
 			'to'      => array(
 				'component'  => 'Box',
 				'props'      => array(
@@ -175,6 +169,15 @@ function get_formatted_data_rows( $data ) {
 				'props'     => array(
 					'content' => $row['source'],
 					'size'    => 'text-sm',
+				),
+			),
+			'integration'  => array(
+				'external' => true,
+				'key'      => $row['service'] . '_logo',
+				'props'     => array(
+					'height' => 24,
+					'title' => \Gravity_Forms\Gravity_SMTP\Enums\Integration_Enum::svg_title( $row['service'] ),
+					'width' => 24,
 				),
 			),
 			'date'    => array(

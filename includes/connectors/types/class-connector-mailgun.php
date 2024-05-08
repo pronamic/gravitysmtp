@@ -499,7 +499,7 @@ class Connector_Mailgun extends Connector_Base {
 	 */
 	private function verify_api_key() {
 		$api_key = $this->get_setting( self::SETTING_API_KEY );
-		$url     = $this->get_api_url( 'domains', false );
+		$url     = $this->get_api_url( 'messages', true );
 
 		if ( empty( $api_key ) ) {
 			return new \WP_Error( 'missing_api_key', __( 'No API Key provided.', 'gravitysmtp' ) );
@@ -507,11 +507,19 @@ class Connector_Mailgun extends Connector_Base {
 
 		$data = array(
 			'headers' => $this->get_request_headers( $api_key ),
+			'body'    => array(
+				"from"    => "string",
+				"to"      => "string",
+				"subject" => "string",
+				"html"    => "string",
+			),
 		);
 
-		$result = wp_remote_get( $url, $data );
+		$request = wp_remote_post( $url, $data );
 
-		if ( wp_remote_retrieve_response_code( $result ) != '200' ) {
+		$code = wp_remote_retrieve_response_code( $request );
+
+		if ( (int) $code === 401 ) {
 			return new \WP_Error( 'invalid_api_key', __( 'Invalid API Key provided.', 'gravitysmtp' ) );
 		}
 
