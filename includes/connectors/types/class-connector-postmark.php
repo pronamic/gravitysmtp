@@ -102,11 +102,17 @@ class Connector_Postmark extends Connector_Base {
 		$cc  = isset( $atts['headers']['cc'] ) ? $atts['headers']['cc']->as_string( false ) : '';
 		$bcc = isset( $atts['headers']['bcc'] ) ? $atts['headers']['bcc']->as_string( false ) : '';
 
+		// Strip tags from plaintext
+		$text_body = wp_strip_all_tags( $atts['message'] );
+
+		// Remove leftover double-linebreaks from plaintext.
+		$text_body = preg_replace("/([\r\n]{2,}|[\n]{2,}|[\r]{2,}|[\r\t]{2,}|[\n\t]{2,})/", "\n", $text_body);
+
 		$body = array(
 			'from'     => $atts['from'],
 			'to'       => $atts['to']->as_string( false ),
 			'subject'  => $atts['subject'],
-			'textBody' => $atts['message'],
+			'textBody' => $text_body,
 			'htmlBody' => $html_body,
 			'Cc'       => $cc,
 			'Bcc'      => $bcc,
@@ -116,8 +122,8 @@ class Connector_Postmark extends Connector_Base {
 			$body['ReplyTo'] = $atts['reply_to'];
 		}
 
-		if ( ! empty( $attachments ) ) {
-			$body['Attachments'] = $this->get_attachments( $attachments );
+		if ( ! empty( $atts['attachments'] ) ) {
+			$body['Attachments'] = $this->get_attachments( $atts['attachments'] );
 		}
 
 		$additional_headers = $this->get_filtered_message_headers();

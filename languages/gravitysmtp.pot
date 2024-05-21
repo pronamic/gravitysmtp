@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Gravity SMTP 1.0.2\n"
+"Project-Id-Version: Gravity SMTP 1.0.3\n"
 "Report-Msgid-Bugs-To: https://gravityforms.com/support\n"
 "Last-Translator: Gravity Forms <support@gravityforms.com>\n"
 "Language-Team: Gravity Forms <support@gravityforms.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-05-07T17:27:02+00:00\n"
+"POT-Creation-Date: 2024-05-20T15:57:02+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: gravitysmtp\n"
@@ -608,7 +608,7 @@ msgstr ""
 #: includes/connectors/types/class-connector-brevo.php:297
 #: includes/connectors/types/class-connector-generic.php:288
 #: includes/connectors/types/class-connector-mailgun.php:372
-#: includes/connectors/types/class-connector-postmark.php:271
+#: includes/connectors/types/class-connector-postmark.php:277
 #: includes/connectors/types/class-connector-sendgrid.php:274
 msgid "General Settings"
 msgstr ""
@@ -1691,7 +1691,7 @@ msgstr ""
 #: includes/connectors/types/class-connector-generic.php:231
 #: includes/connectors/types/class-connector-google.php:340
 #: includes/connectors/types/class-connector-mailgun.php:340
-#: includes/connectors/types/class-connector-postmark.php:225
+#: includes/connectors/types/class-connector-postmark.php:231
 #: includes/connectors/types/class-connector-sendgrid.php:228
 msgid "Configuration"
 msgstr ""
@@ -1707,14 +1707,14 @@ msgstr ""
 
 #: includes/connectors/types/class-connector-brevo.php:344
 #: includes/connectors/types/class-connector-mailgun.php:505
-#: includes/connectors/types/class-connector-postmark.php:307
+#: includes/connectors/types/class-connector-postmark.php:313
 #: includes/connectors/types/class-connector-sendgrid.php:310
 msgid "No API Key provided."
 msgstr ""
 
 #: includes/connectors/types/class-connector-brevo.php:355
 #: includes/connectors/types/class-connector-mailgun.php:523
-#: includes/connectors/types/class-connector-postmark.php:318
+#: includes/connectors/types/class-connector-postmark.php:324
 #: includes/connectors/types/class-connector-sendgrid.php:323
 msgid "Invalid API Key provided."
 msgstr ""
@@ -1903,16 +1903,16 @@ msgstr ""
 msgid "Starting email send for Postmark connector."
 msgstr ""
 
-#: includes/connectors/types/class-connector-postmark.php:218
+#: includes/connectors/types/class-connector-postmark.php:224
 msgid "Postmark Settings"
 msgstr ""
 
-#: includes/connectors/types/class-connector-postmark.php:251
+#: includes/connectors/types/class-connector-postmark.php:257
 msgid "Server API Token"
 msgstr ""
 
 #. translators: 1: opening anchor tag, 2: closing anchor tag
-#: includes/connectors/types/class-connector-postmark.php:258
+#: includes/connectors/types/class-connector-postmark.php:264
 msgid "To get a Server API Token, go to the %1$sAPI Token%2$s tab on your Postmark account page."
 msgstr ""
 
