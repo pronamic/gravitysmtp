@@ -51,7 +51,7 @@ class Delete_Debug_Logs_Endpoint extends Endpoint {
 
 		if ( $delete_all_logs == '1' ) {
 			$this->logs->clear();
-			wp_send_json_success( array( 'message' => __( 'All logs deleted successfully.', 'gravitysmtp' ) ), 200 );
+			wp_send_json_success( array( 'message' => __( 'All logs deleted successfully', 'gravitysmtp' ) ), 200 );
 		}
 
 //		$log_ids = filter_input( INPUT_POST, self::PARAM_LOG_IDS, FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );

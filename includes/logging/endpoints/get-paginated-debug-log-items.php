@@ -26,6 +26,7 @@ function run() {
 	require_once( ABSPATH . WPINC . '/rest-api.php' );
 	require_once( ABSPATH . WPINC . '/kses.php' );
 	require_once( ABSPATH . WPINC . '/blocks.php' );
+	require_once( ABSPATH . WPINC . '/theme.php' );
 
 	wp_plugin_directory_constants();
 	wp_cookie_constants();
@@ -57,7 +58,8 @@ function run() {
 		$priority = htmlspecialchars( $priority );
 	}
 
-	$offset = ( $requested_page - 1 ) * $per_page;
+	$requested_page = intval( $requested_page );
+	$offset         = ( $requested_page - 1 ) * $per_page;
 
 	if ( ! $max_date ) {
 		$max_date = date( 'Y-m-d H:i:s', time() );

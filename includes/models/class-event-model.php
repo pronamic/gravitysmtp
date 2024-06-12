@@ -8,6 +8,7 @@ use Gravity_Forms\Gravity_SMTP\Models\Hydrators\Hydrator_Factory;
 use Gravity_Forms\Gravity_SMTP\Models\Traits\Can_Compare_Dynamically;
 use Gravity_Forms\Gravity_SMTP\Utils\Recipient_Collection;
 use Gravity_Forms\Gravity_SMTP\Utils\Recipient_Parser;
+use Gravity_Forms\Gravity_SMTP\Utils\SQL_Filter_Parser;
 
 class Event_Model {
 
@@ -30,6 +31,11 @@ class Event_Model {
 	 */
 	protected $recipient_parser;
 
+	/**
+	 * @var SQL_Filter_Parser
+	 */
+	protected $filter_parser;
+
 	protected $queryable = array(
 		'id',
 		'date_created',
@@ -50,10 +56,11 @@ class Event_Model {
 		'status',
 	);
 
-	public function __construct( $hydrator_factory, $plugin_opts, $recipient_parser ) {
+	public function __construct( $hydrator_factory, $plugin_opts, $recipient_parser, $filter_parser ) {
 		$this->hydrator_factory = $hydrator_factory;
 		$this->opts             = $plugin_opts;
 		$this->recipient_parser = $recipient_parser;
+		$this->filter_parser    = $filter_parser;
 	}
 
 	protected function get_table_name() {
@@ -138,7 +145,7 @@ class Event_Model {
 		return $this->hydrate( $results );
 	}
 
-	public function count( $search_term = null, $search_type = null ) {
+	public function count( $search_term = null, $search_type = null, $filters = array() ) {
 		global $wpdb;
 		$table_name = $this->get_table_name();
 		$search_clause = null;
@@ -148,19 +155,36 @@ class Event_Model {
 			$search_clause = 'WHERE ' . preg_replace( '/ AND$/', '', $search_clause );
 		}
 
-		$sql = "SELECT COUNT(1) as 'count' FROM $table_name $search_clause;";
+		$filter_clause = null;
+
+		if ( ! empty( $filters ) ) {
+			$filter_clause = $this->filter_parser->process_filters( $filters );
+			if ( empty( $search_clause ) ) {
+				$filter_clause = 'WHERE ' . $filter_clause;
+			} else {
+				$filter_clause = ' AND ' . $filter_clause;
+			}
+		}
+
+		$sql = "SELECT COUNT(1) as 'count' FROM $table_name $search_clause $filter_clause;";
 		$results = $wpdb->get_row( $sql, ARRAY_A );
 
 		return $results['count'];
 	}
 
-	public function paginate( $page, $per_page, $max_date = false, $search_term = null, $search_type = null ) {
+	public function paginate( $page, $per_page, $max_date = false, $search_term = null, $search_type = null, $sort_by = null, $sort_order = null, $filters = array() ) {
 		global $wpdb;
 		$table_name = $this->get_table_name();
 		$offset = ( $page - 1 ) * $per_page;
 
 		if ( ! $max_date ) {
 			$max_date = current_time( 'mysql', true );
+		}
+		if ( empty( $sort_by ) ) {
+			$sort_by = 'date_created';
+		}
+		if ( empty( $sort_order ) ) {
+			$sort_order = 'DESC';
 		}
 
 		$search_clause = null;
@@ -169,8 +193,14 @@ class Event_Model {
 			$search_clause = $this->get_search_clause( $search_term, $search_type );
 		}
 
+		$filter_clause = null;
+
+		if ( ! empty( $filters ) ) {
+			$filter_clause = $this->filter_parser->process_filters( $filters, true );
+		}
+
 		$prepared_sql = $wpdb->prepare(
-			"SELECT * FROM $table_name WHERE $search_clause `date_created` <= %s ORDER BY `date_created` DESC LIMIT %d, %d",
+			"SELECT * FROM $table_name WHERE $search_clause $filter_clause `date_created` <= %s ORDER BY `$sort_by` $sort_order LIMIT %d, %d",
 			$max_date,
 			$offset,
 			$per_page

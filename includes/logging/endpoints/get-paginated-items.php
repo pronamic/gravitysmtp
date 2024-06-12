@@ -14,6 +14,7 @@ function run() {
 	require '../../utils/class-recipient.php';
 	require '../../utils/class-recipient-collection.php';
 	require '../../utils/class-recipient-parser.php';
+	require '../../utils/class-sql-filter-parser.php';
 	require '../../enums/class-integration-enum.php';
 	require '../../enums/class-status-enum.php';
 	require '../../models/hydrators/interface-hydrator.php';
@@ -38,6 +39,8 @@ function run() {
 	require_once( ABSPATH . WPINC . '/rest-api.php' );
 	require_once( ABSPATH . WPINC . '/kses.php' );
 	require_once( ABSPATH . WPINC . '/blocks.php' );
+	require_once( ABSPATH . WPINC . '/theme.php' );
+
 
 	wp_plugin_directory_constants();
 	wp_cookie_constants();
@@ -50,7 +53,10 @@ function run() {
 	$requested_page = filter_input( INPUT_POST, 'requested_page', FILTER_SANITIZE_NUMBER_INT );
 	$max_date       = filter_input( INPUT_POST, 'max_date' );
 	$search_term    = filter_input( INPUT_POST, 'search_term' );
-	$search_type = filter_input( INPUT_POST, 'search_type' );
+	$search_type    = filter_input( INPUT_POST, 'search_type' );
+	$sort_by        = filter_input( INPUT_POST, 'sort_by' );
+	$sort_order     = filter_input( INPUT_POST, 'sort_order' );
+	$filters        = filter_input( INPUT_POST, 'filters', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
 
 	if ( ! empty( $max_date ) ) {
 		$max_date = htmlspecialchars( $max_date );
@@ -64,7 +70,16 @@ function run() {
 		$search_type = htmlspecialchars( $search_type );
 	}
 
-	$offset = ( $requested_page - 1 ) * $per_page;
+	if ( ! empty( $sort_by ) ) {
+		$sort_by = htmlspecialchars( $sort_by );
+	}
+
+	if ( ! empty( $sort_order ) ) {
+		$sort_order = htmlspecialchars( $sort_order );
+	}
+
+	$requested_page = intval( $requested_page );
+	$offset         = ( $requested_page - 1 ) * $per_page;
 
 	if ( ! $max_date ) {
 		$max_date = date( 'Y-m-d H:i:s', time() );
@@ -74,9 +89,13 @@ function run() {
 		$per_page = 20;
 	}
 
-	$event_model = new \Gravity_Forms\Gravity_SMTP\Models\Event_Model( new \Gravity_Forms\Gravity_SMTP\Models\Hydrators\Hydrator_Factory(), new \Gravity_Forms\Gravity_SMTP\Data_Store\Plugin_Opts_Data_Store(), new \Gravity_Forms\Gravity_SMTP\Utils\Recipient_Parser() );
-	$rows        = $event_model->paginate( $requested_page, $per_page, $max_date, $search_term, $search_type );
-	$count       = $event_model->count( $search_term, $search_type );
+	if ( empty( $filters ) ) {
+		$filters = array();
+	}
+
+	$event_model = new \Gravity_Forms\Gravity_SMTP\Models\Event_Model( new \Gravity_Forms\Gravity_SMTP\Models\Hydrators\Hydrator_Factory(), new \Gravity_Forms\Gravity_SMTP\Data_Store\Plugin_Opts_Data_Store(), new \Gravity_Forms\Gravity_SMTP\Utils\Recipient_Parser(), new \Gravity_Forms\Gravity_SMTP\Utils\SQL_Filter_Parser() );
+	$rows        = $event_model->paginate( $requested_page, $per_page, $max_date, $search_term, $search_type, $sort_by, $sort_order, $filters );
+	$count       = $event_model->count( $search_term, $search_type, $filters );
 
 	$data = array(
 		'rows'      => get_formatted_data_rows( $rows ),

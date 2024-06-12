@@ -1,3 +1,18 @@
+### 1.1.0 | 2024-06-11
+- Added information about the current active integrations to the System Report.
+- Added the Google connector.
+- Added the Microsoft connector.
+- Added the PHP Mail connector.
+- Added primary and backup connections.
+- Fixed an issue that caused emails to send in test mode if no integrations were configured.
+- Fixed an issue that caused deleting a single activity from the log to break the data grid display.
+- Fixed an issue that can cause a fatal error when viewing the Email log on translated sites.
+- Fixed an issue that prevents Telemetry data from being properly sent to the Telemetry API.
+
+### 1.0.3 | 2024-05-20
+- Fixed a bug that causes plaintext emails to send with some html tags in Postmark.
+- Fixed a bug that causes attachments to not send with Postmark.
+
 ### 1.0.2 | 2024-05-07
 - Added integration column to the data grid to show which service sent an email.
 - Fixed a bug that allows incorrect credentials for Custom SMTP to cause the Settings page to hang.

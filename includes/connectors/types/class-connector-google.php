@@ -17,7 +17,11 @@ use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
  */
 class Connector_Google extends Connector_Base {
 
-	const SETTING_ACCESS_TOKEN = 'access_token';
+	const SETTING_ACCESS_TOKEN  = 'access_token';
+	const SETTING_CLIENT_ID     = 'client_id';
+	const SETTING_CLIENT_SECRET = 'client_secret';
+
+	const VALUE_REDIRECT_URI = 'redirect_uri';
 
 	protected $name        = 'google';
 	protected $title       = 'Google / Gmail';
@@ -25,7 +29,6 @@ class Connector_Google extends Connector_Base {
 	protected $description = '';
 	protected $logo        = 'Google';
 	protected $full_logo   = 'GoogleFull';
-	protected $google_svg  = '<svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" fill="none"><rect width="38" height="38" fill="#fff" rx="1"/><path fill="#4285F4" fill-rule="evenodd" d="M27.208 19.194a9.82 9.82 0 0 0-.155-1.749H19v3.308h4.602a3.933 3.933 0 0 1-1.707 2.58v2.146h2.764c1.616-1.489 2.549-3.68 2.549-6.285Z" clip-rule="evenodd"/><path fill="#34A853" fill-rule="evenodd" d="M19 27.55c2.308 0 4.244-.766 5.659-2.071l-2.764-2.146c-.765.513-1.745.816-2.895.816-2.227 0-4.112-1.504-4.784-3.524h-2.857v2.215A8.547 8.547 0 0 0 19 27.55Z" clip-rule="evenodd"/><path fill="#FBBC05" fill-rule="evenodd" d="M14.216 20.625A5.14 5.14 0 0 1 13.948 19c0-.564.097-1.111.268-1.625V15.16h-2.857A8.547 8.547 0 0 0 10.45 19c0 1.38.33 2.686.91 3.84l2.856-2.215Z" clip-rule="evenodd"/><path fill="#EA4335" fill-rule="evenodd" d="M19 13.85c1.255 0 2.382.432 3.268 1.28l2.453-2.453C23.24 11.297 21.305 10.45 19 10.45a8.547 8.547 0 0 0-7.64 4.71l2.856 2.215c.672-2.02 2.557-3.524 4.784-3.524Z" clip-rule="evenodd"/></svg>';
 
 	protected $oauth_handler;
 
@@ -151,14 +154,33 @@ class Connector_Google extends Connector_Base {
 		$raw = $this->get_raw_message();
 
 		try {
-			$google_client = new Client();
-			$google_client->setAccessToken( $this->get_setting( self::SETTING_ACCESS_TOKEN ) );
+			$body = array(
+				'raw' => $raw,
+			);
 
-			$message = new Gmail\Message();
-			$message->setRaw( $raw );
+			$url = 'https://gmail.googleapis.com/gmail/v1/users/me/messages/send';
 
-			$gmail_service = new Gmail( $google_client );
-			$gmail_service->users_messages->send( 'me', $message );
+			$headers = array(
+				'Authorization' => 'Bearer ' . $this->get_setting( self::SETTING_ACCESS_TOKEN ),
+				'Content-Type'  => 'application/json',
+			);
+
+			$args = array(
+				'body' => json_encode( $body ),
+				'headers' => $headers,
+			);
+
+			$response      = wp_remote_post( $url, $args );
+			$response_body = wp_remote_retrieve_body( $response );
+			$response_code = wp_remote_retrieve_response_code( $response );
+
+			if ( (int) $response_code !== 200 ) {
+				$this->events->update( array( 'status' => 'failed' ), $email );
+
+				$this->logger->log( $email, 'failed', $e->getMessage() );
+
+				return $email;
+			}
 
 			$this->events->update( array( 'status' => 'sent' ), $email );
 
@@ -193,12 +215,33 @@ class Connector_Google extends Connector_Base {
 	 */
 	public function connector_data() {
 		return array(
+			self::SETTING_CLIENT_ID        => $this->get_setting( self::SETTING_CLIENT_ID, '' ),
+			self::SETTING_CLIENT_SECRET    => $this->get_setting( self::SETTING_CLIENT_SECRET, '' ),
 			self::SETTING_ACCESS_TOKEN     => $this->get_setting( self::SETTING_ACCESS_TOKEN, '' ),
 			self::SETTING_FROM_EMAIL       => $this->get_setting( self::SETTING_FROM_EMAIL, '' ),
 			self::SETTING_FORCE_FROM_EMAIL => $this->get_setting( self::SETTING_FORCE_FROM_EMAIL, false ),
 			self::SETTING_FROM_NAME        => $this->get_setting( self::SETTING_FROM_NAME, '' ),
 			self::SETTING_FORCE_FROM_NAME  => $this->get_setting( self::SETTING_FORCE_FROM_NAME, false ),
+			'oauth_url'                    => 'https://accounts.google.com/o/oauth2/v2/auth',
+			'oauth_params'                 => '&' . $this->get_oauth_params(),
 		);
+	}
+
+	protected function get_oauth_params() {
+		/**
+		 * @var Google_Oauth_Handler $oauth_handler
+		 */
+		$oauth_handler = Gravity_SMTP::container()->get( Connector_Service_Provider::GOOGLE_OAUTH_HANDLER );
+
+		$params = array(
+			'response_type'          => 'code',
+			'redirect_uri'           => urldecode( $oauth_handler->get_return_url() ),
+			'scope'                  => 'https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/gmail.readonly',
+			'include_granted_scopes' => 'true',
+			'state'                  => 1,
+		);
+
+		return http_build_query( $params );
 	}
 
 	/**
@@ -217,39 +260,72 @@ class Connector_Google extends Connector_Base {
 		$oauth_handler->handle_response( $this->name );
 
 		$token = $oauth_handler->get_access_token( $this->name );
+		$has_token = $token && ! is_wp_error( $token );
 
 		$settings = array(
 			'title'       => esc_html__( 'Google / Gmail Settings', 'gravitysmtp' ),
-			'hide_save'   => ( ! $token || is_wp_error( $token ) ),
+			'hide_save'   => ! $has_token,
 			'fields'      => array(),
 		);
 
-		if ( ! $token || is_wp_error( $token ) ) {
+		if ( ! $has_token ) {
 			$settings['fields'][] = array(
 				'component' => 'Alert',
 				'props'     => array(
-					'theme' => 'cosmos',
-					'type' => 'info',
-					'spacing' => 3,
+					'customIconPrefix' => 'gravitysmtp-admin-icon',
+					'theme'            => 'cosmos',
+					'type'             => 'notice',
+					'spacing'          => 3,
 				),
-				'fields' => array(
+				'fields'    => array(
 					array(
 						'component' => 'Text',
-						'props'     => array(
-							'customClasses' => array( 'gravitysmtp-google-integration__alert-title' ),
-							'content' => esc_html__( 'Gmail sending limits', 'gravitysmtp' ),
-							'weight'    => 'medium',
-							'size'      => 'text-sm',
-							'spacing' => 2,
-							'tagName' => 'span',
+						'props' => array(
+							'content'       => esc_html__( 'Before proceeding, make sure to save your settings with the Client ID and Client Secret.', 'gravitysmtp' ),
+							'customClasses' => array( 'gform--display-block', 'gravitysmtp-integration__notice-message' ),
+							'size'          => 'text-sm',
+							'spacing'       => 4,
+							'tagName'       => 'span',
 						),
 					),
 					array(
+						'component' => 'Link',
+						'props'     => array(
+							'content' => esc_html__( 'Read our Google / Gmail documentation', 'gravitysmtp' ),
+							'customClasses' => array(
+								'gform-link--theme-cosmos',
+								'gravitysmtp-integration__notice-link',
+								'gform-button',
+								'gform-button--size-height-m',
+								'gform-button--white',
+								'gform-button--width-auto'
+							),
+							'href' => 'https://docs.gravitysmtp.com/category/integrations/google/',
+							'target' => '_blank',
+						),
+					),
+				),
+			);
+		}
+
+		if ( isset( $_GET['code'] ) && ! $has_token ) {
+			$settings['fields'][] = array(
+				'component' => 'Alert',
+				'props'     => array(
+					'customIconPrefix' => 'gravitysmtp-admin-icon',
+					'theme'            => 'cosmos',
+					'type'             => 'error',
+					'spacing'          => 3,
+				),
+				'fields'    => array(
+					array(
 						'component' => 'Text',
 						'props'     => array(
-							'content' => esc_html__( 'Gmail is not recommended for sending high volumes of transactional emails.  If your site regularly sends lots of emails, you should consider using an email service provider that is designed for higher volumes.', 'gravitysmtp' ),
-							'size'      => 'text-sm',
-							'tagName' => 'span',
+							'content'       => esc_html__( 'Error Connecting to Google. Check your credentials and try again.', 'gravitysmtp' ),
+							'weight'        => 'medium',
+							'size'          => 'text-sm',
+							'spacing'       => 2,
+							'tagName'       => 'span',
 						),
 					),
 				),
@@ -259,7 +335,7 @@ class Connector_Google extends Connector_Base {
 		$settings['fields'][] = array(
 			'component' => 'Heading',
 			'props'     => array(
-				'content' => esc_html__( 'Connection', 'gravitysmtp' ),
+				'content' => esc_html__( 'Configuration', 'gravitysmtp' ),
 				'size'    => 'text-sm',
 				'spacing' => [ 4, 0, 3, 0 ],
 				'tagName' => 'h3',
@@ -268,26 +344,124 @@ class Connector_Google extends Connector_Base {
 			),
 		);
 
-		if ( ! $token || is_wp_error( $token ) ) {
+		if ( ! $has_token ) {
 			$settings['fields'][] = array(
-				'component' => 'Text',
-				'props'     => array(
-					'content' => esc_html__( 'You are not currently connected. Click the button below to connect to your Gmail account.', 'gravitysmtp' ),
-					'asHtml' => true,
-					'spacing' => 3,
-					'size' => 'text-sm',
+				'component'     => 'LinkedHelpTextInput',
+				'external'      => true,
+				'handle_change' => true,
+				'links'         => array(
+					array(
+						'key'   => 'link',
+						'props' => array(
+							'href'   => 'https://console.cloud.google.com/',
+							'size'   => 'text-xs',
+							'target' => '_blank',
+						),
+					),
+				),
+				'props'         => array(
+					'helpTextAttributes' => array(
+						'content' => esc_html__( 'To obtain a Client ID from Google / Gmail, log in to your {{link}}Google Cloud Console{{link}} and generate the Client ID.', 'gravitysmtp' ),
+						'size'    => 'text-xs',
+						'weight'  => 'regular',
+					),
+					'labelAttributes'    => array(
+						'label'  => esc_html__( 'Client ID', 'gravitysmtp' ),
+						'size'   => 'text-sm',
+						'weight' => 'medium',
+					),
+					'name'               => self::SETTING_CLIENT_ID,
+					'spacing'            => 6,
+					'size'               => 'size-l',
+					'value'              => $this->get_setting( self::SETTING_CLIENT_ID, '' ),
 				),
 			);
 
 			$settings['fields'][] = array(
-				'component'   => 'Text',
-				// The following 2 lines allow the setup wizard to use the appropriate link type
-				'isOauthLink' => true,
-				'wizardLink'  => sprintf( '<a href="%s" class="%s"><span class="%s">%s</span><span class="%s">%s</span></a>', $oauth_handler->get_oauth_url( 'wizard' ), 'gravitysmtp-google-integration__connect-button-link gform-link gform-link--theme-cosmos gform-button gform-button--height-l gform-button--primary-new', 'gravitysmtp-google-integration__google-icon', $this->google_svg, 'gravitysmtp-google-integration__connect-button-text', __( 'Connect to Google', 'gravitysmtp' ) ),
-				'props'       => array(
-					'content' => sprintf( '<a href="%s" class="%s"><span class="%s">%s</span><span class="%s">%s</span></a>', $oauth_handler->get_oauth_url(), 'gravitysmtp-google-integration__connect-button-link gform-link gform-link--theme-cosmos gform-button gform-button--height-l gform-button--primary-new', 'gravitysmtp-google-integration__google-icon', $this->google_svg, 'gravitysmtp-google-integration__connect-button-text', __( 'Connect to Google', 'gravitysmtp' ) ),
-					'asHtml'  => true,
-					'spacing' => 6,
+				'component'     => 'LinkedHelpTextInput',
+				'external'      => true,
+				'handle_change' => true,
+				'links'         => array(
+					array(
+						'key'   => 'link',
+						'props' => array(
+							'href'   => 'https://console.cloud.google.com/',
+							'size'   => 'text-xs',
+							'target' => '_blank',
+						),
+					),
+				),
+				'props'         => array(
+					'helpTextAttributes' => array(
+						'content' => esc_html__( 'To obtain a Client Secret from Google / Gmail, log in to your {{link}}Google Cloud Console{{link}} and generate the Client ID.', 'gravitysmtp' ),
+						'size'    => 'text-xs',
+						'weight'  => 'regular',
+					),
+					'labelAttributes'    => array(
+						'label'  => esc_html__( 'Client Secret', 'gravitysmtp' ),
+						'size'   => 'text-sm',
+						'weight' => 'medium',
+					),
+					'name'               => self::SETTING_CLIENT_SECRET,
+					'spacing'            => 6,
+					'size'               => 'size-l',
+					'value'              => $this->get_setting( self::SETTING_CLIENT_SECRET, '' ),
+				),
+			);
+
+			$settings['fields'][] = array(
+				'component' => 'CopyInput',
+				'external'  => true,
+				'props'     => array(
+					'actionButtonAttributes' => array(
+						'customAttributes'     => array(
+							'type' => 'button',
+						),
+						'icon'       => 'copy',
+						'iconPrefix' => 'gravitysmtp-admin-icon',
+						'label'      => esc_html__( 'Copy', 'gravitysmtp' ),
+					),
+					'labelAttributes'      => array(
+						'label'  => esc_html__( 'Authorized redirect URI', 'gravitysmtp' ),
+						'size'   => 'text-sm',
+						'weight' => 'medium',
+					),
+					'name'                 => self::VALUE_REDIRECT_URI,
+					'spacing'              => 6,
+					'size'                 => 'size-l',
+					'customAttributes'     => array(
+						'readOnly' => true,
+					),
+					'value'                => urldecode( $oauth_handler->get_return_url( 'settings' ) ),
+					'helpTextAttributes' => array(
+						'content' => __( 'Copy this URL into the "Authorized redirect URIs" field of your Google web application.', 'gravitysmtp' ),
+						'size'    => 'text-xs',
+						'weight'  => 'regular',
+					),
+				),
+			);
+
+			$settings['fields'][] = array(
+				'component' => 'Heading',
+				'props'     => array(
+					'content' => esc_html__( 'Authorization', 'gravitysmtp' ),
+					'size'    => 'text-sm',
+					'spacing' => [ 4, 0, 3, 0 ],
+					'tagName' => 'h3',
+					'type'    => 'boxed',
+					'weight'  => 'medium',
+				),
+			);
+
+
+			$settings['fields'][] = array(
+				'component' => 'BrandedButton',
+				'external'  => true,
+				'props'     => array(
+					'label'   => esc_html__( 'Sign in with Google', 'gravitysmtp' ),
+					'spacing' => 4,
+					'Svg'     => 'GoogleAltLogo',
+					'type'    => 'color',
 				),
 			);
 		} else {
@@ -353,13 +527,17 @@ class Connector_Google extends Connector_Base {
 	}
 
 	public function is_configured() {
-		/**
-		 * @var Google_Oauth_Handler $oauth_handler
-		 */
-		$oauth_handler = Gravity_SMTP::container()->get( Connector_Service_Provider::GOOGLE_OAUTH_HANDLER );
-		$token         = $oauth_handler->get_access_token();
+		if ( $this->get_setting( 'access_token', false ) ) {
+			/**
+			 * @var Google_Oauth_Handler $oauth_handler
+			 */
+			$oauth_handler = Gravity_SMTP::container()->get( Connector_Service_Provider::GOOGLE_OAUTH_HANDLER );
+			$token         = $oauth_handler->get_access_token();
 
-		return $token;
+			return $token;
+		}
+
+		return false;
 	}
 
 }

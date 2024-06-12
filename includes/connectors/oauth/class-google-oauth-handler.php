@@ -2,6 +2,8 @@
 
 namespace Gravity_Forms\Gravity_SMTP\Connectors\Oauth;
 
+use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Google;
+use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Microsoft;
 use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Plugin_Settings_Endpoint;
 use Gravity_Forms\Gravity_Tools\API\Oauth_Handler as Oauth_Handler_Base;
@@ -11,7 +13,49 @@ class Google_Oauth_Handler extends Oauth_Handler_Base {
 
 	protected $supports_refresh_token = true;
 
+	protected $response_payload_name = 'code';
+
 	protected $namespace = 'google';
+
+	public function handle_response() {
+		if ( ! $this->is_response() ) {
+			return;
+		}
+
+		$url = 'https://oauth2.googleapis.com/token';
+
+		// Require code and state, and valid mode; otherwise redirect back.
+		if ( ! isset( $_GET['code'] ) ) { //phpcs:ignore
+			return;
+		}
+
+		$code = FILTER_INPUT( INPUT_GET, 'code', FILTER_DEFAULT );
+
+		$body = array(
+			'client_id'     => $this->data->get( Connector_Google::SETTING_CLIENT_ID, $this->namespace ),
+			'client_secret' => $this->data->get( Connector_Google::SETTING_CLIENT_SECRET, $this->namespace ),
+			'grant_type'    => 'authorization_code',
+			'code'          => $code,
+			'redirect_uri'  => urldecode( $this->get_return_url( 'settings', false ) ),
+		);
+
+		$request = wp_remote_post( $url, array( 'body' => $body ) );
+
+		if ( (int) wp_remote_retrieve_response_code( $request ) !== 200  ) { //phpcs:ignore
+			return;
+		}
+
+		$response = wp_remote_retrieve_body( $request );
+		$response = json_decode( $response, true );
+
+		if ( isset( $response[ $this->payload_access_token_name ] ) ) {
+			$this->store_access_token( $response[ $this->payload_access_token_name ] );
+		}
+
+		if ( isset( $response[ $this->payload_refresh_token_name ] ) ) {
+			$this->store_refresh_token( $response[ $this->payload_refresh_token_name ] );
+		}
+	}
 
 	protected function refresh_expired_token() {
 		$refresh_token = $this->get_refresh_token();
@@ -50,7 +94,7 @@ class Google_Oauth_Handler extends Oauth_Handler_Base {
 		$tab           = filter_input( INPUT_GET, 'tab' );
 		$integration   = filter_input( INPUT_GET, 'integration' );
 		$wizard_screen = filter_input( INPUT_GET, 'setup-wizard-page', FILTER_SANITIZE_NUMBER_INT );
-		$payload       = filter_input( INPUT_POST, $this->response_payload_name );
+		$payload       = filter_input( INPUT_GET, $this->response_payload_name );
 
 		// Valid screens are a specific integration tab, or the setup wizard page.
 		$is_valid_screen = $page === 'gravitysmtp-settings' &&

@@ -5,7 +5,10 @@ namespace Gravity_Forms\Gravity_SMTP\Connectors;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Get_Connector_Emails;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Migrate_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Connectors\Oauth\Google_Oauth_Handler;
+use Gravity_Forms\Gravity_SMTP\Connectors\Oauth\Microsoft_Oauth_Handler;
+use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_PHPMail;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Data_Store_Router;
+use Gravity_Forms\Gravity_SMTP\Enums\Connector_Status_Enum;
 use Gravity_Forms\Gravity_SMTP\Logging\Log\Logger;
 use Gravity_Forms\Gravity_SMTP\Logging\Logging_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Connectors\Config\Connector_Config;
@@ -22,7 +25,7 @@ use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Generic;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Google;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Mailgun;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Mandrill;
-use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Outlook;
+use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Microsoft;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Postmark;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Sendgrid;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_SMTP2GO;
@@ -36,6 +39,7 @@ use Gravity_Forms\Gravity_SMTP\Models\Hydrators\Hydrator_Factory;
 use Gravity_Forms\Gravity_SMTP\Models\Log_Details_Model;
 use Gravity_Forms\Gravity_SMTP\Models\Notifications_Model;
 use Gravity_Forms\Gravity_SMTP\Connectors\Oauth_Data_Handler;
+use Gravity_Forms\Gravity_SMTP\Utils\Recipient;
 use Gravity_Forms\Gravity_Tools\Updates\Updates_Service_Provider;
 use Gravity_Forms\Gravity_Tools\Providers\Config_Collection_Service_Provider;
 use Gravity_Forms\Gravity_Tools\Providers\Config_Service_Provider;
@@ -56,8 +60,10 @@ class Connector_Service_Provider extends Config_Service_Provider {
 	const NOTIFICATIONS_MODEL    = 'notifications_model';
 	const HYDRATOR_FACTORY       = 'hydrator_factory';
 	const NAME_MAP               = 'name_map';
-	const OAUTH_DATA_HANDLER     = 'oauth_data_handler';
-	const GOOGLE_OAUTH_HANDLER   = 'google_oauth_handler';
+
+	const OAUTH_DATA_HANDLER      = 'oauth_data_handler';
+	const GOOGLE_OAUTH_HANDLER    = 'google_oauth_handler';
+	const MICROSOFT_OAUTH_HANDLER = 'microsoft_oauth_handler';
 
 	const SEND_TEST_ENDPOINT               = 'send_test_endpoint';
 	const CLEANUP_DATA_ENDPOINT            = 'cleanup_data_endpoint';
@@ -78,24 +84,26 @@ class Connector_Service_Provider extends Config_Service_Provider {
 	const CONNECTOR_BREVO      = 'Brevo';
 	const CONNECTOR_MAILGUN    = 'Mailgun';
 	const CONNECTOR_ZOHO       = 'Zoho';
-	const CONNECTOR_OUTLOOK    = 'Outlook';
+	const CONNECTOR_MICROSOFT  = 'Microsoft';
 	const CONNECTOR_SPARKPOST  = 'Sparkpost';
 	const CONNECTOR_SMTP2GO    = 'SMTP2GO';
 	const CONNECTOR_MANDRILL   = 'Mandrill';
+	const CONNECTOR_PHPMAIL    = 'Phpmail';
 
 	protected $connectors = array(
 		self::CONNECTOR_GENERIC    => Connector_Generic::class,
 		self::CONNECTOR_SENDGRID   => Connector_Sendgrid::class,
 		self::CONNECTOR_POSTMARK   => Connector_Postmark::class,
 		self::CONNECTOR_AMAZON_SES => Connector_Amazon_SES::class,
-//		self::CONNECTOR_GOOGLE     => Connector_Google::class,
+		self::CONNECTOR_GOOGLE     => Connector_Google::class,
 		self::CONNECTOR_BREVO      => Connector_Brevo::class,
 		self::CONNECTOR_MAILGUN    => Connector_Mailgun::class,
 		self::CONNECTOR_ZOHO       => Connector_Zoho::class,
-		self::CONNECTOR_OUTLOOK    => Connector_Outlook::class,
+		self::CONNECTOR_MICROSOFT  => Connector_Microsoft::class,
 		self::CONNECTOR_SPARKPOST  => Connector_Sparkpost::class,
 		self::CONNECTOR_SMTP2GO    => Connector_SMTP2GO::class,
 		self::CONNECTOR_MANDRILL   => Connector_Mandrill::class,
+		self::CONNECTOR_PHPMAIL    => Connector_PHPMail::class,
 	);
 
 	protected $configs = array(
@@ -146,7 +154,7 @@ class Connector_Service_Provider extends Config_Service_Provider {
 		} );
 
 		$this->container->add( self::EVENT_MODEL, function () use ( $container ) {
-			return new Event_Model( $container->get( self::HYDRATOR_FACTORY ), $container->get( self::DATA_STORE_PLUGIN_OPTS ), $container->get( Utils_Service_Provider::RECIPIENT_PARSER ) );
+			return new Event_Model( $container->get( self::HYDRATOR_FACTORY ), $container->get( self::DATA_STORE_PLUGIN_OPTS ), $container->get( Utils_Service_Provider::RECIPIENT_PARSER ), $container->get( Utils_Service_Provider::FILTER_PARSER ) );
 		} );
 
 		$this->container->add( self::LOG_DETAILS_MODEL, function () use ( $container ) {
@@ -216,12 +224,16 @@ class Connector_Service_Provider extends Config_Service_Provider {
 			return new Google_Oauth_Handler( $container->get( self::OAUTH_DATA_HANDLER ) );
 		} );
 
+		$this->container->add( self::MICROSOFT_OAUTH_HANDLER, function () use ( $container ) {
+			return new Microsoft_Oauth_Handler( $container->get( self::OAUTH_DATA_HANDLER ) );
+		} );
+
 		$this->register_connector_data();
 	}
 
 	public function init( \Gravity_Forms\Gravity_Tools\Service_Container $container ) {
 		// @todo - replace this with some AJAX action via JS
-		add_action( 'admin_post_smtp_disconnect_google', function() use ( $container ) {
+		add_action( 'admin_post_smtp_disconnect_google', function () use ( $container ) {
 			$configured_key = sprintf( 'gsmtp_connector_configured_%s', 'google' );
 
 			delete_transient( $configured_key );
@@ -238,6 +250,27 @@ class Connector_Service_Provider extends Config_Service_Provider {
 			 */
 			$oauth_handler = $container->get( self::GOOGLE_OAUTH_HANDLER );
 			$return_url    = urldecode( $oauth_handler->get_return_url( false ) );
+
+			wp_safe_redirect( $return_url );
+		} );
+
+		add_action( 'admin_post_smtp_disconnect_microsoft', function() use ( $container ) {
+			$configured_key = sprintf( 'gsmtp_connector_configured_%s', 'microsoft' );
+
+			delete_transient( $configured_key );
+
+			/**
+			 * @var Opts_Data_Store $data
+			 */
+			$data = $container->get( self::DATA_STORE_OPTS );
+
+			$data->delete_all( 'microsoft' );
+
+			/**
+			 * @var Microsoft_Oauth_Handler $oauth_handler
+			 */
+			$oauth_handler = $container->get( self::MICROSOFT_OAUTH_HANDLER );
+			$return_url    = urldecode( $oauth_handler->get_return_url( 'settings' ) );
 
 			wp_safe_redirect( $return_url );
 		});
@@ -283,18 +316,19 @@ class Connector_Service_Provider extends Config_Service_Provider {
 			}
 
 			$order = array(
-				'365-outlook',
 				'amazon-ses',
 				'brevo',
 				'google-gmail',
 				'mailgun',
 				'mandrill',
+				'microsoft',
 				'postmark',
 				'sendgrid',
 				'smtp2go',
 				'sparkpost',
 				'zoho-mail',
 				'generic',
+				'phpmail',
 			);
 
 			// todo: setup wizard data should only be injected if should display is true for the app: includes/apps/setup-wizard/config/class-setup-wizard-config.php:18
@@ -321,6 +355,47 @@ class Connector_Service_Provider extends Config_Service_Provider {
 
 			return $data;
 		} );
+
+		/**
+		 * When PHP Mail connector is used, wp_mail() is called. This ensures that the From settings
+		 * in the Integration are respected when sending via this method.
+		 *
+		 * @since 1.1
+		 *
+		 * @return array
+		 */
+		add_filter( 'wp_mail', function ( $atts ) use ( $container ) {
+			$type = $container->get( self::DATA_STORE_ROUTER )->get_connector_status_of_type( Connector_Status_Enum::PRIMARY, '' );
+
+			if ( $type !== 'phpmail' ) {
+				return $atts;
+			}
+
+			$factory   = $container->get( self::CONNECTOR_FACTORY );
+			$connector = $factory->create( $type );
+
+			return $connector->update_wp_mail_froms( $atts );
+		}, - 10, 1 );
+
+		/**
+		 * If wp_mail() is being called, it means we likely don't have a primary or backup connector configured. Catch
+		 * that case and log details.
+		 *
+		 * @since 1.1
+		 *
+		 * @return array
+		 */
+		add_filter( 'wp_mail', function ( $atts ) use ( $container ) {
+			$primary = $container->get( self::DATA_STORE_ROUTER )->get_connector_status_of_type( Connector_Status_Enum::PRIMARY, false );
+			$backup  = $container->get( self::DATA_STORE_ROUTER )->get_connector_status_of_type( Connector_Status_Enum::BACKUP, false );
+
+			if ( ! $primary && ! $backup ) {
+				$logger = $container->get( Logging_Service_Provider::DEBUG_LOGGER );
+				$logger->log_debug( __( 'No Primary or Backup connections enabled. Using wp_mail() to send message.', 'gravitysmtp' ) );
+			}
+
+			return $atts;
+		}, - 10, 1 );
 	}
 
 	private function register_connector_data() {
@@ -337,7 +412,8 @@ class Connector_Service_Provider extends Config_Service_Provider {
 
 		$should_register = $should_display ? strpos( $page, 'gravitysmtp-' ) !== false : in_array( $page, array(
 			'gravitysmtp-settings',
-			'gravitysmtp-activity-log'
+			'gravitysmtp-activity-log',
+			'gravitysmtp-tools'
 		) );
 
 		if ( empty( $should_register ) ) {

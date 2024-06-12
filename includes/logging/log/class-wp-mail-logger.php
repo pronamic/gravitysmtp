@@ -29,9 +29,10 @@ class WP_Mail_Logger {
 	}
 
 	public function create_log( $mail_info ) {
-		$source   = $this->source_parser->get_source_from_trace( debug_backtrace() );
-		$from     = get_bloginfo( 'admin_email' );
-		$email_id = $this->events->create(
+		$source    = $this->source_parser->get_source_from_trace( debug_backtrace() );
+		$test_mode = isset( $mail_info['test_mode'] ) ? $mail_info['test_mode'] : false;
+		$from      = get_bloginfo( 'admin_email' );
+		$email_id  = $this->events->create(
 			'wp_mail',
 			'sent',
 			$mail_info['to'],
@@ -45,7 +46,12 @@ class WP_Mail_Logger {
 			)
 		);
 
-		$this->log( $email_id, 'sent', __( 'Email successfully sent.', 'gravitysmtp' ) );
+		if ( $test_mode ) {
+			$this->log( $email_id, 'sandboxed', __( 'Email sandboxed.', 'gravitysmtp' ) );
+			$this->events->update( array( 'status' => 'sandboxed' ), $email_id );
+		} else {
+			$this->log( $email_id, 'sent', __( 'Email successfully sent.', 'gravitysmtp' ) );
+		}
 	}
 
 	public function handle_failed( $wp_error ) {

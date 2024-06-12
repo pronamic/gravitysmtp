@@ -29,19 +29,19 @@ class DB_Logging_Provider implements Logging_Provider {
 	}
 
 	public function log_debug( $line ) {
-		$this->log( $line, self::INFO );
+		$this->log( $line, self::DEBUG );
 	}
 
 	public function log_warning( $line ) {
-		$this->log( $line, self::INFO );
+		$this->log( $line, self::WARN );
 	}
 
 	public function log_error( $line ) {
-		$this->log( $line, self::INFO );
+		$this->log( $line, self::ERROR );
 	}
 
 	public function log_fatal( $line ) {
-		$this->log( $line, self::INFO );
+		$this->log( $line, self::FATAL );
 	}
 
 	public function log( $line, $priority ) {

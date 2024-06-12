@@ -40,7 +40,7 @@ class Log_Item_Endpoint extends Endpoint {
 
 		$this->logger->log( $message, $priority );
 
-		wp_send_json_success( array( 'message' => __( 'Message logged.', 'gravitysmtp' ) ), 200 );
+		wp_send_json_success( array( 'message' => __( 'Message logged', 'gravitysmtp' ) ), 200 );
 	}
 
 	protected function validate() {

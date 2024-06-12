@@ -3,6 +3,7 @@
 namespace Gravity_Forms\Gravity_SMTP\Data_Store;
 
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Connector_Settings_Endpoint;
+use Gravity_Forms\Gravity_SMTP\Enums\Connector_Status_Enum;
 
 class Data_Store_Router {
 
@@ -71,6 +72,21 @@ class Data_Store_Router {
 	public function get_active_connector( $default = false ) {
 		$connectors = $this->get_plugin_setting( Save_Connector_Settings_Endpoint::SETTING_ENABLED_CONNECTOR, array() );
 		$connectors = array_filter( $connectors );
+		$connector  = empty( $connectors ) ? false : array_key_first( $connectors );
+
+		if ( empty( $connector ) ) {
+			return $default;
+		}
+
+		return $connector;
+	}
+
+	public function get_connector_status_of_type( $status_type, $default = false ) {
+		$setting    = Connector_Status_Enum::setting_for_status( $status_type );
+		$connectors = $this->get_plugin_setting( $setting, array() );
+		$connectors = array_filter( $connectors, function( $enabled ) {
+			return ! empty( $enabled ) && $enabled !== false && $enabled !== 'false';
+		} );
 		$connector  = empty( $connectors ) ? false : array_key_first( $connectors );
 
 		if ( empty( $connector ) ) {

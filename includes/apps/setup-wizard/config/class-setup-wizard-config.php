@@ -114,7 +114,7 @@ class Setup_Wizard_Config extends Config {
 						'setup_wizard_setup_success_copy'          => __( "Congratulations, you're ready to start reliably and securely sending email from your site using Gravity SMTP. Head on over to the plugin dashboard to check out all the features Gravity SMTP has to offer.", 'gravitysmtp' ),
 						'setup_wizard_setup_failed_title'          => __( "Whoops, looks like things aren't configured properly.", 'gravitysmtp' ),
 						'setup_wizard_setup_failed_copy'           => esc_html__( 'We just tried to send a test email, but something prevented that from working. To see more details about the issue we detected, as well as our suggestions to fix it, please start troubleshooting.', 'gravitysmtp' ),
-						'setup_wizard_integration_settings_error'  => esc_html__( 'There was an error saving your settings.', 'gravitysmtp' ),
+						'setup_wizard_integration_settings_error'  => esc_html__( 'There was an error saving your settings', 'gravitysmtp' ),
 						/* translators: %s: integration name. */
 						'setup_wizard_activate_integration_button' => esc_html__( 'Activate %s Integration', 'gravitysmtp' ),
 					),

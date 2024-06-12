@@ -5,17 +5,25 @@ namespace Gravity_Forms\Gravity_SMTP;
 use Gravity_Forms\Gravity_SMTP\Apps\App_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Apps\Setup_Wizard\Setup_Wizard_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Assets\Assets_Service_Provider;
+use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Base;
 use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Service_Provider;
+use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Connector_Settings_Endpoint;
+use Gravity_Forms\Gravity_SMTP\Data_Store\Const_Data_Store;
+use Gravity_Forms\Gravity_SMTP\Data_Store\Data_Store_Router;
+use Gravity_Forms\Gravity_SMTP\Data_Store\Opts_Data_Store;
+use Gravity_Forms\Gravity_SMTP\Data_Store\Plugin_Opts_Data_Store;
 use Gravity_Forms\Gravity_SMTP\Environment\Environment_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Handler\Handler_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Logging\Logging_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Pages\Page_Service_Provider;
+use Gravity_Forms\Gravity_SMTP\Routing\Routing_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Telemetry\Telemetry_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Translations\Translations_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Users\Users_Service_Provider;
 use Gravity_Forms\Gravity_Tools\Service_Container;
 use Gravity_Forms\Gravity_Tools\Providers\Config_Collection_Service_Provider;
 use Gravity_Forms\Gravity_Tools\Updates\Updates_Service_Provider;
+use Gravity_Forms\Gravity_Tools\Upgrades\Upgrade_Routines;
 use Gravity_Forms\Gravity_Tools\Utils\Utils_Service_Provider;
 
 /**
@@ -41,6 +49,30 @@ class Gravity_SMTP {
 		self::load_providers();
 	}
 
+	/**
+	 * Run upgrade routines on plugins_loaded to ensure users have the most-up-to-date system when updating.
+	 *
+	 * @return void
+	 */
+	public static function run_upgrade_routines() {
+		// Allow upgrades to be skipped if needed.
+		if ( defined( 'GRAVITYSMTP_SKIP_UPGRADE_CHECK' ) && GRAVITYSMTP_SKIP_UPGRADE_CHECK ) {
+			return;
+		}
+
+		$routines = new Upgrade_Routines( 'gravitysmtp' );
+
+		// Ensure tables are set up properly
+		$routines->add( 'emails_tables', array( self::class, 'create_emails_tables' ) );
+
+		// Ensure a primary connection exists
+		$routines->add( 'primary_connection', array( self::class, 'set_primary_connection' ) );
+
+		add_action( 'plugins_loaded', function() use ( $routines ) {
+			$routines->handle();
+		}, 10 );
+	}
+
 	private static function clear_cache_for_oauth() {
 		$payload = filter_input( INPUT_POST, 'auth_payload' );
 
@@ -48,6 +80,34 @@ class Gravity_SMTP {
 			$configured_key = sprintf( 'gsmtp_connector_configured_%s', 'google' );
 			delete_transient( $configured_key );
 		}
+	}
+
+	public static function set_primary_connection() {
+		$const  = new Const_Data_Store();
+		$opts   = new Opts_Data_Store();
+		$plugin = new Plugin_Opts_Data_Store();
+		$router = new Data_Store_Router( $const, $opts, $plugin );
+
+		$primaries = $router->get_plugin_setting( Save_Connector_Settings_Endpoint::SETTING_PRIMARY_CONNECTOR, array() );
+		$selected  = array_filter( $primaries );
+
+		if ( ! empty( $selected ) ) {
+			return;
+		}
+
+		$enabled  = $router->get_plugin_setting( Save_Connector_Settings_Endpoint::SETTING_ENABLED_CONNECTOR, array() );
+		$selected = array_filter( $enabled );
+
+		if ( empty( $selected ) ) {
+			return;
+		}
+
+		$keys                            = array_keys( $selected );
+		$enabled_connector               = reset( $keys );
+		$primaries[ $enabled_connector ] = true;
+		$opts->save( Connector_Base::SETTING_IS_PRIMARY, true, $enabled_connector );
+
+		$plugin->save( Save_Connector_Settings_Endpoint::SETTING_PRIMARY_CONNECTOR, $primaries );
 	}
 
 	public static function create_emails_tables() {
@@ -133,6 +193,7 @@ class Gravity_SMTP {
 		self::$container->add_provider( new Setup_Wizard_Service_Provider() );
 		self::$container->add_provider( new Telemetry_Service_Provider() );
 		self::$container->add_provider( new Environment_Service_Provider() );
+		self::$container->add_provider( new Routing_Service_Provider() );
 	}
 
 	public static function get_base_url() {

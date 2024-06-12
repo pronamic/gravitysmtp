@@ -14,6 +14,7 @@ use Gravity_Forms\Gravity_SMTP\Utils\Header_Parser;
 use Gravity_Forms\Gravity_SMTP\Utils\Import_Data_Checker;
 use Gravity_Forms\Gravity_SMTP\Utils\Recipient_Parser;
 use Gravity_Forms\Gravity_SMTP\Utils\Source_Parser;
+use Gravity_Forms\Gravity_SMTP\Utils\SQL_Filter_Parser;
 use Gravity_Forms\Gravity_Tools\Cache\Cache;
 use Gravity_Forms\Gravity_Tools\Service_Container;
 use Gravity_Forms\Gravity_Tools\Service_Provider;
@@ -27,6 +28,7 @@ class Utils_Service_Provider extends Service_Provider {
 	const LOGGER              = 'logger_util';
 	const RECIPIENT_PARSER    = 'recipient_parser';
 	const SOURCE_PARSER       = 'source_parser';
+	const FILTER_PARSER       = 'filter_parser';
 
 	public function register( Service_Container $container ) {
 		$container->add( Connector_Service_Provider::DATA_STORE_CONST, function () {
@@ -47,7 +49,7 @@ class Utils_Service_Provider extends Service_Provider {
 
 		$container->add( self::COMMON, function () use ( $container ) {
 			$data = $container->get( Connector_Service_Provider::DATA_STORE_ROUTER );
-			$key = $data->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_LICENSE_KEY, '' );
+			$key  = $data->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_LICENSE_KEY, '' );
 			return new Common( GRAVITY_MANAGER_URL, GRAVITY_SUPPORT_URL, $key );
 		} );
 
@@ -73,6 +75,10 @@ class Utils_Service_Provider extends Service_Provider {
 
 		$container->add( self::RECIPIENT_PARSER, function() {
 			return new Recipient_Parser();
+		} );
+
+		$container->add( self::FILTER_PARSER, function() {
+			return new SQL_Filter_Parser();
 		} );
 	}
 

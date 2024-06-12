@@ -69,7 +69,7 @@ class Integration_Enum {
 	 * @return string
 	 */
 	public static function svg_title( $service ) {
-		/* translators: 1: the name of the integration. */
+		/* translators: 1: the name of the integration (only used if $service does not equal 'wp_mail'). */
 		return $service == 'wp_mail' ? esc_html__( 'The default WordPress mailer was used to send this email', 'gravitysmtp' ) : sprintf( esc_html__( 'The %1$s integration was used to send this email', 'gravitysmtp' ), self::title( $service ) );
 	}
 

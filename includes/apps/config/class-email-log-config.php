@@ -2338,7 +2338,7 @@ class Email_Log_Config extends Config {
 				'hideWhenLoading' => true,
 				'key'             => 'integration',
 				'props'           => array(
-					'content' => esc_html__( 'Integration', 'gravitysmtp' ),
+					'content' => esc_html__( 'Service', 'gravitysmtp' ),
 					'size'    => 'text-sm',
 					'weight'  => 'medium',
 				),
@@ -2365,7 +2365,6 @@ class Email_Log_Config extends Config {
 					'size'    => 'text-sm',
 					'weight'  => 'medium',
 				),
-				'sortable'  => true,
 			),
 		);
 
@@ -2398,9 +2397,15 @@ class Email_Log_Config extends Config {
 				'top_heading'                               => esc_html__( 'Email Log', 'gravitysmtp' ),
 				// 'top_content'                            => __( '', 'gravitysmtp' ), // removing text for now as it is redundant.
 				'grid_heading'                              => esc_html__( 'Activity', 'gravitysmtp' ),
+				// 'active_filters_label'                      => esc_html__( 'Filters:', 'gravitysmtp' ),
+				'bulk_select'                               => esc_html__( 'Select all rows', 'gravitysmtp' ),
 				'clear_search_aria_label'                   => esc_html__( 'Clear search', 'gravitysmtp' ),
 				'empty_title'                               => esc_html__( 'No emails yet', 'gravitysmtp' ),
 				'empty_message'                             => esc_html__( 'As soon as your site sends some emails, you will see them here!', 'gravitysmtp' ),
+				// 'filters_droplist_reset'                    => esc_html__( 'Reset', 'gravitysmtp' ),
+				// 'filters_reset'                             => esc_html__( 'Reset Filters', 'gravitysmtp' ),
+				/* translators: %s: number of filters active. */
+				// 'filters_trigger_aria_text'                 => esc_html__( 'Filters: %s filters active.', 'gravitysmtp' ),
 				'grid_controls_bulk_actions_select_label'   => esc_html__( 'Select bulk actions', 'gravitysmtp' ),
 				'grid_controls_bulk_actions_button_label'   => esc_html__( 'Apply', 'gravitysmtp' ),
 				'grid_controls_search_placeholder'          => esc_html__( 'Search', 'gravitysmtp' ),
@@ -2418,6 +2423,7 @@ class Email_Log_Config extends Config {
 				'pagination_prev_aria_label'                => esc_html__( 'Previous Page', 'gravitysmtp' ),
 				'search_no_results_title'                   => esc_html__( 'No results found', 'gravitysmtp' ),
 				'search_no_results_message'                 => esc_html__( 'No results found for your search', 'gravitysmtp' ),
+				'select_row'                                => esc_html__( 'Select row', 'gravitysmtp' ),
 			),
 			'debug_messages'               => array(
 				/* translators: %1$s is the body of the ajax request. */

@@ -4,8 +4,10 @@ namespace Gravity_Forms\Gravity_SMTP\Apps\Config;
 
 use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Check_Background_Tasks_Endpoint;
+use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Connector_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Plugin_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Data_Store_Router;
+use Gravity_Forms\Gravity_SMTP\Enums\Connector_Status_Enum;
 use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
 use Gravity_Forms\Gravity_SMTP\Logging\Endpoints\View_Log_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Logging\Logging_Service_Provider;
@@ -118,7 +120,7 @@ class Tools_Config extends Config {
 									'default' => $this->get_debug_log_demo_data_rows(),
 								),
 							),
-							'initial_row_count'        => isset( $count ) ? $count : 0,
+							'initial_row_count'        => isset( $count ) ? intval( $count ) : 0,
 							'initial_load_timestamp'   => current_time( 'mysql', true ),
 							'rows_per_page'            => $per_page,
 						),
@@ -153,7 +155,7 @@ class Tools_Config extends Config {
 							'details_dialog_event'     => esc_html__( 'Event', 'gravitysmtp' ),
 							'details_dialog_date'      => esc_html__( 'Date', 'gravitysmtp' ),
 							'details_dialog_log'       => esc_html__( 'Log', 'gravitysmtp' ),
-							'snackbar_debug_log_error' => esc_html__( 'Error getting debug log for requested page.', 'gravitysmtp' ),
+							'snackbar_debug_log_error' => esc_html__( 'Error getting debug log for requested page', 'gravitysmtp' ),
 						),
 						'debug_messages'              => array(
 							/* translators: %1$s is the body of the ajax request. */
@@ -181,13 +183,13 @@ class Tools_Config extends Config {
 							'send_test_box_error_recommended_steps_heading' => esc_html__( 'Recommended Steps:', 'gravitysmtp' ),
 							'send_test_box_view_log_button_label'           => esc_html__( 'View Full Error Log', 'gravitysmtp' ),
 							'send_test_box_copy_log_button_label'           => esc_html__( 'Copy Error Log', 'gravitysmtp' ),
-							'send_test_box_copy_log_success_message'        => esc_html__( 'Error log copied!', 'gravitysmtp' ),
+							'send_test_box_copy_log_success_message'        => esc_html__( 'Error log copied', 'gravitysmtp' ),
 						),
 						'system_report'               => array(
 							'top_heading'          => esc_html__( 'System Report', 'gravitysmtp' ),
 							'top_content'          => esc_html__( 'The system report contains useful technical information to help troubleshooting issues.', 'gravitysmtp' ),
 							'copy_system_report'   => esc_html__( 'Copy System Report', 'gravitysmtp' ),
-							'system_report_copied' => esc_html__( 'System report copied to clipboard.', 'gravitysmtp' ),
+							'system_report_copied' => esc_html__( 'System report copied to clipboard', 'gravitysmtp' ),
 						),
 					),
 					'endpoints' => array(),
@@ -219,6 +221,7 @@ class Tools_Config extends Config {
 		$date_and_time_data         = $this->get_date_and_time_data();
 		$debug_data                 = $this->get_debug_data();
 		$constants_data             = $this->get_defined_constants();
+		$integrations_data          = $this->get_integrations_data();
 
 		$system_report = array(
 			array(
@@ -268,6 +271,11 @@ class Tools_Config extends Config {
 					'title' => esc_html__( 'Debug Log', 'gravitysmtp' ),
 					'groups' => $this->get_groups( $debug_data ),
 					'key' => 'debug-log',
+				),
+				array(
+					'title' => esc_html__( 'Integration Settings', 'gravitysmtp' ),
+					'groups' => $this->get_groups( $integrations_data ),
+					'key' => 'integrations-settings',
 				),
 			)
 		);
@@ -712,6 +720,52 @@ class Tools_Config extends Config {
 				'value'        => $value_string,
 			);
 		}
+
+		return $values;
+	}
+
+	protected function get_integrations_data() {
+		$container = Gravity_SMTP::container();
+		$values    = array();
+
+		/**
+		 * @var Data_Store_Router $data
+		 */
+		$data               = $container->get( Connector_Service_Provider::DATA_STORE_ROUTER );
+		$connector_statuses = $data->get_plugin_setting( Save_Connector_Settings_Endpoint::SETTING_ENABLED_CONNECTOR, array() );
+		$connector_names    = $container->get( Connector_Service_Provider::NAME_MAP );
+		$enabled_connectors = array();
+
+		foreach ( $connector_names as $slug => $label ) {
+			if ( array_key_exists( $slug, $connector_statuses ) && $connector_statuses[ $slug ] ) {
+				$enabled_connectors[] = $label;
+			}
+		}
+
+		if ( empty( $enabled_connectors ) ) {
+			$enabled_connectors[] = esc_html__( 'No Integrations Enabled', 'gravitysmtp' );
+		}
+
+		$values[] = array(
+			'label'        => esc_html__( 'Enabled Integrations', 'gravitysmtp' ),
+			'label_export' => esc_html__( 'Enabled Integrations', 'gravitysmtp' ),
+			'value'        => implode( ', ', $enabled_connectors ),
+		);
+
+		$primary_connector = $data->get_connector_status_of_type( Connector_Status_Enum::PRIMARY, __( 'No Primary Integration Enabled', 'gravitysmtp' ) );
+		$backup_connector  = $data->get_connector_status_of_type( Connector_Status_Enum::BACKUP, __( 'No Backup Integration Enabled', 'gravitysmtp' ) );
+
+		$values[] = array(
+			'label'        => esc_html__( 'Primary Integration', 'gravitysmtp' ),
+			'label_export' => esc_html__( 'Primary Integration', 'gravitysmtp' ),
+			'value'        => isset( $connector_names[ $primary_connector ] ) ? $connector_names[ $primary_connector ] : $primary_connector,
+		);
+
+		$values[] = array(
+			'label'        => esc_html__( 'Backup Integration', 'gravitysmtp' ),
+			'label_export' => esc_html__( 'Backup Integration', 'gravitysmtp' ),
+			'value'        => isset( $connector_names[ $backup_connector ] ) ? $connector_names[ $backup_connector ] : $backup_connector,
+		);
 
 		return $values;
 	}

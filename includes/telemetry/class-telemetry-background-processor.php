@@ -10,6 +10,11 @@ class Telemetry_Background_Processor extends Telemetry_Processor {
 		// allow overriding the endpoint to use the local or staging environment for testing purposes.
 		$endpoint = defined( 'GF_TELEMETRY_ENDPOINT' ) ? GF_TELEMETRY_ENDPOINT : self::TELEMETRY_ENDPOINT;
 		$site_url = get_site_url();
+
+		if ( array_key_exists( 'of', $entries ) ) {
+			$entries = array( $entries );
+		}
+
 		$data = array(
 			'license_key_md5' => md5( get_option( 'rg_gforms_key', '' ) ),
 			'site_url'        => $site_url,

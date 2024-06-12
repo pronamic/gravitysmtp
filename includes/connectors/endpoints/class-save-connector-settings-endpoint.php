@@ -17,6 +17,8 @@ class Save_Connector_Settings_Endpoint extends Endpoint {
 	const PARAM_NO_VALIDATE    = 'no_validate';
 
 	const SETTING_ENABLED_CONNECTOR = 'enabled_connector';
+	const SETTING_PRIMARY_CONNECTOR = 'primary_connector';
+	const SETTING_BACKUP_CONNECTOR  = 'backup_connector';
 
 	const ACTION_NAME = 'save_connector_settings';
 
@@ -64,19 +66,26 @@ class Save_Connector_Settings_Endpoint extends Endpoint {
 		$this->data_store->save_all( $settings, $type );
 		delete_transient( $configured_key );
 
-		if ( ! isset( $settings[ Connector_Base::SETTING_ENABLED ] ) ) {
+		// Only continue if this connector needs to be validated/enabled in some way.
+		if (
+			! isset( $settings[ Connector_Base::SETTING_ENABLED ] ) &&
+			! isset( $settings[ Connector_Base::SETTING_IS_PRIMARY ] ) &&
+			! isset( $settings[ Connector_Base::SETTING_IS_BACKUP ] )
+		) {
 			wp_send_json_success( $settings );
 		}
 
-		$connector_values = $this->plugin_data_store->get( self::SETTING_ENABLED_CONNECTOR, array() );
-		$enabled          = $settings[ Connector_Base::SETTING_ENABLED ] == 'false' || ! (bool) $settings[ Connector_Base::SETTING_ENABLED ] ? false : true;
-
-		if ( ! is_array( $connector_values ) ) {
-			$connector_values = array();
+		if ( isset( $settings[ Connector_Base::SETTING_ENABLED ] ) ) {
+			$this->save_connector_status( $type, self::SETTING_ENABLED_CONNECTOR, $settings[ Connector_Base::SETTING_ENABLED ] );
 		}
 
-		$connector_values[ $type ] = $enabled;
-		$this->plugin_data_store->save( self::SETTING_ENABLED_CONNECTOR, $connector_values );
+		if ( isset( $settings[ Connector_Base::SETTING_IS_PRIMARY ] ) ) {
+			$this->save_connector_status( $type, self::SETTING_PRIMARY_CONNECTOR, $settings[ Connector_Base::SETTING_IS_PRIMARY ] );
+		}
+
+		if ( isset( $settings[ Connector_Base::SETTING_IS_BACKUP ] ) ) {
+			$this->save_connector_status( $type, self::SETTING_BACKUP_CONNECTOR, $settings[ Connector_Base::SETTING_IS_BACKUP ] );
+		}
 
 		/**
 		 * @var Connector_Base $connector
@@ -96,6 +105,26 @@ class Save_Connector_Settings_Endpoint extends Endpoint {
 		}
 
 		wp_send_json_success( $settings );
+	}
+
+	/**
+	 * Save a connector's status (enabled, primary, backup) in the settings array.
+	 *
+	 * @param $type
+	 * @param $status_type
+	 * @param $enabled
+	 *
+	 * @return void
+	 */
+	protected function save_connector_status( $type, $status_type, $enabled ) {
+		$connector_values = $this->plugin_data_store->get( $status_type, array() );
+
+		if ( ! is_array( $connector_values ) ) {
+			$connector_values = array();
+		}
+
+		$connector_values[ $type ] = $enabled;
+		$this->plugin_data_store->save( $status_type, $connector_values );
 	}
 
 }

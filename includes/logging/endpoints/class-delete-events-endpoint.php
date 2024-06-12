@@ -46,12 +46,12 @@ class Delete_Events_Endpoint extends Endpoint {
 
 		if ( ! empty( $max_date ) && $delete_all_events == '1' ) {
 			$this->events->delete_before( $max_date );
-			wp_send_json_success( array( 'message' => __( 'Events deleted successfully.', 'gravitysmtp' ) ), 200 );
+			wp_send_json_success( array( 'message' => __( 'Events deleted successfully', 'gravitysmtp' ) ), 200 );
 		}
 
 		if ( $delete_all_events == '1' ) {
 			$this->events->delete_all();
-			wp_send_json_success( array( 'message' => __( 'All events deleted successfully.', 'gravitysmtp' ) ), 200 );
+			wp_send_json_success( array( 'message' => __( 'All events deleted successfully', 'gravitysmtp' ) ), 200 );
 		}
 
 		$event_ids = filter_input( INPUT_POST, self::PARAM_EVENT_IDS, FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
@@ -61,7 +61,7 @@ class Delete_Events_Endpoint extends Endpoint {
 			$this->events->delete( $id_to_delete );
 		}
 
-		wp_send_json_success( array( 'message' => __( $event_ids, 'gravitysmtp' ) ), 200 );
+		wp_send_json_success( array( 'message' => $event_ids ), 200 );
 	}
 
 }

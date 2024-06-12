@@ -13,7 +13,7 @@ class Uninstall_Endpoint extends Endpoint {
 		$this->delete_tables();
 		$this->deactivate_plugin();
 
-		wp_send_json_success( __( 'GravitySMTP successfully uninstalled.', 'gravitysmtp' ) );
+		wp_send_json_success( __( 'Gravity SMTP successfully uninstalled.', 'gravitysmtp' ) );
 	}
 
 	public function get_nonce_name() {

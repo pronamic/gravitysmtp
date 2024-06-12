@@ -103,7 +103,7 @@ class Settings_Config extends Config {
 								'uninstall_dialog_confirm_change_heading'                       => esc_html__( 'Confirm Delete', 'gravitysmtp' ),
 								'uninstall_dialog_confirm_change_content'                       => esc_html__( 'This operation deletes ALL Gravity SMTP settings. If you continue, you will NOT be able to retrieve these settings.', 'gravitysmtp' ),
 								'uninstall_dialog_confirm_change_confirm'                       => esc_html__( 'Delete', 'gravitysmtp' ),
-								'error_uninstalling_message'                                    => esc_html__( 'There was an error uninstalling Gravity SMTP.', 'gravitysmtp' ),
+								'error_uninstalling_message'                                    => esc_html__( 'There was an error uninstalling Gravity SMTP', 'gravitysmtp' ),
 							),
 						'integrations' =>
 							array(
@@ -120,13 +120,21 @@ class Settings_Config extends Config {
 								'card_settings'               => esc_html__( 'Settings', 'gravitysmtp' ),
 								'card_connected'              => esc_html__( 'Connected', 'gravitysmtp' ),
 								'card_configured'             => esc_html__( 'Configured', 'gravitysmtp' ),
+								'card_primary'                => esc_html__( 'Primary', 'gravitysmtp' ),
+								'card_backup'                 => esc_html__( 'Backup', 'gravitysmtp' ),
 								'card_not_configured'         => esc_html__( 'Not Configured', 'gravitysmtp' ),
-								'integration_settings_error'  => esc_html__( 'There was an error saving your settings.', 'gravitysmtp' ),
+								'integration_settings_error'  => esc_html__( 'There was an error saving your settings', 'gravitysmtp' ),
 								'integration_settings_cancel' => esc_html__( 'Cancel', 'gravitysmtp' ),
 								'integration_settings_apply'  => esc_html__( 'Save Changes', 'gravitysmtp' ),
 								'integration_settings_saved'  => esc_html__( 'Saved', 'gravitysmtp' ),
 								'confirm_change_heading'      => esc_html__( 'Confirm Change', 'gravitysmtp' ),
 								'confirm_change_content'      => __( 'Please confirm that you\'d like to switch the active email integration.', 'gravitysmtp' ),
+								/* translators: %1$s is the integration name */
+								'set_primary_integration'     => esc_html__( '%1$s set as primary integration', 'gravitysmtp' ),
+								/* translators: %1$s is the integration name */
+								'set_backup_integration'      => esc_html__( '%1$s set as backup integration', 'gravitysmtp' ),
+								'primary_disabled_heading'    => esc_html__( 'Primary Integration Disabled', 'gravitysmtp' ),
+								'primary_disabled_content'    => esc_html__( 'You have disabled your primary email integration. To continue sending emails via Gravity SMTP, please enable a backup integration or set and enable a new primary integration.', 'gravitysmtp' ),
 							),
 						'emails'       =>
 							array(
@@ -144,7 +152,7 @@ class Settings_Config extends Config {
 								'enable_log_label'                               => esc_html__( 'Keep copies of all emails sent from your site.', 'gravitysmtp' ),
 								'email_log_retention_label'                      => esc_html__( 'Log Retention Period', 'gravitysmtp' ),
 								'email_log_retention_helper_text'                => esc_html__( 'Email logs older than the selected timeframe will be permanently deleted.', 'gravitysmtp' ),
-								'error_saving_snackbar_message'                  => esc_html__( 'There was an error saving the settings.', 'gravitysmtp' ),
+								'error_saving_snackbar_message'                  => esc_html__( 'There was an error saving the settings', 'gravitysmtp' ),
 								'debug_logging_box_heading'                      => esc_html__( 'Debug Logging', 'gravitysmtp' ),
 								'enable_debug_log_label'                         => esc_html__( 'Enable Debug Log', 'gravitysmtp' ),
 								'enable_debug_log_helper_text'                   => esc_html__( 'When enabled email sending errors debugging events will be logged, allowing you to detect email sending issues.', 'gravitysmtp' ),
@@ -153,12 +161,11 @@ class Settings_Config extends Config {
 								'view_debug_log_button_text'                     => esc_html__( 'View Debug Log', 'gravitysmtp' ),
 								'copy_debug_log_button_text'                     => esc_html__( 'Copy Debug Log Link', 'gravitysmtp' ),
 								'delete_debug_log_button_text'                   => esc_html__( 'Delete Debug Log', 'gravitysmtp' ),
-								'snackbar_debug_log_delete_error'                => esc_html__( 'Error deleting email log.', 'gravitysmtp' ),
 								'delete_debug_log_dialog_confirm_change_heading' => esc_html__( 'Confirm Delete', 'gravitysmtp' ),
 								'delete_debug_log_dialog_confirm_change_content' => esc_html__( 'This operation deletes ALL debug logs. If you continue, you will NOT be able to retrieve these logs.', 'gravitysmtp' ),
 								'delete_debug_log_dialog_confirm_change_confirm' => esc_html__( 'Delete', 'gravitysmtp' ),
-								'snackbar_debug_log_delete_error'                => esc_html__( 'Error deleting debug log.', 'gravitysmtp' ),
-								'snackbar_debug_log_delete_success'              => esc_html__( 'Debug log successfully deleted.', 'gravitysmtp' ),
+								'snackbar_debug_log_delete_error'                => esc_html__( 'Error deleting debug log', 'gravitysmtp' ),
+								'snackbar_debug_log_delete_success'              => esc_html__( 'Debug log successfully deleted', 'gravitysmtp' ),
 							),
 					),
 					'data' => array(
@@ -264,36 +271,48 @@ class Settings_Config extends Config {
 						'integrations_actions'       => array(
 							0 =>
 								array(
-									'element'    => 'button',
-									'icon'       => 'api',
-									'iconPrefix' => 'gravitysmtp-admin-icon',
-									'key'        => 'edit',
-									'label'      => esc_html__( 'API Settings', 'gravitysmtp' ),
+									'key'   => 'edit',
+									'props' => array(
+										'element'    => 'button',
+										'icon'       => 'api',
+										'iconPrefix' => 'gravitysmtp-admin-icon',
+										'label'      => esc_html__( 'API Settings', 'gravitysmtp' ),
+									),
 								),
 							1 =>
 								array(
-									'customAttributes' => array(
-										'href' => admin_url( 'admin.php?page=gravitysmtp-tools&tab=send-a-test' ),
+									'key'   => 'send-a-test',
+									'props' => array(
+										'customAttributes' => array(
+											'href' => admin_url( 'admin.php?page=gravitysmtp-tools&tab=send-a-test' ),
+										),
+										'element'          => 'link',
+										'icon'             => 'paper-plane',
+										'iconPrefix'       => 'gravitysmtp-admin-icon',
+										'label'            => esc_html__( 'Send A Test', 'gravitysmtp' ),
 									),
-									'element'          => 'link',
-									'icon'             => 'paper-plane',
-									'iconPrefix'       => 'gravitysmtp-admin-icon',
-									'key'              => 'send-a-test',
-									'label'            => esc_html__( 'Send A Test', 'gravitysmtp' ),
 								),
-//							2 =>
-//								array(
-//									'customAttributes' => array(
-//										'disabled' => true,
-//									),
-//									'element'          => 'button',
-//									'hasDivider'       => true,
-//									'icon'             => 'primary',
-//									'iconPrefix'       => 'gravitysmtp-admin-icon',
-//									'key'              => 'set-as-primary',
-//									'label'            => esc_html__( 'Set As Primary', 'gravitysmtp' ),
-//								),
-//							3 =>
+							2 =>
+								array(
+									'key'   => 'set-as-primary',
+									'props' => array(
+										'element'    => 'button',
+										'icon'       => 'primary',
+										'iconPrefix' => 'gravitysmtp-admin-icon',
+										'label'      => esc_html__( 'Set As Primary', 'gravitysmtp' ),
+									),
+								),
+							3 =>
+								array(
+									'key'   => 'set-as-backup',
+									'props' => array(
+										'element'    => 'button',
+										'icon'       => 'circle-lightning-bolt',
+										'iconPrefix' => 'gravitysmtp-admin-icon',
+										'label'      => esc_html__( 'Set As Backup', 'gravitysmtp' ),
+									),
+								),
+//							4 =>
 //								array(
 //									'customAttributes' => array(
 //										'disabled' => true,
@@ -308,7 +327,7 @@ class Settings_Config extends Config {
 //									),
 //									'style'            => 'error',
 //								),
-//							4 =>
+//							5 =>
 //								array(
 //									'customAttributes' => array(
 //										'disabled' => true,

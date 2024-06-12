@@ -4,133 +4,14 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitb7578a2a4418537ee77a442cea7a907f
+class ComposerStaticInit685a2d54c339503f419b16c4c2afb165
 {
     public static $files = array (
-        '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
-        '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
-        '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
-        '1f87db08236948d07391152dccb70f04' => __DIR__ . '/..' . '/google/apiclient-services/autoload.php',
-        'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
-        'a8d3953fd9959404dd22d3dfcd0a79f0' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
         'de106312193d3b5d7e278f8e63c27774' => __DIR__ . '/../..' . '/includes/functions_include.php',
-    );
-
-    public static $prefixLengthsPsr4 = array (
-        'p' => 
-        array (
-            'phpseclib3\\' => 11,
-        ),
-        'P' => 
-        array (
-            'Psr\\Log\\' => 8,
-            'Psr\\Http\\Message\\' => 17,
-            'Psr\\Http\\Client\\' => 16,
-            'Psr\\Cache\\' => 10,
-            'ParagonIE\\ConstantTime\\' => 23,
-        ),
-        'M' => 
-        array (
-            'Monolog\\' => 8,
-        ),
-        'G' => 
-        array (
-            'GuzzleHttp\\Psr7\\' => 16,
-            'GuzzleHttp\\Promise\\' => 19,
-            'GuzzleHttp\\' => 11,
-            'Google\\Service\\' => 15,
-            'Google\\Auth\\' => 12,
-            'Google\\' => 7,
-        ),
-        'F' => 
-        array (
-            'Firebase\\JWT\\' => 13,
-        ),
-    );
-
-    public static $prefixDirsPsr4 = array (
-        'phpseclib3\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib',
-        ),
-        'Psr\\Log\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
-        ),
-        'Psr\\Http\\Message\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
-        ),
-        'Psr\\Http\\Client\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/psr/http-client/src',
-        ),
-        'Psr\\Cache\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/psr/cache/src',
-        ),
-        'ParagonIE\\ConstantTime\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/paragonie/constant_time_encoding/src',
-        ),
-        'Monolog\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
-        ),
-        'GuzzleHttp\\Psr7\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
-        ),
-        'GuzzleHttp\\Promise\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/guzzlehttp/promises/src',
-        ),
-        'GuzzleHttp\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
-        ),
-        'Google\\Service\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/google/apiclient-services/src',
-        ),
-        'Google\\Auth\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/google/auth/src',
-        ),
-        'Google\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/google/apiclient/src',
-        ),
-        'Firebase\\JWT\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
-        ),
     );
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'Google_AccessToken_Revoke' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
-        'Google_AccessToken_Verify' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
-        'Google_AuthHandler_AuthHandlerFactory' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
-        'Google_AuthHandler_Guzzle5AuthHandler' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
-        'Google_AuthHandler_Guzzle6AuthHandler' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
-        'Google_AuthHandler_Guzzle7AuthHandler' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
-        'Google_Client' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
-        'Google_Collection' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
-        'Google_Exception' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
-        'Google_Http_Batch' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
-        'Google_Http_MediaFileUpload' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
-        'Google_Http_REST' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
-        'Google_Model' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
-        'Google_Service' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
-        'Google_Service_Exception' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
-        'Google_Service_Resource' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
-        'Google_Task_Composer' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
-        'Google_Task_Exception' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
-        'Google_Task_Retryable' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
-        'Google_Task_Runner' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
-        'Google_Utils_UriTemplate' => __DIR__ . '/..' . '/google/apiclient/src/aliases.php',
         'Gravity_Forms\\Gravity_SMTP\\Apps\\App_Service_Provider' => __DIR__ . '/../..' . '/includes/apps/class-apps-service-provider.php',
         'Gravity_Forms\\Gravity_SMTP\\Apps\\Config\\Apps_Config' => __DIR__ . '/../..' . '/includes/apps/config/class-apps-config.php',
         'Gravity_Forms\\Gravity_SMTP\\Apps\\Config\\Email_Log_Config' => __DIR__ . '/../..' . '/includes/apps/config/class-email-log-config.php',
@@ -156,6 +37,7 @@ class ComposerStaticInitb7578a2a4418537ee77a442cea7a907f
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Endpoints\\Save_Plugin_Settings_Endpoint' => __DIR__ . '/../..' . '/includes/connectors/endpoints/class-save-plugin-settings-endpoint.php',
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Endpoints\\Send_Test_Endpoint' => __DIR__ . '/../..' . '/includes/connectors/endpoints/class-send-test-endpoint.php',
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Oauth\\Google_Oauth_Handler' => __DIR__ . '/../..' . '/includes/connectors/oauth/class-google-oauth-handler.php',
+        'Gravity_Forms\\Gravity_SMTP\\Connectors\\Oauth\\Microsoft_Oauth_Handler' => __DIR__ . '/../..' . '/includes/connectors/oauth/class-microsoft-oauth-handler.php',
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Oauth_Data_Handler' => __DIR__ . '/../..' . '/includes/connectors/class-oauth-data-handler.php',
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Amazon_SES' => __DIR__ . '/../..' . '/includes/connectors/types/class-connector-amazon-ses.php',
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Brevo' => __DIR__ . '/../..' . '/includes/connectors/types/class-connector-brevo.php',
@@ -163,7 +45,8 @@ class ComposerStaticInitb7578a2a4418537ee77a442cea7a907f
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Google' => __DIR__ . '/../..' . '/includes/connectors/types/class-connector-google.php',
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Mailgun' => __DIR__ . '/../..' . '/includes/connectors/types/class-connector-mailgun.php',
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Mandrill' => __DIR__ . '/../..' . '/includes/connectors/types/class-connector-mandrill.php',
-        'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Outlook' => __DIR__ . '/../..' . '/includes/connectors/types/class-connector-outlook.php',
+        'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Microsoft' => __DIR__ . '/../..' . '/includes/connectors/types/class-connector-microsoft.php',
+        'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Phpmail' => __DIR__ . '/../..' . '/includes/connectors/types/class-connector-phpmail.php',
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Postmark' => __DIR__ . '/../..' . '/includes/connectors/types/class-connector-postmark.php',
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_SMTP2GO' => __DIR__ . '/../..' . '/includes/connectors/types/class-connector-smtp2go.php',
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Sendgrid' => __DIR__ . '/../..' . '/includes/connectors/types/class-connector-sendgrid.php',
@@ -174,6 +57,7 @@ class ComposerStaticInitb7578a2a4418537ee77a442cea7a907f
         'Gravity_Forms\\Gravity_SMTP\\Data_Store\\Data_Store_Router' => __DIR__ . '/../..' . '/includes/datastore/class-data-store-router.php',
         'Gravity_Forms\\Gravity_SMTP\\Data_Store\\Opts_Data_Store' => __DIR__ . '/../..' . '/includes/datastore/class-opts-data-store.php',
         'Gravity_Forms\\Gravity_SMTP\\Data_Store\\Plugin_Opts_Data_Store' => __DIR__ . '/../..' . '/includes/datastore/class-plugin-opts-data-store.php',
+        'Gravity_Forms\\Gravity_SMTP\\Enums\\Connector_Status_Enum' => __DIR__ . '/../..' . '/includes/enums/class-connector-status-enum.php',
         'Gravity_Forms\\Gravity_SMTP\\Enums\\Integration_Enum' => __DIR__ . '/../..' . '/includes/enums/class-integration-enum.php',
         'Gravity_Forms\\Gravity_SMTP\\Enums\\Status_Enum' => __DIR__ . '/../..' . '/includes/enums/class-status-enum.php',
         'Gravity_Forms\\Gravity_SMTP\\Environment\\Config\\Environment_Endpoints_Config' => __DIR__ . '/../..' . '/includes/environment/config/class-environment-endpoints-config.php',
@@ -206,6 +90,8 @@ class ComposerStaticInitb7578a2a4418537ee77a442cea7a907f
         'Gravity_Forms\\Gravity_SMTP\\Models\\Hydrators\\Hydrator_Generic' => __DIR__ . '/../..' . '/includes/models/hydrators/class-hydrator-generic.php',
         'Gravity_Forms\\Gravity_SMTP\\Models\\Hydrators\\Hydrator_Google' => __DIR__ . '/../..' . '/includes/models/hydrators/class-hydrator-google.php',
         'Gravity_Forms\\Gravity_SMTP\\Models\\Hydrators\\Hydrator_Mailgun' => __DIR__ . '/../..' . '/includes/models/hydrators/class-hydrator-mailgun.php',
+        'Gravity_Forms\\Gravity_SMTP\\Models\\Hydrators\\Hydrator_Microsoft' => __DIR__ . '/../..' . '/includes/models/hydrators/class-hydrator-microsoft.php',
+        'Gravity_Forms\\Gravity_SMTP\\Models\\Hydrators\\Hydrator_Phpmail' => __DIR__ . '/../..' . '/includes/models/hydrators/class-hydrator-phpmail.php',
         'Gravity_Forms\\Gravity_SMTP\\Models\\Hydrators\\Hydrator_Postmark' => __DIR__ . '/../..' . '/includes/models/hydrators/class-hydrator-postmark.php',
         'Gravity_Forms\\Gravity_SMTP\\Models\\Hydrators\\Hydrator_Sendgrid' => __DIR__ . '/../..' . '/includes/models/hydrators/class-hydrator-sendgrid.php',
         'Gravity_Forms\\Gravity_SMTP\\Models\\Hydrators\\Hydrator_WP_Mail' => __DIR__ . '/../..' . '/includes/models/hydrators/class-hydrator-wp-mail.php',
@@ -214,6 +100,9 @@ class ComposerStaticInitb7578a2a4418537ee77a442cea7a907f
         'Gravity_Forms\\Gravity_SMTP\\Models\\Traits\\Can_Compare_Dynamically' => __DIR__ . '/../..' . '/includes/models/traits/trait-can-compare-dynamically.php',
         'Gravity_Forms\\Gravity_SMTP\\Pages\\Admin_Page' => __DIR__ . '/../..' . '/includes/pages/class-admin-page.php',
         'Gravity_Forms\\Gravity_SMTP\\Pages\\Page_Service_Provider' => __DIR__ . '/../..' . '/includes/pages/class-page-service-provider.php',
+        'Gravity_Forms\\Gravity_SMTP\\Routing\\Handlers\\Primary_Backup_Handler' => __DIR__ . '/../..' . '/includes/routing/handlers/class-primary-backup-handler.php',
+        'Gravity_Forms\\Gravity_SMTP\\Routing\\Handlers\\Routing_Handler' => __DIR__ . '/../..' . '/includes/routing/handlers/interface-routing-handler.php',
+        'Gravity_Forms\\Gravity_SMTP\\Routing\\Routing_Service_Provider' => __DIR__ . '/../..' . '/includes/routing/class-routing-service-provider.php',
         'Gravity_Forms\\Gravity_SMTP\\Telemetry\\Telemetry_Background_Processor' => __DIR__ . '/../..' . '/includes/telemetry/class-telemetry-background-processor.php',
         'Gravity_Forms\\Gravity_SMTP\\Telemetry\\Telemetry_Handler' => __DIR__ . '/../..' . '/includes/telemetry/class-telemetry-handler.php',
         'Gravity_Forms\\Gravity_SMTP\\Telemetry\\Telemetry_Service_Provider' => __DIR__ . '/../..' . '/includes/telemetry/class-telemetry-service-provider.php',
@@ -227,6 +116,7 @@ class ComposerStaticInitb7578a2a4418537ee77a442cea7a907f
         'Gravity_Forms\\Gravity_SMTP\\Utils\\Recipient' => __DIR__ . '/../..' . '/includes/utils/class-recipient.php',
         'Gravity_Forms\\Gravity_SMTP\\Utils\\Recipient_Collection' => __DIR__ . '/../..' . '/includes/utils/class-recipient-collection.php',
         'Gravity_Forms\\Gravity_SMTP\\Utils\\Recipient_Parser' => __DIR__ . '/../..' . '/includes/utils/class-recipient-parser.php',
+        'Gravity_Forms\\Gravity_SMTP\\Utils\\SQL_Filter_Parser' => __DIR__ . '/../..' . '/includes/utils/class-sql-filter-parser.php',
         'Gravity_Forms\\Gravity_SMTP\\Utils\\Source_Parser' => __DIR__ . '/../..' . '/includes/utils/class-source-parser.php',
         'Gravity_Forms\\Gravity_Tools\\API\\Gravity_Api' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/API/class-gravity-api.php',
         'Gravity_Forms\\Gravity_Tools\\API\\Oauth_Handler' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/API/class-oauth-handler.php',
@@ -262,6 +152,7 @@ class ComposerStaticInitb7578a2a4418537ee77a442cea7a907f
         'Gravity_Forms\\Gravity_Tools\\Telemetry\\Telemetry_Processor' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Telemetry/class-telemetry-processor.php',
         'Gravity_Forms\\Gravity_Tools\\Updates\\Auto_Updater' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Updates/class-auto-updater.php',
         'Gravity_Forms\\Gravity_Tools\\Updates\\Updates_Service_Provider' => __DIR__ . '/../..' . '/includes/updates/class-updates-service-provider.php',
+        'Gravity_Forms\\Gravity_Tools\\Upgrades\\Upgrade_Routines' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Upgrades/class-upgrade-routines.php',
         'Gravity_Forms\\Gravity_Tools\\Utils\\Common' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Utils/class-common.php',
         'Gravity_Forms\\Gravity_Tools\\Utils\\Utils_Service_Provider' => __DIR__ . '/../..' . '/includes/utils/class-utils-service-provider.php',
     );
@@ -269,9 +160,7 @@ class ComposerStaticInitb7578a2a4418537ee77a442cea7a907f
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitb7578a2a4418537ee77a442cea7a907f::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitb7578a2a4418537ee77a442cea7a907f::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitb7578a2a4418537ee77a442cea7a907f::$classMap;
+            $loader->classMap = ComposerStaticInit685a2d54c339503f419b16c4c2afb165::$classMap;
 
         }, null, ClassLoader::class);
     }

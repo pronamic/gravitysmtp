@@ -26,6 +26,8 @@ abstract class Connector_Base {
 	const SETTING_FROM_NAME        = 'from_name';
 	const SETTING_FORCE_FROM_EMAIL = 'force_from_email';
 	const SETTING_FORCE_FROM_NAME  = 'force_from_name';
+	const SETTING_IS_PRIMARY       = 'is_primary';
+	const SETTING_IS_BACKUP        = 'is_backup';
 
 	protected static $configured = null;
 
@@ -523,7 +525,8 @@ abstract class Connector_Base {
 		$cached = get_transient( $configured_key );
 
 		if ( $cached === false ) {
-			$configured = ! is_wp_error( $this->is_configured() );
+			$is_configured = $this->is_configured();
+			$configured = ( ! is_wp_error( $is_configured ) && $is_configured !== false );
 			set_transient( $configured_key, array( 'configured' => $configured ), DAY_IN_SECONDS );
 		} else {
 			$configured = $cached['configured'];
@@ -533,6 +536,8 @@ abstract class Connector_Base {
 			self::SETTING_ACTIVATED  => $this->get_setting( self::SETTING_ACTIVATED, true ),
 			self::SETTING_CONFIGURED => $configured,
 			self::SETTING_ENABLED    => $this->get_setting( self::SETTING_ENABLED, false ),
+			self::SETTING_IS_PRIMARY => $this->get_setting( self::SETTING_IS_PRIMARY, false ),
+			self::SETTING_IS_BACKUP  => $this->get_setting( self::SETTING_IS_BACKUP, false ),
 		);
 
 		return array_merge( $this->connector_data(), $defaults );

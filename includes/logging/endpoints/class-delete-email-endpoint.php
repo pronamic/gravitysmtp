@@ -33,7 +33,7 @@ class Delete_Email_Endpoint extends Endpoint {
 
 		$this->emails->delete( $event_id );
 
-		wp_send_json_success( array( 'message' => __( 'Event deleted successfully.', 'gravitysmtp' ) ), 200 );
+		wp_send_json_success( array( 'message' => __( 'Event deleted successfully', 'gravitysmtp' ) ), 200 );
 	}
 
 	protected function validate() {
