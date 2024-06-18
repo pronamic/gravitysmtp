@@ -243,7 +243,44 @@ class Connector_Service_Provider extends Config_Service_Provider {
 			 */
 			$data = $container->get( self::DATA_STORE_OPTS );
 
+			/**
+			 * @var Data_Store_Router
+			 */
+			$data_router = $container->get( self::DATA_STORE_ROUTER );
+
+			/**
+			 * @var Plugin_Opts_Data_Store
+			 */
+			$plugin_data_store = $container->get( self::DATA_STORE_PLUGIN_OPTS );
+
 			$data->delete_all( 'google' );
+
+			$connector_values = $data_router->get_plugin_setting( Save_Connector_Settings_Endpoint::SETTING_PRIMARY_CONNECTOR, array() );
+
+			if ( ! is_array( $connector_values ) ) {
+				$connector_values = array();
+			}
+
+			$connector_values[ 'google' ] = 'false';
+			$plugin_data_store->save( Save_Connector_Settings_Endpoint::SETTING_PRIMARY_CONNECTOR, $connector_values );
+
+			$connector_values = $data_router->get_plugin_setting( Save_Connector_Settings_Endpoint::SETTING_BACKUP_CONNECTOR, array() );
+
+			if ( ! is_array( $connector_values ) ) {
+				$connector_values = array();
+			}
+
+			$connector_values[ 'google' ] = 'false';
+			$plugin_data_store->save( Save_Connector_Settings_Endpoint::SETTING_BACKUP_CONNECTOR, $connector_values );
+
+			$connector_values = $data_router->get_plugin_setting( Save_Connector_Settings_Endpoint::SETTING_ENABLED_CONNECTOR, array() );
+
+			if ( ! is_array( $connector_values ) ) {
+				$connector_values = array();
+			}
+
+			$connector_values[ 'google' ] = 'false';
+			$plugin_data_store->save( Save_Connector_Settings_Endpoint::SETTING_ENABLED_CONNECTOR, $connector_values );
 
 			/**
 			 * @var Google_Oauth_Handler $oauth_handler
@@ -264,7 +301,44 @@ class Connector_Service_Provider extends Config_Service_Provider {
 			 */
 			$data = $container->get( self::DATA_STORE_OPTS );
 
+			/**
+			 * @var Data_Store_Router
+			 */
+			$data_router = $container->get( self::DATA_STORE_ROUTER );
+
+			/**
+			 * @var Plugin_Opts_Data_Store
+			 */
+			$plugin_data_store = $container->get( self::DATA_STORE_PLUGIN_OPTS );
+
 			$data->delete_all( 'microsoft' );
+
+			$connector_values = $data_router->get_plugin_setting( Save_Connector_Settings_Endpoint::SETTING_PRIMARY_CONNECTOR, array() );
+
+			if ( ! is_array( $connector_values ) ) {
+				$connector_values = array();
+			}
+
+			$connector_values[ 'microsoft' ] = 'false';
+			$plugin_data_store->save( Save_Connector_Settings_Endpoint::SETTING_PRIMARY_CONNECTOR, $connector_values );
+
+			$connector_values = $data_router->get_plugin_setting( Save_Connector_Settings_Endpoint::SETTING_BACKUP_CONNECTOR, array() );
+
+			if ( ! is_array( $connector_values ) ) {
+				$connector_values = array();
+			}
+
+			$connector_values[ 'microsoft' ] = 'false';
+			$plugin_data_store->save( Save_Connector_Settings_Endpoint::SETTING_BACKUP_CONNECTOR, $connector_values );
+
+			$connector_values = $data_router->get_plugin_setting( Save_Connector_Settings_Endpoint::SETTING_ENABLED_CONNECTOR, array() );
+
+			if ( ! is_array( $connector_values ) ) {
+				$connector_values = array();
+			}
+
+			$connector_values[ 'microsoft' ] = 'false';
+			$plugin_data_store->save( Save_Connector_Settings_Endpoint::SETTING_ENABLED_CONNECTOR, $connector_values );
 
 			/**
 			 * @var Microsoft_Oauth_Handler $oauth_handler

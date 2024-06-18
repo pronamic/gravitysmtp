@@ -194,7 +194,7 @@ class Microsoft_Oauth_Handler extends Oauth_Handler_Base {
 			return false;
 		}
 
-		$check_url = 'https://graph.microsoft.com/v1.0/users/me';
+		$check_url = 'https://graph.microsoft.com/v1.0/me';
 		$headers   = array(
 			'Authorization' => 'Bearer ' . $token,
 		);
@@ -209,7 +209,7 @@ class Microsoft_Oauth_Handler extends Oauth_Handler_Base {
 
 	public function get_connection_details() {
 		$token     = $this->data->get( 'access_token', $this->namespace );
-		$check_url = 'https://graph.microsoft.com/v1.0/users/me';
+		$check_url = 'https://graph.microsoft.com/v1.0/me';
 		$headers   = array(
 			'Authorization' => 'Bearer ' . $token,
 		);

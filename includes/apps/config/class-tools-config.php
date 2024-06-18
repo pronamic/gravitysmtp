@@ -737,7 +737,7 @@ class Tools_Config extends Config {
 		$enabled_connectors = array();
 
 		foreach ( $connector_names as $slug => $label ) {
-			if ( array_key_exists( $slug, $connector_statuses ) && $connector_statuses[ $slug ] ) {
+			if ( array_key_exists( $slug, $connector_statuses ) && $connector_statuses[ $slug ] === 'true' ) {
 				$enabled_connectors[] = $label;
 			}
 		}

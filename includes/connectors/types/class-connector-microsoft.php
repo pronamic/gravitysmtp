@@ -19,7 +19,8 @@ class Connector_Microsoft extends Connector_Base {
 	const SETTING_CLIENT_ID     = 'client_id';
 	const SETTING_CLIENT_SECRET = 'client_secret';
 
-	const VALUE_REDIRECT_URI = 'redirect_uri';
+	const VALUE_REDIRECT_URI      = 'redirect_uri';
+	const VALUE_REDIRECT_URI_FULL = 'redirect_uri_full';
 
 	protected $name        = 'microsoft';
 	protected $title       = 'Microsoft 365 / Outlook';
@@ -49,6 +50,8 @@ class Connector_Microsoft extends Connector_Base {
 		$source      = $this->get_att( 'source' );
 		$params      = $this->get_request_params();
 
+		$this->reset_phpmailer();
+
 		if ( ! empty( $headers['content-type'] ) ) {
 			$headers['content-type'] = $this->get_att( 'content_type', $headers['content-type'] );
 		}
@@ -68,9 +71,9 @@ class Connector_Microsoft extends Connector_Base {
 			)
 		);
 
-		$this->logger->log( $email, 'started', __( 'Starting email send for Google connector.', 'gravitysmtp' ) );
+		$this->logger->log( $email, 'started', __( 'Starting email send for Microsoft connector.', 'gravitysmtp' ) );
 
-		$this->php_mailer->setFrom( $from['email'], $from['name'] );
+		$this->php_mailer->setFrom( $from['email'], isset( $from['name'] ) ? $from['name'] : '' );
 
 		foreach ( $to->recipients() as $recipient ) {
 			if ( ! empty( $recipient->name() ) ) {
@@ -111,10 +114,12 @@ class Connector_Microsoft extends Connector_Base {
 		}
 
 		if ( ! empty( $reply_to ) ) {
-			if ( isset( $reply_to['name'] ) ) {
-				$this->php_mailer->addReplyTo( $reply_to['email'], $reply_to['name'] );
-			} else {
-				$this->php_mailer->addReplyTo( $reply_to['email'] );
+			foreach( $reply_to as $address ) {
+				if ( isset( $address['name'] ) ) {
+					$this->php_mailer->addReplyTo( $address['email'], $address['name'] );
+				} else {
+					$this->php_mailer->addReplyTo( $address['email'] );
+				}
 			}
 		}
 
@@ -392,7 +397,7 @@ class Connector_Microsoft extends Connector_Base {
 						'label'      => esc_html__( 'Copy', 'gravitysmtp' ),
 					),
 					'labelAttributes'      => array(
-						'label'  => esc_html__( 'Redirect URI', 'gravitysmtp' ),
+						'label'  => esc_html__( 'Redirect URI (Personal Accounts)', 'gravitysmtp' ),
 						'size'   => 'text-sm',
 						'weight' => 'medium',
 					),
@@ -404,7 +409,39 @@ class Connector_Microsoft extends Connector_Base {
 					),
 					'value'                => urldecode( $oauth_handler->get_return_url( 'copy' ) ),
 					'helpTextAttributes' => array(
-						'content' => esc_html__( 'Copy this URL and enter it as a Redirect URI in your App Settings.', 'gravitysmtp' ),
+						'content' => esc_html__( 'If your app is set up to support Personal Accounts, copy this URL and enter it as a Redirect URI in your App Settings.', 'gravitysmtp' ),
+						'size'    => 'text-xs',
+						'weight'  => 'regular',
+					),
+				),
+			);
+
+			$settings['fields'][] = array(
+				'component' => 'CopyInput',
+				'external'  => true,
+				'props'     => array(
+					'actionButtonAttributes' => array(
+						'customAttributes'     => array(
+							'type' => 'button',
+						),
+						'icon'       => 'copy',
+						'iconPrefix' => 'gravitysmtp-admin-icon',
+						'label'      => esc_html__( 'Copy', 'gravitysmtp' ),
+					),
+					'labelAttributes'      => array(
+						'label'  => esc_html__( 'Redirect URI (School or Work Accounts)', 'gravitysmtp' ),
+						'size'   => 'text-sm',
+						'weight' => 'medium',
+					),
+					'name'                 => self::VALUE_REDIRECT_URI_FULL,
+					'spacing'              => 6,
+					'size'                 => 'size-l',
+					'customAttributes'     => array(
+						'readOnly' => true,
+					),
+					'value'                => urldecode( $oauth_handler->get_return_url( 'settings' ) ),
+					'helpTextAttributes' => array(
+						'content' => esc_html__( 'If your app is set up to support School and Work accounts, copy this URL and enter it as a Redirect URI in your App Settings.', 'gravitysmtp' ),
 						'size'    => 'text-xs',
 						'weight'  => 'regular',
 					),
@@ -512,6 +549,19 @@ class Connector_Microsoft extends Connector_Base {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Reset the PHPMailer instance to prevent carryover from previous send.
+	 *
+	 * @since 1.0
+	 *
+	 * @return void
+	 */
+	private function reset_phpmailer() {
+		$this->php_mailer->clearAllRecipients();
+		$this->php_mailer->clearReplyTos();
+		$this->php_mailer->clearAttachments();
 	}
 
 }

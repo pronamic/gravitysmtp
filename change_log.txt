@@ -1,3 +1,10 @@
+### 1.1.1 | 2024-06-14
+- Fixed an issue that causes primary or backup status to be lost if saving settings for that connector in that session.
+- Fixed an issue that causes only the first of multiple notifications to send.
+- Fixed an issue that causes only the first of multiple reply to emails to pass through.
+- Fixed an issue that causes Microsoft work/school accounts to not be able to authenticate.
+- Fixed an issue that causes the  system report to not display all enabled connector information correctly.
+
 ### 1.1.0 | 2024-06-11
 - Added information about the current active integrations to the System Report.
 - Added the Google connector.

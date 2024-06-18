@@ -114,11 +114,14 @@ class Connector_Generic extends Connector_Base {
 			}
 
 			if ( ! empty( $reply_to ) ) {
-				if ( isset( $reply_to['name'] ) ) {
-					$this->php_mailer->addReplyTo( $reply_to['email'], $reply_to['name'] );
-				} else {
-					$this->php_mailer->addReplyTo( $reply_to['email'] );
+				foreach( $reply_to as $address ) {
+					if ( isset( $address['name'] ) ) {
+						$this->php_mailer->addReplyTo( $address['email'], $address['name'] );
+					} else {
+						$this->php_mailer->addReplyTo( $address['email'] );
+					}
 				}
+
 			}
 
 			if ( ! empty( $headers['content-type'] ) && strpos( $headers['content-type'], 'text/html' ) !== false ) {

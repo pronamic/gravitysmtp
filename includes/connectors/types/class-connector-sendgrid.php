@@ -102,8 +102,9 @@ class Connector_Sendgrid extends Connector_Base {
 			),
 		);
 
+
 		if ( ! empty( $atts['reply_to'] ) ) {
-			$body['reply_to'] = $atts['reply_to'];
+			$body['reply_to_list'] = $atts['reply_to'];
 		}
 
 		if ( ! empty( $atts['attachments'] ) ) {

@@ -154,7 +154,14 @@ class Send_Test_Endpoint extends Endpoint {
 		$email     = filter_input( INPUT_POST, self::PARAM_EMAIL, FILTER_SANITIZE_EMAIL );
 		$connector = filter_input( INPUT_POST, self::PARAM_CONNECTOR_NAME );
 
-		$success = wp_mail( array( 'email' => $email ), __( 'Test Email from Gravity SMTP', 'gravitysmtp' ), $this->get_test_email_markup(), array( 'content-type' => 'Content-type: text/html' ), array(), 'GravitySMTP Test' );
+		$admin_email = get_option( 'admin_email' );
+
+		$headers = array(
+			'content-type' => 'Content-type: text/html',
+			'from'         => 'From: ' . $admin_email,
+		);
+
+		$success = wp_mail( array( 'email' => $email ), __( 'Test Email from Gravity SMTP', 'gravitysmtp' ), $this->get_test_email_markup(), $headers, array(), 'GravitySMTP Test' );
 
 		if ( $success === true ) {
 			wp_send_json_success( array( 'email' => $email ) );

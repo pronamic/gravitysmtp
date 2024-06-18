@@ -123,9 +123,15 @@ class Connector_Brevo extends Connector_Base {
 
 		// Setting reply to
 		if ( ! empty( $atts['reply_to'] ) ) {
+			if ( isset( $atts['reply_to']['email'] ) ) {
+				$reply_to = $atts['reply_to'];
+			} else {
+				$reply_to = $atts['reply_to'][0];
+			}
+
 			$body['replyTo'] = array_filter( array(
-				'name'  => isset( $atts['reply_to']['name'] ) ? $atts['reply_to']['name'] : '',
-				'email' => $atts['reply_to']['email'],
+				'name'  => isset( $reply_to['name'] ) ? $reply_to['name'] : '',
+				'email' => $reply_to['email'],
 			) );
 		}
 

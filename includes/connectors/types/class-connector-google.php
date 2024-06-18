@@ -60,6 +60,8 @@ class Connector_Google extends Connector_Base {
 		$source      = $this->get_att( 'source' );
 		$params      = $this->get_request_params();
 
+		$this->reset_phpmailer();
+
 		if ( ! empty( $headers['content-type'] ) ) {
 			$headers['content-type'] = $this->get_att( 'content_type', $headers['content-type'] );
 		}
@@ -122,10 +124,12 @@ class Connector_Google extends Connector_Base {
 		}
 
 		if ( ! empty( $reply_to ) ) {
-			if ( isset( $reply_to['name'] ) ) {
-				$this->php_mailer->addReplyTo( $reply_to['email'], $reply_to['name'] );
-			} else {
-				$this->php_mailer->addReplyTo( $reply_to['email'] );
+			foreach( $reply_to as $address ) {
+				if ( isset( $address['name'] ) ) {
+					$this->php_mailer->addReplyTo( $address['email'], $address['name'] );
+				} else {
+					$this->php_mailer->addReplyTo( $address['email'] );
+				}
 			}
 		}
 
@@ -177,7 +181,7 @@ class Connector_Google extends Connector_Base {
 			if ( (int) $response_code !== 200 ) {
 				$this->events->update( array( 'status' => 'failed' ), $email );
 
-				$this->logger->log( $email, 'failed', $e->getMessage() );
+				$this->logger->log( $email, 'failed', $response_body );
 
 				return $email;
 			}
@@ -538,6 +542,19 @@ class Connector_Google extends Connector_Base {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Reset the PHPMailer instance to prevent carryover from previous send.
+	 *
+	 * @since 1.0
+	 *
+	 * @return void
+	 */
+	private function reset_phpmailer() {
+		$this->php_mailer->clearAllRecipients();
+		$this->php_mailer->clearReplyTos();
+		$this->php_mailer->clearAttachments();
 	}
 
 }

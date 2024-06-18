@@ -400,7 +400,7 @@ abstract class Connector_Base {
 
 		$email_data = $this->get_email_from_header( 'Reply-To', $parsed_headers['reply-to'] );
 
-		return $return_as_array ? $email_data->first()->as_array() : $email_data->first()->email();
+		return $return_as_array ? $email_data->as_array() : $email_data->as_string();
 	}
 
 	/**

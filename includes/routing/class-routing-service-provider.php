@@ -24,6 +24,10 @@ class Routing_Service_Provider extends Service_Provider {
 		add_filter( 'gravitysmtp_connector_for_sending', function( $current_connector, $email_args ) use ( $container ) {
 			return $container->get( self::PRIMARY_BACKUP_HANDLER )->handle( $current_connector, $email_args );
 		}, self::HOOK_PRIORITY_PRIMARY_BACKUP, 2 );
+
+		add_action( 'gravitysmtp_before_email_send', function() use ( $container ) {
+			$container->get( self::PRIMARY_BACKUP_HANDLER )->reset();
+		}, 0 );
 	}
 
 }

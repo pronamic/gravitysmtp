@@ -31,6 +31,11 @@ class Primary_Backup_Handler implements Routing_Handler {
 		return sprintf( '%s:: ', str_replace( __NAMESPACE__, '', __CLASS__ ) );
 	}
 
+	public function reset() {
+		self::$primary_attempted = false;
+		self::$backup_attempted  = false;
+	}
+
 	public function handle( $current_connector, $email_data ) {
 
 		// A backup was already attempted; no more connections to check, return false.
