@@ -3,6 +3,7 @@
 namespace Gravity_Forms\Gravity_SMTP\Logging\Log;
 
 use Gravity_Forms\Gravity_SMTP\Models\Event_Model;
+use Gravity_Forms\Gravity_SMTP\Utils\Header_Parser;
 use Gravity_Forms\Gravity_SMTP\Utils\Source_Parser;
 
 class WP_Mail_Logger {
@@ -22,17 +23,25 @@ class WP_Mail_Logger {
 	 */
 	protected $source_parser;
 
-	public function __construct( $logger, $events, $source_parser ) {
+	/**
+	 * @var Header_Parser
+	 */
+	protected $header_parser;
+
+	public function __construct( $logger, $events, $source_parser, $header_parser ) {
 		$this->logger        = $logger;
 		$this->events        = $events;
 		$this->source_parser = $source_parser;
+		$this->header_parser = $header_parser;
 	}
 
 	public function create_log( $mail_info ) {
-		$source    = $this->source_parser->get_source_from_trace( debug_backtrace() );
-		$test_mode = isset( $mail_info['test_mode'] ) ? $mail_info['test_mode'] : false;
-		$from      = get_bloginfo( 'admin_email' );
-		$email_id  = $this->events->create(
+		$source      = $this->source_parser->get_source_from_trace( debug_backtrace() );
+		$test_mode   = isset( $mail_info['test_mode'] ) ? $mail_info['test_mode'] : false;
+		$from_header = isset( $mail_info['headers']['From'] ) ? $mail_info['headers']['From'] : $mail_info['headers']['from'];
+		$froms       = $this->header_parser->get_email_from_header( 'From', $from_header );
+		$from        = $froms->first()->mailbox();
+		$email_id    = $this->events->create(
 			'wp_mail',
 			'sent',
 			$mail_info['to'],

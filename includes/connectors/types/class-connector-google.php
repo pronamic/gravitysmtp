@@ -243,6 +243,8 @@ class Connector_Google extends Connector_Base {
 			'scope'                  => 'https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/gmail.readonly',
 			'include_granted_scopes' => 'true',
 			'state'                  => 1,
+			'access_type'            => 'offline',
+			'prompt'                 => 'consent',
 		);
 
 		return http_build_query( $params );

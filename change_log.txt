@@ -1,3 +1,8 @@
+### 1.1.2 | 2024-06-20
+- Fixed an issue that causes the Google and Microsoft connectors to lose authentication after a period of time.
+- Fixed an issue that causes the email log to display incorrect from name and email data for the PHP Mail integration.
+- Updated Brevo help text for the api key setting to remind people to check their Authorized IPs setting in Brevo.
+
 ### 1.1.1 | 2024-06-14
 - Fixed an issue that causes primary or backup status to be lost if saving settings for that connector in that session.
 - Fixed an issue that causes only the first of multiple notifications to send.

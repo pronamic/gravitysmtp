@@ -2,6 +2,7 @@
 
 namespace Gravity_Forms\Gravity_SMTP\Connectors\Oauth;
 
+use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Google;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Microsoft;
 use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Plugin_Settings_Endpoint;
@@ -59,7 +60,7 @@ class Microsoft_Oauth_Handler extends Oauth_Handler_Base {
 	}
 
 	public function get_scope() {
-		return 'email Mail.Send User.Read profile openid';
+		return 'email Mail.Send User.Read profile openid offline_access';
 	}
 
 	protected function refresh_expired_token() {
@@ -72,6 +73,10 @@ class Microsoft_Oauth_Handler extends Oauth_Handler_Base {
 		$refresh_url = $this->get_refresh_url();
 		$body        = array(
 			'refresh_token' => $refresh_token,
+			'client_id'     => $this->data->get( Connector_Microsoft::SETTING_CLIENT_ID, $this->namespace ),
+			'client_secret' => $this->data->get( Connector_Microsoft::SETTING_CLIENT_SECRET, $this->namespace ),
+			'grant_type'    => 'refresh_token',
+			'scope'         => $this->get_scope(),
 		);
 
 		$response = wp_remote_post( $refresh_url, array( 'body' => $body ) );
@@ -83,11 +88,11 @@ class Microsoft_Oauth_Handler extends Oauth_Handler_Base {
 
 		$response_body = json_decode( wp_remote_retrieve_body( $response ), true );
 
-		if ( empty( $response_body['token']['access_token'] ) ) {
+		if ( empty( $response_body['access_token'] ) ) {
 			return new \WP_Error( __( 'Token is invalid or expired.', 'gravitysmtp' ) );
 		}
 
-		$new_token = $response_body['token']['access_token'];
+		$new_token = $response_body['access_token'];
 
 		$this->store_access_token( $new_token );
 
@@ -144,9 +149,7 @@ class Microsoft_Oauth_Handler extends Oauth_Handler_Base {
 	}
 
 	public function get_refresh_url() {
-		$auth_url = trailingslashit( GRAVITY_API_URL ) . 'wp-json/gravityapi/v1/auth/gmail/refresh';
-
-		return esc_url( $auth_url );
+		return esc_url( 'https://login.microsoftonline.com/common/oauth2/v2.0/token' );
 	}
 
 	private function get_state( $context = 'settings' ) {

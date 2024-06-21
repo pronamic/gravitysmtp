@@ -287,7 +287,7 @@ class Connector_Brevo extends Connector_Base {
 							'helpTextAttributes' => array(
 								'asHtml'  => true,
 								/* translators: 1: opening anchor tag, 2: closing anchor tag */
-								'content' => sprintf( __( 'To obtain an API key from Brevo, login to your Brevo dashboard and %1$sgenerate an API key%2$s.', 'gravitysmtp' ), '<a class="gform-link gform-typography--size-text-xs" href="https://app.brevo.com/settings/keys/api" target="_blank" rel="noopener noreferrer">', '</a>' ),
+								'content' => sprintf( __( 'To generate an API key from Brevo, log in to your Brevo dashboard and navigate to the API section. %1$sCreate a new API key%2$s and ensure your %3$sAuthorized IPs settings%2$s are configured correctly.', 'gravitysmtp' ), '<a class="gform-link gform-typography--size-text-xs" href="https://app.brevo.com/settings/keys/api" target="_blank" rel="noopener noreferrer">', '</a>', '<a class="gform-link gform-typography--size-text-xs" href="https://help.brevo.com/hc/en-us/articles/5740111683858-Authorize-IP-addresses-for-API-calls-to-improve-security" target="_blank" rel="noopener noreferrer">' ),
 								'size'    => 'text-xs',
 								'weight'  => 'regular',
 							),

@@ -136,7 +136,7 @@ class Connector_Phpmail extends Connector_Base {
 		}
 
 
-		if ( ! empty( $from['name'] && ( empty( $from_name ) || $force_name ) ) ) {
+		if ( ! empty( $from['name'] ) && ( empty( $from_name ) || $force_name ) ) {
 			$from_name = $from['name'];
 		}
 

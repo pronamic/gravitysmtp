@@ -82,7 +82,7 @@ class Logging_Service_Provider extends Config_Service_Provider {
 		} );
 
 		$this->container->add( self::WP_MAIL_LOGGER, function () use ( $container ) {
-			return new WP_Mail_Logger( $container->get( self::LOGGER ), $container->get( Connector_Service_Provider::EVENT_MODEL ), $container->get( Utils_Service_Provider::SOURCE_PARSER ) );
+			return new WP_Mail_Logger( $container->get( self::LOGGER ), $container->get( Connector_Service_Provider::EVENT_MODEL ), $container->get( Utils_Service_Provider::SOURCE_PARSER ), $container->get( Utils_Service_Provider::HEADER_PARSER ) );
 		} );
 
 		$this->container->add( self::DEBUG_LOG_MODEL, function () use ( $container ) {

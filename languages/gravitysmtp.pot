@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Gravity SMTP 1.1.1\n"
+"Project-Id-Version: Gravity SMTP 1.1.2\n"
 "Report-Msgid-Bugs-To: https://gravityforms.com/support\n"
 "Last-Translator: Gravity Forms <support@gravityforms.com>\n"
 "Language-Team: Gravity Forms <support@gravityforms.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-06-17T17:49:18+00:00\n"
+"POT-Creation-Date: 2024-06-20T16:40:32+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: gravitysmtp\n"
@@ -51,7 +51,7 @@ msgid "Confirm"
 msgstr ""
 
 #: includes/apps/config/class-apps-config.php:35
-#: includes/apps/config/class-tools-config.php:684
+#: includes/apps/config/class-tools-config.php:685
 msgid "Debug Log Enabled"
 msgstr ""
 
@@ -178,7 +178,7 @@ msgid "Subject"
 msgstr ""
 
 #: includes/apps/config/class-email-log-config.php:2281
-#: includes/apps/config/class-tools-config.php:901
+#: includes/apps/config/class-tools-config.php:902
 #: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:92
 #: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:93
 msgid "Status"
@@ -202,7 +202,7 @@ msgid "Date Sent"
 msgstr ""
 
 #: includes/apps/config/class-email-log-config.php:2364
-#: includes/apps/config/class-tools-config.php:937
+#: includes/apps/config/class-tools-config.php:938
 msgid "Actions"
 msgstr ""
 
@@ -450,7 +450,7 @@ msgstr ""
 
 #: includes/apps/config/class-email-log-single-config.php:63
 #: includes/apps/config/class-tools-config.php:157
-#: includes/apps/config/class-tools-config.php:925
+#: includes/apps/config/class-tools-config.php:926
 msgid "Log"
 msgstr ""
 
@@ -1190,7 +1190,7 @@ msgstr ""
 
 #: includes/apps/config/class-tools-config.php:393
 #: includes/apps/config/class-tools-config.php:588
-#: includes/apps/config/class-tools-config.php:785
+#: includes/apps/config/class-tools-config.php:786
 msgid "Version"
 msgstr ""
 
@@ -1336,85 +1336,85 @@ msgstr ""
 msgid "Loaded Extensions"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:689
+#: includes/apps/config/class-tools-config.php:690
 msgid "Debug Retention Period"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:694
+#: includes/apps/config/class-tools-config.php:695
 msgid "Debug Log Link"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:746
+#: includes/apps/config/class-tools-config.php:747
 msgid "No Integrations Enabled"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:750
 #: includes/apps/config/class-tools-config.php:751
+#: includes/apps/config/class-tools-config.php:752
 msgid "Enabled Integrations"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:755
+#: includes/apps/config/class-tools-config.php:756
 msgid "No Primary Integration Enabled"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:756
+#: includes/apps/config/class-tools-config.php:757
 msgid "No Backup Integration Enabled"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:759
 #: includes/apps/config/class-tools-config.php:760
+#: includes/apps/config/class-tools-config.php:761
 msgid "Primary Integration"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:765
 #: includes/apps/config/class-tools-config.php:766
+#: includes/apps/config/class-tools-config.php:767
 msgid "Backup Integration"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:780
+#: includes/apps/config/class-tools-config.php:781
 msgid "Database Management System"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:790
+#: includes/apps/config/class-tools-config.php:791
 msgid "Database Character Set"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:795
+#: includes/apps/config/class-tools-config.php:796
 msgid "Database Collation"
 msgstr ""
 
 #. translators: 1: date, 2: time
 #. translators: 1: date, 2: time
-#: includes/apps/config/class-tools-config.php:817
-#: includes/apps/config/class-tools-config.php:826
+#: includes/apps/config/class-tools-config.php:818
+#: includes/apps/config/class-tools-config.php:827
 msgid "%1$s at %2$s"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:833
+#: includes/apps/config/class-tools-config.php:834
 msgid "WordPress (Local) Timezone"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:838
+#: includes/apps/config/class-tools-config.php:839
 msgid "MySQL - Universal time (UTC)"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:843
+#: includes/apps/config/class-tools-config.php:844
 msgid "MySQL - Local time"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:848
+#: includes/apps/config/class-tools-config.php:849
 msgid "PHP - Universal time (UTC)"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:853
+#: includes/apps/config/class-tools-config.php:854
 msgid "PHP - Local time"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:889
+#: includes/apps/config/class-tools-config.php:890
 msgid "ID"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:913
+#: includes/apps/config/class-tools-config.php:914
 msgid "Date & Time"
 msgstr ""
 
@@ -1723,16 +1723,16 @@ msgid "Send a test error: %1$s"
 msgstr ""
 
 #: includes/connectors/oauth/class-google-oauth-handler.php:64
-#: includes/connectors/oauth/class-google-oauth-handler.php:76
-#: includes/connectors/oauth/class-google-oauth-handler.php:82
-#: includes/connectors/oauth/class-microsoft-oauth-handler.php:69
-#: includes/connectors/oauth/class-microsoft-oauth-handler.php:81
-#: includes/connectors/oauth/class-microsoft-oauth-handler.php:87
+#: includes/connectors/oauth/class-google-oauth-handler.php:79
+#: includes/connectors/oauth/class-google-oauth-handler.php:85
+#: includes/connectors/oauth/class-microsoft-oauth-handler.php:70
+#: includes/connectors/oauth/class-microsoft-oauth-handler.php:86
+#: includes/connectors/oauth/class-microsoft-oauth-handler.php:92
 msgid "Token is invalid or expired."
 msgstr ""
 
-#: includes/connectors/oauth/class-google-oauth-handler.php:200
-#: includes/connectors/oauth/class-microsoft-oauth-handler.php:222
+#: includes/connectors/oauth/class-google-oauth-handler.php:201
+#: includes/connectors/oauth/class-microsoft-oauth-handler.php:225
 msgid "Unable to retrieve associated email."
 msgstr ""
 
@@ -1751,7 +1751,7 @@ msgstr ""
 #: includes/connectors/types/class-connector-microsoft.php:143
 #: includes/connectors/types/class-connector-postmark.php:55
 #: includes/connectors/types/class-connector-sendgrid.php:47
-#: includes/logging/log/class-wp-mail-logger.php:50
+#: includes/logging/log/class-wp-mail-logger.php:59
 msgid "Email sandboxed."
 msgstr ""
 
@@ -1762,7 +1762,7 @@ msgstr ""
 #: includes/connectors/types/class-connector-microsoft.php:165
 #: includes/connectors/types/class-connector-postmark.php:72
 #: includes/connectors/types/class-connector-sendgrid.php:64
-#: includes/logging/log/class-wp-mail-logger.php:53
+#: includes/logging/log/class-wp-mail-logger.php:62
 msgid "Email successfully sent."
 msgstr ""
 
@@ -1772,8 +1772,8 @@ msgstr ""
 
 #: includes/connectors/types/class-connector-brevo.php:271
 #: includes/connectors/types/class-connector-generic.php:234
-#: includes/connectors/types/class-connector-google.php:342
-#: includes/connectors/types/class-connector-google.php:518
+#: includes/connectors/types/class-connector-google.php:344
+#: includes/connectors/types/class-connector-google.php:520
 #: includes/connectors/types/class-connector-mailgun.php:340
 #: includes/connectors/types/class-connector-microsoft.php:313
 #: includes/connectors/types/class-connector-microsoft.php:525
@@ -1788,7 +1788,7 @@ msgstr ""
 
 #. translators: 1: opening anchor tag, 2: closing anchor tag
 #: includes/connectors/types/class-connector-brevo.php:290
-msgid "To obtain an API key from Brevo, login to your Brevo dashboard and %1$sgenerate an API key%2$s."
+msgid "To generate an API key from Brevo, log in to your Brevo dashboard and navigate to the API section. %1$sCreate a new API key%2$s and ensure your %3$sAuthorized IPs settings%2$s are configured correctly."
 msgstr ""
 
 #: includes/connectors/types/class-connector-brevo.php:350
@@ -1897,68 +1897,68 @@ msgstr ""
 msgid "Starting email send for Google connector."
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:270
+#: includes/connectors/types/class-connector-google.php:272
 msgid "Google / Gmail Settings"
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:288
+#: includes/connectors/types/class-connector-google.php:290
 msgid "Before proceeding, make sure to save your settings with the Client ID and Client Secret."
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:298
+#: includes/connectors/types/class-connector-google.php:300
 msgid "Read our Google / Gmail documentation"
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:328
+#: includes/connectors/types/class-connector-google.php:330
 msgid "Error Connecting to Google. Check your credentials and try again."
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:368
+#: includes/connectors/types/class-connector-google.php:370
 msgid "To obtain a Client ID from Google / Gmail, log in to your {{link}}Google Cloud Console{{link}} and generate the Client ID."
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:373
+#: includes/connectors/types/class-connector-google.php:375
 msgid "Client ID"
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:400
+#: includes/connectors/types/class-connector-google.php:402
 msgid "To obtain a Client Secret from Google / Gmail, log in to your {{link}}Google Cloud Console{{link}} and generate the Client ID."
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:405
+#: includes/connectors/types/class-connector-google.php:407
 #: includes/connectors/types/class-connector-microsoft.php:376
 msgid "Client Secret"
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:426
+#: includes/connectors/types/class-connector-google.php:428
 #: includes/connectors/types/class-connector-microsoft.php:397
 #: includes/connectors/types/class-connector-microsoft.php:429
 msgid "Copy"
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:429
+#: includes/connectors/types/class-connector-google.php:431
 msgid "Authorized redirect URI"
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:441
+#: includes/connectors/types/class-connector-google.php:443
 msgid "Copy this URL into the \"Authorized redirect URIs\" field of your Google web application."
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:451
+#: includes/connectors/types/class-connector-google.php:453
 #: includes/connectors/types/class-connector-microsoft.php:454
 msgid "Authorization"
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:465
+#: includes/connectors/types/class-connector-google.php:467
 msgid "Sign in with Google"
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:494
+#: includes/connectors/types/class-connector-google.php:496
 #: includes/connectors/types/class-connector-microsoft.php:501
 msgid "Connected with email account:"
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:509
+#: includes/connectors/types/class-connector-google.php:511
 msgid "Disconnect from Google"
 msgstr ""
 

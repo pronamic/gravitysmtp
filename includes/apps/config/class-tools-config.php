@@ -668,6 +668,7 @@ class Tools_Config extends Config {
 		$enabled           = $plugin_data_store->get_plugin_setting( Tools_Config::SETTING_DEBUG_LOG_ENABLED, false );
 		$retention         = $plugin_data_store->get_plugin_setting( Tools_Config::SETTING_DEBUG_LOG_RETENTION, '7' );
 		$link              = 'N/A';
+		$enabled           = ! ( $enabled === false || $enabled === 0 || $enabled === '0' || $enabled === 'false' );
 
 		if ( $enabled ) {
 			$key = get_option( View_Log_Endpoint::OPTION_VERIFICATION_KEY );
