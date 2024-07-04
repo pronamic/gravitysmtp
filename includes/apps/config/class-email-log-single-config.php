@@ -72,6 +72,21 @@ class Email_Log_Single_Config extends Config {
 				'view_email_desktop_mode'        => esc_html__( 'Preview email in desktop mode', 'gravitysmtp' ),
 				'view_email_mobile_mode'         => esc_html__( 'Preview email in mobile mode', 'gravitysmtp' ),
 			),
+			/* translators: %1$s is the body of the ajax request. */
+			'resending_email'             => esc_html__( 'Resending email: %1$s', 'gravitysmtp' ),
+			/* translators: %1$s is the error message. */
+			'resending_error'             => esc_html__( 'Error resending email: %1$s', 'gravitysmtp' ),
+			'snackbar_resend_error'       => esc_html__( 'Error resending email', 'gravitysmtp' ),
+			'snackbar_resend_success'     => esc_html__( 'Email successfully resent', 'gravitysmtp' ),
+		);
+	}
+
+	public function get_log_single_data() {
+		return array(
+			'log_detail' => array(
+				'default' => $this->get_default_log_details(),
+				'value'   => $this->get_log_details(),
+			),
 		);
 	}
 
@@ -163,9 +178,14 @@ class Email_Log_Single_Config extends Config {
 	}
 
 	private function get_log_details() {
-		$id       = filter_input( INPUT_GET, 'event_id', FILTER_SANITIZE_NUMBER_INT );
+		$id = filter_input( INPUT_GET, 'event_id', FILTER_SANITIZE_NUMBER_INT );
+
+		if ( empty( $id ) ) {
+			return array();
+		}
+
 		$container = Gravity_SMTP::container();
-		$logs   = $container->get( Connector_Service_Provider::LOG_DETAILS_MODEL );
+		$logs      = $container->get( Connector_Service_Provider::LOG_DETAILS_MODEL );
 
 		return $logs->full_details( $id );
 	}
@@ -196,38 +216,13 @@ class Email_Log_Single_Config extends Config {
 		return $attachments_arr;
 	}
 
-
 	public function data() {
 		$log_config = Gravity_SMTP::container()->get( App_Service_Provider::EMAIL_LOG_CONFIG );
 
 		return array(
 			'components' => array(
 				'activity_log' => array(
-					'data'      => array(
-						'version'            => GF_GRAVITY_SMTP_VERSION,
-						'route_path'         => admin_url( 'admin.php' ),
-						'ajax_url'           => admin_url( 'admin-ajax.php' ),
-						'nav_item_param_key' => 'tab',
-						'data_grid'          => array(
-							'columns'            => $log_config->get_columns(),
-							'column_style_props' => $log_config->get_column_style_props(),
-							'data'               => array(
-								'value'   => $log_config->get_data_rows(),
-								'default' => $log_config->get_demo_data_rows(),
-							),
-						),
-						'log_detail'         => array(
-							'default' => $this->get_default_log_details(),
-							'value'   => $this->get_log_details(),
-						),
-						'caps' => array(
-							Roles::VIEW_EMAIL_LOG           => current_user_can( Roles::VIEW_EMAIL_LOG ),
-							Roles::VIEW_EMAIL_LOG_DETAILS   => current_user_can( Roles::VIEW_EMAIL_LOG_DETAILS ),
-							Roles::DELETE_EMAIL_LOG         => current_user_can( Roles::DELETE_EMAIL_LOG ),
-							Roles::DELETE_EMAIL_LOG_DETAILS => current_user_can( Roles::DELETE_EMAIL_LOG_DETAILS ),
-							Roles::VIEW_EMAIL_LOG_PREVIEW   => current_user_can( Roles::VIEW_EMAIL_LOG_PREVIEW ),
-						),
-					),
+					'data'      => array_merge( $this->get_log_single_data(), $log_config->get_log_data() ),
 					'i18n'      => array_merge( $this->get_i18n(), $log_config->get_i18n() ),
 					'endpoints' => array(),
 				)

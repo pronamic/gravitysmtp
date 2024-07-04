@@ -123,6 +123,13 @@ class Connector_Phpmail extends Connector_Base {
 	}
 
 	public function update_wp_mail_froms( $atts ) {
+		// This is how wp_mail() handles headers.
+		if ( empty( $atts['headers'] ) ) {
+			$atts['headers'] = array();
+		} elseif ( ! is_array( $atts['headers'] ) ) {
+			$atts['headers'] = explode( "\n", str_replace( "\r\n", "\n", $atts['headers'] ) );
+		}
+
 		$from        = $this->get_from( true );
 		$force_name  = $this->get_setting( self::SETTING_FORCE_FROM_NAME, false );
 		$force_email = $this->get_setting( self::SETTING_FORCE_FROM_EMAIL, false );

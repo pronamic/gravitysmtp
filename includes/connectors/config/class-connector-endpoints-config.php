@@ -63,16 +63,6 @@ class Connector_Endpoints_Config extends Config {
 							'default' => 'nonce',
 						),
 					),
-					Migrate_Settings_Endpoint::ACTION_NAME => array(
-						'action' => array(
-							'value'   => Migrate_Settings_Endpoint::ACTION_NAME,
-							'default' => 'mock_endpoint',
-						),
-						'nonce'  => array(
-							'value'   => wp_create_nonce( Migrate_Settings_Endpoint::ACTION_NAME ),
-							'default' => 'nonce',
-						),
-					),
 					Cleanup_Data_Endpoint::ACTION_NAME => array(
 						'action' => array(
 							'value'   => Cleanup_Data_Endpoint::ACTION_NAME,

@@ -60,6 +60,7 @@ class Connector_Service_Provider extends Config_Service_Provider {
 	const NOTIFICATIONS_MODEL    = 'notifications_model';
 	const HYDRATOR_FACTORY       = 'hydrator_factory';
 	const NAME_MAP               = 'name_map';
+	const REGISTERED_CONNECTORS  = 'registered_connectors';
 
 	const OAUTH_DATA_HANDLER      = 'oauth_data_handler';
 	const GOOGLE_OAUTH_HANDLER    = 'google_oauth_handler';
@@ -71,7 +72,6 @@ class Connector_Service_Provider extends Config_Service_Provider {
 	const SAVE_PLUGIN_SETTINGS_ENDPOINT    = 'save_plugin_settings_endpoint';
 	const GET_SINGLE_EMAIL_DATA_ENDPOINT   = 'get_single_email_data_endpoint';
 	const CHECK_BACKGROUND_TASKS_ENDPOINT  = 'check_background_tasks_endpoint';
-	const MIGRATE_SETTINGS_ENDPOINT        = 'migrate_settings_endpoint';
 	const GET_CONNECTOR_EMAILS_ENDPOINT    = 'get_connector_emails_endpoint';
 
 	const CONNECTOR_ENDPOINTS_CONFIG = 'connector_endpoints_config';
@@ -112,6 +112,8 @@ class Connector_Service_Provider extends Config_Service_Provider {
 
 	public function register( \Gravity_Forms\Gravity_Tools\Service_Container $container ) {
 		parent::register( $container );
+
+		$self = $this;
 
 		$this->container->add( self::PHPMAILER, function () {
 			global $phpmailer;
@@ -208,10 +210,6 @@ class Connector_Service_Provider extends Config_Service_Provider {
 			return new Send_Test_Endpoint( $container->get( self::CONNECTOR_FACTORY ), $container->get( self::DATA_STORE_ROUTER ), $container->get( self::EVENT_MODEL ), $container->get( self::LOG_DETAILS_MODEL ), $container->get( self::GET_SINGLE_EMAIL_DATA_ENDPOINT ) );
 		} );
 
-		$this->container->add( self::MIGRATE_SETTINGS_ENDPOINT, function () use ( $container ) {
-			return new Migrate_Settings_Endpoint( $container->get( self::CONNECTOR_FACTORY ), $container->get( self::DATA_STORE_OPTS ) );
-		} );
-
 		$this->container->add( self::GET_CONNECTOR_EMAILS_ENDPOINT, function () use ( $container ) {
 			return new Get_Connector_Emails( $container->get( self::NOTIFICATIONS_MODEL ) );
 		} );
@@ -226,6 +224,10 @@ class Connector_Service_Provider extends Config_Service_Provider {
 
 		$this->container->add( self::MICROSOFT_OAUTH_HANDLER, function () use ( $container ) {
 			return new Microsoft_Oauth_Handler( $container->get( self::OAUTH_DATA_HANDLER ) );
+		} );
+
+		$this->container->add( self::REGISTERED_CONNECTORS, function() use ( $self ) {
+			return $self->connectors;
 		} );
 
 		$this->register_connector_data();
@@ -371,10 +373,6 @@ class Connector_Service_Provider extends Config_Service_Provider {
 
 		add_action( 'wp_ajax_' . Check_Background_Tasks_Endpoint::ACTION_NAME, function () use ( $container ) {
 			$container->get( self::CHECK_BACKGROUND_TASKS_ENDPOINT )->handle();
-		} );
-
-		add_action( 'wp_ajax_' . Migrate_Settings_Endpoint::ACTION_NAME, function () use ( $container ) {
-			$container->get( self::MIGRATE_SETTINGS_ENDPOINT )->handle();
 		} );
 
 		add_action( 'wp_ajax_' . Get_Connector_Emails::ACTION_NAME, function () use ( $container ) {

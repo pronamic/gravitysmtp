@@ -51,7 +51,6 @@ class Setup_Wizard_Config extends Config {
 		}
 
 		$connectors_to_migrate = $container->get( Utils_Service_Provider::IMPORT_DATA_CHECKER )->connectors_to_migrate();
-		$import_data_possible  = $container->get( Utils_Service_Provider::IMPORT_DATA_CHECKER )->import_data_possible();
 
 		return array(
 			'components' => array(
@@ -100,8 +99,8 @@ class Setup_Wizard_Config extends Config {
 						'setup_wizard_skip_button'                 => esc_html__( 'Skip This Step', 'gravitysmtp' ),
 						'setup_wizard_next_button'                 => esc_html__( 'Next', 'gravitysmtp' ),
 						'setup_wizard_dashboard_button'            => esc_html__( 'Return to Dashboard', 'gravitysmtp' ),
-						'setup_wizard_import_data_title'           => esc_html__( 'Import Data From Gravity Forms', 'gravitysmtp' ),
-						'setup_wizard_import_data_copy'            => __( "We have detected other SMTP plugins installed on your website. Select which plugin's data you would like to import to Gravity SMTP.", 'gravitysmtp' ),
+						'setup_wizard_import_data_title'           => esc_html__( 'Migrate Your SMTP Settings', 'gravitysmtp' ),
+						'setup_wizard_import_data_copy'            => __( "Gravity SMTP is compatible with multiple SMTP plugins. We’ve detected other SMTP plugins installed on your website. Choose which plugin’s data you want to import to Gravity SMTP for a seamless migration experience.", 'gravitysmtp' ),
 						'setup_wizard_integration_title'           => esc_html__( 'Choose Your SMTP Mail Solution', 'gravitysmtp' ),
 						'setup_wizard_integration_copy_1'          => esc_html__( 'Which SMTP mail solution would you like to use to send emails?', 'gravitysmtp' ),
 						'setup_wizard_integration_copy_2'          => esc_html__( 'Not sure which to choose? Check out our Ultimate Gravity SMTP Guide for details on each option.', 'gravitysmtp' ),
@@ -145,16 +144,19 @@ class Setup_Wizard_Config extends Config {
 								'value'   => $is_wizard_open,
 							),
 						),
-						'import_data_possible' => array(
-							'default' => false,
-							'value'   => $import_data_possible,
-						),
-						'import_data'          => array(
+						'import_data' => array(
 							array(
 								'logo'      => 'GravityFormsStacked',
 								'title'     => 'Gravity Forms',
 								'id'        => 'gravityforms',
 								'activated' => true,
+							),
+							array(
+								'logo'           => 'WPMailSMTPFull',
+								'title'          => 'WP Mail SMTP',
+								'id'             => 'wpmailsmtp',
+								'activated'      => true,
+								'initialChecked' => in_array( 'wpmailsmtp', $connectors_to_migrate ), // @aaron set to true for one of these to make it checked by default
 							),
 						),
 						'integrations'        => array(

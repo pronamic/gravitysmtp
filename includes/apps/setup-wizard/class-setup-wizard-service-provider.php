@@ -5,6 +5,7 @@ namespace Gravity_Forms\Gravity_SMTP\Apps\Setup_Wizard;
 use Gravity_Forms\Gravity_SMTP\Apps\Setup_Wizard\Config\Setup_Wizard_Config;
 use Gravity_Forms\Gravity_SMTP\Apps\Setup_Wizard\Config\Setup_Wizard_Endpoints_Config;
 use Gravity_Forms\Gravity_SMTP\Apps\Setup_Wizard\Endpoints\License_Check_Endpoint;
+use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Migrate_Settings_Endpoint;
 use Gravity_Forms\Gravity_Tools\Service_Container;
 use Gravity_Forms\Gravity_Tools\Providers\Config_Service_Provider;
 

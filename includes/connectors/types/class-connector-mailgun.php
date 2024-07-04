@@ -318,6 +318,7 @@ class Connector_Mailgun extends Connector_Base {
 			self::SETTING_FROM_NAME        => $this->get_setting( self::SETTING_FROM_NAME, '' ),
 			self::SETTING_FORCE_FROM_NAME  => $this->get_setting( self::SETTING_FORCE_FROM_NAME, false ),
 			self::SETTING_REGION           => $this->get_setting( self::SETTING_REGION, self::OPTION_REGION_US ),
+			self::SETTING_DOMAIN           => $this->get_setting( self::SETTING_DOMAIN, '' ),
 		);
 	}
 

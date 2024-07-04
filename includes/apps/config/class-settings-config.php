@@ -49,9 +49,13 @@ class Settings_Config extends Config {
 			$is_valid     = License_Statuses::VALID_KEY === $license_info->get_status();
 		}
 
-		$email_log_enabled   = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_ENABLED, 'true' );
-		$email_log_enabled   = ! empty( $email_log_enabled ) ? $email_log_enabled !== 'false' : true;
-		$email_log_retention = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_RETENTION, 0 );
+		$email_log_enabled        = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_ENABLED, 'true' );
+		$email_log_enabled        = ! empty( $email_log_enabled ) ? $email_log_enabled !== 'false' : true;
+		$save_email_body_enabled  = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_SAVE_EMAIL_BODY_ENABLED, 'true' );
+		$save_email_body_enabled  = ! empty( $save_email_body_enabled ) ? $save_email_body_enabled !== 'false' : true;
+		$save_attachments_enabled = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_SAVE_ATTACHMENTS_ENABLED, 'false' );
+		$save_attachments_enabled = ! empty( $save_attachments_enabled ) ? $save_attachments_enabled !== 'false' : false;
+		$email_log_retention      = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_RETENTION, 0 );
 
 		$debug_log_enabled   = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_DEBUG_LOG_ENABLED, 'false' );
 		$debug_log_enabled   = ! empty( $debug_log_enabled ) ? $debug_log_enabled !== 'false' : false;
@@ -148,8 +152,12 @@ class Settings_Config extends Config {
 								'top_heading'                                    => esc_html__( 'Email Logging', 'gravitysmtp' ),
 								'top_content'                                    => esc_html__( 'Email logging keeps copies of all emails sent from your WordPress site, so you can review your sent emails and check their delivery status.', 'gravitysmtp' ),
 								'logging_box_heading'                            => esc_html__( 'Email Logging', 'gravitysmtp' ),
-								'enable_log_heading'                             => esc_html__( 'Enable Log', 'gravitysmtp' ),
-								'enable_log_label'                               => esc_html__( 'Keep copies of all emails sent from your site.', 'gravitysmtp' ),
+								'enable_log_label'                               => esc_html__( 'Enable Log', 'gravitysmtp' ),
+								'enable_log_helper_text'                         => esc_html__( 'Keep copies of all emails sent from your site.', 'gravitysmtp' ),
+								'save_email_body_label'                          => esc_html__( 'Save Email Body', 'gravitysmtp' ),
+								'save_email_body_helper_text'                    => esc_html__( 'Store the email body for all emails sent from your site.', 'gravitysmtp' ),
+								'save_attachments_label'                         => esc_html__( 'Save Attachments', 'gravitysmtp' ),
+								'save_attachments_helper_text'                   => esc_html__( 'Store attachments on the server in the uploads folder.', 'gravitysmtp' ),
 								'email_log_retention_label'                      => esc_html__( 'Log Retention Period', 'gravitysmtp' ),
 								'email_log_retention_helper_text'                => esc_html__( 'Email logs older than the selected timeframe will be permanently deleted.', 'gravitysmtp' ),
 								'error_saving_snackbar_message'                  => esc_html__( 'There was an error saving the settings', 'gravitysmtp' ),
@@ -173,9 +181,11 @@ class Settings_Config extends Config {
 						'license_key_is_valid'       => $is_valid,
 						'version'                    => GF_GRAVITY_SMTP_VERSION,
 						'email_log_settings'         => array(
-							'email_log_enabled'   => $email_log_enabled,
-							'email_log_retention' => $email_log_retention,
-							'retention_options'   => $this->get_email_log_retention_options(),
+							'email_log_enabled'        => $email_log_enabled,
+							'save_email_body_enabled'  => $save_email_body_enabled,
+							'save_attachments_enabled' => $save_attachments_enabled,
+							'email_log_retention'      => $email_log_retention,
+							'retention_options'        => $this->get_email_log_retention_options(),
 						),
 						'debug_log_settings'         => array(
 							'debug_log_enabled'   => $debug_log_enabled,

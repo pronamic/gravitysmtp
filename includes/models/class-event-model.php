@@ -251,6 +251,11 @@ class Event_Model {
 			return 0;
 		}
 
+		if ( ! $this->save_email_body() ) {
+			$message = '';
+			$extra['message_omitted'] = true;
+		}
+
 		global $wpdb;
 
 		$extra['to']   = $to;
@@ -269,7 +274,11 @@ class Event_Model {
 			)
 		);
 
-		return $wpdb->insert_id;
+		$created_id = $wpdb->insert_id;
+
+		do_action( 'gravitysmtp_after_mail_created', $created_id, compact( 'service', 'status', 'to', 'from', 'subject', 'message', 'extra' ) );
+
+		return $created_id;
 	}
 
 	public function update( $values, $id ) {
@@ -348,6 +357,8 @@ class Event_Model {
 
 			$row['source']       = isset( $extra['source'] ) ? $extra['source'] : __( 'N/A', 'gravitysmtp' );
 			$row['email_counts'] = $this->get_email_counts( $extra );
+			$row['can_resend'] = empty( $extra['message_omitted'] ) && ( empty( $extra['attachments'] ) || ( ! empty( $extra['attachments_saved'] ) ) );
+
 			if ( $hydrator ) {
 				$rows[ $idx ] = $hydrator->hydrate( $row );
 			} else {
@@ -356,6 +367,19 @@ class Event_Model {
 		}
 
 		return $rows;
+	}
+
+	public function get( $id ) {
+		global $wpdb;
+		$table_name = $this->get_table_name();
+
+		$sql = $wpdb->prepare( "SELECT * FROM $table_name WHERE id = %s", $id );
+
+		$email = $wpdb->get_row( $sql, ARRAY_A );
+
+		$hydrated = $this->hydrate( array( $email ) );
+
+		return $hydrated[0];
 	}
 
 	private function get_email_counts( $extra ) {
@@ -372,6 +396,12 @@ class Event_Model {
 		}
 
 		return $logging_enabled;
+	}
+
+	private function save_email_body() {
+		$save_email_body = $this->opts->get( Save_Plugin_Settings_Endpoint::PARAM_SAVE_EMAIL_BODY_ENABLED, 'config', 'true' );
+
+		return empty( $save_email_body ) ? true : $save_email_body !== 'false';
 	}
 
 }

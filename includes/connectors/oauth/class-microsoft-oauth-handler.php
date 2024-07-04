@@ -4,7 +4,6 @@ namespace Gravity_Forms\Gravity_SMTP\Connectors\Oauth;
 
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Google;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Microsoft;
-use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Plugin_Settings_Endpoint;
 use Gravity_Forms\Gravity_Tools\API\Oauth_Handler as Oauth_Handler_Base;
 use Gravity_Forms\Gravity_Tools\Utils\Utils_Service_Provider;
@@ -133,10 +132,8 @@ class Microsoft_Oauth_Handler extends Oauth_Handler_Base {
 		}
 
 		if ( $context === 'wizard' ) {
-			$import_data_possible = Gravity_SMTP::container()->get( Utils_Service_Provider::IMPORT_DATA_CHECKER )->import_data_possible();
-
 			$args['tab']               = 'integrations';
-			$args['setup-wizard-page'] = $import_data_possible ? 4 : 3;
+			$args['setup-wizard-page'] = 4;
 		}
 
 		$value = add_query_arg( $args, $base );

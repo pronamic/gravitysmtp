@@ -5,6 +5,7 @@ namespace Gravity_Forms\Gravity_Tools\Updates;
 use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Plugin_Settings_Endpoint;
 use Gravity_Forms\Gravity_Tools\API\Gravity_Api;
+use Gravity_Forms\Gravity_Tools\Cache\Cache;
 use Gravity_Forms\Gravity_Tools\Data\Transient_Strategy;
 use Gravity_Forms\Gravity_Tools\License\License_API_Connector;
 use Gravity_Forms\Gravity_Tools\License\License_API_Response_Factory;
@@ -74,6 +75,31 @@ class Updates_Service_Provider extends Service_Provider {
 
 			return $params;
 		}, 9999 );
+
+		/**
+		 * Ensure that our transients are always flushed when visiting the Updates or
+		 * Plugins pages. This ensures that updates are always shown as soon as they are available
+		 * if those pages are visited.
+		 *
+		 * @since 1.2.0
+		 */
+		add_action( 'init', function () use ( $container ) {
+			global $pagenow;
+
+			if ( $pagenow !== 'update-core.php' && $pagenow !== 'plugins.php' ) {
+				return;
+			}
+
+			$transient_key = 'GFCache_' . wp_hash( 'rg_gforms_plugins' );
+
+			add_filter( 'transient_' . $transient_key, function() {
+				return false;
+			} );
+
+			add_filter( 'site_transient_' . $transient_key, function() {
+				return false;
+			} );
+		}, 999 );
 	}
 
 }

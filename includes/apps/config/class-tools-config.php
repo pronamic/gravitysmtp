@@ -15,6 +15,8 @@ use Gravity_Forms\Gravity_SMTP\Models\Debug_Log_Model;
 use Gravity_Forms\Gravity_SMTP\Users\Roles;
 use Gravity_Forms\Gravity_Tools\Config;
 use Gravity_Forms\Gravity_Tools\Logging\Log_Line;
+use Gravity_Forms\Gravity_Tools\Utils\Common;
+use Gravity_Forms\Gravity_Tools\Utils\Utils_Service_Provider;
 
 class Tools_Config extends Config {
 
@@ -222,6 +224,7 @@ class Tools_Config extends Config {
 		$debug_data                 = $this->get_debug_data();
 		$constants_data             = $this->get_defined_constants();
 		$integrations_data          = $this->get_integrations_data();
+		$translations               = $this->get_translations_data();
 
 		$system_report = array(
 			array(
@@ -277,6 +280,11 @@ class Tools_Config extends Config {
 					'groups' => $this->get_groups( $integrations_data ),
 					'key' => 'integrations-settings',
 				),
+				array(
+					'title' => esc_html__( 'Translations', 'gravitysmtp' ),
+					'groups' => $this->get_groups( $translations ),
+					'key' => 'translations',
+				),
 			)
 		);
 
@@ -315,6 +323,53 @@ class Tools_Config extends Config {
 				),
 			);
 		}, $data );
+	}
+
+	protected function get_translations_data() {
+		$items = array(
+			array(
+				'label'        => esc_html__( 'Site Locale', 'gravitysmtp' ),
+				'label_export' => 'Site Locale',
+				'value'        => get_locale(),
+			),
+		);
+
+		if ( function_exists( 'get_user_locale' ) ) {
+			$items[] = array(
+				// translators: %d: The ID of the currently logged in user.
+				'label'        => sprintf( esc_html__( 'User (ID: %d) Locale', 'gravitysmtp' ), get_current_user_id() ),
+				'label_export' => sprintf( 'User (ID: %d) Locale', get_current_user_id() ),
+				'value'        => get_user_locale(),
+			);
+		}
+
+		$translations = $this->get_installed_translations();
+
+
+		$items[] = array(
+			'label'        => esc_html__( 'Installed Translations', 'gravitysmtp' ),
+			'label_export' => 'Installed Translations',
+			'value'        => empty( $translations ) ? esc_html__( 'No translations installed', 'gravitysmtp' ) : implode( ', ', $translations ),
+		);
+
+		return $items;
+	}
+
+	protected function get_installed_translations() {
+		$domain = 'gravitysmtp';
+		$files = glob( WP_LANG_DIR . '/plugins/' . 'gravitysmtp-*.mo' );
+
+		if ( ! is_array( $files ) ) {
+			return array();
+		}
+
+		$translations = array();
+
+		foreach ( $files as $file ) {
+			$translations[ str_replace( $domain . '-', '', basename( $file, '.mo' ) ) ] = $file;
+		}
+
+		return array_keys( $translations );
 	}
 
 	protected function get_clipboard_string() {
@@ -359,6 +414,14 @@ class Tools_Config extends Config {
 				array(
 					'title' => 'Debug Log',
 					'data' => $this->get_debug_data( false ),
+				),
+				array(
+					'title' => 'Integration Settings',
+					'data' => $this->get_integrations_data(),
+				),
+				array(
+					'title' => 'Translations',
+					'data' => $this->get_translations_data(),
 				),
 				array(
 					'title' => 'Defined Constants',

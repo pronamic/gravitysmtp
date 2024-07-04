@@ -176,6 +176,7 @@ class Log_Details_Model {
 			'opened'                => $row['opened'],
 			'clicked'               => $row['clicked'],
 			'source'                => isset( $row['source'] ) ? $row['source'] : __( 'N/A', 'gravitysmtp' ),
+			'can_resend'            => $row['can_resend'],
 		);
 
 		return $details;

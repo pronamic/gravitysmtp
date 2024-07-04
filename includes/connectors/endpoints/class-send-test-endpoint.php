@@ -16,6 +16,7 @@ class Send_Test_Endpoint extends Endpoint {
 
 	const ACTION_NAME = 'send_test';
 
+	public $last_email_id = 0;
 
 	/**
 	 * @var Connector_Factory $connector_factory
@@ -151,6 +152,12 @@ class Send_Test_Endpoint extends Endpoint {
 			wp_send_json_error( __( 'Missing required parameters.', 'gravitysmtp' ), 400 );
 		}
 
+		$self = $this;
+
+		add_action( 'gravitysmtp_after_mail_created', function( $created_id ) use ( $self ) {
+			$self->last_email_id = $created_id;
+		}, 10, 1 );
+
 		$email     = filter_input( INPUT_POST, self::PARAM_EMAIL, FILTER_SANITIZE_EMAIL );
 		$connector = filter_input( INPUT_POST, self::PARAM_CONNECTOR_NAME );
 
@@ -167,7 +174,7 @@ class Send_Test_Endpoint extends Endpoint {
 			wp_send_json_success( array( 'email' => $email ) );
 		}
 
-		$full_log = $this->get_full_log_data( $success );
+		$full_log = $this->get_full_log_data( $this->last_email_id );
 		$issues   = array();
 		$log_copy = '';
 		if ( is_array( $full_log['technical_information']['log'] ) ) {

@@ -4,11 +4,13 @@ namespace Gravity_Forms\Gravity_SMTP\Utils;
 
 class Import_Data_Checker {
 
-	public $import_plugins_to_check = array(
-		'gravityformspostmark/postmark.php' => 'postmark',
-		'gravityformssendgrid/sendgrid.php' => 'sendgrid',
-		'gravityformsmailgun/mailgun.php'   => 'mailgun',
-	);
+		public $import_plugins_to_check = array(
+			'gravityformspostmark/postmark.php' => 'postmark',
+			'gravityformssendgrid/sendgrid.php' => 'sendgrid',
+			'gravityformsmailgun/mailgun.php'   => 'mailgun',
+			'wp-mail-smtp/wp_mail_smtp.php'     => 'wpmailsmtp',
+			'wp-mail-smtp-pro/wp_mail_smtp.php' => 'wpmailsmtp',
+		);
 
 	/**
 	 * Get a list of connector names that map to activated plugins we import from.
@@ -35,7 +37,7 @@ class Import_Data_Checker {
 	 * @return bool
 	 */
 	public function import_data_possible() {
-		return ! empty( $this->connectors_to_migrate() );
+		return true;
 	}
 
 }

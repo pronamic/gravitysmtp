@@ -93,8 +93,14 @@ class Mail_Handler {
 	}
 
 	public function mail( $to, $subject, $message, $headers = '', $attachments = array() ) {
-		$debug     = debug_backtrace();
-		$source    = $this->source_parser->get_source_from_trace( $debug );
+		// Re-send attempts put the source in the $headers array.
+		if ( is_array( $headers ) && isset( $headers['source'] ) ) {
+			$source = $headers['source'];
+		} else {
+			$debug  = debug_backtrace();
+			$source = $this->source_parser->get_source_from_trace( $debug );
+		}
+
 
 		/**
 		 * Allows external code to modify which connector type is used for sending this email.

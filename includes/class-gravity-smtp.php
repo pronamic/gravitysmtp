@@ -15,6 +15,7 @@ use Gravity_Forms\Gravity_SMTP\Data_Store\Plugin_Opts_Data_Store;
 use Gravity_Forms\Gravity_SMTP\Environment\Environment_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Handler\Handler_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Logging\Logging_Service_Provider;
+use Gravity_Forms\Gravity_SMTP\Migration\Migration_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Pages\Page_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Routing\Routing_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Telemetry\Telemetry_Service_Provider;
@@ -194,6 +195,7 @@ class Gravity_SMTP {
 		self::$container->add_provider( new Telemetry_Service_Provider() );
 		self::$container->add_provider( new Environment_Service_Provider() );
 		self::$container->add_provider( new Routing_Service_Provider() );
+		self::$container->add_provider( new Migration_Service_Provider() );
 	}
 
 	public static function get_base_url() {

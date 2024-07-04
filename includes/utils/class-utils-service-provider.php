@@ -10,6 +10,9 @@ use Gravity_Forms\Gravity_SMTP\Data_Store\Opts_Data_Store;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Plugin_Opts_Data_Store;
 use Gravity_Forms\Gravity_SMTP\Logging\Debug\Null_Logger;
 use Gravity_Forms\Gravity_SMTP\Logging\Debug\Null_Logging_Provider;
+use Gravity_Forms\Gravity_SMTP\Logging\Logging_Service_Provider;
+use Gravity_Forms\Gravity_SMTP\Models\Event_Model;
+use Gravity_Forms\Gravity_SMTP\Utils\Attachments_Saver;
 use Gravity_Forms\Gravity_SMTP\Utils\Header_Parser;
 use Gravity_Forms\Gravity_SMTP\Utils\Import_Data_Checker;
 use Gravity_Forms\Gravity_SMTP\Utils\Recipient_Parser;
@@ -29,6 +32,7 @@ class Utils_Service_Provider extends Service_Provider {
 	const RECIPIENT_PARSER    = 'recipient_parser';
 	const SOURCE_PARSER       = 'source_parser';
 	const FILTER_PARSER       = 'filter_parser';
+	const ATTACHMENTS_SAVER   = 'attachments_saver';
 
 	public function register( Service_Container $container ) {
 		$container->add( Connector_Service_Provider::DATA_STORE_CONST, function () {
@@ -80,6 +84,33 @@ class Utils_Service_Provider extends Service_Provider {
 		$container->add( self::FILTER_PARSER, function() {
 			return new SQL_Filter_Parser();
 		} );
+	}
+
+	public function init( \Gravity_Forms\Gravity_Tools\Service_Container $container ) {
+		add_action( 'gravitysmtp_after_mail_created', function ( $email_id, $email_data ) use ( $container ) {
+			if ( empty( $email_data['extra']['attachments'] ) ) {
+				return;
+			}
+
+			/**
+			 * @var Data_Store_Router $data
+			 */
+			$data             = $container->get( Connector_Service_Provider::DATA_STORE_ROUTER );
+			$save_attachments = $data->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_SAVE_ATTACHMENTS_ENABLED, 'false' );
+
+			if ( empty( $save_attachments ) || $save_attachments === 'false' ) {
+				return;
+			}
+
+			$container->get( self::ATTACHMENTS_SAVER )->save_attachments( $email_id, $email_data['extra']['attachments'] );
+			$email_data['extra']['attachments_saved'] = true;
+
+			/**
+			 * @var Event_Model $events
+			 */
+			$events = $container->get( Connector_Service_Provider::EVENT_MODEL );
+			$events->update( array( 'extra' => serialize( $email_data['extra'] ) ), $email_id );
+		}, 10, 2 );
 	}
 
 }

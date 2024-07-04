@@ -42,7 +42,7 @@ class Debug_Logger extends Logger {
 		$data      = $container->get( Connector_Service_Provider::DATA_STORE_ROUTER );
 		$enabled   = $data->get_plugin_setting( Tools_Config::SETTING_DEBUG_LOG_ENABLED, false );
 
-		if ( $enabled === false || $enabled === 0 || $enabled === '0' ) {
+		if ( $enabled === false || $enabled === 0 || $enabled === '0' || $enabled === 'false' ) {
 			return false;
 		}
 

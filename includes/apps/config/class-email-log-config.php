@@ -2453,6 +2453,53 @@ class Email_Log_Config extends Config {
 		);
 	}
 
+	public function get_log_data() {
+		$emails      = Gravity_SMTP::container()->get( Connector_Service_Provider::EVENT_MODEL );
+		$search_term = filter_input( INPUT_GET, 'search_term' );
+		$search_type = filter_input( INPUT_GET, 'search_type' );
+
+		if ( ! empty( $search_term ) ) {
+			$search_term = htmlspecialchars( $search_term );
+		}
+
+		if ( ! empty( $search_type ) ) {
+			$search_type = htmlspecialchars( $search_type );
+		}
+
+		$count = $emails->count( $search_term, $search_type );
+
+		$opts     = Gravity_SMTP::container()->get( Connector_Service_Provider::DATA_STORE_ROUTER );
+		$per_page = $opts->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_PER_PAGE, 20 );
+
+		return array(
+			'version'                  => GF_GRAVITY_SMTP_VERSION,
+			'route_path'               => admin_url( 'admin.php' ),
+			'ajax_url'                 => admin_url( 'admin-ajax.php' ),
+			'ajax_grid_pagination_url' => site_url( 'wp-content/plugins/gravitysmtp/includes/logging/endpoints/get-paginated-items.php' ),
+			'base_url'                 => admin_url( 'admin.php?page=gravitysmtp-activity-log' ),
+			'nav_item_param_key'       => 'tab',
+			'initial_row_count'        => $count,
+			'initial_load_timestamp'   => current_time( 'mysql', true ),
+			'rows_per_page'            => $per_page,
+			'data_grid'                => array(
+				'bulk_actions_options' => $this->get_bulk_actions(),
+				'columns'              => $this->get_columns(),
+				'column_style_props'   => $this->get_column_style_props(),
+				'data'                 => array(
+					'value'   => $this->get_data_rows(),
+					'default' => $this->get_demo_data_rows(),
+				),
+			),
+			'caps' => array(
+				Roles::VIEW_EMAIL_LOG           => current_user_can( Roles::VIEW_EMAIL_LOG ),
+				Roles::VIEW_EMAIL_LOG_DETAILS   => current_user_can( Roles::VIEW_EMAIL_LOG_DETAILS ),
+				Roles::DELETE_EMAIL_LOG         => current_user_can( Roles::DELETE_EMAIL_LOG ),
+				Roles::DELETE_EMAIL_LOG_DETAILS => current_user_can( Roles::DELETE_EMAIL_LOG_DETAILS ),
+				Roles::VIEW_EMAIL_LOG_PREVIEW   => current_user_can( Roles::VIEW_EMAIL_LOG_PREVIEW ),
+			),
+		);
+	}
+
 	public function get_data_rows() {
 		$emails           = Gravity_SMTP::container()->get( Connector_Service_Provider::EVENT_MODEL );
 		$recipient_parser = Gravity_SMTP::container()->get( Utils_Service_Provider::RECIPIENT_PARSER );
@@ -2596,62 +2643,16 @@ class Email_Log_Config extends Config {
 	}
 
 	public function data() {
-		$emails            = Gravity_SMTP::container()->get( Connector_Service_Provider::EVENT_MODEL );
 		$log_single_config = Gravity_SMTP::container()->get( App_Service_Provider::EMAIL_LOG_SINGLE_CONFIG );
-		$search_term       = filter_input( INPUT_GET, 'search_term' );
-		$search_type       = filter_input( INPUT_GET, 'search_type' );
-
-		if ( ! empty( $search_term ) ) {
-			$search_term = htmlspecialchars( $search_term );
-		}
-
-		if ( ! empty( $search_type ) ) {
-			$search_type = htmlspecialchars( $search_type );
-		}
-
-		$count = $emails->count( $search_term, $search_type );
-
-		$opts     = Gravity_SMTP::container()->get( Connector_Service_Provider::DATA_STORE_ROUTER );
-		$per_page = $opts->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_PER_PAGE, 20 );
 
 		return array(
 			'components' => array(
 				'activity_log' => array(
-					'data' => array(
-						'version'                  => GF_GRAVITY_SMTP_VERSION,
-						'route_path'               => admin_url( 'admin.php' ),
-						'ajax_url'                 => admin_url( 'admin-ajax.php' ),
-						'ajax_grid_pagination_url' => site_url( 'wp-content/plugins/gravitysmtp/includes/logging/endpoints/get-paginated-items.php' ),
-						'base_url'                 => admin_url( 'admin.php?page=gravitysmtp-activity-log' ),
-						'nav_item_param_key'       => 'tab',
-						'initial_row_count'        => $count,
-						'initial_load_timestamp'   => current_time( 'mysql', true ),
-						'rows_per_page'            => $per_page,
-						'data_grid'                => array(
-							'bulk_actions_options' => $this->get_bulk_actions(),
-							'columns'              => $this->get_columns(),
-							'column_style_props'   => $this->get_column_style_props(),
-							'data'                 => array(
-								'value'   => $this->get_data_rows(),
-								'default' => $this->get_demo_data_rows(),
-							),
-						),
-						'log_detail'               => array(
-							'default' => array(),
-							'value'   => array(),
-						),
-						'caps' => array(
-							Roles::VIEW_EMAIL_LOG           => current_user_can( Roles::VIEW_EMAIL_LOG ),
-							Roles::VIEW_EMAIL_LOG_DETAILS   => current_user_can( Roles::VIEW_EMAIL_LOG_DETAILS ),
-							Roles::DELETE_EMAIL_LOG         => current_user_can( Roles::DELETE_EMAIL_LOG ),
-							Roles::DELETE_EMAIL_LOG_DETAILS => current_user_can( Roles::DELETE_EMAIL_LOG_DETAILS ),
-							Roles::VIEW_EMAIL_LOG_PREVIEW   => current_user_can( Roles::VIEW_EMAIL_LOG_PREVIEW ),
-						),
-					),
+					'data'      => array_merge( $this->get_log_data(), $log_single_config->get_log_single_data() ),
 					'i18n'      => array_merge( $this->get_i18n(), $log_single_config->get_i18n() ),
 					'endpoints' => array(),
 				),
-			)
+			),
 		);
 	}
 
