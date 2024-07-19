@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Gravity SMTP 1.2.0\n"
+"Project-Id-Version: Gravity SMTP 1.2.1\n"
 "Report-Msgid-Bugs-To: https://gravityforms.com/support\n"
 "Last-Translator: Gravity Forms <support@gravityforms.com>\n"
 "Language-Team: Gravity Forms <support@gravityforms.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-07-03T15:23:55+00:00\n"
+"POT-Creation-Date: 2024-07-18T17:00:25+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: gravitysmtp\n"
@@ -1663,27 +1663,27 @@ msgstr ""
 msgid "Invalid license key."
 msgstr ""
 
-#: includes/connectors/class-connector-base.php:325
+#: includes/connectors/class-connector-base.php:327
 msgid "Default From Email"
 msgstr ""
 
-#: includes/connectors/class-connector-base.php:340
+#: includes/connectors/class-connector-base.php:342
 msgid "Force From Email"
 msgstr ""
 
-#: includes/connectors/class-connector-base.php:343
+#: includes/connectors/class-connector-base.php:345
 msgid "If Force Email is enabled, the Default From Email address will override other plugin settings for all outgoing emails."
 msgstr ""
 
-#: includes/connectors/class-connector-base.php:360
+#: includes/connectors/class-connector-base.php:362
 msgid "Default From Name"
 msgstr ""
 
-#: includes/connectors/class-connector-base.php:375
+#: includes/connectors/class-connector-base.php:377
 msgid "Force From Name"
 msgstr ""
 
-#: includes/connectors/class-connector-base.php:378
+#: includes/connectors/class-connector-base.php:380
 msgid "If Force Name is enabled, the Default From Name will override other plugin settings for all outgoing emails."
 msgstr ""
 
@@ -1742,39 +1742,39 @@ msgstr ""
 msgid "Gravity SMTP is taking care of sending your emails, so now you can focus on the content of your emails and leave the technical details to us."
 msgstr ""
 
-#: includes/connectors/endpoints/class-send-test-endpoint.php:171
+#: includes/connectors/endpoints/class-send-test-endpoint.php:173
 msgid "Test Email from Gravity SMTP"
 msgstr ""
 
-#: includes/connectors/endpoints/class-send-test-endpoint.php:186
+#: includes/connectors/endpoints/class-send-test-endpoint.php:188
 msgid "There was a problem sending the test email."
 msgstr ""
 
-#: includes/connectors/endpoints/class-send-test-endpoint.php:191
+#: includes/connectors/endpoints/class-send-test-endpoint.php:193
 msgid "Incorrect plugin settings, such as invalid SMTP credentials or expired API key."
 msgstr ""
 
-#: includes/connectors/endpoints/class-send-test-endpoint.php:192
+#: includes/connectors/endpoints/class-send-test-endpoint.php:194
 msgid "The SMTP server blocking the incoming connection."
 msgstr ""
 
-#: includes/connectors/endpoints/class-send-test-endpoint.php:193
+#: includes/connectors/endpoints/class-send-test-endpoint.php:195
 msgid "Your web host rejecting the connection."
 msgstr ""
 
-#: includes/connectors/endpoints/class-send-test-endpoint.php:196
+#: includes/connectors/endpoints/class-send-test-endpoint.php:198
 msgid "Triple check the plugin settings and ensure they are accurate, especially if you copy-pasted the values."
 msgstr ""
 
-#: includes/connectors/endpoints/class-send-test-endpoint.php:197
+#: includes/connectors/endpoints/class-send-test-endpoint.php:199
 msgid "Contact your web hosting provider to verify if your server allows outside connections and if any firewall or security policies are in place that could interfere."
 msgstr ""
 
-#: includes/connectors/endpoints/class-send-test-endpoint.php:198
+#: includes/connectors/endpoints/class-send-test-endpoint.php:200
 msgid "Consider using one of the other available integration types."
 msgstr ""
 
-#: includes/connectors/endpoints/class-send-test-endpoint.php:204
+#: includes/connectors/endpoints/class-send-test-endpoint.php:206
 msgid "Send a test error: %1$s"
 msgstr ""
 
@@ -1788,7 +1788,7 @@ msgid "Token is invalid or expired."
 msgstr ""
 
 #: includes/connectors/oauth/class-google-oauth-handler.php:198
-#: includes/connectors/oauth/class-microsoft-oauth-handler.php:222
+#: includes/connectors/oauth/class-microsoft-oauth-handler.php:224
 msgid "Unable to retrieve associated email."
 msgstr ""
 
@@ -1813,9 +1813,9 @@ msgstr ""
 
 #: includes/connectors/types/class-connector-brevo.php:75
 #: includes/connectors/types/class-connector-generic.php:169
-#: includes/connectors/types/class-connector-google.php:191
+#: includes/connectors/types/class-connector-google.php:197
 #: includes/connectors/types/class-connector-mailgun.php:94
-#: includes/connectors/types/class-connector-microsoft.php:165
+#: includes/connectors/types/class-connector-microsoft.php:169
 #: includes/connectors/types/class-connector-postmark.php:72
 #: includes/connectors/types/class-connector-sendgrid.php:64
 #: includes/logging/log/class-wp-mail-logger.php:62
@@ -1828,11 +1828,11 @@ msgstr ""
 
 #: includes/connectors/types/class-connector-brevo.php:271
 #: includes/connectors/types/class-connector-generic.php:234
-#: includes/connectors/types/class-connector-google.php:344
-#: includes/connectors/types/class-connector-google.php:520
+#: includes/connectors/types/class-connector-google.php:350
+#: includes/connectors/types/class-connector-google.php:526
 #: includes/connectors/types/class-connector-mailgun.php:341
-#: includes/connectors/types/class-connector-microsoft.php:313
-#: includes/connectors/types/class-connector-microsoft.php:525
+#: includes/connectors/types/class-connector-microsoft.php:317
+#: includes/connectors/types/class-connector-microsoft.php:529
 #: includes/connectors/types/class-connector-postmark.php:231
 #: includes/connectors/types/class-connector-sendgrid.php:229
 msgid "Configuration"
@@ -1953,68 +1953,68 @@ msgstr ""
 msgid "Starting email send for Google connector."
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:272
+#: includes/connectors/types/class-connector-google.php:278
 msgid "Google / Gmail Settings"
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:290
+#: includes/connectors/types/class-connector-google.php:296
 msgid "Before proceeding, make sure to save your settings with the Client ID and Client Secret."
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:300
+#: includes/connectors/types/class-connector-google.php:306
 msgid "Read our Google / Gmail documentation"
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:330
+#: includes/connectors/types/class-connector-google.php:336
 msgid "Error Connecting to Google. Check your credentials and try again."
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:370
+#: includes/connectors/types/class-connector-google.php:376
 msgid "To obtain a Client ID from Google / Gmail, log in to your {{link}}Google Cloud Console{{link}} and generate the Client ID."
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:375
+#: includes/connectors/types/class-connector-google.php:381
 msgid "Client ID"
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:402
+#: includes/connectors/types/class-connector-google.php:408
 msgid "To obtain a Client Secret from Google / Gmail, log in to your {{link}}Google Cloud Console{{link}} and generate the Client ID."
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:407
-#: includes/connectors/types/class-connector-microsoft.php:376
+#: includes/connectors/types/class-connector-google.php:413
+#: includes/connectors/types/class-connector-microsoft.php:380
 msgid "Client Secret"
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:428
-#: includes/connectors/types/class-connector-microsoft.php:397
-#: includes/connectors/types/class-connector-microsoft.php:429
+#: includes/connectors/types/class-connector-google.php:434
+#: includes/connectors/types/class-connector-microsoft.php:401
+#: includes/connectors/types/class-connector-microsoft.php:433
 msgid "Copy"
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:431
+#: includes/connectors/types/class-connector-google.php:437
 msgid "Authorized redirect URI"
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:443
+#: includes/connectors/types/class-connector-google.php:449
 msgid "Copy this URL into the \"Authorized redirect URIs\" field of your Google web application."
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:453
-#: includes/connectors/types/class-connector-microsoft.php:454
+#: includes/connectors/types/class-connector-google.php:459
+#: includes/connectors/types/class-connector-microsoft.php:458
 msgid "Authorization"
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:467
+#: includes/connectors/types/class-connector-google.php:473
 msgid "Sign in with Google"
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:496
-#: includes/connectors/types/class-connector-microsoft.php:501
+#: includes/connectors/types/class-connector-google.php:502
+#: includes/connectors/types/class-connector-microsoft.php:505
 msgid "Connected with email account:"
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:511
+#: includes/connectors/types/class-connector-google.php:517
 msgid "Disconnect from Google"
 msgstr ""
 
@@ -2077,55 +2077,55 @@ msgstr ""
 msgid "Starting email send for Microsoft connector."
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:241
+#: includes/connectors/types/class-connector-microsoft.php:245
 msgid "365 / Outlook Settings"
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:259
+#: includes/connectors/types/class-connector-microsoft.php:263
 msgid "Please click the button below to initiate a connection with your Microsoft account. Remember to fill out both the Client ID and Client Secret fields before proceeding."
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:269
+#: includes/connectors/types/class-connector-microsoft.php:273
 msgid "Read our Microsoft 365 / Outlook documentation"
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:299
+#: includes/connectors/types/class-connector-microsoft.php:303
 msgid "Error Connecting to Microsoft. Check your credentials and try again."
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:339
+#: includes/connectors/types/class-connector-microsoft.php:343
 msgid "To obtain an Application ID from 365 / Outlook, login to your {{link}}Microsoft Azure{{link}} dashboard and generate an Application ID."
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:344
+#: includes/connectors/types/class-connector-microsoft.php:348
 msgid "Application ID"
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:371
+#: includes/connectors/types/class-connector-microsoft.php:375
 msgid "To obtain a Client Secret password, log in to your {{link}}Microsoft Azure{{link}} dashboard and generate a new client secret. Then, copy the value into this field."
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:400
+#: includes/connectors/types/class-connector-microsoft.php:404
 msgid "Redirect URI (Personal Accounts)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:412
+#: includes/connectors/types/class-connector-microsoft.php:416
 msgid "If your app is set up to support Personal Accounts, copy this URL and enter it as a Redirect URI in your App Settings."
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:432
+#: includes/connectors/types/class-connector-microsoft.php:436
 msgid "Redirect URI (School or Work Accounts)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:444
+#: includes/connectors/types/class-connector-microsoft.php:448
 msgid "If your app is set up to support School and Work accounts, copy this URL and enter it as a Redirect URI in your App Settings."
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:467
+#: includes/connectors/types/class-connector-microsoft.php:471
 msgid "Sign in with Microsoft"
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:516
+#: includes/connectors/types/class-connector-microsoft.php:520
 msgid "Disconnect from Microsoft"
 msgstr ""
 
@@ -2217,6 +2217,10 @@ msgstr ""
 msgid "Gravity SMTP successfully uninstalled."
 msgstr ""
 
+#: includes/errors/class-error-handler.php:50
+msgid "A fatal error occured when sending"
+msgstr ""
+
 #: includes/handler/endpoints/class-resend-email-endpoint.php:58
 msgid "Attempted to resend email %s, but could not due to either the message body not being stored, or attachments not being saved."
 msgstr ""
@@ -2254,7 +2258,7 @@ msgstr ""
 msgid "Unauthorized"
 msgstr ""
 
-#: includes/migration/endpoints/class-migrate-settings-endpoint.php:58
+#: includes/migration/endpoints/class-migrate-settings-endpoint.php:63
 msgid "Could not find handler for migration type: "
 msgstr ""
 
@@ -2278,7 +2282,7 @@ msgstr ""
 msgid "Info"
 msgstr ""
 
-#: includes/models/class-event-model.php:358
+#: includes/models/class-event-model.php:370
 #: includes/models/class-log-details-model.php:178
 #: includes/utils/class-source-parser.php:26
 #: includes/utils/class-source-parser.php:89

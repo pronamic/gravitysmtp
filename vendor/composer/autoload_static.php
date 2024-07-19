@@ -64,6 +64,8 @@ class ComposerStaticInit685a2d54c339503f419b16c4c2afb165
         'Gravity_Forms\\Gravity_SMTP\\Environment\\Endpoints\\Uninstall_Endpoint' => __DIR__ . '/../..' . '/includes/environment/endpoints/class-uninstall-endpoint.php',
         'Gravity_Forms\\Gravity_SMTP\\Environment\\Environment_Details' => __DIR__ . '/../..' . '/includes/environment/class-environment-details.php',
         'Gravity_Forms\\Gravity_SMTP\\Environment\\Environment_Service_Provider' => __DIR__ . '/../..' . '/includes/environment/class-environment-service-provider.php',
+        'Gravity_Forms\\Gravity_SMTP\\Errors\\Error_Handler' => __DIR__ . '/../..' . '/includes/errors/class-error-handler.php',
+        'Gravity_Forms\\Gravity_SMTP\\Errors\\Error_Handler_Service_Provider' => __DIR__ . '/../..' . '/includes/errors/class-error-handler-service-provider.php',
         'Gravity_Forms\\Gravity_SMTP\\Gravity_SMTP' => __DIR__ . '/../..' . '/includes/class-gravity-smtp.php',
         'Gravity_Forms\\Gravity_SMTP\\Handler\\Config\\Handler_Endpoints_Config' => __DIR__ . '/../..' . '/includes/handler/config/class-handler-endpoints-config.php',
         'Gravity_Forms\\Gravity_SMTP\\Handler\\Endpoints\\Resend_Email_Endpoint' => __DIR__ . '/../..' . '/includes/handler/endpoints/class-resend-email-endpoint.php',

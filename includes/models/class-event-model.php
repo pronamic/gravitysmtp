@@ -32,6 +32,13 @@ class Event_Model {
 	protected $recipient_parser;
 
 	/**
+	 * The ID of the most-recently-created record.
+	 *
+	 * @var int
+	 */
+	protected $latest_id;
+
+	/**
 	 * @var SQL_Filter_Parser
 	 */
 	protected $filter_parser;
@@ -67,6 +74,10 @@ class Event_Model {
 		global $wpdb;
 
 		return $wpdb->prefix . $this->table_name;
+	}
+
+	public function get_latest_id() {
+		return $this->latest_id;
 	}
 
 	public function all() {
@@ -275,6 +286,7 @@ class Event_Model {
 		);
 
 		$created_id = $wpdb->insert_id;
+		$this->latest_id = $created_id;
 
 		do_action( 'gravitysmtp_after_mail_created', $created_id, compact( 'service', 'status', 'to', 'from', 'subject', 'message', 'extra' ) );
 

@@ -152,6 +152,8 @@ class Send_Test_Endpoint extends Endpoint {
 			wp_send_json_error( __( 'Missing required parameters.', 'gravitysmtp' ), 400 );
 		}
 
+		$this->override_error_handling();
+
 		$self = $this;
 
 		add_action( 'gravitysmtp_after_mail_created', function( $created_id ) use ( $self ) {
@@ -208,6 +210,11 @@ class Send_Test_Endpoint extends Endpoint {
 		);
 
 		wp_send_json_error( $error_data, 500 );
+	}
+
+	private function override_error_handling() {
+		ini_set( 'display_errors', 0 );
+		unset( $GLOBALS['wp_locale'] );
 	}
 
 	private function get_full_log_data( $email_id ) {

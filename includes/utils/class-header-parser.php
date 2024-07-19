@@ -45,6 +45,11 @@ class Header_Parser {
 				continue;
 			}
 
+			if ( is_a( $parsed_value, Recipient_Collection::class ) ) {
+				$parsed[ $parsed_key ] = $parsed_value;
+				continue;
+			}
+
 			$parsed_value = $this->get_email_from_header( $key, $parsed_value );
 
 			$parsed[ $parsed_key ] = $parsed_value;

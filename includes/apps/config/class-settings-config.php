@@ -55,7 +55,7 @@ class Settings_Config extends Config {
 		$save_email_body_enabled  = ! empty( $save_email_body_enabled ) ? $save_email_body_enabled !== 'false' : true;
 		$save_attachments_enabled = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_SAVE_ATTACHMENTS_ENABLED, 'false' );
 		$save_attachments_enabled = ! empty( $save_attachments_enabled ) ? $save_attachments_enabled !== 'false' : false;
-		$email_log_retention      = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_RETENTION, 0 );
+		$email_log_retention      = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_RETENTION, 7 );
 
 		$debug_log_enabled   = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_DEBUG_LOG_ENABLED, 'false' );
 		$debug_log_enabled   = ! empty( $debug_log_enabled ) ? $debug_log_enabled !== 'false' : false;

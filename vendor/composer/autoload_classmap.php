@@ -59,6 +59,8 @@ return array(
     'Gravity_Forms\\Gravity_SMTP\\Environment\\Endpoints\\Uninstall_Endpoint' => $baseDir . '/includes/environment/endpoints/class-uninstall-endpoint.php',
     'Gravity_Forms\\Gravity_SMTP\\Environment\\Environment_Details' => $baseDir . '/includes/environment/class-environment-details.php',
     'Gravity_Forms\\Gravity_SMTP\\Environment\\Environment_Service_Provider' => $baseDir . '/includes/environment/class-environment-service-provider.php',
+    'Gravity_Forms\\Gravity_SMTP\\Errors\\Error_Handler' => $baseDir . '/includes/errors/class-error-handler.php',
+    'Gravity_Forms\\Gravity_SMTP\\Errors\\Error_Handler_Service_Provider' => $baseDir . '/includes/errors/class-error-handler-service-provider.php',
     'Gravity_Forms\\Gravity_SMTP\\Gravity_SMTP' => $baseDir . '/includes/class-gravity-smtp.php',
     'Gravity_Forms\\Gravity_SMTP\\Handler\\Config\\Handler_Endpoints_Config' => $baseDir . '/includes/handler/config/class-handler-endpoints-config.php',
     'Gravity_Forms\\Gravity_SMTP\\Handler\\Endpoints\\Resend_Email_Endpoint' => $baseDir . '/includes/handler/endpoints/class-resend-email-endpoint.php',

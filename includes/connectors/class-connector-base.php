@@ -209,19 +209,6 @@ abstract class Connector_Base {
 	 * @return void
 	 */
 	public function init( $to, $subject, $message, $headers = '', $attachments = array(), $source = '' ) {
-		$to = $this->recipient_parser->parse( $to );
-
-		$parsed_headers = $this->get_parsed_headers( $headers );
-
-		if ( isset( $parsed_headers['from'] ) ) {
-			$from_data = $this->get_email_from_header( 'From', $parsed_headers['from'] );
-			$from      = $from_data->recipients()[0]->email();
-			$from_name = $from_data->recipients()[0]->name();
-		} else {
-			$from      = '';
-			$from_name = '';
-		}
-
 		/**
 		 * Filters the wp_mail() arguments.
 		 *
@@ -230,7 +217,22 @@ abstract class Connector_Base {
 		 * @param array $args A compacted array of wp_mail() arguments, including the "to" email,
 		 *                    subject, message, headers, and attachments values.
 		 */
-		$this->atts = apply_filters( 'wp_mail', compact( 'to', 'subject', 'message', 'headers', 'attachments', 'from', 'from_name', 'source' ) );
+		$atts = apply_filters( 'wp_mail', compact( 'to', 'subject', 'message', 'headers', 'attachments', 'from', 'from_name', 'source' ) );
+
+		$atts['to'] = $this->recipient_parser->parse( $atts['to'] );
+
+		$parsed_headers = $this->get_parsed_headers( $atts['headers'] );
+
+		if ( isset( $parsed_headers['from'] ) ) {
+			$from_data = $this->get_email_from_header( 'From', $parsed_headers['from'] );
+			$atts['from']      = $from_data->recipients()[0]->email();
+			$atts['from_name'] = $from_data->recipients()[0]->name();
+		} else {
+			$atts['from']      = '';
+			$atts['from_name'] = '';
+		}
+
+		$this->atts = $atts;
 	}
 
 	/**

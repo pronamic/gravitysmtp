@@ -91,9 +91,11 @@ class Microsoft_Oauth_Handler extends Oauth_Handler_Base {
 			return new \WP_Error( __( 'Token is invalid or expired.', 'gravitysmtp' ) );
 		}
 
-		$new_token = $response_body['access_token'];
+		$new_token     = $response_body['access_token'];
+		$refresh_token = $response_body['refresh_token'];
 
 		$this->store_access_token( $new_token );
+		$this->store_refresh_token( $refresh_token );
 
 		return $new_token;
 	}

@@ -27,6 +27,11 @@ class Migrate_Settings_Endpoint extends Endpoint {
 	protected $data;
 
 	/**
+	 * @var string
+	 */
+	protected $base_namespace;
+
+	/**
 	 * @var array
 	 */
 	protected $connectors;

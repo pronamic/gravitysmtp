@@ -146,7 +146,11 @@ class Connector_Microsoft extends Connector_Base {
 		}
 
 		$raw   = $this->get_raw_message();
-		$token = $this->get_setting( self::SETTING_ACCESS_TOKEN, false );
+		/**
+		 * @var Microsoft_Oauth_Handler $oauth_handler
+		 */
+		$oauth_handler = Gravity_SMTP::container()->get( Connector_Service_Provider::MICROSOFT_OAUTH_HANDLER );
+		$token         = $oauth_handler->get_access_token();
 
 		$args = array(
 			'body'    => $raw,
