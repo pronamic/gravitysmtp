@@ -2,23 +2,23 @@
     "packages": [
         {
             "name": "gravityforms/gravity-tools",
-            "version": "0.2.11",
-            "version_normalized": "0.2.11.0",
+            "version": "0.2.13",
+            "version_normalized": "0.2.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gravityforms/gravity-tools.git",
-                "reference": "c78cae85f9471e40cd051290c0858acce5a65aad"
+                "reference": "b6cb08aaf918684e48e4e0b66993b1f34b2a6917"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gravityforms/gravity-tools/zipball/c78cae85f9471e40cd051290c0858acce5a65aad",
-                "reference": "c78cae85f9471e40cd051290c0858acce5a65aad",
+                "url": "https://api.github.com/repos/gravityforms/gravity-tools/zipball/b6cb08aaf918684e48e4e0b66993b1f34b2a6917",
+                "reference": "b6cb08aaf918684e48e4e0b66993b1f34b2a6917",
                 "shasum": ""
             },
             "require-dev": {
                 "phpunit/phpunit": ">4.0 <7"
             },
-            "time": "2024-06-05T21:27:59+00:00",
+            "time": "2024-07-22T19:00:21+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -35,7 +35,7 @@
             ],
             "description": "PHP libraries to support Gravity Forms applications.",
             "support": {
-                "source": "https://github.com/gravityforms/gravity-tools/tree/0.2.11"
+                "source": "https://github.com/gravityforms/gravity-tools/tree/0.2.13"
             },
             "install-path": "../gravityforms/gravity-tools"
         }

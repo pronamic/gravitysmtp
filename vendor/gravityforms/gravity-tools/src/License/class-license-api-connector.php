@@ -95,14 +95,14 @@ class License_API_Connector {
 	public function check_license( $key = false, $cache = true ) {
 		$license_info      = false;
 		$key               = $key ? trim( $key ) : $this->strategy->get_key();
-		$license_info_data = $this->cache->get( 'rg_gforms_license_info_' . $key );
+		$license_info_data = $this->cache->get( 'rg_gf_license_info_' . $key );
 
 		if ( $this->is_debug() ) {
 			$cache = false;
 		}
 
 		if ( $license_info_data && $cache ) {
-			$license_info = $this->common->safe_unserialize( $license_info_data, GF_API_Response::class );
+			$license_info = $this->common->safe_unserialize( $license_info_data, License_API_Response::class );
 			if ( $license_info ) {
 				return $license_info;
 			} else {
@@ -116,7 +116,7 @@ class License_API_Connector {
 		);
 
 		if ( $license_info->can_be_used() ) {
-			$this->cache->set( 'rg_gforms_license_info_' . $key, serialize( $license_info ), true, DAY_IN_SECONDS );
+			$this->cache->set( 'rg_gf_license_info_' . $key, serialize( $license_info ), true, DAY_IN_SECONDS );
 		}
 
 		return $license_info;

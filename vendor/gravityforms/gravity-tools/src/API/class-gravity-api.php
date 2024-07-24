@@ -288,6 +288,12 @@ class Gravity_Api {
 	 * @return array
 	 */
 	public function get_remote_post_params() {
+
+		// This can get called in contexts where this file isn't loaded. Require it here to avoid fatals.
+		if ( ! function_exists( 'get_plugins' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
 		global $wpdb;
 
 		$plugin_list = get_plugins();

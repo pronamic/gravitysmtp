@@ -71,6 +71,10 @@ class Resend_Email_Endpoint extends Endpoint {
 
 		$success = wp_mail( $extra['to'], $email['subject'], $email['message'], $headers, $extra['attachments'] );
 
+		if ( ! $success ) {
+			wp_send_json_error( __( 'Email could not be resent; check your logs for more details.', 'gravitysmtp' ) );
+		}
+
 		wp_send_json_success( $success );
 	}
 

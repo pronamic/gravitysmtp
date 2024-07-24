@@ -1,3 +1,8 @@
+### 1.2.2 | 2024-07-22
+- Fixed an issue that can cause license key checks to fire on every page load in some contexts.
+- Fixed an issue that causes failed resends to return a success message.
+- Fixed an issue that causes integration statuses to be incorrectly preserved after uninstalling the plugin.
+
 ### 1.2.1 | 2024-07-18
 - Changed the default email log retention period to 7 days.
 - Fixed a deprecation notice for PHP 8.2 and dynamic properties.

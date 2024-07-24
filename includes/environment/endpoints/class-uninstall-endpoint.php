@@ -24,6 +24,9 @@ class Uninstall_Endpoint extends Endpoint {
 		global $wpdb;
 		$query = $wpdb->prepare( "DELETE FROM {$wpdb->prefix}options WHERE option_name LIKE '%%%s%%'", 'gravitysmtp_' );
 		$wpdb->query( $query );
+
+		$query = $wpdb->prepare( "DELETE FROM {$wpdb->prefix}options WHERE option_name LIKE '%%%s%%'", 'gsmtp_' );
+		$wpdb->query( $query );
 	}
 
 	private function delete_tables() {

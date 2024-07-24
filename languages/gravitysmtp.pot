@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Gravity SMTP 1.2.1\n"
+"Project-Id-Version: Gravity SMTP 1.2.2\n"
 "Report-Msgid-Bugs-To: https://gravityforms.com/support\n"
 "Last-Translator: Gravity Forms <support@gravityforms.com>\n"
 "Language-Team: Gravity Forms <support@gravityforms.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-07-18T17:00:25+00:00\n"
+"POT-Creation-Date: 2024-07-23T16:00:18+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: gravitysmtp\n"
@@ -2227,6 +2227,10 @@ msgstr ""
 
 #: includes/handler/endpoints/class-resend-email-endpoint.php:60
 msgid "Email could not be resent as it was not stored with all required values."
+msgstr ""
+
+#: includes/handler/endpoints/class-resend-email-endpoint.php:75
+msgid "Email could not be resent; check your logs for more details."
 msgstr ""
 
 #: includes/logging/endpoints/class-delete-debug-logs-endpoint.php:54
