@@ -103,6 +103,8 @@ class Connector_Brevo extends Connector_Base {
 			'subject' => $atts['subject'],
 		);
 
+		$body['sender'] = array_filter( $body['sender'] );
+
 		// Setting content
 		$is_html = ! empty( $atts['headers']['content-type'] ) && strpos( $atts['headers']['content-type'], 'text/html' ) !== false;
 		if ( $is_html ) {

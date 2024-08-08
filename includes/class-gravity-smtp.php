@@ -12,7 +12,10 @@ use Gravity_Forms\Gravity_SMTP\Data_Store\Const_Data_Store;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Data_Store_Router;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Opts_Data_Store;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Plugin_Opts_Data_Store;
+use Gravity_Forms\Gravity_SMTP\Email_Management\Email_Management_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Environment\Environment_Service_Provider;
+use Gravity_Forms\Gravity_SMTP\Feature_Flags\Feature_Flag_Manager;
+use Gravity_Forms\Gravity_SMTP\Feature_Flags\Feature_Flags_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Errors\Error_Handler_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Handler\Handler_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Logging\Logging_Service_Provider;
@@ -39,6 +42,11 @@ class Gravity_SMTP {
 	 * @var Service_Container $container
 	 */
 	public static $container;
+
+	public static function pre_init() {
+		self::handle_feature_flags();
+		self::load_early_providers();
+	}
 
 	/**
 	 * Loads the required files.
@@ -176,16 +184,37 @@ class Gravity_SMTP {
 		return self::$container;
 	}
 
-	protected static function load_providers() {
-		$full_path = __FILE__;
-		self::$container = new Service_Container();
+	/**
+	 * Enable Feature Flags once they are ready for production.
+	 *
+	 * @return void
+	 */
+	public static function handle_feature_flags() {
+		// Enable Email Management Feature
+		add_action( 'plugins_loaded', function() {
+			Feature_Flag_Manager::add( 'wp_email_management', 'WP Email Management' );
+			Feature_Flag_Manager::enable_flag( 'wp_email_management' );
+		} );
+	}
 
-		// Common Providers
+	public static function load_early_providers() {
+		$full_path = __FILE__;
+
+		self::$container = new Service_Container();
 		self::$container->add_provider( new Users_Service_Provider() );
 		self::$container->add_provider( new Utils_Service_Provider() );
 		self::$container->add_provider( new Updates_Service_Provider( $full_path ) );
 		self::$container->add_provider( new Translations_Service_Provider() );
 		self::$container->add_provider( new Config_Collection_Service_Provider( 'gravitysmtp/v1' ) );
+		self::$container->add_provider( new Feature_Flags_Service_Provider() );
+	}
+
+	protected static function load_providers() {
+		if ( is_null( self::$container ) ) {
+			self::load_early_providers();
+		}
+
+		// Common Providers
 		self::$container->add_provider( new Connector_Service_Provider() );
 		self::$container->add_provider( new Assets_Service_Provider( self::get_base_url(), self::get_local_dev_base_url(), self::get_base_dir() ) );
 		self::$container->add_provider( new App_Service_Provider( self::get_base_url() ) );
@@ -198,6 +227,10 @@ class Gravity_SMTP {
 		self::$container->add_provider( new Routing_Service_Provider() );
 		self::$container->add_provider( new Migration_Service_Provider() );
 		self::$container->add_provider( new Error_Handler_Service_Provider() );
+
+		if ( Feature_Flag_Manager::is_enabled( 'wp_email_management' ) ) {
+			self::$container->add_provider( new Email_Management_Service_Provider() );
+		}
 	}
 
 	public static function get_base_url() {

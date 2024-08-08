@@ -61,6 +61,13 @@ class Connector_Config extends Config {
 					),
 				),
 			),
+			'tools'    => array(
+				'data' => array(
+					'integrations' => array(
+						$connector_data,
+					),
+				),
+			),
 		);
 
 		if ( $this->should_enqueue_setup_wizard() ) {

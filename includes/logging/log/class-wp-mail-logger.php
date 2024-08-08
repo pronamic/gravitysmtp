@@ -38,9 +38,26 @@ class WP_Mail_Logger {
 	public function create_log( $mail_info ) {
 		$source      = $this->source_parser->get_source_from_trace( debug_backtrace() );
 		$test_mode   = isset( $mail_info['test_mode'] ) ? $mail_info['test_mode'] : false;
-		$from_header = isset( $mail_info['headers']['From'] ) ? $mail_info['headers']['From'] : $mail_info['headers']['from'];
-		$froms       = $this->header_parser->get_email_from_header( 'From', $from_header );
-		$from        = $froms->first()->mailbox();
+
+		if ( empty( $mail_info['headers'] ) ) {
+			$mail_info['headers'] = array();
+		} elseif ( ! is_array( $mail_info['headers'] ) ) {
+			$mail_info['headers'] = explode( "\n", str_replace( "\r\n", "\n", $mail_info['headers'] ) );
+		}
+
+		$from_header = isset( $mail_info['headers']['From'] ) ? $mail_info['headers']['From'] : '';
+
+		if ( empty( $from_header ) ) {
+			$from_header = isset( $mail_info['headers']['from'] ) ? $mail_info['headers']['from'] : '';
+		}
+
+		$from = '';
+
+		if ( ! empty( $from_header ) ) {
+			$froms       = $this->header_parser->get_email_from_header( 'From', $from_header );
+			$from        = $froms->first()->mailbox();
+		}
+
 		$email_id    = $this->events->create(
 			'wp_mail',
 			'sent',

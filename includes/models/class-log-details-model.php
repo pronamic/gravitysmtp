@@ -91,6 +91,13 @@ class Log_Details_Model {
 		$wpdb->delete( $this->get_table_name(), array( 'event_id' => $id ) );
 	}
 
+	public function delete_all() {
+		global $wpdb;
+		$table_name = $this->get_table_name();
+
+		$wpdb->query( "TRUNCATE TABLE $table_name" );
+	}
+
 	public function get_next_id( $current_id ) {
 		global $wpdb;
 

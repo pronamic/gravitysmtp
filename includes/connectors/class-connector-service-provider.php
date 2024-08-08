@@ -382,7 +382,8 @@ class Connector_Service_Provider extends Config_Service_Provider {
 		add_filter( 'gform_localized_script_data_gravitysmtp_admin_config', function ( $data ) {
 			if (
 				empty( $data['components']['settings']['data']['integrations'] ) &&
-				empty( $data['components']['setup_wizard']['data']['integrations'] )
+				empty( $data['components']['setup_wizard']['data']['integrations'] ) &&
+				empty( $data['components']['tools']['data']['integrations'] )
 			) {
 				return $data;
 			}
@@ -404,7 +405,7 @@ class Connector_Service_Provider extends Config_Service_Provider {
 			);
 
 			// todo: setup wizard data should only be injected if should display is true for the app: includes/apps/setup-wizard/config/class-setup-wizard-config.php:18
-			foreach ( array( 'settings', 'setup_wizard' ) as $app ) {
+			foreach ( array( 'settings', 'setup_wizard', 'tools' ) as $app ) {
 				if ( empty( $data['components'][ $app ]['data']['integrations'] ) ) {
 					continue;
 				}
@@ -471,9 +472,11 @@ class Connector_Service_Provider extends Config_Service_Provider {
 	}
 
 	private function register_connector_data() {
+		$is_ajax = defined( 'DOING_AJAX' ) && DOING_AJAX;
+
 		$page = filter_input( INPUT_GET, 'page' );
 
-		if ( ! is_string( $page ) ) {
+		if ( ! $is_ajax && ! is_string( $page ) ) {
 			return;
 		}
 
@@ -487,6 +490,13 @@ class Connector_Service_Provider extends Config_Service_Provider {
 			'gravitysmtp-activity-log',
 			'gravitysmtp-tools'
 		) );
+
+		if ( $is_ajax ) {
+			$action = filter_input( INPUT_POST, 'action' );
+			if ( $action === 'migrate_settings' ) {
+				$should_register = true;
+			}
+		}
 
 		if ( empty( $should_register ) ) {
 			return;

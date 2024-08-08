@@ -11,8 +11,9 @@ use Gravity_Forms\Gravity_Tools\Endpoints\Endpoint;
 
 class Send_Test_Endpoint extends Endpoint {
 
-	const PARAM_EMAIL = 'email';
-	const PARAM_CONNECTOR_NAME = 'connector_name';
+	const PARAM_EMAIL          = 'email';
+	const PARAM_CONNECTOR_TYPE = 'connector_type';
+	const PARAM_AS_HTML        = 'as_html';
 
 	const ACTION_NAME = 'send_test';
 
@@ -45,6 +46,8 @@ class Send_Test_Endpoint extends Endpoint {
 
 	protected $required_params = array(
 		self::PARAM_EMAIL,
+		self::PARAM_CONNECTOR_TYPE,
+		self::PARAM_AS_HTML,
 	);
 
 	public function __construct( $connector_factory, $plugin_data_store, $emails_model, $log_model, $email_endpoint ) {
@@ -59,7 +62,13 @@ class Send_Test_Endpoint extends Endpoint {
 		return self::ACTION_NAME;
 	}
 
-	protected function get_test_email_markup() {
+	protected function get_test_email_markup( $as_html ) {
+		if ( empty( $as_html ) ) {
+			return esc_html__( 'Test Successful', 'gravitysmtp' ) . "\r\n\r\n" .
+				esc_html__( 'Congratulations! Gravity SMTP is sending emails correctly!', 'gravitysmtp' ) . "\r\n" .
+				esc_html__( 'Gravity SMTP is taking care of sending your emails, so now you can focus on the content of your emails and leave the technical details to us.', 'gravitysmtp' );
+		}
+
 		$image_base_url = \Gravity_Forms\Gravity_SMTP\Gravity_SMTP::get_base_url() . '/assets/images/send-test/';
 
 		return '<!DOCTYPE html>
@@ -161,16 +170,24 @@ class Send_Test_Endpoint extends Endpoint {
 		}, 10, 1 );
 
 		$email     = filter_input( INPUT_POST, self::PARAM_EMAIL, FILTER_SANITIZE_EMAIL );
-		$connector = filter_input( INPUT_POST, self::PARAM_CONNECTOR_NAME );
+		$connector = filter_input( INPUT_POST, self::PARAM_CONNECTOR_TYPE );
+		$as_html   = filter_input( INPUT_POST, self::PARAM_AS_HTML );
+		$connector = htmlspecialchars( $connector );
+		$as_html   = htmlspecialchars( $as_html ) !== 'false';
 
-		$admin_email = get_option( 'admin_email' );
+		$admin_email  = get_option( 'admin_email' );
+		$content_type = $as_html ? 'text/html' : 'text/plain';
 
 		$headers = array(
-			'content-type' => 'Content-type: text/html',
+			'content-type' => 'Content-type: ' . $content_type,
 			'from'         => 'From: ' . $admin_email,
 		);
 
-		$success = wp_mail( array( 'email' => $email ), __( 'Test Email from Gravity SMTP', 'gravitysmtp' ), $this->get_test_email_markup(), $headers, array(), 'GravitySMTP Test' );
+		add_filter( 'gravitysmtp_connector_for_sending', function( $current_connector, $email_args ) use ( $connector ) {
+			return array( 'force' => true, 'connector' => $connector );
+		}, 8, 2 );
+
+		$success = wp_mail( array( 'email' => $email ), __( 'Test Email from Gravity SMTP', 'gravitysmtp' ), $this->get_test_email_markup( $as_html ), $headers, array(), 'GravitySMTP Test' );
 
 		if ( $success === true ) {
 			wp_send_json_success( array( 'email' => $email ) );

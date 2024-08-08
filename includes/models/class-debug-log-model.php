@@ -60,6 +60,10 @@ class Debug_Log_Model {
 		return $this->hydrate( $results );
 	}
 
+	public function delete_all() {
+		$this->clear();
+	}
+
 	public function clear() {
 		global $wpdb;
 

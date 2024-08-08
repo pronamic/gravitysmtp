@@ -5,6 +5,7 @@ namespace Gravity_Forms\Gravity_SMTP\Apps\Config;
 use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Plugin_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
+use Gravity_Forms\Gravity_SMTP\Users\Roles;
 use Gravity_Forms\Gravity_Tools\Config;
 
 class Apps_Config extends Config {
@@ -52,6 +53,7 @@ class Apps_Config extends Config {
 					/* translators: {{learn_link}} tags are replaced by opening and closing tags for a link to our learn more page for usage */
 					'general_settings_usage_analytics_help_text' => esc_html__( 'We love improving the email sending experience for everyone in our community. By enabling analytics you can help us learn more about how our customers use Gravity SMTP. {{learn_link}}Learn more{{learn_link}}', 'gravitysmtp' ),
 					'snackbar_api_save_success'                  => esc_html__( 'API settings saved', 'gravitysmtp' ),
+					'snackbar_generic_update_error'              => esc_html__( 'Error saving setting', 'gravitysmtp' ),
 					'snackbar_generic_update_success'            => esc_html__( 'Setting successfully updated', 'gravitysmtp' ),
 					'snackbar_send_test_mail_error'              => esc_html__( 'Could not send test email; please check your logs', 'gravitysmtp' ),
 					'snackbar_send_test_mail_success'            => esc_html__( 'Email successfully sent', 'gravitysmtp' ),
@@ -64,6 +66,37 @@ class Apps_Config extends Config {
 					'test_mode_warning_notice'                   => esc_html__( 'Test mode is enabled, emails will not be sent.', 'gravitysmtp' ),
 				),
 				'data' => array(
+					'constants' => array(
+						'CAPS_DELETE_DEBUG_LOG'               => Roles::DELETE_DEBUG_LOG,
+						'CAPS_DELETE_EMAIL_LOG'               => Roles::DELETE_EMAIL_LOG,
+						'CAPS_DELETE_EMAIL_LOG_DETAILS'       => Roles::DELETE_EMAIL_LOG_DETAILS,
+						'CAPS_EDIT_DEBUG_LOG'                 => Roles::EDIT_DEBUG_LOG,
+						'CAPS_EDIT_EMAIL_LOG'                 => Roles::EDIT_EMAIL_LOG,
+						'CAPS_EDIT_EMAIL_LOG_DETAILS'         => Roles::EDIT_EMAIL_LOG_DETAILS,
+						'CAPS_EDIT_EMAIL_LOG_SETTINGS'        => Roles::EDIT_EMAIL_LOG_SETTINGS,
+						'CAPS_EDIT_EMAIL_MANAGEMENT_SETTINGS' => Roles::EDIT_EMAIL_MANAGEMENT_SETTINGS,
+						'CAPS_EDIT_GENERAL_SETTINGS'          => Roles::EDIT_GENERAL_SETTINGS,
+						'CAPS_EDIT_INTEGRATIONS'              => Roles::EDIT_INTEGRATIONS,
+						'CAPS_EDIT_LICENSE_KEY'               => Roles::EDIT_LICENSE_KEY,
+						'CAPS_EDIT_TEST_MODE'                 => Roles::EDIT_TEST_MODE,
+						'CAPS_EDIT_UNINSTALL'                 => Roles::EDIT_UNINSTALL,
+						'CAPS_EDIT_USAGE_ANALYTICS'           => Roles::EDIT_USAGE_ANALYTICS,
+						'CAPS_VIEW_DEBUG_LOG'                 => Roles::VIEW_DEBUG_LOG,
+						'CAPS_VIEW_EMAIL_LOG'                 => Roles::VIEW_EMAIL_LOG,
+						'CAPS_VIEW_EMAIL_LOG_DETAILS'         => Roles::VIEW_EMAIL_LOG_DETAILS,
+						'CAPS_VIEW_EMAIL_LOG_PREVIEW'         => Roles::VIEW_EMAIL_LOG_PREVIEW,
+						'CAPS_VIEW_EMAIL_LOG_SETTINGS'        => Roles::VIEW_EMAIL_LOG_SETTINGS,
+						'CAPS_VIEW_EMAIL_MANAGEMENT_SETTINGS' => Roles::VIEW_EMAIL_MANAGEMENT_SETTINGS,
+						'CAPS_VIEW_GENERAL_SETTINGS'          => Roles::VIEW_GENERAL_SETTINGS,
+						'CAPS_VIEW_INTEGRATIONS'              => Roles::VIEW_INTEGRATIONS,
+						'CAPS_VIEW_LICENSE_KEY'               => Roles::VIEW_LICENSE_KEY,
+						'CAPS_VIEW_TEST_MODE'                 => Roles::VIEW_TEST_MODE,
+						'CAPS_VIEW_TOOLS'                     => Roles::VIEW_TOOLS,
+						'CAPS_VIEW_TOOLS_SENDATEST'           => Roles::VIEW_TOOLS_SENDATEST,
+						'CAPS_VIEW_TOOLS_SYSTEMREPORT'        => Roles::VIEW_TOOLS_SYSTEMREPORT,
+						'CAPS_VIEW_UNINSTALL'                 => Roles::VIEW_UNINSTALL,
+						'CAPS_VIEW_USAGE_ANALYTICS'           => Roles::VIEW_USAGE_ANALYTICS,
+					),
 					'debug_log_enabled'       => $debug_log_enabled,
 					'param_keys'              => array(
 						'license_key'         => Save_Plugin_Settings_Endpoint::PARAM_LICENSE_KEY,

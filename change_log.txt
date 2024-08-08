@@ -1,3 +1,13 @@
+### 1.3.0 | 2024-08-07
+- Added an email management screen to allow granular control over the sending of WordPress core emails.
+- Fixed an issue that could cause the Setup Wizard to display incorrect migrated settings.
+- Fixed an issue that causes special characters to be improperly encoded in the Microsoft integration.
+- Fixed an issue that causes emails with malformed headers to fail sending when no integration is enabled.
+- Updated the "Send a Test" screen to allow the selection of any configured integration for testing.
+- Updated the "Send a Test" screen to provide control over whether or not to send HTML in the email body.
+- API: Added Feature Flags architecture.
+- API: Added the [`gravitysmtp_managed_email_types`](https://docs.gravitysmtp.com/gravitysmtp-managed-email-types) filter to control/extend what email types appear on the email management screen.
+
 ### 1.2.2 | 2024-07-22
 - Fixed an issue that can cause license key checks to fire on every page load in some contexts.
 - Fixed an issue that causes failed resends to return a success message.

@@ -115,6 +115,12 @@ class Mail_Handler {
 		 * @return string $type The connector type to use for sending.
 		 */
 		$type = apply_filters( 'gravitysmtp_connector_for_sending', false, array( 'to' => $to, 'subject' => $subject, 'message' => $message, 'headers' => $headers, 'attachments' => $attachments ) );
+		$skip_retry =false;
+
+		if ( is_array( $type ) && isset( $type['force'] ) ) {
+			$skip_retry = true;
+			$type = $type['connector'];
+		}
 
 		// Either not connector is defined, or the router has determined that this email shouldn't send.
 		if ( $type === false ) {
@@ -128,6 +134,10 @@ class Mail_Handler {
 
 		if ( $send === true ) {
 			return true;
+		}
+
+		if ( $send !== true && $skip_retry ) {
+			return false;
 		}
 
 		return $this->mail( $to, $subject, $message, $headers, $attachments );

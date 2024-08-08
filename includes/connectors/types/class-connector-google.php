@@ -140,6 +140,8 @@ class Connector_Google extends Connector_Base {
 			$this->php_mailer->ContentType = 'text/plain';
 		}
 
+		$this->php_mailer->CharSet = 'UTF-8';
+
 		$additional_headers = $this->get_filtered_message_headers();
 
 		if ( ! empty( $additional_headers ) ) {

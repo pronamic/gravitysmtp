@@ -16,6 +16,9 @@ class Roles {
 	const VIEW_GENERAL_SETTINGS = 'gravitysmtp_view_general_settings';
 	const EDIT_GENERAL_SETTINGS = 'gravitysmtp_edit_general_settings';
 
+	const VIEW_EMAIL_MANAGEMENT_SETTINGS = 'gravitysmtp_view_email_management_settings';
+	const EDIT_EMAIL_MANAGEMENT_SETTINGS = 'gravitysmtp_edit_email_management_settings';
+
 	const VIEW_LICENSE_KEY = 'gravitysmtp_view_license_key';
 	const EDIT_LICENSE_KEY = 'gravitysmtp_edit_license_key';
 
@@ -42,8 +45,6 @@ class Roles {
 	const VIEW_TOOLS_SENDATEST    = 'gravitysmtp_view_tools_sendatest';
 	const VIEW_TOOLS_SYSTEMREPORT = 'gravitysmtp_view_tools_systemreport';
 
-	const LAUNCH_SETUP_WIZARD = 'gravitysmtp_launch_setup_wizard';
-
 	private $caps = array(
 		self::VIEW_EMAIL_LOG,
 		self::EDIT_EMAIL_LOG,
@@ -54,6 +55,8 @@ class Roles {
 		self::VIEW_EMAIL_LOG_PREVIEW,
 		self::VIEW_GENERAL_SETTINGS,
 		self::EDIT_GENERAL_SETTINGS,
+		self::VIEW_EMAIL_MANAGEMENT_SETTINGS,
+		self::EDIT_EMAIL_MANAGEMENT_SETTINGS,
 		self::VIEW_LICENSE_KEY,
 		self::EDIT_LICENSE_KEY,
 		self::VIEW_TEST_MODE,
@@ -73,7 +76,6 @@ class Roles {
 		self::VIEW_TOOLS,
 		self::VIEW_TOOLS_SENDATEST,
 		self::VIEW_TOOLS_SYSTEMREPORT,
-		self::LAUNCH_SETUP_WIZARD,
 	);
 
 	public function register() {
