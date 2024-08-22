@@ -293,6 +293,18 @@ class Event_Model {
 		return $created_id;
 	}
 
+	public function get_records_over_limit( $limit ) {
+		global $wpdb;
+
+		$table_name = $this->get_table_name();
+
+		$sql = $wpdb->prepare( "SELECT id FROM $table_name ORDER BY `date_created` DESC LIMIT %d, %d", $limit, PHP_INT_MAX );
+
+		$results = $wpdb->get_results( $sql, ARRAY_A );
+
+		return $results;
+	}
+
 	public function update( $values, $id ) {
 		global $wpdb;
 

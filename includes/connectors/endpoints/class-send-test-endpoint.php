@@ -196,7 +196,8 @@ class Send_Test_Endpoint extends Endpoint {
 		$full_log = $this->get_full_log_data( $this->last_email_id );
 		$issues   = array();
 		$log_copy = '';
-		if ( is_array( $full_log['technical_information']['log'] ) ) {
+
+		if ( isset( $full_log['technical_information'] ) && is_array( $full_log['technical_information']['log'] ) ) {
 			array_push( $issues, end( $full_log['technical_information']['log'] ) );
 			$log_copy = implode( "\r\n", $full_log['technical_information']['log'] );
 		}

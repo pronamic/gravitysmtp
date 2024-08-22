@@ -6,6 +6,7 @@ use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
 use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Plugin_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Users\Roles;
+use Gravity_Forms\Gravity_SMTP\Utils\Booliesh;
 use Gravity_Forms\Gravity_Tools\Config;
 use Gravity_Forms\Gravity_Tools\License\License_Statuses;
 use Gravity_Forms\Gravity_Tools\Updates\Updates_Service_Provider;
@@ -56,10 +57,14 @@ class Settings_Config extends Config {
 		$save_attachments_enabled = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_SAVE_ATTACHMENTS_ENABLED, 'false' );
 		$save_attachments_enabled = ! empty( $save_attachments_enabled ) ? $save_attachments_enabled !== 'false' : false;
 		$email_log_retention      = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_RETENTION, 7 );
+		$max_records_value        = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_MAX_EVENT_RECORDS, 0 );
 
 		$debug_log_enabled   = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_DEBUG_LOG_ENABLED, 'false' );
 		$debug_log_enabled   = ! empty( $debug_log_enabled ) ? $debug_log_enabled !== 'false' : false;
 		$debug_log_retention = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_DEBUG_LOG_RETENTION, 7 );
+
+		// @translators: %d is an integer representing the maximum number of records to store in the log.
+		$max_records_message = esc_html__( 'The Email Log is set to store a maximum of %d records. Any records over that limit will be deleted, starting with oldest records first.', 'gravitysmtp' );
 
 		return array(
 			'components' => array(
@@ -158,32 +163,38 @@ class Settings_Config extends Config {
 								'save_attachments_helper_text'                   => esc_html__( 'Store attachments on the server in the uploads folder.', 'gravitysmtp' ),
 								'email_log_retention_label'                      => esc_html__( 'Log Retention Period', 'gravitysmtp' ),
 								'email_log_retention_helper_text'                => esc_html__( 'Email logs older than the selected timeframe will be permanently deleted.', 'gravitysmtp' ),
+								'email_log_max_records_helper_text'              => sprintf( $max_records_message, $max_records_value ),
 								'error_saving_snackbar_message'                  => esc_html__( 'There was an error saving the settings', 'gravitysmtp' ),
 								'debug_logging_box_heading'                      => esc_html__( 'Debug Logging', 'gravitysmtp' ),
 								'enable_debug_log_label'                         => esc_html__( 'Enable Debug Log', 'gravitysmtp' ),
 								'enable_debug_log_helper_text'                   => esc_html__( 'When enabled email sending errors debugging events will be logged, allowing you to detect email sending issues.', 'gravitysmtp' ),
 								'debug_log_retention_label'                      => esc_html__( 'Debug Log Retention Period', 'gravitysmtp' ),
 								'debug_log_retention_helper_text'                => esc_html__( 'Debug events older than the selected period will be permanently deleted from the database.', 'gravitysmtp' ),
+								'view_activity_log_button_text'                  => esc_html__( 'View Email Log', 'gravitysmtp' ),
+								'delete_activity_log_button_text'                => esc_html__( 'Delete Email Log', 'gravitysmtp' ),
 								'view_debug_log_button_text'                     => esc_html__( 'View Debug Log', 'gravitysmtp' ),
 								'copy_debug_log_button_text'                     => esc_html__( 'Copy Debug Log Link', 'gravitysmtp' ),
 								'delete_debug_log_button_text'                   => esc_html__( 'Delete Debug Log', 'gravitysmtp' ),
 								'delete_debug_log_dialog_confirm_change_heading' => esc_html__( 'Confirm Delete', 'gravitysmtp' ),
+								'delete_email_log_dialog_confirm_change_content' => esc_html__( 'This operation deletes ALL email logs. If you continue, you will NOT be able to retrieve these logs.', 'gravitysmtp' ),
 								'delete_debug_log_dialog_confirm_change_content' => esc_html__( 'This operation deletes ALL debug logs. If you continue, you will NOT be able to retrieve these logs.', 'gravitysmtp' ),
 								'delete_debug_log_dialog_confirm_change_confirm' => esc_html__( 'Delete', 'gravitysmtp' ),
-								'snackbar_debug_log_delete_error'                => esc_html__( 'Error deleting debug log', 'gravitysmtp' ),
-								'snackbar_debug_log_delete_success'              => esc_html__( 'Debug log successfully deleted', 'gravitysmtp' ),
 							),
 					),
 					'data' => array(
 						'license_key'                => $license_key,
 						'license_key_is_valid'       => $is_valid,
 						'version'                    => GF_GRAVITY_SMTP_VERSION,
-						'email_log_settings'         => array(
-							'email_log_enabled'        => $email_log_enabled,
-							'save_email_body_enabled'  => $save_email_body_enabled,
-							'save_attachments_enabled' => $save_attachments_enabled,
-							'email_log_retention'      => $email_log_retention,
-							'retention_options'        => $this->get_email_log_retention_options(),
+						'email_log_settings' => array(
+							'email_log_enabled'            => $email_log_enabled,
+							'email_log_retention'          => $email_log_retention,
+							'email_log_url'                => admin_url( 'admin.php?page=gravitysmtp-activity-log' ),
+							'log_retention_period_enabled' => ! Booliesh::get( $max_records_value ),
+							'max_records'                  => $max_records_value,
+							'max_records_set'              => Booliesh::get( $max_records_value ),
+							'retention_options'            => $this->get_email_log_retention_options(),
+							'save_attachments_enabled'     => $save_attachments_enabled,
+							'save_email_body_enabled'      => $save_email_body_enabled,
 						),
 						'debug_log_settings'         => array(
 							'debug_log_enabled'   => $debug_log_enabled,
@@ -192,20 +203,26 @@ class Settings_Config extends Config {
 							'retention_options'   => $this->get_debug_log_retention_options(),
 						),
 						'caps' => array(
-							Roles::VIEW_LICENSE_KEY               => current_user_can( Roles::VIEW_LICENSE_KEY ),
-							Roles::EDIT_LICENSE_KEY               => current_user_can( Roles::EDIT_LICENSE_KEY ),
-							Roles::VIEW_TEST_MODE                 => current_user_can( Roles::VIEW_TEST_MODE ),
-							Roles::EDIT_TEST_MODE                 => current_user_can( Roles::EDIT_TEST_MODE ),
-							Roles::VIEW_EMAIL_MANAGEMENT_SETTINGS => current_user_can( Roles::VIEW_EMAIL_MANAGEMENT_SETTINGS ),
-							Roles::EDIT_EMAIL_MANAGEMENT_SETTINGS => current_user_can( Roles::EDIT_EMAIL_MANAGEMENT_SETTINGS ),
-							Roles::VIEW_USAGE_ANALYTICS           => current_user_can( Roles::VIEW_USAGE_ANALYTICS ),
-							Roles::EDIT_USAGE_ANALYTICS           => current_user_can( Roles::EDIT_USAGE_ANALYTICS ),
-							Roles::VIEW_INTEGRATIONS              => current_user_can( Roles::VIEW_INTEGRATIONS ),
-							Roles::EDIT_INTEGRATIONS              => current_user_can( Roles::EDIT_INTEGRATIONS ),
-							Roles::VIEW_UNINSTALL                 => current_user_can( Roles::VIEW_UNINSTALL ),
-							Roles::EDIT_UNINSTALL                 => current_user_can( Roles::EDIT_UNINSTALL ),
-							Roles::VIEW_EMAIL_LOG_SETTINGS        => current_user_can( Roles::VIEW_EMAIL_LOG_SETTINGS ),
+							Roles::DELETE_DEBUG_LOG               => current_user_can( Roles::DELETE_DEBUG_LOG ),
+							Roles::DELETE_EMAIL_LOG               => current_user_can( Roles::DELETE_EMAIL_LOG ),
+							Roles::EDIT_DEBUG_LOG_SETTINGS        => current_user_can( Roles::EDIT_DEBUG_LOG_SETTINGS ),
 							Roles::EDIT_EMAIL_LOG_SETTINGS        => current_user_can( Roles::EDIT_EMAIL_LOG_SETTINGS ),
+							Roles::EDIT_EMAIL_MANAGEMENT_SETTINGS => current_user_can( Roles::EDIT_EMAIL_MANAGEMENT_SETTINGS ),
+							Roles::EDIT_INTEGRATIONS              => current_user_can( Roles::EDIT_INTEGRATIONS ),
+							Roles::EDIT_LICENSE_KEY               => current_user_can( Roles::EDIT_LICENSE_KEY ),
+							Roles::EDIT_TEST_MODE                 => current_user_can( Roles::EDIT_TEST_MODE ),
+							Roles::EDIT_UNINSTALL                 => current_user_can( Roles::EDIT_UNINSTALL ),
+							Roles::EDIT_USAGE_ANALYTICS           => current_user_can( Roles::EDIT_USAGE_ANALYTICS ),
+							Roles::VIEW_DEBUG_LOG                 => current_user_can( Roles::VIEW_DEBUG_LOG ),
+							Roles::VIEW_EMAIL_LOG                 => current_user_can( Roles::VIEW_EMAIL_LOG ),
+							Roles::VIEW_DEBUG_LOG_SETTINGS        => current_user_can( Roles::VIEW_DEBUG_LOG_SETTINGS ),
+							Roles::VIEW_EMAIL_LOG_SETTINGS        => current_user_can( Roles::VIEW_EMAIL_LOG_SETTINGS ),
+							Roles::VIEW_EMAIL_MANAGEMENT_SETTINGS => current_user_can( Roles::VIEW_EMAIL_MANAGEMENT_SETTINGS ),
+							Roles::VIEW_INTEGRATIONS              => current_user_can( Roles::VIEW_INTEGRATIONS ),
+							Roles::VIEW_LICENSE_KEY               => current_user_can( Roles::VIEW_LICENSE_KEY ),
+							Roles::VIEW_TEST_MODE                 => current_user_can( Roles::VIEW_TEST_MODE ),
+							Roles::VIEW_UNINSTALL                 => current_user_can( Roles::VIEW_UNINSTALL ),
+							Roles::VIEW_USAGE_ANALYTICS           => current_user_can( Roles::VIEW_USAGE_ANALYTICS ),
 						),
 						'email_digest_notifications' => array(
 							'email_digest_summary'         => array(

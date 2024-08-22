@@ -209,6 +209,9 @@ abstract class Connector_Base {
 	 * @return void
 	 */
 	public function init( $to, $subject, $message, $headers = '', $attachments = array(), $source = '' ) {
+		// Set to blank values to avoid warnings.
+		$from      = '';
+		$from_name = '';
 		/**
 		 * Filters the wp_mail() arguments.
 		 *

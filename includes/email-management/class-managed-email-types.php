@@ -8,7 +8,7 @@ class Managed_Email_Types {
 		$types = array_merge(
 			$this->email_type_change_of_admin_email(),
 			$this->email_type_automatic_updates(),
-			$this->email_type_comments(),
+			$this->email_type_comments()
 		);
 
 		if (
@@ -23,7 +23,7 @@ class Managed_Email_Types {
 		$types = array_merge( $types,
 			$this->email_type_new_user(),
 			$this->email_type_personal_data_requests(),
-			$this->email_type_change_of_user_email_password(),
+			$this->email_type_change_of_user_email_password()
 		);
 
 		return $types;

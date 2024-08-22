@@ -26,6 +26,7 @@ class Save_Plugin_Settings_Endpoint extends Endpoint {
 	const PARAM_DEBUG_LOG_RETENTION      = 'debug_log_retention';
 	const PARAM_USAGE_ANALYTICS          = 'usage_analytics';
 	const PARAM_PER_PAGE                 = 'activity_log_per_page';
+	const PARAM_MAX_EVENT_RECORDS        = 'max_event_records';
 
 	const PARAM_SETUP_WIZARD_SHOULD_DISPLAY = 'setup_wizard_should_display';
 

@@ -7,6 +7,7 @@ use Gravity_Forms\Gravity_SMTP\Data_Store\Data_Store_Router;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Plugin_Opts_Data_Store;
 use Gravity_Forms\Gravity_SMTP\Models\Event_Model;
 use Gravity_Forms\Gravity_SMTP\Models\Log_Details_Model;
+use Gravity_Forms\Gravity_SMTP\Utils\Booliesh;
 
 class Handler {
 
@@ -39,14 +40,15 @@ class Handler {
 	 * @return void
 	 */
 	public function run_log_retention() {
-		$retention = $this->plugin_data->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_RETENTION, 0 );
+		$retention   = $this->plugin_data->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_RETENTION, 0 );
+		$max_records = $this->plugin_data->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_MAX_EVENT_RECORDS, 0 );
 
 		// Retention is set to never delete, or we have a missing value, Bail.
-		if ( $retention == 0 || is_null( $retention ) || $retention == '' ) {
+		if ( ! Booliesh::get( $retention ) && ! Booliesh::get( $max_records ) ) {
 			return;
 		}
 
-		$to_delete = $this->get_items_to_delete( $retention );
+		$to_delete = $this->get_items_to_delete( $retention, $max_records );
 
 		// No items to delete, bail.
 		if ( empty( $to_delete ) ) {
@@ -65,20 +67,26 @@ class Handler {
 	 *
 	 * @return array
 	 */
-	private function get_items_to_delete( $retention ) {
-		$interval_string = sprintf( ' - %d days', $retention );
-		$newDate         = gmdate( 'Y-m-d H:i:s', strtotime( $interval_string ) );
+	private function get_items_to_delete( $retention, $max_records ) {
 
-		$params = array(
-			array(
-				'date_created',
-				'<=',
-				$newDate
-			)
-		);
+		if ( Booliesh::get( $max_records ) ) {
+			$items = $this->emails->get_records_over_limit( $max_records );
+		} else {
+			$interval_string = sprintf( ' - %d days', $retention );
+			$newDate         = gmdate( 'Y-m-d H:i:s', strtotime( $interval_string ) );
 
-		$items = $this->emails->find( $params );
-		$ids   = wp_list_pluck( $items, 'id' );
+			$params = array(
+				array(
+					'date_created',
+					'<=',
+					$newDate
+				)
+			);
+
+			$items = $this->emails->find( $params );
+		}
+
+		$ids = wp_list_pluck( $items, 'id' );
 
 		return $ids;
 	}

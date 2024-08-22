@@ -37,6 +37,9 @@ class Roles {
 	const VIEW_EMAIL_LOG_SETTINGS = 'gravitysmtp_view_email_log_settings';
 	const EDIT_EMAIL_LOG_SETTINGS = 'gravitysmtp_edit_email_log_settings';
 
+	const VIEW_DEBUG_LOG_SETTINGS = 'gravitysmtp_view_debug_log_settings';
+	const EDIT_DEBUG_LOG_SETTINGS = 'gravitysmtp_edit_debug_log_settings';
+
 	const VIEW_DEBUG_LOG   = 'gravitysmtp_view_debug_log';
 	const EDIT_DEBUG_LOG   = 'gravitysmtp_edit_debug_log';
 	const DELETE_DEBUG_LOG = 'gravitysmtp_delete_debug_log';
@@ -69,6 +72,8 @@ class Roles {
 		self::EDIT_INTEGRATIONS,
 		self::VIEW_EMAIL_LOG_SETTINGS,
 		self::EDIT_EMAIL_LOG_SETTINGS,
+		self::VIEW_DEBUG_LOG_SETTINGS,
+		self::EDIT_DEBUG_LOG_SETTINGS,
 		self::DELETE_EMAIL_LOG,
 		self::VIEW_DEBUG_LOG,
 		self::EDIT_DEBUG_LOG,

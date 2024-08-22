@@ -4,6 +4,7 @@ namespace Gravity_Forms\Gravity_SMTP\Apps\Config;
 
 use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Plugin_Settings_Endpoint;
+use Gravity_Forms\Gravity_SMTP\Logging\Endpoints\Delete_Events_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
 use Gravity_Forms\Gravity_SMTP\Users\Roles;
 use Gravity_Forms\Gravity_Tools\Config;
@@ -27,7 +28,7 @@ class Apps_Config extends Config {
 		$usage_analytics_enabled = isset( $usage_analytics_enabled ) && $usage_analytics_enabled !== 'false';
 
 		return array(
-			'common'      => array(
+			'common' => array(
 				'i18n' => array(
 					'aria_label_collapsed_metabox'               => esc_html__( 'Expand', 'gravitysmtp' ),
 					'aria_label_expanded_metabox'                => esc_html__( 'Collapse', 'gravitysmtp' ),
@@ -35,7 +36,12 @@ class Apps_Config extends Config {
 					'confirm_change_confirm'                     => esc_html__( 'Confirm', 'gravitysmtp' ),
 					'debug_log_enabled'                          => esc_html__( 'Debug Log Enabled', 'gravitysmtp' ),
 					'test_mode_enabled'                          => esc_html__( 'Test Mode Enabled', 'gravitysmtp' ),
+					'setting_locked'                             => esc_html__( 'This setting is locked due to a defined constant and cannot be modified.', 'gravitysmtp' ),
 					'debug_messages'                             => array(
+						/* translators: %1$s is the body of the ajax request. */
+						'deleting_activity_log_rows'         => esc_html__( 'Deleting activity log rows: %1$s', 'gravitysmtp' ),
+						/* translators: %1$s is the error. */
+						'deleting_activity_log_rows_error'   => esc_html__( 'Error deleting activity log rows: %1$s', 'gravitysmtp' ),
 						/* translators: %1$s is the body of the ajax request. */
 						'deleting_all_debug_logs'           => esc_html__( 'Deleting all debug logs: %1$s', 'gravitysmtp' ),
 						/* translators: %1$s is the error. */
@@ -62,6 +68,9 @@ class Apps_Config extends Config {
 					'snackbar_email_log_detail_generic_error'    => esc_html__( 'Error getting email log details', 'gravitysmtp' ),
 					'snackbar_email_log_detail_empty_error'      => esc_html__( 'Error getting email log details, the log data was empty', 'gravitysmtp' ),
 					'snackbar_email_log_delete_error'            => esc_html__( 'Error deleting email log', 'gravitysmtp' ),
+					'snackbar_activity_log_delete_success'       => esc_html__( 'Email log successfully deleted', 'gravitysmtp' ),
+					'snackbar_debug_log_delete_error'            => esc_html__( 'Error deleting debug log', 'gravitysmtp' ),
+					'snackbar_debug_log_delete_success'          => esc_html__( 'Debug log successfully deleted', 'gravitysmtp' ),
 					'snackbar_url_copied'                        => esc_html__( 'URL copied to clipboard', 'gravitysmtp' ),
 					'test_mode_warning_notice'                   => esc_html__( 'Test mode is enabled, emails will not be sent.', 'gravitysmtp' ),
 				),
@@ -74,6 +83,7 @@ class Apps_Config extends Config {
 						'CAPS_EDIT_EMAIL_LOG'                 => Roles::EDIT_EMAIL_LOG,
 						'CAPS_EDIT_EMAIL_LOG_DETAILS'         => Roles::EDIT_EMAIL_LOG_DETAILS,
 						'CAPS_EDIT_EMAIL_LOG_SETTINGS'        => Roles::EDIT_EMAIL_LOG_SETTINGS,
+						'CAPS_EDIT_DEBUG_LOG_SETTINGS'        => Roles::EDIT_DEBUG_LOG_SETTINGS,
 						'CAPS_EDIT_EMAIL_MANAGEMENT_SETTINGS' => Roles::EDIT_EMAIL_MANAGEMENT_SETTINGS,
 						'CAPS_EDIT_GENERAL_SETTINGS'          => Roles::EDIT_GENERAL_SETTINGS,
 						'CAPS_EDIT_INTEGRATIONS'              => Roles::EDIT_INTEGRATIONS,
@@ -86,6 +96,7 @@ class Apps_Config extends Config {
 						'CAPS_VIEW_EMAIL_LOG_DETAILS'         => Roles::VIEW_EMAIL_LOG_DETAILS,
 						'CAPS_VIEW_EMAIL_LOG_PREVIEW'         => Roles::VIEW_EMAIL_LOG_PREVIEW,
 						'CAPS_VIEW_EMAIL_LOG_SETTINGS'        => Roles::VIEW_EMAIL_LOG_SETTINGS,
+						'CAPS_VIEW_DEBUG_LOG_SETTINGS'        => Roles::VIEW_DEBUG_LOG_SETTINGS,
 						'CAPS_VIEW_EMAIL_MANAGEMENT_SETTINGS' => Roles::VIEW_EMAIL_MANAGEMENT_SETTINGS,
 						'CAPS_VIEW_GENERAL_SETTINGS'          => Roles::VIEW_GENERAL_SETTINGS,
 						'CAPS_VIEW_INTEGRATIONS'              => Roles::VIEW_INTEGRATIONS,
@@ -98,12 +109,20 @@ class Apps_Config extends Config {
 						'CAPS_VIEW_USAGE_ANALYTICS'           => Roles::VIEW_USAGE_ANALYTICS,
 					),
 					'debug_log_enabled'       => $debug_log_enabled,
-					'param_keys'              => array(
-						'license_key'         => Save_Plugin_Settings_Endpoint::PARAM_LICENSE_KEY,
-						'test_mode'           => Save_Plugin_Settings_Endpoint::PARAM_TEST_MODE,
-						'event_log_enabled'   => Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_ENABLED,
-						'event_log_retention' => Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_RETENTION,
-						'usage_analytics'     => Save_Plugin_Settings_Endpoint::PARAM_USAGE_ANALYTICS,
+					'param_keys' => array(
+						'debug_log_enabled'        => Save_Plugin_Settings_Endpoint::PARAM_DEBUG_LOG_ENABLED,
+						'debug_log_retention'      => Save_Plugin_Settings_Endpoint::PARAM_DEBUG_LOG_RETENTION,
+						'event_log_enabled'        => Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_ENABLED,
+						'event_log_retention'      => Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_RETENTION,
+						'license_key'              => Save_Plugin_Settings_Endpoint::PARAM_LICENSE_KEY,
+						'save_attachments_enabled' => Save_Plugin_Settings_Endpoint::PARAM_SAVE_ATTACHMENTS_ENABLED,
+						'save_email_body_enabled'  => Save_Plugin_Settings_Endpoint::PARAM_SAVE_EMAIL_BODY_ENABLED,
+						'test_mode'                => Save_Plugin_Settings_Endpoint::PARAM_TEST_MODE,
+						'usage_analytics'          => Save_Plugin_Settings_Endpoint::PARAM_USAGE_ANALYTICS,
+					),
+					'locked_settings'         => array(
+						// add locked settings names here
+						// 'license_key', etc.
 					),
 					'test_mode_enabled'       => $test_mode,
 					'usage_analytics_enabled' => $usage_analytics_enabled,

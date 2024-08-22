@@ -480,7 +480,9 @@ class Connector_Service_Provider extends Config_Service_Provider {
 			return;
 		}
 
-		$page = htmlspecialchars( $page );
+		if ( ! empty( $page ) ) {
+			$page = htmlspecialchars( $page );
+		}
 
 		$plugin_data_store = $this->container->get( self::DATA_STORE_PLUGIN_OPTS );
 		$should_display    = $plugin_data_store->get( Save_Plugin_Settings_Endpoint::PARAM_SETUP_WIZARD_SHOULD_DISPLAY, 'config', 'true' ) === 'true';
