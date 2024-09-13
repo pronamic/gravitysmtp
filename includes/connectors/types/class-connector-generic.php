@@ -3,6 +3,7 @@
 namespace Gravity_Forms\Gravity_SMTP\Connectors\Types;
 
 use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Base;
+use Gravity_Forms\Gravity_SMTP\Utils\Recipient_Collection;
 
 /**
  * Connector for Generic/Custom SMTP integration.
@@ -18,6 +19,7 @@ class Connector_Generic extends Connector_Base {
 	const SETTING_PASSWORD        = 'password';
 	const SETTING_ENCRYPTION_TYPE = 'encryption_type';
 	const SETTING_AUTO_TLS        = 'auto_tls';
+	const SETTING_USE_RETURN_PATH = 'use_return_path';
 
 	protected $name        = 'generic';
 	protected $title       = 'Custom SMTP';
@@ -39,6 +41,9 @@ class Connector_Generic extends Connector_Base {
 	 */
 	public function send() {
 		try {
+			/**
+			 * @var Recipient_Collection $to
+			 */
 			$to          = $this->get_att( 'to', '' );
 			$subject     = $this->get_att( 'subject', '' );
 			$message     = $this->get_att( 'message', '' );
@@ -68,12 +73,14 @@ class Connector_Generic extends Connector_Base {
 				)
 			);
 
-			$this->logger->log( $email, 'started', __( 'Starting email send for generic connector.', 'gravitysmtp' ) );
+			$this->debug_logger->log_debug( $this->wrap_debug_with_details( __FUNCTION__, $email, 'Starting email send with Custom SMTP connector.' ) );
 
 			$this->reset_phpmailer();
 			$this->configure_phpmailer();
 
 			$this->php_mailer->setFrom( $from['email'], $from['name'] );
+
+			$this->debug_logger->log_debug( $this->wrap_debug_with_details( __FUNCTION__, $email, sprintf( 'Using From Name: %s, From Email: %s', $from['name'], $from['email'] ) ) );
 
 			foreach( $to->recipients() as $recipient ) {
 				if ( ! empty( $recipient->name() ) ) {
@@ -83,11 +90,19 @@ class Connector_Generic extends Connector_Base {
 				}
 			}
 
+			$this->debug_logger->log_debug( $this->wrap_debug_with_details( __FUNCTION__, $email, 'Email recipients: ' . json_encode( $to->as_array() ) ) );
+
 			$this->php_mailer->Subject = $subject;
+
+			$this->debug_logger->log_debug( $this->wrap_debug_with_details( __FUNCTION__, $email, 'Email subject: ' . $subject  ) );
 
 			$this->php_mailer->Body = $message;
 
+			$this->debug_logger->log_debug( $this->wrap_debug_with_details( __FUNCTION__, $email, 'Email message: ' . esc_html( $message )  ) );
+
 			if ( ! empty( $headers['cc'] ) ) {
+				$this->debug_logger->log_debug( $this->wrap_debug_with_details( __FUNCTION__, $email, 'Email CC: ' . json_encode( $headers['cc']->as_array() ) ) );
+
 				foreach ( $headers['cc']->recipients() as $recipient ) {
 					if ( ! empty( $recipient->name() ) ) {
 						$this->php_mailer->addCC( $recipient->email(), $recipient->name() );
@@ -98,6 +113,8 @@ class Connector_Generic extends Connector_Base {
 			}
 
 			if ( ! empty( $headers['bcc'] ) ) {
+				$this->debug_logger->log_debug( $this->wrap_debug_with_details( __FUNCTION__, $email, 'Email BCC: ' . json_encode( $headers['bcc']->as_array() ) ) );
+
 				foreach ( $headers['bcc']->recipients() as $recipient ) {
 					if ( ! empty( $recipient->name() ) ) {
 						$this->php_mailer->addBCC( $recipient->email(), $recipient->name() );
@@ -108,12 +125,16 @@ class Connector_Generic extends Connector_Base {
 			}
 
 			if ( ! empty( $attachments ) ) {
+				$this->debug_logger->log_debug( $this->wrap_debug_with_details( __FUNCTION__, $email, 'Email attachments: ' . json_encode( $attachments ) ) );
+
 				foreach ( $attachments as $attachment ) {
 					$this->php_mailer->addAttachment( $attachment );
 				}
 			}
 
 			if ( ! empty( $reply_to ) ) {
+				$this->debug_logger->log_debug( $this->wrap_debug_with_details( __FUNCTION__, $email, 'Email reply_to: ' . json_encode( $reply_to ) ) );
+
 				foreach( $reply_to as $address ) {
 					if ( isset( $address['name'] ) ) {
 						$this->php_mailer->addReplyTo( $address['email'], $address['name'] );
@@ -125,8 +146,10 @@ class Connector_Generic extends Connector_Base {
 			}
 
 			if ( ! empty( $headers['content-type'] ) && strpos( $headers['content-type'], 'text/html' ) !== false ) {
+				$this->debug_logger->log_debug( $this->wrap_debug_with_details( __FUNCTION__, $email, 'Setting content type to text/html' ) );
 				$this->php_mailer->isHTML( true );
 			} else {
+				$this->debug_logger->log_debug( $this->wrap_debug_with_details( __FUNCTION__, $email, 'Setting content type to text/plain' ) );
 				$this->php_mailer->isHTML( false );
 				$this->php_mailer->ContentType = 'text/plain';
 			}
@@ -134,9 +157,15 @@ class Connector_Generic extends Connector_Base {
 			$additional_headers = $this->get_filtered_message_headers();
 
 			if ( ! empty( $additional_headers ) ) {
+				$this->debug_logger->log_debug( $this->wrap_debug_with_details( __FUNCTION__, $email, 'Additional email headers: ' . json_encode( $additional_headers ) ) );
+
 				foreach ( $additional_headers as $key => $value ) {
 					$this->php_mailer->addCustomHeader( $key, $value );
 				}
+			}
+
+			if ( (bool) $this->get_setting( self::SETTING_USE_RETURN_PATH, false ) ) {
+				$this->php_mailer->Sender = $this->php_mailer->From;
 			}
 
 			$this->logger->log( $email, 'pre_send', array(
@@ -146,9 +175,16 @@ class Connector_Generic extends Connector_Base {
 				self::SETTING_PORT => $this->php_mailer->Port,
 			) );
 
+			$this->debug_logger->log_debug( $this->wrap_debug_with_details( __FUNCTION__, $email, 'SMTP Connection Details: ' . json_encode( array(
+					self::SETTING_AUTH => $this->php_mailer->SMTPAuth,
+					'secure'           => $this->php_mailer->SMTPSecure,
+					self::SETTING_HOST => $this->php_mailer->Host,
+					self::SETTING_PORT => $this->php_mailer->Port,
+				) ) ) );
+
 			if ( $this->is_test_mode() ) {
 				$this->events->update( array( 'status' => 'sandboxed' ), $email );
-				$this->logger->log( $email, 'sandboxed', __( 'Email sandboxed.', 'gravitysmtp' ) );
+				$this->debug_logger->log_debug( $this->wrap_debug_with_details( __FUNCTION__, $email, 'Test mode is enabled, sandboxing email.' ) );
 
 				return true;
 			}
@@ -166,14 +202,16 @@ class Connector_Generic extends Connector_Base {
 
 			$this->events->update( array( 'status' => 'sent' ), $email );
 
-			$this->logger->log( $email, 'sent', __( 'Email successfully sent.', 'gravitysmtp' ) );
+			$this->debug_logger->log_debug( $this->wrap_debug_with_details( __FUNCTION__, $email, 'Email successfully sent.' ) );
 
 			return true;
 
 		} catch ( \Exception $e ) {
 			$this->events->update( array( 'status' => 'failed' ), $email );
 
-			$this->logger->log( $email, 'failed', $e->getMessage() );
+			$this->logger->log( $email, 'failed', $this->php_mailer->ErrorInfo );
+
+			$this->debug_logger->log_error( $this->wrap_debug_with_details( __FUNCTION__, $email, 'Email failed to send. Details: ' . $this->php_mailer->ErrorInfo ) );
 
 			return $email;
 		}
@@ -210,6 +248,7 @@ class Connector_Generic extends Connector_Base {
 			self::SETTING_FORCE_FROM_NAME  => $this->get_setting( self::SETTING_FORCE_FROM_NAME, false ),
 			self::SETTING_ENCRYPTION_TYPE  => $this->get_setting( self::SETTING_ENCRYPTION_TYPE, 'tls' ),
 			self::SETTING_AUTO_TLS         => (bool) $this->get_setting( self::SETTING_AUTO_TLS, false ),
+			self::SETTING_USE_RETURN_PATH  => (bool) $this->get_setting( self::SETTING_USE_RETURN_PATH, false ),
 		);
 	}
 
@@ -294,6 +333,27 @@ class Connector_Generic extends Connector_Base {
 							'tagName' => 'h3',
 							'type'    => 'boxed',
 							'weight'  => 'medium',
+						),
+					),
+					array(
+						'component' => 'Toggle',
+						'props'     => array(
+							'helpTextAttributes' => array(
+								'content' => esc_html__( 'If Return Path is enabled this adds the return path to the email header which indicates where non-deliverable notifications should be sent. Bounce messages may be lost if not enabled.', 'gravitysmtp' ),
+								'size'    => 'text-xs',
+								'weight'  => 'regular',
+								'spacing' => [ 2, 0, 0, 0 ],
+							),
+							'helpTextWidth'      => 'full',
+							'initialChecked'     => (bool) $this->get_setting( self::SETTING_USE_RETURN_PATH, false ),
+							'labelAttributes'    => array(
+								'label' => esc_html__( 'Return Path', 'gravitysmtp' ),
+							),
+							'labelPosition'      => 'left',
+							'name'               => self::SETTING_USE_RETURN_PATH,
+							'size'               => 'size-m',
+							'spacing'            => 5,
+							'width'              => 'full',
 						),
 					),
 					array(

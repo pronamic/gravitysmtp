@@ -107,6 +107,7 @@ class Apps_Config extends Config {
 						'CAPS_VIEW_TOOLS_SYSTEMREPORT'        => Roles::VIEW_TOOLS_SYSTEMREPORT,
 						'CAPS_VIEW_UNINSTALL'                 => Roles::VIEW_UNINSTALL,
 						'CAPS_VIEW_USAGE_ANALYTICS'           => Roles::VIEW_USAGE_ANALYTICS,
+						'CAPS_VIEW_DASHBOARD'                 => Roles::VIEW_DASHBOARD,
 					),
 					'debug_log_enabled'       => $debug_log_enabled,
 					'param_keys' => array(
@@ -120,10 +121,7 @@ class Apps_Config extends Config {
 						'test_mode'                => Save_Plugin_Settings_Endpoint::PARAM_TEST_MODE,
 						'usage_analytics'          => Save_Plugin_Settings_Endpoint::PARAM_USAGE_ANALYTICS,
 					),
-					'locked_settings'         => array(
-						// add locked settings names here
-						// 'license_key', etc.
-					),
+					'locked_settings'         => $this->get_locked_settings(),
 					'test_mode_enabled'       => $test_mode,
 					'usage_analytics_enabled' => $usage_analytics_enabled,
 					'usage_analytics_link'    => 'https://docs.gravitysmtp.com/about-additional-data-collection/',
@@ -132,6 +130,21 @@ class Apps_Config extends Config {
 			'hmr_dev'     => defined( 'GRAVITYSMTP_ENABLE_HMR' ) && GRAVITYSMTP_ENABLE_HMR,
 			'public_path' => trailingslashit( Gravity_SMTP::get_base_url() ) . 'assets/js/dist/',
 		);
+	}
+
+	private function get_locked_settings() {
+		$return = array();
+
+		$defined_constants = array_filter( get_defined_constants(), function( $constant ) {
+			return strpos( $constant, 'GRAVITYSMTP_' ) !== false;
+		}, ARRAY_FILTER_USE_KEY );
+
+		foreach( $defined_constants as $constant => $constant_value ) {
+			$setting_name = strtolower( str_replace( 'GRAVITYSMTP_', '', $constant ) );
+			$return[] = $setting_name;
+		}
+
+		return $return;
 	}
 
 }

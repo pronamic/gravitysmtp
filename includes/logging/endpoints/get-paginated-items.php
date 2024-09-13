@@ -146,14 +146,6 @@ function get_formatted_data_rows( $data ) {
 				),
 				'components' => array(
 					array(
-						'component' => 'Text',
-						'props'     => array(
-							'content'       => $to_address,
-							'customClasses' => array( 'gravitysmtp-activity-log-app__activity-log-table-recipient-email' ),
-							'size'          => 'text-sm',
-						),
-					),
-					array(
 						'component'  => 'Box',
 						'props'      => array(
 							'customClasses' => array( 'gravitysmtp-activity-log-app__activity-log-table-recipient-meta' ),
@@ -179,6 +171,14 @@ function get_formatted_data_rows( $data ) {
 									'size'          => 'text-xxs',
 								),
 							),
+						),
+					),
+					array(
+						'component' => 'Text',
+						'props'     => array(
+							'content'       => $to_address,
+							'customClasses' => array( 'gravitysmtp-activity-log-app__activity-log-table-recipient-email' ),
+							'size'          => 'text-sm',
 						),
 					),
 				),

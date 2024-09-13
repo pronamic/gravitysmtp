@@ -13,6 +13,7 @@ use Gravity_Forms\Gravity_SMTP\Logging\Debug\Null_Logging_Provider;
 use Gravity_Forms\Gravity_SMTP\Logging\Logging_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Models\Event_Model;
 use Gravity_Forms\Gravity_SMTP\Utils\Attachments_Saver;
+use Gravity_Forms\Gravity_SMTP\Utils\AWS_Signature_Handler;
 use Gravity_Forms\Gravity_SMTP\Utils\Header_Parser;
 use Gravity_Forms\Gravity_SMTP\Utils\Import_Data_Checker;
 use Gravity_Forms\Gravity_SMTP\Utils\Recipient_Parser;
@@ -24,15 +25,16 @@ use Gravity_Forms\Gravity_Tools\Service_Provider;
 
 class Utils_Service_Provider extends Service_Provider {
 
-	const CACHE               = 'cache';
-	const COMMON              = 'common';
-	const HEADER_PARSER       = 'header_parser';
-	const IMPORT_DATA_CHECKER = 'import_data_checker';
-	const LOGGER              = 'logger_util';
-	const RECIPIENT_PARSER    = 'recipient_parser';
-	const SOURCE_PARSER       = 'source_parser';
-	const FILTER_PARSER       = 'filter_parser';
-	const ATTACHMENTS_SAVER   = 'attachments_saver';
+	const CACHE                 = 'cache';
+	const COMMON                = 'common';
+	const HEADER_PARSER         = 'header_parser';
+	const IMPORT_DATA_CHECKER   = 'import_data_checker';
+	const LOGGER                = 'logger_util';
+	const RECIPIENT_PARSER      = 'recipient_parser';
+	const SOURCE_PARSER         = 'source_parser';
+	const FILTER_PARSER         = 'filter_parser';
+	const ATTACHMENTS_SAVER     = 'attachments_saver';
+	const AWS_SIGNATURE_HANDLER = 'aws_signature_handler';
 
 	public function register( Service_Container $container ) {
 		$container->add( Connector_Service_Provider::DATA_STORE_CONST, function () {
@@ -83,6 +85,10 @@ class Utils_Service_Provider extends Service_Provider {
 
 		$container->add( self::FILTER_PARSER, function() {
 			return new SQL_Filter_Parser();
+		} );
+
+		$container->add( self::AWS_SIGNATURE_HANDLER, function() {
+			return new AWS_Signature_Handler();
 		} );
 	}
 

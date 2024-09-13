@@ -39,7 +39,7 @@ class Updates_Service_Provider extends Service_Provider {
 		} );
 
 		$container->add( self::GRAVITY_API, function () use ( $container ) {
-			return new Gravity_Api( $container->get( Utils_Service_Provider::COMMON ), $container->get( self::FORM_MODEL ) );
+			return new Gravity_Api( $container->get( Utils_Service_Provider::COMMON ), $container->get( self::FORM_MODEL ), 'gsmtp' );
 		} );
 
 		$container->add( self::LICENSE_API_RESPONSE_FACTORY, function () use ( $container ) {
@@ -47,7 +47,7 @@ class Updates_Service_Provider extends Service_Provider {
 		} );
 
 		$container->add( self::LICENSE_API_CONNECTOR, function () use ( $container ) {
-			return new License_API_Connector( $container->get( self::GRAVITY_API ), $container->get( Utils_Service_Provider::CACHE ), $container->get( self::LICENSE_API_RESPONSE_FACTORY ), $container->get( Utils_Service_Provider::COMMON ) );
+			return new License_API_Connector( $container->get( self::GRAVITY_API ), $container->get( Utils_Service_Provider::CACHE ), $container->get( self::LICENSE_API_RESPONSE_FACTORY ), $container->get( Utils_Service_Provider::COMMON ), 'gsmtp' );
 		} );
 
 		$container->add( self::AUTO_UPDATE_HANDLER, function () use ( $container ) {
@@ -90,7 +90,7 @@ class Updates_Service_Provider extends Service_Provider {
 				return;
 			}
 
-			$transient_key = 'GFCache_' . wp_hash( 'rg_gforms_plugins' );
+			$transient_key = 'GFCache_' . wp_hash( 'gsmtp_gforms_plugins' );
 
 			add_filter( 'transient_' . $transient_key, function() {
 				return false;

@@ -3,6 +3,7 @@
 namespace Gravity_Forms\Gravity_SMTP\Connectors;
 
 use Gravity_Forms\Gravity_SMTP\Data_Store\Data_Store_Router;
+use Gravity_Forms\Gravity_SMTP\Logging\Debug\Debug_Logger;
 use Gravity_Forms\Gravity_SMTP\Logging\Log\Logger;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Data_Store;
 use Gravity_Forms\Gravity_SMTP\Models\Event_Model;
@@ -102,6 +103,11 @@ abstract class Connector_Base {
 	protected $recipient_parser;
 
 	/**
+	 * @var Debug_Logger
+	 */
+	protected $debug_logger;
+
+	/**
 	 * Calls to wp_mail() will be routed to this method if this connector is enabled. Parameters
 	 * are a match for wp_mail().
 	 *
@@ -183,16 +189,19 @@ abstract class Connector_Base {
 	 * @param $logger
 	 * @param $events
 	 * @param $header_parser
+	 * @param $recipient_parser
+	 * @param $debug_logger
 	 *
 	 * @return void
 	 */
-	public function __construct( $php_mailer, $data_store, $logger, $events, $header_parser, $recipient_parser ) {
-		$this->php_mailer    = $php_mailer;
-		$this->data_store    = $data_store;
-		$this->logger        = $logger;
-		$this->events        = $events;
-		$this->header_parser = $header_parser;
+	public function __construct( $php_mailer, $data_store, $logger, $events, $header_parser, $recipient_parser, $debug_logger ) {
+		$this->php_mailer       = $php_mailer;
+		$this->data_store       = $data_store;
+		$this->logger           = $logger;
+		$this->events           = $events;
+		$this->header_parser    = $header_parser;
 		$this->recipient_parser = $recipient_parser;
+		$this->debug_logger     = $debug_logger;
 	}
 
 	/**
@@ -577,5 +586,9 @@ abstract class Connector_Base {
 		}
 
 		return $test_mode;
+	}
+
+	protected function wrap_debug_with_details( $function, $email, $message ) {
+		return sprintf( '%s(): [EMAIL ID %s] - %s', $function, $email, $message );
 	}
 }

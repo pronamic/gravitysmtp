@@ -42,11 +42,17 @@ class License_API_Connector {
 	 */
 	protected $common;
 
-	public function __construct( $strategy, $cache, License_API_Response_Factory $response_factory, $common ) {
+	/**
+	 * @var string
+	 */
+	protected $namespace;
+
+	public function __construct( $strategy, $cache, License_API_Response_Factory $response_factory, $common, $namespace ) {
 		$this->strategy         = $strategy;
 		$this->cache            = $cache;
 		$this->response_factory = $response_factory;
 		$this->common           = $common;
+		$this->namespace        = $namespace;
 	}
 
 	/**
@@ -229,7 +235,8 @@ class License_API_Connector {
 	 * @return mixed
 	 */
 	public function get_plugins( $cache = true ) {
-		$plugins = $this->cache->get( 'rg_gforms_plugins', $found_in_cache );
+		$cache_key = sprintf( '%s_gforms_plugins', $this->namespace );
+		$plugins = $this->cache->get( $cache_key, $found_in_cache );
 
 		if ( $this->is_debug() ) {
 			$cache = false;
@@ -241,7 +248,7 @@ class License_API_Connector {
 
 		$plugins = $this->strategy->get_plugins_info();
 
-		$this->cache->set( 'rg_gforms_plugins', $plugins, true, DAY_IN_SECONDS );
+		$this->cache->set( $cache_key, $plugins, true, DAY_IN_SECONDS );
 
 		return $plugins;
 	}

@@ -3,13 +3,16 @@
 namespace Gravity_Forms\Gravity_SMTP\Apps;
 
 use Gravity_Forms\Gravity_SMTP\Apps\Config\Apps_Config;
+use Gravity_Forms\Gravity_SMTP\Apps\Config\Dashboard_Config;
 use Gravity_Forms\Gravity_SMTP\Apps\Config\Email_Log_Config;
 use Gravity_Forms\Gravity_SMTP\Apps\Config\Email_Log_Single_Config;
 use Gravity_Forms\Gravity_SMTP\Apps\Config\Settings_Config;
 use Gravity_Forms\Gravity_SMTP\Apps\Config\Tools_Config;
+use Gravity_Forms\Gravity_SMTP\Apps\Endpoints\Get_Dashboard_Data_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Assets\Assets_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Plugin_Settings_Endpoint;
+use Gravity_Forms\Gravity_SMTP\Feature_Flags\Feature_Flag_Manager;
 use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
 use Gravity_Forms\Gravity_Tools\Apps\Registers_Apps;
 use Gravity_Forms\Gravity_Tools\Providers\Config_Service_Provider;
@@ -24,8 +27,13 @@ class App_Service_Provider extends Config_Service_Provider {
 	const EMAIL_LOG_SINGLE_CONFIG = 'email_log_single_config';
 	const SETTINGS_CONFIG         = 'settings_config';
 	const TOOLS_CONFIG            = 'tools_config';
+	const DASHBOARD_CONFIG        = 'dashboard_config';
+
+	const GET_DASHBOARD_DATA_ENDPOINT = 'get_dashboard_data_endpoint';
 
 	const SHOULD_ENQUEUE_SETUP_WIZARD = 'should_enqueue_setup_wizard';
+
+	const FEATURE_FLAG_DASHBOARD = 'gravitysmtp_dashboard_app';
 
 	protected $configs = array(
 		self::APPS_CONFIG             => Apps_Config::class,
@@ -33,6 +41,7 @@ class App_Service_Provider extends Config_Service_Provider {
 		self::EMAIL_LOG_SINGLE_CONFIG => Email_Log_Single_Config::class,
 		self::SETTINGS_CONFIG         => Settings_Config::class,
 		self::TOOLS_CONFIG            => Tools_Config::class,
+		self::DASHBOARD_CONFIG        => Dashboard_Config::class,
 	);
 
 	protected $plugin_url;
@@ -44,8 +53,8 @@ class App_Service_Provider extends Config_Service_Provider {
 	public function register( Service_Container $container ) {
 		parent::register( $container );
 
-		$this->container->add( self::SHOULD_ENQUEUE_SETUP_WIZARD, function() use ( $container ) {
-			return function() {
+		$this->container->add( self::SHOULD_ENQUEUE_SETUP_WIZARD, function () use ( $container ) {
+			return function () {
 				$page = filter_input( INPUT_GET, 'page' );
 
 				if ( ! is_string( $page ) ) {
@@ -68,6 +77,18 @@ class App_Service_Provider extends Config_Service_Provider {
 		$this->register_settings_app( $min, $ver );
 		$this->register_activity_log_app( $min, $ver );
 		$this->register_tools_app( $min, $ver );
+		$this->register_dashboard_app( $min, $ver );
+
+		$this->container->add( self::GET_DASHBOARD_DATA_ENDPOINT, function() use ( $container ) {
+			$dashboard_config = $container->get( self::DASHBOARD_CONFIG );
+			return new Get_Dashboard_Data_Endpoint( $dashboard_config );
+		});
+	}
+
+	public function init( \Gravity_Forms\Gravity_Tools\Service_Container $container ) {
+		add_action( 'wp_ajax_' . Get_Dashboard_Data_Endpoint::ACTION_NAME, function () use ( $container ) {
+			$container->get( self::GET_DASHBOARD_DATA_ENDPOINT )->handle();
+		} );
 	}
 
 	protected function register_setup_wizard_app( $min, $ver ) {
@@ -144,6 +165,43 @@ class App_Service_Provider extends Config_Service_Provider {
 		);
 
 		$this->register_app( $args );
+	}
+
+	protected function register_dashboard_app( $min, $ver ) {
+		$args = array(
+			'app_name'     => 'dashboard',
+			'script_name'  => 'gravitysmtp_scripts_admin',
+			'object_name'  => 'gravitysmtp_admin_config',
+			'chunk'        => './dashboard',
+			'enqueue'      => array( $this, 'should_enqueue_dashboard' ),
+			'css'          => array(
+				'handle' => 'dashboard_styles',
+				'src'    => $this->plugin_url . "/assets/css/dist/dashboard{$min}.css",
+				'deps'   => array( 'gravitysmtp_styles_base' ),
+				'ver'    => $ver,
+			),
+			'root_element' => 'gravitysmtp-dashboard-app-root',
+		);
+
+		$this->register_app( $args );
+	}
+
+	public function should_enqueue_dashboard() {
+		$enabled = Feature_Flag_Manager::is_enabled( self::FEATURE_FLAG_DASHBOARD );
+
+		if ( ! $enabled ) {
+			return false;
+		}
+
+		$page = filter_input( INPUT_GET, 'page' );
+
+		if ( ! is_string( $page ) ) {
+			return false;
+		}
+
+		$page = htmlspecialchars( $page );
+
+		return $page === 'gravitysmtp-dashboard';
 	}
 
 	public function should_enqueue_activity_log() {

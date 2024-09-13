@@ -11,9 +11,10 @@ use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Base;
  */
 class Connector_Mailgun extends Connector_Base {
 
-	const SETTING_API_KEY = 'api_key';
-	const SETTING_REGION  = 'region';
-	const SETTING_DOMAIN  = 'domain';
+	const SETTING_API_KEY         = 'api_key';
+	const SETTING_REGION          = 'region';
+	const SETTING_DOMAIN          = 'domain';
+	const SETTING_USE_RETURN_PATH = 'use_return_path';
 
 	const OPTION_REGION_US = 'us';
 	const OPTION_REGION_EU = 'eu';
@@ -161,6 +162,10 @@ class Connector_Mailgun extends Connector_Base {
 			}
 
 			$body[ $header_key ] = $value;
+		}
+
+		if ( (bool) $this->get_setting( self::SETTING_USE_RETURN_PATH, false ) ) {
+			$body['sender'] = $atts['from'];
 		}
 
 		$params = [
@@ -319,6 +324,7 @@ class Connector_Mailgun extends Connector_Base {
 			self::SETTING_FORCE_FROM_NAME  => $this->get_setting( self::SETTING_FORCE_FROM_NAME, false ),
 			self::SETTING_REGION           => $this->get_setting( self::SETTING_REGION, self::OPTION_REGION_US ),
 			self::SETTING_DOMAIN           => $this->get_setting( self::SETTING_DOMAIN, '' ),
+			self::SETTING_USE_RETURN_PATH  => (bool) $this->get_setting( self::SETTING_USE_RETURN_PATH, false ),
 		);
 	}
 
@@ -376,6 +382,27 @@ class Connector_Mailgun extends Connector_Base {
 							'tagName' => 'h3',
 							'type'    => 'boxed',
 							'weight'  => 'medium',
+						),
+					),
+					array(
+						'component' => 'Toggle',
+						'props'     => array(
+							'helpTextAttributes' => array(
+								'content' => esc_html__( 'If Return Path is enabled this adds the return path to the email header which indicates where non-deliverable notifications should be sent. Bounce messages may be lost if not enabled.', 'gravitysmtp' ),
+								'size'    => 'text-xs',
+								'weight'  => 'regular',
+								'spacing' => [ 2, 0, 0, 0 ],
+							),
+							'helpTextWidth'      => 'full',
+							'initialChecked'     => (bool) $this->get_setting( self::SETTING_USE_RETURN_PATH, false ),
+							'labelAttributes'    => array(
+								'label' => esc_html__( 'Return Path', 'gravitysmtp' ),
+							),
+							'labelPosition'      => 'left',
+							'name'               => self::SETTING_USE_RETURN_PATH,
+							'size'               => 'size-m',
+							'spacing'            => 5,
+							'width'              => 'full',
 						),
 					),
 					array(

@@ -2,6 +2,7 @@
 
 namespace Gravity_Forms\Gravity_SMTP\Connectors;
 
+use Gravity_Forms\Gravity_SMTP\Apps\Config\Tools_Config;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Get_Connector_Emails;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Migrate_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Connectors\Oauth\Google_Oauth_Handler;
@@ -9,6 +10,7 @@ use Gravity_Forms\Gravity_SMTP\Connectors\Oauth\Microsoft_Oauth_Handler;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_PHPMail;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Data_Store_Router;
 use Gravity_Forms\Gravity_SMTP\Enums\Connector_Status_Enum;
+use Gravity_Forms\Gravity_SMTP\Logging\Debug\Debug_Logger;
 use Gravity_Forms\Gravity_SMTP\Logging\Log\Logger;
 use Gravity_Forms\Gravity_SMTP\Logging\Logging_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Connectors\Config\Connector_Config;
@@ -19,7 +21,7 @@ use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Get_Single_Email_Data_Endpoi
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Connector_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Plugin_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Send_Test_Endpoint;
-use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Amazon_SES;
+use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Amazon;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Brevo;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Generic;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Google;
@@ -34,12 +36,14 @@ use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Zoho;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Const_Data_Store;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Opts_Data_Store;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Plugin_Opts_Data_Store;
+use Gravity_Forms\Gravity_SMTP\Models\Debug_Log_Model;
 use Gravity_Forms\Gravity_SMTP\Models\Event_Model;
 use Gravity_Forms\Gravity_SMTP\Models\Hydrators\Hydrator_Factory;
 use Gravity_Forms\Gravity_SMTP\Models\Log_Details_Model;
 use Gravity_Forms\Gravity_SMTP\Models\Notifications_Model;
 use Gravity_Forms\Gravity_SMTP\Connectors\Oauth_Data_Handler;
 use Gravity_Forms\Gravity_SMTP\Utils\Recipient;
+use Gravity_Forms\Gravity_Tools\Logging\DB_Logging_Provider;
 use Gravity_Forms\Gravity_Tools\Updates\Updates_Service_Provider;
 use Gravity_Forms\Gravity_Tools\Providers\Config_Collection_Service_Provider;
 use Gravity_Forms\Gravity_Tools\Providers\Config_Service_Provider;
@@ -61,6 +65,7 @@ class Connector_Service_Provider extends Config_Service_Provider {
 	const HYDRATOR_FACTORY       = 'hydrator_factory';
 	const NAME_MAP               = 'name_map';
 	const REGISTERED_CONNECTORS  = 'registered_connectors';
+	const CONNECTOR_DATA_MAP     = 'connector_data_map';
 
 	const OAUTH_DATA_HANDLER      = 'oauth_data_handler';
 	const GOOGLE_OAUTH_HANDLER    = 'google_oauth_handler';
@@ -79,7 +84,7 @@ class Connector_Service_Provider extends Config_Service_Provider {
 	const CONNECTOR_GENERIC    = 'Generic';
 	const CONNECTOR_SENDGRID   = 'Sendgrid';
 	const CONNECTOR_POSTMARK   = 'Postmark';
-	const CONNECTOR_AMAZON_SES = 'Amazon_SES';
+	const CONNECTOR_AMAZON_SES = 'Amazon';
 	const CONNECTOR_GOOGLE     = 'Google';
 	const CONNECTOR_BREVO      = 'Brevo';
 	const CONNECTOR_MAILGUN    = 'Mailgun';
@@ -94,7 +99,7 @@ class Connector_Service_Provider extends Config_Service_Provider {
 		self::CONNECTOR_GENERIC    => Connector_Generic::class,
 		self::CONNECTOR_SENDGRID   => Connector_Sendgrid::class,
 		self::CONNECTOR_POSTMARK   => Connector_Postmark::class,
-		self::CONNECTOR_AMAZON_SES => Connector_Amazon_SES::class,
+		self::CONNECTOR_AMAZON_SES => Connector_Amazon::class,
 		self::CONNECTOR_GOOGLE     => Connector_Google::class,
 		self::CONNECTOR_BREVO      => Connector_Brevo::class,
 		self::CONNECTOR_MAILGUN    => Connector_Mailgun::class,
@@ -171,6 +176,21 @@ class Connector_Service_Provider extends Config_Service_Provider {
 			return new Logger( $container->get( self::LOG_DETAILS_MODEL ) );
 		} );
 
+		$this->container->add( Logging_Service_Provider::DEBUG_LOG_MODEL, function () use ( $container ) {
+			return new Debug_Log_Model();
+		} );
+
+		$this->container->add( Logging_Service_Provider::DB_LOGGING_PROVIDER, function () use ( $container ) {
+			return new DB_Logging_Provider( $container->get( Logging_Service_Provider::DEBUG_LOG_MODEL ) );
+		} );
+
+		$this->container->add( Logging_Service_Provider::DEBUG_LOGGER, function () use ( $container ) {
+			$data      = $container->get( self::DATA_STORE_ROUTER );
+			$log_level = $data->get_plugin_setting( Tools_Config::SETTING_DEBUG_LOG_LEVEL, DB_Logging_Provider::DEBUG );
+
+			return new Debug_Logger( $container->get( Logging_Service_Provider::DB_LOGGING_PROVIDER ), $log_level );
+		} );
+
 		$this->container->add( self::DATA_STORE_ROUTER, function () use ( $container ) {
 			return new Data_Store_Router( $container->get( self::DATA_STORE_CONST ), $container->get( self::DATA_STORE_OPTS ), $container->get( self::DATA_STORE_PLUGIN_OPTS ) );
 		} );
@@ -182,7 +202,8 @@ class Connector_Service_Provider extends Config_Service_Provider {
 				$container->get( Logging_Service_Provider::LOGGER ),
 				$container->get( self::EVENT_MODEL ),
 				$container->get( Utils_Service_Provider::HEADER_PARSER ),
-				$container->get( Utils_Service_Provider::RECIPIENT_PARSER )
+				$container->get( Utils_Service_Provider::RECIPIENT_PARSER ),
+				$container->get( Logging_Service_Provider::DEBUG_LOGGER )
 			);
 		} );
 
@@ -490,12 +511,13 @@ class Connector_Service_Provider extends Config_Service_Provider {
 		$should_register = $should_display ? strpos( $page, 'gravitysmtp-' ) !== false : in_array( $page, array(
 			'gravitysmtp-settings',
 			'gravitysmtp-activity-log',
-			'gravitysmtp-tools'
+			'gravitysmtp-tools',
+			'gravitysmtp-dashboard'
 		) );
 
 		if ( $is_ajax ) {
 			$action = filter_input( INPUT_POST, 'action' );
-			if ( $action === 'migrate_settings' ) {
+			if ( $action === 'migrate_settings' || $action === 'get_dashboard_data' ) {
 				$should_register = true;
 			}
 		}
@@ -513,6 +535,7 @@ class Connector_Service_Provider extends Config_Service_Provider {
 		 */
 		$factory  = $this->container->get( self::CONNECTOR_FACTORY );
 		$name_map = array();
+		$data_map = array();
 
 		foreach ( $connectors as $connector_name => $connector ) {
 			$instance       = $factory->create( $connector_name );
@@ -522,9 +545,11 @@ class Connector_Service_Provider extends Config_Service_Provider {
 			$config_collection->add_config( $config );
 
 			$name_map[ $connector_data['name'] ] = $connector_data['title'];
+			$data_map[ $connector_data['name'] ] = $connector_data;
 		}
 
 		$this->container->add( self::NAME_MAP, $name_map );
+		$this->container->add( self::CONNECTOR_DATA_MAP, $data_map );
 	}
 
 }

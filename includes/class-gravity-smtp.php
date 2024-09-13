@@ -194,6 +194,15 @@ class Gravity_SMTP {
 		add_action( 'plugins_loaded', function() {
 			Feature_Flag_Manager::add( 'wp_email_management', 'WP Email Management' );
 			Feature_Flag_Manager::enable_flag( 'wp_email_management' );
+
+			Feature_Flag_Manager::add( 'gravitysmtp_dashboard_app', 'Dashboard App Screen' );
+			Feature_Flag_Manager::enable_flag( 'gravitysmtp_dashboard_app' );
+
+			Feature_Flag_Manager::add( 'amazon_ses_integration', 'Amazon SES Integration' );
+			Feature_Flag_Manager::enable_flag( 'amazon_ses_integration' );
+
+			Feature_Flag_Manager::add( 'gravityforms_entry_note', 'Gravity Forms Entry Note' );
+			Feature_Flag_Manager::enable_flag( 'gravityforms_entry_note' );
 		} );
 	}
 

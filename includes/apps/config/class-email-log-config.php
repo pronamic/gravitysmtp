@@ -2566,14 +2566,6 @@ class Email_Log_Config extends Config {
 					),
 					'components' => array(
 						array(
-							'component' => 'Text',
-							'props'     => array(
-								'content'       => $to_address,
-								'customClasses' => array( 'gravitysmtp-activity-log-app__activity-log-table-recipient-email' ),
-								'size'          => 'text-sm',
-							),
-						),
-						array(
 							'component'  => 'Box',
 							'props'      => array(
 								'customClasses' => array( 'gravitysmtp-activity-log-app__activity-log-table-recipient-meta' ),
@@ -2599,6 +2591,14 @@ class Email_Log_Config extends Config {
 										'size'          => 'text-xxs',
 									),
 								),
+							),
+						),
+						array(
+							'component' => 'Text',
+							'props'     => array(
+								'content'       => $to_address,
+								'customClasses' => array( 'gravitysmtp-activity-log-app__activity-log-table-recipient-email' ),
+								'size'          => 'text-sm',
 							),
 						),
 					),

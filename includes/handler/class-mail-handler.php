@@ -27,10 +27,23 @@ class Mail_Handler {
 	 */
 	private $source_parser;
 
+	/**
+	 * @var null A way to store the entry ID being acted upon.
+	 */
+	protected $entry_id = null;
+
 	public function __construct( $connector_factory, $data_store, $source_parser ) {
 		$this->connector_factory = $connector_factory;
 		$this->data_store = $data_store;
 		$this->source_parser = $source_parser;
+	}
+
+	public function set_entry_id( $entry_id ) {
+		$this->entry_id = $entry_id;
+	}
+
+	public function get_entry_id() {
+		return $this->entry_id;
 	}
 
 	private function get_connector( $type ) {

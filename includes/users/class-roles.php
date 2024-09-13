@@ -48,6 +48,8 @@ class Roles {
 	const VIEW_TOOLS_SENDATEST    = 'gravitysmtp_view_tools_sendatest';
 	const VIEW_TOOLS_SYSTEMREPORT = 'gravitysmtp_view_tools_systemreport';
 
+	const VIEW_DASHBOARD = 'gravitysmtp_view_dashboard';
+
 	private $caps = array(
 		self::VIEW_EMAIL_LOG,
 		self::EDIT_EMAIL_LOG,
@@ -81,6 +83,7 @@ class Roles {
 		self::VIEW_TOOLS,
 		self::VIEW_TOOLS_SENDATEST,
 		self::VIEW_TOOLS_SYSTEMREPORT,
+		self::VIEW_DASHBOARD,
 	);
 
 	public function register() {

@@ -12,6 +12,8 @@ use Gravity_Forms\Gravity_SMTP\Utils\Recipient;
  */
 class Connector_Phpmail extends Connector_Base {
 
+	const SETTING_USE_RETURN_PATH = 'use_return_path';
+
 	protected $name        = 'phpmail';
 	protected $title       = 'PHP Mail';
 	protected $disabled    = false;
@@ -59,6 +61,7 @@ class Connector_Phpmail extends Connector_Base {
 			self::SETTING_FORCE_FROM_EMAIL => $this->get_setting( self::SETTING_FORCE_FROM_EMAIL, false ),
 			self::SETTING_FROM_NAME        => $this->get_setting( self::SETTING_FROM_NAME, '' ),
 			self::SETTING_FORCE_FROM_NAME  => $this->get_setting( self::SETTING_FORCE_FROM_NAME, false ),
+			self::SETTING_USE_RETURN_PATH  => (bool) $this->get_setting( self::SETTING_USE_RETURN_PATH, false ),
 		);
 	}
 
@@ -105,6 +108,27 @@ class Connector_Phpmail extends Connector_Base {
 							'weight'  => 'medium',
 						),
 					),
+					array(
+						'component' => 'Toggle',
+						'props'     => array(
+							'helpTextAttributes' => array(
+								'content' => esc_html__( 'If Return Path is enabled this adds the return path to the email header which indicates where non-deliverable notifications should be sent. Bounce messages may be lost if not enabled.', 'gravitysmtp' ),
+								'size'    => 'text-xs',
+								'weight'  => 'regular',
+								'spacing' => [ 2, 0, 0, 0 ],
+							),
+							'helpTextWidth'      => 'full',
+							'initialChecked'     => (bool) $this->get_setting( self::SETTING_USE_RETURN_PATH, false ),
+							'labelAttributes'    => array(
+								'label' => esc_html__( 'Return Path', 'gravitysmtp' ),
+							),
+							'labelPosition'      => 'left',
+							'name'               => self::SETTING_USE_RETURN_PATH,
+							'size'               => 'size-m',
+							'spacing'            => 5,
+							'width'              => 'full',
+						),
+					),
 				),
 				$this->get_from_settings_fields()
 			),
@@ -119,7 +143,8 @@ class Connector_Phpmail extends Connector_Base {
 	 * @return bool|\WP_Error
 	 */
 	public function is_configured() {
-		return true;
+		global $phpmailer;
+		return ! empty( $phpmailer );
 	}
 
 	public function update_wp_mail_froms( $atts ) {
@@ -159,6 +184,10 @@ class Connector_Phpmail extends Connector_Base {
 
 		if ( isset( $atts['headers']['content-type'] ) && strpos( $atts['headers']['content-type'], 'Content-type' ) === false ) {
 			$atts['headers']['content-type'] = 'Content-type: ' . $atts['headers']['content-type'];
+		}
+
+		if ( $this->get_setting( self::SETTING_USE_RETURN_PATH, false ) ) {
+			$atts['headers']['Return-Path'] = 'Return-Path: ' . $from_email;
 		}
 
 		return $atts;

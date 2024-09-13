@@ -15,15 +15,16 @@ use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
  */
 class Connector_Microsoft extends Connector_Base {
 
-	const SETTING_ACCESS_TOKEN  = 'access_token';
-	const SETTING_CLIENT_ID     = 'client_id';
-	const SETTING_CLIENT_SECRET = 'client_secret';
+	const SETTING_ACCESS_TOKEN    = 'access_token';
+	const SETTING_CLIENT_ID       = 'client_id';
+	const SETTING_CLIENT_SECRET   = 'client_secret';
+	const SETTING_USE_RETURN_PATH = 'use_return_path';
 
 	const VALUE_REDIRECT_URI      = 'redirect_uri';
 	const VALUE_REDIRECT_URI_FULL = 'redirect_uri_full';
 
 	protected $name        = 'microsoft';
-	protected $title       = 'Microsoft 365 / Outlook';
+	protected $title       = 'Microsoft';
 	protected $disabled    = true;
 	protected $logo        = 'Microsoft';
 	protected $full_logo   = 'MicrosoftFull';
@@ -140,6 +141,10 @@ class Connector_Microsoft extends Connector_Base {
 			}
 		}
 
+		if ( (bool) $this->get_setting( self::SETTING_USE_RETURN_PATH, false ) ) {
+			$this->php_mailer->Sender = $this->php_mailer->From;
+		}
+
 		if ( $this->is_test_mode() ) {
 			$this->events->update( array( 'status' => 'sandboxed' ), $email );
 			$this->logger->log( $email, 'sandboxed', __( 'Email sandboxed.', 'gravitysmtp' ) );
@@ -203,6 +208,7 @@ class Connector_Microsoft extends Connector_Base {
 			self::SETTING_FORCE_FROM_EMAIL => $this->get_setting( self::SETTING_FORCE_FROM_EMAIL, false ),
 			self::SETTING_FROM_NAME        => $this->get_setting( self::SETTING_FROM_NAME, '' ),
 			self::SETTING_FORCE_FROM_NAME  => $this->get_setting( self::SETTING_FORCE_FROM_NAME, false ),
+			self::SETTING_USE_RETURN_PATH  => (bool) $this->get_setting( self::SETTING_USE_RETURN_PATH, false ),
 			'oauth_url'                    => 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
 			'oauth_params'                 => '&' . $this->get_oauth_params(),
 		);
@@ -534,6 +540,28 @@ class Connector_Microsoft extends Connector_Base {
 					'tagName' => 'h3',
 					'type'    => 'boxed',
 					'weight'  => 'medium',
+				),
+			);
+
+			$settings['fields'][] = array(
+				'component' => 'Toggle',
+				'props'     => array(
+					'helpTextAttributes' => array(
+						'content' => esc_html__( 'If Return Path is enabled this adds the return path to the email header which indicates where non-deliverable notifications should be sent. Bounce messages may be lost if not enabled.', 'gravitysmtp' ),
+						'size'    => 'text-xs',
+						'weight'  => 'regular',
+						'spacing' => [ 2, 0, 0, 0 ],
+					),
+					'helpTextWidth'      => 'full',
+					'initialChecked'     => (bool) $this->get_setting( self::SETTING_USE_RETURN_PATH, false ),
+					'labelAttributes'    => array(
+						'label' => esc_html__( 'Return Path', 'gravitysmtp' ),
+					),
+					'labelPosition'      => 'left',
+					'name'               => self::SETTING_USE_RETURN_PATH,
+					'size'               => 'size-m',
+					'spacing'            => 5,
+					'width'              => 'full',
 				),
 			);
 

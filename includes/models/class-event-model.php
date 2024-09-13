@@ -366,6 +366,11 @@ class Event_Model {
 
 		foreach ( $rows as $idx => $row ) {
 			$service = $row['service'];
+
+			if ( $service === 'amazon-ses' ) {
+				$service = 'amazon';
+			}
+
 			$extra   = strpos( $row['extra'], '{' ) === 0 ? json_decode( $row['extra'], true ) : unserialize( $row['extra'] );
 
 			try {
@@ -404,6 +409,109 @@ class Event_Model {
 		$hydrated = $this->hydrate( array( $email ) );
 
 		return $hydrated[0];
+	}
+
+	public function get_earliest_event_date() {
+		static $found;
+
+		if ( ! empty( $found ) ){
+			return $found;
+		}
+
+		global $wpdb;
+		$table_name = $this->get_table_name();
+
+		$sql = $wpdb->prepare( "SELECT date_created FROM $table_name ORDER BY date_created ASC LIMIT %d, %d", 0, 1 );
+		$results = $wpdb->get_results( $sql, ARRAY_A );
+
+		if ( empty( $results ) ) {
+			return gmdate( 'Y-m-d 00:00:00', time() );
+		}
+
+		$found = $results[0]['date_created'];
+
+		return gmdate( 'Y-m-d 00:00:00', strtotime( $results[0]['date_created'] ) );
+	}
+
+	public function get_top_sending_sources( $start, $end ) {
+		global $wpdb;
+		$table_name = $this->get_table_name();
+
+		$sql = $wpdb->prepare( "SELECT SUBSTRING_INDEX(
+								SUBSTRING_INDEX( SUBSTRING(extra, (INSTR(extra, CONCAT('source', '\";')) + CHAR_LENGTH('source') + 1)), '\"', 2),
+								'\"', -1) as source,
+								count(*) as total
+								FROM ( SELECT * FROM $table_name WHERE date_created >= %s AND date_created <= %s ORDER BY date_created DESC LIMIT 0, 5000 ) AS timeboxed
+								GROUP BY source
+								ORDER BY total DESC
+								LIMIT 0, 8", $start, $end );
+
+		$results = $wpdb->get_results( $sql, ARRAY_A );
+
+		return $results;
+	}
+
+	public function get_top_recipients( $start, $end ) {
+		global $wpdb;
+
+		$table_name = $this->get_table_name();
+
+		$sql = $wpdb->prepare( "SELECT SUBSTRING_INDEX(
+				               	SUBSTRING_INDEX( SUBSTRING(extra, (INSTR(extra, CONCAT('email', '\";')) + CHAR_LENGTH('email') + 1)), '\"', 2),
+				               	'\"', -1) as recipients,
+						       	count(*) as total
+								FROM ( SELECT * FROM $table_name WHERE date_created >= %s AND date_created <= %s ORDER BY date_created DESC LIMIT 0, 5000 ) AS timeboxed
+								GROUP BY recipients
+								ORDER BY total DESC
+								LIMIT 0, 8", $start, $end );
+
+		$results = $wpdb->get_results( $sql, ARRAY_A );
+
+		return $results;
+	}
+
+	public function get_event_stats( $start, $end ) {
+		global $wpdb;
+
+		$table_name = $this->get_table_name();
+
+		$sql = $wpdb->prepare( "SELECT status, count( * ) AS total FROM ( SELECT * FROM $table_name WHERE date_created >= %s AND date_created <= %s ORDER BY date_created DESC ) AS timeboxed GROUP BY status", $start, $end );
+
+		$results = $wpdb->get_results( $sql, ARRAY_A );
+
+		$return = array();
+
+		// Map to key/value pair.
+		foreach( $results as $result ) {
+			$return[ $result['status'] ] = (int) $result['total'];
+		}
+
+		return $return;
+	}
+
+	public function get_chart_data( $start, $end, $period = 'month' ) {
+		switch( $period ) {
+			case 'day':
+			default:
+				$format = '%b %d';
+				break;
+			case 'month':
+				$format = '%b %Y';
+				break;
+			case 'hour':
+				$format = '%H:00 %b %d';
+				break;
+		}
+
+		global $wpdb;
+
+		$table_name = $this->get_table_name();
+
+		$sql = $wpdb->prepare( "SELECT count(*) as total, DATE_FORMAT(date_created, %s ) as date_created, status FROM ( SELECT * FROM $table_name WHERE date_created >= %s AND date_created <= %s ) AS timeboxed GROUP BY DATE_FORMAT(date_created, %s ), status", $format, $start, $end, $format );
+
+		$results = $wpdb->get_results( $sql, ARRAY_A );
+
+		return $results;
 	}
 
 	private function get_email_counts( $extra ) {

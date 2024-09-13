@@ -28,16 +28,23 @@ class Gravity_Api {
 	protected $model;
 
 	/**
+	 * @var string
+	 */
+	protected $namespace;
+
+	/**
 	 * Constructor.
 	 *
 	 * @since 1.0
 	 *
 	 * @param $common
 	 * @param $model
+	 * @param $namespace
 	 */
-	public function __construct( $common, $model ) {
-		$this->common = $common;
-		$this->model = $model;
+	public function __construct( $common, $model, $namespace ) {
+		$this->common    = $common;
+		$this->model     = $model;
+		$this->namespace = $namespace;
 	}
 
 	/**
@@ -212,7 +219,8 @@ class Gravity_Api {
 		$version_info = null;
 
 		if ( $cache ) {
-			$cached_info = get_option( 'gform_version_info' );
+			$cache_key = sprintf( '%s_version_info', $this->namespace );
+			$cached_info = get_option( $cache_key );
 
 			// Checking cache expiration
 			$cache_duration  = DAY_IN_SECONDS; // 24 hours.
@@ -275,7 +283,8 @@ class Gravity_Api {
 		$decoded['timestamp'] = time();
 
 		// Caching response.
-		update_option( 'gform_version_info', $decoded, false ); //caching version info
+		$cache_key = sprintf( '%s_version_info', $this->namespace );
+		update_option( $cache_key, $decoded, false ); //caching version info
 
 		return $decoded;
 	}

@@ -231,7 +231,7 @@ class Telemetry_Snapshot_Data extends Telemetry_Data {
 
 		$decoded['timestamp'] = time();
 
-		update_option( 'gform_version_info', $decoded, false );
+		update_option( 'gsmtp_version_info', $decoded, false );
 
 		$this->logger->log_debug( __METHOD__ . sprintf( '(): Version info cached.' ) );
 	}
