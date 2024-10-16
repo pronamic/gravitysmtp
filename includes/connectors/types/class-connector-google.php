@@ -162,9 +162,11 @@ class Connector_Google extends Connector_Base {
 			return true;
 		}
 
-		$raw = $this->get_raw_message();
-
 		try {
+			$debug_atts = compact( 'to', 'from', 'subject', 'headers', 'source', 'attachments', 'reply_to' );
+			$this->debug_logger->log_debug( $this->wrap_debug_with_details( __FUNCTION__, $email, 'Attempting send with the following attributes: ' . json_encode( $debug_atts ) ) );
+			$raw = $this->get_raw_message();
+
 			$body = array(
 				'raw' => $raw,
 			);

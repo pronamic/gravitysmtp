@@ -169,9 +169,12 @@ class Connector_Amazon extends Connector_Base {
 			return true;
 		}
 
-		$raw = $this->get_raw_message();
-
 		try {
+			$debug_atts = compact( 'to', 'from', 'subject', 'headers', 'source', 'attachments', 'reply_to' );
+			$this->debug_logger->log_debug( $this->wrap_debug_with_details( __FUNCTION__, $email, 'Attempting send with the following attributes: ' . json_encode( $debug_atts ) ) );
+
+			$raw = $this->get_raw_message();
+
 			/**
 			 * @var AWS_Signature_Handler $signature_handler
 			 */
@@ -205,6 +208,7 @@ class Connector_Amazon extends Connector_Base {
 
 		} catch ( \Exception $e ) {
 			$this->log_failure( $email, $e->getMessage() );
+			$this->debug_logger->log_fatal( $this->wrap_debug_with_details( __FUNCTION__, $email, 'Failed to send: ' . $e->getMessage() ) );
 
 			return $email;
 		}

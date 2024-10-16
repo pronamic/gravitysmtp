@@ -301,6 +301,11 @@ abstract class Connector_Base {
 				: $this->get_att( 'from_name', '' );
 		}
 
+		// From was not passed; use admin email
+		if ( empty( $from ) ) {
+			$from = get_option( 'admin_email' );
+		}
+
 		$from_str = ! empty( $from_name ) ? $from_name . ' <' . $from . '>' : $from;
 
 		if ( $return_array ) {

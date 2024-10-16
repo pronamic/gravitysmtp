@@ -1,3 +1,9 @@
+### 1.4.2 | 2024-10-15
+- Fixed an issue that can cause messages with attachments to not be logged in the Event Log.
+- Fixed an issue which causes some connectors to throw fatal errors if an email is sent without any recipients.
+- Fixed a bug that causes some plugins that dont set a from email to cause fatal errors when routing through this plugin.
+- Updated Force From Email toggle to be disabled if the Default From Email is not set.
+
 #### 1.4.0 | 2024-09-13
 - Added Amazon SES as an integration type.
 - Added a Dashboard Screen to the Admin Menu.

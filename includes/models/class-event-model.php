@@ -269,6 +269,8 @@ class Event_Model {
 
 		global $wpdb;
 
+		unset ( $extra['params']['body'] );
+
 		$extra['to']   = $to;
 		$extra['from'] = $from;
 
