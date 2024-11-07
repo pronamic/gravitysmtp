@@ -5,6 +5,7 @@ namespace Gravity_Forms\Gravity_SMTP\Apps\Config;
 use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
 use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Plugin_Settings_Endpoint;
+use Gravity_Forms\Gravity_SMTP\Tracking\Tracking_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Users\Roles;
 use Gravity_Forms\Gravity_SMTP\Utils\Booliesh;
 use Gravity_Forms\Gravity_Tools\Config;
@@ -58,6 +59,8 @@ class Settings_Config extends Config {
 		$save_attachments_enabled = ! empty( $save_attachments_enabled ) ? $save_attachments_enabled !== 'false' : false;
 		$email_log_retention      = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_RETENTION, 7 );
 		$max_records_value        = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_MAX_EVENT_RECORDS, 0 );
+		$open_tracking_enabled    = $plugin_data_store->get_plugin_setting( Tracking_Service_Provider::SETTING_OPEN_TRACKING, 'false' );
+		$open_tracking_enabled	= ! empty( $open_tracking_enabled ) ? $open_tracking_enabled !== 'false' : false;
 
 		$debug_log_enabled   = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_DEBUG_LOG_ENABLED, 'false' );
 		$debug_log_enabled   = ! empty( $debug_log_enabled ) ? $debug_log_enabled !== 'false' : false;
@@ -161,6 +164,8 @@ class Settings_Config extends Config {
 								'save_email_body_helper_text'                    => esc_html__( 'Store the email body for all emails sent from your site.', 'gravitysmtp' ),
 								'save_attachments_label'                         => esc_html__( 'Save Attachments', 'gravitysmtp' ),
 								'save_attachments_helper_text'                   => esc_html__( 'Store attachments on the server in the uploads folder.', 'gravitysmtp' ),
+								'track_open_label'                               => esc_html__( 'Open Email Tracking', 'gravitysmtp' ),
+								'track_open_helper_text'                         => esc_html__( 'Track viewed emails by recipients.', 'gravitysmtp' ),
 								'email_log_retention_label'                      => esc_html__( 'Log Retention Period', 'gravitysmtp' ),
 								'email_log_retention_helper_text'                => esc_html__( 'Email logs older than the selected timeframe will be permanently deleted.', 'gravitysmtp' ),
 								'email_log_max_records_helper_text'              => sprintf( $max_records_message, $max_records_value ),
@@ -192,6 +197,7 @@ class Settings_Config extends Config {
 							'log_retention_period_enabled' => ! Booliesh::get( $max_records_value ),
 							'max_records'                  => $max_records_value,
 							'max_records_set'              => Booliesh::get( $max_records_value ),
+							'open_tracking_enabled'        => $open_tracking_enabled,
 							'retention_options'            => $this->get_email_log_retention_options(),
 							'save_attachments_enabled'     => $save_attachments_enabled,
 							'save_email_body_enabled'      => $save_email_body_enabled,

@@ -6,7 +6,10 @@ use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Plugin_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Plugin_Opts_Data_Store;
 use Gravity_Forms\Gravity_SMTP\Enums\Status_Enum;
+use Gravity_Forms\Gravity_SMTP\Feature_Flags\Feature_Flag_Manager;
 use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
+use Gravity_Forms\Gravity_SMTP\Tracking\Tracking_Service_Provider;
+use Gravity_Forms\Gravity_SMTP\Utils\Booliesh;
 use Gravity_Forms\Gravity_SMTP\Utils\Recipient_Collection;
 use Gravity_Forms\Gravity_Tools\Utils\Utils_Service_Provider;
 
@@ -133,6 +136,11 @@ class Log_Details_Model {
 	public function full_details( $id ) {
 		$container = Gravity_SMTP::container();
 
+		$plugin_data_store = $container->get( Connector_Service_Provider::DATA_STORE_ROUTER );
+
+		$open_tracking_enabled = $plugin_data_store->get_plugin_setting( Tracking_Service_Provider::SETTING_OPEN_TRACKING, 'false' );
+		$open_tracking_enabled = Booliesh::get( $open_tracking_enabled );
+
 		$emails   = $container->get( Connector_Service_Provider::EVENT_MODEL );
 		$data     = $this->by_id( $id );
 		$email    = $emails->find( array( array( 'id', '=', $id ) ) );
@@ -180,11 +188,14 @@ class Log_Details_Model {
 			'log_id'                => $row['id'],
 			'next_id'               => $this->get_next_id( $row['id'] ),
 			'prev_id'               => $this->get_prev_id( $row['id'] ),
-			'opened'                => $row['opened'],
-			'clicked'               => $row['clicked'],
+			'clicked'               => isset( $row['clicked'] ) ? $row['clicked'] : __( 'No', 'gravitysmtp' ),
 			'source'                => isset( $row['source'] ) ? $row['source'] : __( 'N/A', 'gravitysmtp' ),
 			'can_resend'            => $row['can_resend'],
 		);
+
+		if ( Feature_Flag_Manager::is_enabled( 'email_open_tracking' ) && $open_tracking_enabled ) {
+			$details[ 'opened' ] = isset( $row['opened'] ) ? $row['opened'] : __( 'No', 'gravitysmtp' );
+		}
 
 		return $details;
 	}

@@ -53,25 +53,13 @@ class Connector_Generic extends Connector_Base {
 			$reply_to    = $this->get_reply_to( true );
 			$source      = $this->get_att( 'source' );
 			$params      = $this->get_request_params();
+			$email       = $this->email;
 
 			if ( ! empty( $headers['content-type'] ) ) {
 				$headers['content-type'] = $this->get_att( 'content_type', $headers['content-type'] );
 			}
 
-			$email = $this->events->create(
-				$this->name,
-				'pending',
-				$to,
-				empty( $from['name'] ) ? $from['email'] : sprintf( '%s <%s>', $from['name'], $from['email'] ),
-				$subject,
-				$message,
-				array(
-					'headers'     => $headers,
-					'attachments' => $attachments,
-					'source'      => $source,
-					'params'      => $params,
-				)
-			);
+			$this->set_email_log_data( $subject, $message, $to, empty( $from['name'] ) ? $from['email'] : sprintf( '%s <%s>', $from['name'], $from['email'] ), $headers, $attachments, $source, $params );
 
 			$this->debug_logger->log_debug( $this->wrap_debug_with_details( __FUNCTION__, $email, 'Starting email send with Custom SMTP connector.' ) );
 

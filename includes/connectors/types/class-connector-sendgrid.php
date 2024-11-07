@@ -24,21 +24,9 @@ class Connector_Sendgrid extends Connector_Base {
 			$atts   = $this->get_send_atts();
 			$source = $this->get_att( 'source' );
 			$params = $this->get_request_params();
+			$email  = $this->email;
 
-			$email = $this->events->create(
-				$this->name,
-				'pending',
-				$atts['to'],
-				empty( $atts['from']['name'] ) ? $atts['from']['email'] : sprintf( '%s <%s>', $atts['from']['name'], $atts['from']['email'] ),
-				$atts['subject'],
-				$atts['message'],
-				array(
-					'headers'     => $atts['headers'],
-					'attachments' => $atts['attachments'],
-					'source'      => $source,
-					'params'      => $params,
-				)
-			);
+			$this->set_email_log_data( $atts['subject'], $atts['message'], $atts['to'], empty( $atts['from']['name'] ) ? $atts['from']['email'] : sprintf( '%s <%s>', $atts['from']['name'], $atts['from']['email'] ), $atts['headers'], $atts['attachments'], $source, $params );
 
 			$this->logger->log( $email, 'started', __( 'Starting email send for SendGrid connector.', 'gravitysmtp' ) );
 

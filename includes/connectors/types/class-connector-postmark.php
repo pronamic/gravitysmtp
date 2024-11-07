@@ -31,24 +31,11 @@ class Connector_Postmark extends Connector_Base {
 			$atts   = $this->get_send_atts();
 			$source = $this->get_att( 'source' );
 			$params = $this->get_request_params();
+			$email  = $this->email;
 
-			$email = $this->events->create(
-				$this->name,
-				'pending',
-				$atts['to'],
-				$atts['from'],
-				$atts['subject'],
-				$atts['message'],
-				array(
-					'headers'     => $atts['headers'],
-					'attachments' => $atts['attachments'],
-					'source'      => $source,
-					'params'      => $params,
-				)
-			);
+			$this->set_email_log_data( $atts['subject'], $atts['message'], $atts['to'], $atts['from'], $atts['headers'], $atts['attachments'], $source, $params );
 
 			$this->logger->log( $email, 'started', __( 'Starting email send for Postmark connector.', 'gravitysmtp' ) );
-
 
 			if ( $this->is_test_mode() ) {
 				$this->events->update( array( 'status' => 'sandboxed' ), $email );

@@ -14,6 +14,7 @@ use Gravity_Forms\Gravity_SMTP\Logging\Logging_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Models\Event_Model;
 use Gravity_Forms\Gravity_SMTP\Utils\Attachments_Saver;
 use Gravity_Forms\Gravity_SMTP\Utils\AWS_Signature_Handler;
+use Gravity_Forms\Gravity_SMTP\Utils\Basic_Encrypted_Hash;
 use Gravity_Forms\Gravity_SMTP\Utils\Header_Parser;
 use Gravity_Forms\Gravity_SMTP\Utils\Import_Data_Checker;
 use Gravity_Forms\Gravity_SMTP\Utils\Recipient_Parser;
@@ -35,6 +36,7 @@ class Utils_Service_Provider extends Service_Provider {
 	const FILTER_PARSER         = 'filter_parser';
 	const ATTACHMENTS_SAVER     = 'attachments_saver';
 	const AWS_SIGNATURE_HANDLER = 'aws_signature_handler';
+	const BASIC_ENCRYPTED_HASH  = 'basic_encrypted_hash';
 
 	public function register( Service_Container $container ) {
 		$container->add( Connector_Service_Provider::DATA_STORE_CONST, function () {
@@ -89,6 +91,10 @@ class Utils_Service_Provider extends Service_Provider {
 
 		$container->add( self::AWS_SIGNATURE_HANDLER, function() {
 			return new AWS_Signature_Handler();
+		} );
+
+		$container->add( self::BASIC_ENCRYPTED_HASH, function() {
+			return new Basic_Encrypted_Hash();
 		} );
 	}
 

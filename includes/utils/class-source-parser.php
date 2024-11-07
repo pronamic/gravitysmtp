@@ -129,7 +129,7 @@ class Source_Parser {
 		preg_match( "/$separator$root$separator(.[^$separator]+)($separator|\.php)/", $path, $result );
 
 		if ( ! empty( $result[1] ) ) {
-			$all_plugins = get_plugins();
+			$all_plugins = \get_plugins();
 			$plugin_slug = $result[1];
 
 			$filtered = array_filter( $all_plugins, function ( $plugin_data, $plugin ) use ( $plugin_slug ) {
@@ -194,7 +194,7 @@ class Source_Parser {
 		preg_match( "/$separator$root{$separator}themes{$separator}(.[^$separator]+)/", $path, $result );
 
 		if ( ! empty( $result[1] ) ) {
-			$theme = wp_get_theme( $result[1] );
+			$theme = \wp_get_theme( $result[1] );
 
 			return method_exists( $theme, 'get' ) ? $theme->get( 'Name' ) : $result[1];
 		}

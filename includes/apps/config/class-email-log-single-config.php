@@ -64,6 +64,7 @@ class Email_Log_Single_Config extends Config {
 				'secondary_box_headers_heading'  => esc_html__( 'Headers', 'gravitysmtp' ),
 				'sidebar_status_heading'         => esc_html__( 'Log Details', 'gravitysmtp' ),
 				'sidebar_status_label'           => esc_html__( 'Status:', 'gravitysmtp' ),
+				'sidebar_opened_label'           => esc_html__( 'Opened:', 'gravitysmtp' ),
 				'sidebar_service_label'          => esc_html__( 'Service:', 'gravitysmtp' ),
 				'sidebar_has_attachment_label'   => esc_html__( 'Has attachment:', 'gravitysmtp' ),
 				'sidebar_log_id_label'           => esc_html__( 'Log ID:', 'gravitysmtp' ),

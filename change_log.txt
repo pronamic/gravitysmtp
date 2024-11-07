@@ -1,3 +1,11 @@
+### 1.5.0 | 2024-11-06
+- Added Mailchimp as an integration type.
+- Added ability to track email open rates.
+- Fixed an issue which can cause some environments to throw a fatal when parsing the source of an email send.
+- Fixed an issue that can cause fatal errors when Microsoft 365 tokens are invalidated.
+- Fixed an issue that can cause special characters to render incorrectly with Amazon SES.
+- Fixed an issue that can cause a fatal error when AffiliateWP sends emails on an early hook.
+
 ### 1.4.2 | 2024-10-15
 - Fixed an issue that can cause messages with attachments to not be logged in the Event Log.
 - Fixed an issue which causes some connectors to throw fatal errors if an email is sent without any recipients.

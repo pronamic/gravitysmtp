@@ -7,6 +7,7 @@ use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Get_Connector_Emails;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Migrate_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Connectors\Oauth\Google_Oauth_Handler;
 use Gravity_Forms\Gravity_SMTP\Connectors\Oauth\Microsoft_Oauth_Handler;
+use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Mailchimp;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_PHPMail;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Data_Store_Router;
 use Gravity_Forms\Gravity_SMTP\Enums\Connector_Status_Enum;
@@ -26,7 +27,6 @@ use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Brevo;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Generic;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Google;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Mailgun;
-use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Mandrill;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Microsoft;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Postmark;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Sendgrid;
@@ -92,7 +92,7 @@ class Connector_Service_Provider extends Config_Service_Provider {
 	const CONNECTOR_MICROSOFT  = 'Microsoft';
 	const CONNECTOR_SPARKPOST  = 'Sparkpost';
 	const CONNECTOR_SMTP2GO    = 'SMTP2GO';
-	const CONNECTOR_MANDRILL   = 'Mandrill';
+	const CONNECTOR_MAILCHIMP  = 'Mailchimp';
 	const CONNECTOR_PHPMAIL    = 'Phpmail';
 
 	protected $connectors = array(
@@ -107,7 +107,7 @@ class Connector_Service_Provider extends Config_Service_Provider {
 		self::CONNECTOR_MICROSOFT  => Connector_Microsoft::class,
 		self::CONNECTOR_SPARKPOST  => Connector_Sparkpost::class,
 		self::CONNECTOR_SMTP2GO    => Connector_SMTP2GO::class,
-		self::CONNECTOR_MANDRILL   => Connector_Mandrill::class,
+		self::CONNECTOR_MAILCHIMP  => Connector_Mailchimp::class,
 		self::CONNECTOR_PHPMAIL    => Connector_PHPMail::class,
 	);
 
@@ -414,7 +414,7 @@ class Connector_Service_Provider extends Config_Service_Provider {
 				'brevo',
 				'google-gmail',
 				'mailgun',
-				'mandrill',
+				'mailchimp',
 				'microsoft',
 				'postmark',
 				'sendgrid',

@@ -8,9 +8,12 @@ use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Plugin_Settings_Endpoin
 use Gravity_Forms\Gravity_SMTP\Data_Store\Data_Store_Router;
 use Gravity_Forms\Gravity_SMTP\Enums\Integration_Enum;
 use Gravity_Forms\Gravity_SMTP\Enums\Status_Enum;
+use Gravity_Forms\Gravity_SMTP\Feature_Flags\Feature_Flag_Manager;
 use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
+use Gravity_Forms\Gravity_SMTP\Tracking\Tracking_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Users\Roles;
 use Gravity_Forms\Gravity_Tools\Config;
+use Gravity_Forms\Gravity_SMTP\Utils\Booliesh;
 use Gravity_Forms\Gravity_Tools\Utils\Utils_Service_Provider;
 
 class Email_Log_Config extends Config {
@@ -139,13 +142,6 @@ class Email_Log_Config extends Config {
 						'size'    => 'text-sm',
 					),
 				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
 //				'clicked' => array(
 //					'component' => 'Text',
 //					'props'     => array(
@@ -164,6 +160,13 @@ class Email_Log_Config extends Config {
 					'component' => 'Text',
 					'props'     => array(
 						'content' => 'WooCommerce',
+						'size'    => 'text-sm',
+					),
+				),
+				'opened'  => array(
+					'component' => 'Text',
+					'props'     => array(
+						'content' => 'yes',
 						'size'    => 'text-sm',
 					),
 				),
@@ -199,13 +202,6 @@ class Email_Log_Config extends Config {
 						'size'    => 'text-sm',
 					),
 				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
 //				'clicked' => array(
 //					'component' => 'Text',
 //					'props'     => array(
@@ -224,6 +220,13 @@ class Email_Log_Config extends Config {
 					'component' => 'Text',
 					'props'     => array(
 						'content' => 'WooCommerce',
+						'size'    => 'text-sm',
+					),
+				),
+				'opened'  => array(
+					'component' => 'Text',
+					'props'     => array(
+						'content' => 'yes',
 						'size'    => 'text-sm',
 					),
 				),
@@ -2260,6 +2263,11 @@ class Email_Log_Config extends Config {
 	}
 
 	public function get_columns() {
+		$plugin_data_store = Gravity_SMTP::container()->get( Connector_Service_Provider::DATA_STORE_ROUTER );
+
+		$open_tracking_enabled = $plugin_data_store->get_plugin_setting( Tracking_Service_Provider::SETTING_OPEN_TRACKING, 'false' );
+		$open_tracking_enabled = Booliesh::get( $open_tracking_enabled );
+
 		$columns = array(
 			array(
 				'component'       => 'Text',
@@ -2284,17 +2292,6 @@ class Email_Log_Config extends Config {
 				),
 				'sortable'        => true,
 			),
-			//			array(
-			//				'component' => 'Text',
-			//				'hideAt'    => 960,
-			//				'key'       => 'from',
-			//				'props'     => array(
-			//					'content' => esc_html__( 'From', 'gravitysmtp' ),
-			//					'size'    => 'text-sm',
-			//					'weight'  => 'medium',
-			//				),
-			//				'sortable'  => true,
-			//			),
 			array(
 				'component'       => 'Text',
 				'hideAt'          => 960,
@@ -2307,64 +2304,72 @@ class Email_Log_Config extends Config {
 				),
 				'sortable'        => true,
 			),
-			array(
-				'component'       => 'Text',
-				'hideAt'          => 960,
-				'hideWhenLoading' => true,
-				'key'             => 'source',
-				'props'           => array(
-					'content' => esc_html__( 'Source', 'gravitysmtp' ),
-					'size'    => 'text-sm',
-					'weight'  => 'medium',
-				),
-				'sortable'        => true,
-				'variableLoader'  => true,
-			),
-			//			array(
-			//				'component' => 'Text',
-			//				'hideAt'    => 960,
-			//				'key'       => 'clicked',
-			//				'props'     => array(
-			//					'content' => esc_html__( 'Clicked', 'gravitysmtp' ),
-			//					'size'    => 'text-sm',
-			//					'weight'  => 'medium',
-			//				),
-			//				'sortable'  => true,
-			//			),
-			array(
-				'cellClasses'     => 'gravitysmtp-activity-log-app__activity-log-table-integration',
-				'component'       => 'Text',
-				'hideAt'          => 960,
-				'hideWhenLoading' => true,
-				'key'             => 'integration',
-				'props'           => array(
-					'content' => esc_html__( 'Service', 'gravitysmtp' ),
-					'size'    => 'text-sm',
-					'weight'  => 'medium',
-				),
-				'sortable'        => true,
-			),
-			array(
+		);
+
+		if ( Feature_Flag_Manager::is_enabled( 'email_open_tracking' ) && $open_tracking_enabled ) {
+			$columns[] = array(
 				'component'       => 'Text',
 				'hideAt'          => 640,
 				'hideWhenLoading' => false,
-				'key'             => 'date',
+				'key'             => 'opened',
 				'props'           => array(
-					'content' => esc_html__( 'Date Sent', 'gravitysmtp' ),
+					'content' => esc_html__( 'Opened', 'gravitysmtp' ),
 					'size'    => 'text-sm',
 					'weight'  => 'medium',
 				),
 				'sortable'        => true,
+			);
+		}
+
+		$columns[] = array(
+			'component'       => 'Text',
+			'hideAt'          => 960,
+			'hideWhenLoading' => true,
+			'key'             => 'source',
+			'props'           => array(
+				'content' => esc_html__( 'Source', 'gravitysmtp' ),
+				'size'    => 'text-sm',
+				'weight'  => 'medium',
 			),
-			array(
-				'component' => 'Text',
-				'hideAt'    => 640,
-				'key'       => 'actions',
-				'props'     => array(
-					'content' => esc_html__( 'Actions', 'gravitysmtp' ),
-					'size'    => 'text-sm',
-					'weight'  => 'medium',
-				),
+			'sortable'        => true,
+			'variableLoader'  => true,
+		);
+
+		$columns[] = array(
+			'cellClasses'     => 'gravitysmtp-activity-log-app__activity-log-table-integration',
+			'component'       => 'Text',
+			'hideAt'          => 960,
+			'hideWhenLoading' => true,
+			'key'             => 'integration',
+			'props'           => array(
+				'content' => esc_html__( 'Service', 'gravitysmtp' ),
+				'size'    => 'text-sm',
+				'weight'  => 'medium',
+			),
+			'sortable'        => true,
+		);
+
+		$columns[] = array(
+			'component'       => 'Text',
+			'hideAt'          => 640,
+			'hideWhenLoading' => false,
+			'key'             => 'date',
+			'props'           => array(
+				'content' => esc_html__( 'Date Sent', 'gravitysmtp' ),
+				'size'    => 'text-sm',
+				'weight'  => 'medium',
+			),
+			'sortable'        => true,
+		);
+
+		$columns[] = array(
+			'component' => 'Text',
+			'hideAt'    => 640,
+			'key'       => 'actions',
+			'props'     => array(
+				'content' => esc_html__( 'Actions', 'gravitysmtp' ),
+				'size'    => 'text-sm',
+				'weight'  => 'medium',
 			),
 		);
 
@@ -2372,20 +2377,31 @@ class Email_Log_Config extends Config {
 	}
 
 	public function get_column_style_props() {
+		$plugin_data_store = Gravity_SMTP::container()->get( Connector_Service_Provider::DATA_STORE_ROUTER );
+
+		$open_tracking_enabled = $plugin_data_store->get_plugin_setting( Tracking_Service_Provider::SETTING_OPEN_TRACKING, 'false' );
+		$open_tracking_enabled = Booliesh::get( $open_tracking_enabled );
+
 		$props = array(
 			'subject'     => array( 'flexBasis' => '292px' ),
 			'status'      => array( 'flex' => '0 0 122px' ),
 			'from'        => array( 'flexBasis' => '160px' ),
 			'to'          => array( 'flexBasis' => '160px' ),
-			'source'      => array( 'flexBasis' => '104px' ),
-			'integration' => array( 'flex' => '0 0 122px' ),
-			//			'clicked' => array( 'flexBasis' => '90px' ),
-			'date'        => array( 'flexBasis' => '250px' ),
-			'actions'     => array( 'flex' => '0 0 130px' ),
 		);
+
+		if ( Feature_Flag_Manager::is_enabled( 'email_open_tracking' ) && $open_tracking_enabled ) {
+			$props['opened'] = array( 'flex' => '0 0 90px' );
+		}
+
+		// Continue adding the remaining entries, starting with 'source'
+		$props['source']      = array( 'flexBasis' => '104px' );
+		$props['integration'] = array( 'flex' => '0 0 122px' );
+		$props['date']        = array( 'flexBasis' => '250px' );
+		$props['actions']     = array( 'flex' => '0 0 130px' );
 
 		return apply_filters( 'gravitysmtp_email_log_column_style_props', $props );
 	}
+
 
 	public function get_i18n() {
 		return array(
@@ -2458,6 +2474,11 @@ class Email_Log_Config extends Config {
 		$search_term = filter_input( INPUT_GET, 'search_term' );
 		$search_type = filter_input( INPUT_GET, 'search_type' );
 
+		$plugin_data_store = Gravity_SMTP::container()->get( Connector_Service_Provider::DATA_STORE_ROUTER );
+
+		$open_tracking_enabled = $plugin_data_store->get_plugin_setting( Tracking_Service_Provider::SETTING_OPEN_TRACKING, 'false' );
+		$open_tracking_enabled = Booliesh::get( $open_tracking_enabled );
+
 		if ( ! empty( $search_term ) ) {
 			$search_term = htmlspecialchars( $search_term );
 		}
@@ -2478,6 +2499,7 @@ class Email_Log_Config extends Config {
 			'ajax_grid_pagination_url' => site_url( 'wp-content/plugins/gravitysmtp/includes/logging/endpoints/get-paginated-items.php' ),
 			'base_url'                 => admin_url( 'admin.php?page=gravitysmtp-activity-log' ),
 			'nav_item_param_key'       => 'tab',
+			'open_tracking_enabled'    => Feature_Flag_Manager::is_enabled( 'email_open_tracking' ) && $open_tracking_enabled,
 			'initial_row_count'        => $count,
 			'initial_load_timestamp'   => current_time( 'mysql', true ),
 			'rows_per_page'            => $per_page,
@@ -2501,8 +2523,12 @@ class Email_Log_Config extends Config {
 	}
 
 	public function get_data_rows() {
-		$emails           = Gravity_SMTP::container()->get( Connector_Service_Provider::EVENT_MODEL );
-		$recipient_parser = Gravity_SMTP::container()->get( Utils_Service_Provider::RECIPIENT_PARSER );
+		$emails            = Gravity_SMTP::container()->get( Connector_Service_Provider::EVENT_MODEL );
+		$recipient_parser  = Gravity_SMTP::container()->get( Utils_Service_Provider::RECIPIENT_PARSER );
+		$plugin_data_store = Gravity_SMTP::container()->get( Connector_Service_Provider::DATA_STORE_ROUTER );
+
+		$open_tracking_enabled = $plugin_data_store->get_plugin_setting( Tracking_Service_Provider::SETTING_OPEN_TRACKING, 'false' );
+		$open_tracking_enabled = Booliesh::get( $open_tracking_enabled );
 
 		/**
 		 * @var Data_Store_Router $opts
@@ -2535,7 +2561,7 @@ class Email_Log_Config extends Config {
 			$to_address   = $recipient_parser->parse( $extra['to'] )->first()->email();
 			$more_count   = max( 0, $row['email_counts'] - 1 );
 
-			$rows[] = array(
+			$row_data = array(
 				'id'      => $row['id'],
 				'subject' => array(
 					'component' => 'Button',
@@ -2603,31 +2629,47 @@ class Email_Log_Config extends Config {
 						),
 					),
 				),
-				'source'  => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => $row['source'],
-						'size'    => 'text-sm',
-					),
-				),
-				'integration'  => array(
-					'external' => true,
-					'key'      => $row['service'] . '_logo',
-					'props'     => array(
-						'height' => 24,
-						'title' => Integration_Enum::svg_title( $row['service'] ),
-						'width'  => 24,
-					),
-				),
-				'date'    => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => $this->convert_dates_to_timezone( $row['date_updated'] ),
-						'size'    => 'text-sm',
-					),
-				),
-				'actions' => $grid_actions,
 			);
+
+			if ( Feature_Flag_Manager::is_enabled( 'email_open_tracking' ) && $open_tracking_enabled ) {
+				$row_data['opened'] = array(
+					'component' => 'Text',
+					'props'     => array(
+						'content' => $row['opened'],
+						'size'    => 'text-sm',
+					),
+				);
+			}
+
+			$row_data['source'] = array(
+				'component' => 'Text',
+				'props'     => array(
+					'content' => $row['source'],
+					'size'    => 'text-sm',
+				),
+			);
+
+			$row_data['integration'] = array(
+				'external' => true,
+				'key'      => $row['service'] . '_logo',
+				'props'    => array(
+					'height' => 24,
+					'title' => Integration_Enum::svg_title( $row['service'] ),
+					'width'  => 24,
+				),
+			);
+
+			$row_data['date'] = array(
+				'component' => 'Text',
+				'props'     => array(
+					'content' => $this->convert_dates_to_timezone( $row['date_updated'] ),
+					'size'    => 'text-sm',
+				),
+			);
+
+			$row_data['actions'] = $grid_actions;
+
+			$rows[] = $row_data;
 		}
 
 		return $rows;

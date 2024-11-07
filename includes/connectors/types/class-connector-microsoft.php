@@ -50,6 +50,7 @@ class Connector_Microsoft extends Connector_Base {
 		$reply_to    = $this->get_reply_to( true );
 		$source      = $this->get_att( 'source' );
 		$params      = $this->get_request_params();
+		$email       = $this->email;
 
 		$this->reset_phpmailer();
 
@@ -57,20 +58,7 @@ class Connector_Microsoft extends Connector_Base {
 			$headers['content-type'] = $this->get_att( 'content_type', $headers['content-type'] );
 		}
 
-		$email = $this->events->create(
-			$this->name,
-			'pending',
-			$to,
-			empty( $from['name'] ) ? $from['email'] : sprintf( '%s <%s>', $from['name'], $from['email'] ),
-			$subject,
-			$message,
-			array(
-				'headers'     => $headers,
-				'attachments' => $attachments,
-				'source'      => $source,
-				'params'      => $params,
-			)
-		);
+		$this->set_email_log_data( $subject, $message, $to, empty( $from['name'] ) ? $from['email'] : sprintf( '%s <%s>', $from['name'], $from['email'] ), $headers, $attachments, $source, $params );
 
 		$this->logger->log( $email, 'started', __( 'Starting email send for Microsoft connector.', 'gravitysmtp' ) );
 
@@ -158,6 +146,12 @@ class Connector_Microsoft extends Connector_Base {
 		 */
 		$oauth_handler = Gravity_SMTP::container()->get( Connector_Service_Provider::MICROSOFT_OAUTH_HANDLER );
 		$token         = $oauth_handler->get_access_token();
+
+		if ( is_wp_error( $token ) ) {
+			$this->events->update( array( 'status' => 'failed' ), $email );
+			$this->logger->log( $email, 'failed', $token->get_error_message() );
+			return $email;
+		}
 
 		$args = array(
 			'body'    => $raw,

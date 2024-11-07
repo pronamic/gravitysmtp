@@ -108,6 +108,11 @@ abstract class Connector_Base {
 	protected $debug_logger;
 
 	/**
+	 * @var int
+	 */
+	protected $email;
+
+	/**
 	 * Calls to wp_mail() will be routed to this method if this connector is enabled. Parameters
 	 * are a match for wp_mail().
 	 *
@@ -218,6 +223,16 @@ abstract class Connector_Base {
 	 * @return void
 	 */
 	public function init( $to, $subject, $message, $headers = '', $attachments = array(), $source = '' ) {
+		$this->email = $this->events->create(
+			$this->name,
+			'pending',
+			'',
+			'',
+			'',
+			'',
+			array(),
+		);
+
 		// Set to blank values to avoid warnings.
 		$from      = '';
 		$from_name = '';
@@ -245,6 +260,39 @@ abstract class Connector_Base {
 		}
 
 		$this->atts = $atts;
+
+		do_action( 'gravitysmtp_after_connector_init', $this->email, $this );
+	}
+
+	/**
+	 * Get all of the attributes for this connector.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @return array
+	 */
+	public function get_atts() {
+		return $this->atts;
+	}
+
+	protected function set_email_log_data( $subject, $message, $to, $from, $headers, $attachments, $source, $params = array() ) {
+		$this->events->update(
+			array(
+				'subject' => $subject,
+				'message' => $message,
+				'extra'   => serialize(
+					array(
+						'to'          => $to,
+						'from'        => $from,
+						'headers'     => $headers,
+						'attachments' => $attachments,
+						'source'      => $source,
+						'params'      => $params,
+					)
+				)
+			),
+			$this->email
+		);
 	}
 
 	/**
@@ -266,6 +314,20 @@ abstract class Connector_Base {
 		}
 
 		return apply_filters( 'gravitysmtp_email_attribute_' . $att_name, $value );
+	}
+
+	/**
+	 * Set an attribute.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param $att_name
+	 * @param $value
+	 *
+	 * @return void
+	 */
+	public function set_att( $att_name, $value ) {
+		$this->atts[ $att_name ] = $value;
 	}
 
 	/**

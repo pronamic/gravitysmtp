@@ -46,6 +46,8 @@ class Get_Email_Message_Endpoint extends Endpoint {
 
 	protected function format_email_content( $content ) {
 		if ( $content !== strip_tags( $content ) ) {
+			// Remove tracking pixel.
+			$content = preg_replace( '/<img src=["\'][^"\']+tracking\/open[^"\']+["\'][\s]*\/>/', '', $content );
 			return $content;
 		} else {
 			return '<pre style="white-space: pre-wrap; word-break: break-all; color: #242748; padding: 20px 25px; font-size: 13px; font-family: inter, -apple-system, blinkmacsystemfont, \'Segoe UI\', roboto, oxygen-sans, ubuntu, cantarell, \'Helvetica Neue\';">' . htmlspecialchars( $content ) . '</pre><style>body { margin: 0; background: #fff; }</style>';

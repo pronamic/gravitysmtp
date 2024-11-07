@@ -23,6 +23,7 @@ use Gravity_Forms\Gravity_SMTP\Migration\Migration_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Pages\Page_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Routing\Routing_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Telemetry\Telemetry_Service_Provider;
+use Gravity_Forms\Gravity_SMTP\Tracking\Tracking_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Translations\Translations_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Users\Users_Service_Provider;
 use Gravity_Forms\Gravity_Tools\Service_Container;
@@ -78,6 +79,12 @@ class Gravity_SMTP {
 		// Ensure a primary connection exists
 		$routines->add( 'primary_connection', array( self::class, 'set_primary_connection' ) );
 
+		// Ensure rewrite rules are flushed for tracking.
+		$routines->add( 'flush_rewrite_rules', array( self::class, 'flush_rewrite_rules' ) );
+
+		// Ensure tracking table is set up properly
+		$routines->add( 'tracking_tables', array( self::class, 'create_tracking_tables' ) );
+
 		add_action( 'plugins_loaded', function() use ( $routines ) {
 			$routines->handle();
 		}, 10 );
@@ -118,6 +125,10 @@ class Gravity_SMTP {
 		$opts->save( Connector_Base::SETTING_IS_PRIMARY, true, $enabled_connector );
 
 		$plugin->save( Save_Connector_Settings_Endpoint::SETTING_PRIMARY_CONNECTOR, $primaries );
+	}
+
+	public static function flush_rewrite_rules() {
+		flush_rewrite_rules( true );
 	}
 
 	public static function create_emails_tables() {
@@ -176,6 +187,30 @@ class Gravity_SMTP {
 		dbDelta( $sql );
 	}
 
+	public static function create_tracking_tables() {
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+
+		global $wpdb;
+
+		$table_name        = $wpdb->prefix . 'gravitysmtp_event_tracking';
+		$charset_collate   = $wpdb->get_charset_collate();
+		$events_table_name = $wpdb->prefix . 'gravitysmtp_events';
+
+		$sql = "
+			CREATE TABLE $table_name (
+				id mediumint(9) NOT NULL AUTO_INCREMENT,
+				event_id mediumint(9) NOT NULL,
+			    email varchar(100) NOT NULL,
+			    opened tinyint(1) NOT NULL,
+			    clicked tinyint(1) NOT NULL,
+			    PRIMARY KEY (id),
+			    FOREIGN KEY (event_id) REFERENCES $events_table_name(id)
+		    ) $charset_collate;
+		";
+
+		dbDelta( $sql );
+	}
+
 	public static function container() {
 		if ( is_null( self::$container ) ) {
 			self::load_providers();
@@ -203,6 +238,12 @@ class Gravity_SMTP {
 
 			Feature_Flag_Manager::add( 'gravityforms_entry_note', 'Gravity Forms Entry Note' );
 			Feature_Flag_Manager::enable_flag( 'gravityforms_entry_note' );
+
+			Feature_Flag_Manager::add( 'mailchimp_integration', 'Mailchimp Integration' );
+			Feature_Flag_Manager::enable_flag( 'mailchimp_integration' );
+
+			Feature_Flag_Manager::add( 'email_open_tracking', 'Email Open Tracking' );
+			Feature_Flag_Manager::enable_flag( 'email_open_tracking' );
 		} );
 	}
 
@@ -239,6 +280,10 @@ class Gravity_SMTP {
 
 		if ( Feature_Flag_Manager::is_enabled( 'wp_email_management' ) ) {
 			self::$container->add_provider( new Email_Management_Service_Provider() );
+		}
+
+		if ( Feature_Flag_Manager::is_enabled( 'email_open_tracking' ) ) {
+			self::$container->add_provider( new Tracking_Service_Provider() );
 		}
 	}
 

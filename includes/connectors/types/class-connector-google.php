@@ -60,6 +60,7 @@ class Connector_Google extends Connector_Base {
 		$reply_to    = $this->get_reply_to( true );
 		$source      = $this->get_att( 'source' );
 		$params      = $this->get_request_params();
+		$email       = $this->email;
 
 		$this->reset_phpmailer();
 
@@ -67,20 +68,7 @@ class Connector_Google extends Connector_Base {
 			$headers['content-type'] = $this->get_att( 'content_type', $headers['content-type'] );
 		}
 
-		$email = $this->events->create(
-			$this->name,
-			'pending',
-			$to,
-			empty( $from['name'] ) ? $from['email'] : sprintf( '%s <%s>', $from['name'], $from['email'] ),
-			$subject,
-			$message,
-			array(
-				'headers'     => $headers,
-				'attachments' => $attachments,
-				'source'      => $source,
-				'params'      => $params,
-			)
-		);
+		$this->set_email_log_data( $subject, $message, $to, empty( $from['name'] ) ? $from['email'] : sprintf( '%s <%s>', $from['name'], $from['email'] ), $headers, $attachments, $source, $params );
 
 		$this->logger->log( $email, 'started', __( 'Starting email send for Google connector.', 'gravitysmtp' ) );
 

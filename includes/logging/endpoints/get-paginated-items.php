@@ -183,6 +183,13 @@ function get_formatted_data_rows( $data ) {
 					),
 				),
 			),
+			'opened'    => array(
+				'component' => 'Text',
+				'props'     => array(
+					'content' => $row['opened'],
+					'size'    => 'text-sm',
+				),
+			),
 			'source'  => array(
 				'component' => 'Text',
 				'props'     => array(

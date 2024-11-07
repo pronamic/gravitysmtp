@@ -4,7 +4,7 @@ namespace Gravity_Forms\Gravity_SMTP\Apps\Config;
 
 use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Plugin_Settings_Endpoint;
-use Gravity_Forms\Gravity_SMTP\Logging\Endpoints\Delete_Events_Endpoint;
+use Gravity_Forms\Gravity_SMTP\Tracking\Tracking_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
 use Gravity_Forms\Gravity_SMTP\Users\Roles;
 use Gravity_Forms\Gravity_Tools\Config;
@@ -116,6 +116,7 @@ class Apps_Config extends Config {
 						'event_log_enabled'        => Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_ENABLED,
 						'event_log_retention'      => Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_RETENTION,
 						'license_key'              => Save_Plugin_Settings_Endpoint::PARAM_LICENSE_KEY,
+						'open_tracking'            => Tracking_Service_Provider::SETTING_OPEN_TRACKING,
 						'save_attachments_enabled' => Save_Plugin_Settings_Endpoint::PARAM_SAVE_ATTACHMENTS_ENABLED,
 						'save_email_body_enabled'  => Save_Plugin_Settings_Endpoint::PARAM_SAVE_EMAIL_BODY_ENABLED,
 						'test_mode'                => Save_Plugin_Settings_Endpoint::PARAM_TEST_MODE,
