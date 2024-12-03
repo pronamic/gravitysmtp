@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Mirror
-        uses: codewurker/gravityforms-plugin-mirror-action@main
+        uses: pronamic/gravityforms-plugin-mirror-action@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
