@@ -4,7 +4,7 @@
 Plugin Name: Gravity SMTP
 Plugin URI: https://gravityforms.com
 Description: Confidently send emails from your website with secure and reliable SMTP providers and API-based services.
-Version: 1.5.0
+Version: 1.6.1
 Author: Gravity Forms
 Author URI: https://gravityforms.com
 License: GPL-3.0+
@@ -27,7 +27,7 @@ along with this program.  If not, see http://www.gnu.org/licenses.
 defined( 'ABSPATH' ) || die();
 
 // Defines the current version of Gravity SMTP.
-define( 'GF_GRAVITY_SMTP_VERSION', '1.5.0' );
+define( 'GF_GRAVITY_SMTP_VERSION', '1.6.1' );
 
 define( 'GF_GRAVITY_SMTP_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 
@@ -58,7 +58,8 @@ add_action( 'plugins_loaded', array( \Gravity_Forms\Gravity_SMTP\Gravity_SMTP::c
 register_activation_hook( __FILE__, 'gravitysmtp_activation_hook' );
 
 // Third Party Support
-add_action( 'affwp_set_affiliate_status', array( \Gravity_Forms\Gravity_SMTP\Gravity_SMTP::class, 'load_plugin' ), -10 );
+add_action( 'affwp_email_send_before', array( \Gravity_Forms\Gravity_SMTP\Gravity_SMTP::class, 'load_plugin' ) );
+
 
 function gravitysmtp_activation_hook() {
 	\Gravity_Forms\Gravity_SMTP\Gravity_SMTP::activation_hook();

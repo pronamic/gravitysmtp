@@ -2,6 +2,7 @@
 
 namespace Gravity_Forms\Gravity_SMTP\Handler;
 
+use Gravity_Forms\Gravity_SMTP\Apps\App_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Feature_Flags\Feature_Flag_Manager;
 use Gravity_Forms\Gravity_SMTP\Handler\Config\Handler_Endpoints_Config;
@@ -9,6 +10,7 @@ use Gravity_Forms\Gravity_SMTP\Handler\Endpoints\Resend_Email_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Handler\External\Gravity_Forms_Note_Handler;
 use Gravity_Forms\Gravity_SMTP\Logging\Logging_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Models\Event_Model;
+use Gravity_Forms\Gravity_SMTP\Suppression\Suppression_Service_Provider;
 use Gravity_Forms\Gravity_Tools\Providers\Config_Service_Provider;
 use Gravity_Forms\Gravity_Tools\Service_Container;
 use Gravity_Forms\Gravity_Tools\Utils\Utils_Service_Provider;
@@ -32,8 +34,9 @@ class Handler_Service_Provider extends Config_Service_Provider {
 			$factory       = $container->get( Connector_Service_Provider::CONNECTOR_FACTORY );
 			$data_store    = $container->get( Connector_Service_Provider::DATA_STORE_ROUTER );
 			$source_parser = $container->get( Utils_Service_Provider::SOURCE_PARSER );
+			$suppressed_model = $container->get( Suppression_Service_Provider::SUPPRESSED_EMAILS_MODEL );
 
-			return new Mail_Handler( $factory, $data_store, $source_parser );
+			return new Mail_Handler( $factory, $data_store, $source_parser, $suppressed_model );
 		} );
 
 		$container->add( self::RESEND_EMAIL_ENDPOINT, function () use ( $container ) {

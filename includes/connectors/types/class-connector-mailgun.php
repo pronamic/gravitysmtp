@@ -22,7 +22,6 @@ class Connector_Mailgun extends Connector_Base {
 	const API_URL_US = 'https://api.mailgun.net/v3/';
 	const API_URL_EU = 'https://api.eu.mailgun.net/v3/';
 
-
 	protected $name        = 'mailgun';
 	protected $title       = 'Mailgun';
 	protected $disabled    = true;
@@ -33,6 +32,10 @@ class Connector_Mailgun extends Connector_Base {
 	public function get_description() {
 		return esc_html__( 'Mailgun is a transactional email service that provides industry-leading reliability, compliance, and speed. Offering a 30-day trial, Mailgun’s premium service starts at $35 a month, which allows you to send up to 50,000 emails. For more information on how to get started with Mailgun, read our documentation.', 'gravitysmtp' );
 	}
+
+	protected $sensitive_fields = array(
+		self::SETTING_API_KEY,
+	);
 
 	/**
 	 * Sending logic.

@@ -20,6 +20,10 @@ class Connector_Brevo extends Connector_Base {
 	protected $full_logo   = 'BrevoFull';
 	protected $url         = 'https://api.brevo.com/v3/smtp/email';
 
+	protected $sensitive_fields = array(
+		self::SETTING_API_KEY,
+	);
+
 	public function get_description() {
 		return esc_html__( 'Confidently send transactional emails with Brevo, formerly Sendinblue. With an impressive free plan, Brevo allows you to send up to 300 transactional emails a day! And for those who need to send more, simply pay for what you send. For more information on how to get started with Brevo, read our documentation.', 'gravitysmtp' );
 	}

@@ -23,6 +23,10 @@ class Opts_Data_Store implements Data_Store {
 		$opts_name = sprintf( 'gravitysmtp_%s', strtolower( $connector ) );
 
 		foreach( $value as $key => $val ) {
+			if ( $val === '****************' ){
+				continue;
+			}
+
 			if ( $val === 'true' ) {
 				$val = true;
 			}

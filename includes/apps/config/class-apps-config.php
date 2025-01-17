@@ -2,11 +2,14 @@
 
 namespace Gravity_Forms\Gravity_SMTP\Apps\Config;
 
+use Gravity_Forms\Gravity_SMTP\Alerts\Endpoints\Save_Alerts_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Plugin_Settings_Endpoint;
+use Gravity_Forms\Gravity_SMTP\Experimental_Features\Experiment_Features_Handler;
 use Gravity_Forms\Gravity_SMTP\Tracking\Tracking_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
 use Gravity_Forms\Gravity_SMTP\Users\Roles;
+use Gravity_Forms\Gravity_SMTP\Utils\Booliesh;
 use Gravity_Forms\Gravity_Tools\Config;
 
 class Apps_Config extends Config {
@@ -26,6 +29,17 @@ class Apps_Config extends Config {
 
 		$usage_analytics_enabled = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_USAGE_ANALYTICS, 'true' );
 		$usage_analytics_enabled = isset( $usage_analytics_enabled ) && $usage_analytics_enabled !== 'false';
+
+		// todo: @aaron from here to line 42, please refactor as you see fit. We need deep defaults maybe, or a pattern, and i need deep Booliesh hahaha unless what i did there is cool
+		$experimental_features = $plugin_data_store->get_plugin_setting( Experiment_Features_Handler::ENABLED_EXPERIMENTS_PARAM, array() );
+
+		if ( ! isset( $experimental_features[ 'alerts_management' ] ) ) {
+			$experimental_features[ 'alerts_management' ] = false;
+		}
+
+		foreach( $experimental_features as $feature => $enabled ) {
+			$experimental_features[ $feature ] = Booliesh::get( $enabled );
+		}
 
 		return array(
 			'common' => array(
@@ -79,6 +93,9 @@ class Apps_Config extends Config {
 						'CAPS_DELETE_DEBUG_LOG'               => Roles::DELETE_DEBUG_LOG,
 						'CAPS_DELETE_EMAIL_LOG'               => Roles::DELETE_EMAIL_LOG,
 						'CAPS_DELETE_EMAIL_LOG_DETAILS'       => Roles::DELETE_EMAIL_LOG_DETAILS,
+						'CAPS_EDIT_ALERTS'                    => Roles::EDIT_ALERTS,
+						'CAPS_EDIT_ALERTS_SLACK_SETTINGS'     => Roles::EDIT_ALERTS_SLACK_SETTINGS,
+						'CAPS_EDIT_ALERTS_TWILIO_SETTINGS'    => Roles::EDIT_ALERTS_TWILIO_SETTINGS,
 						'CAPS_EDIT_DEBUG_LOG'                 => Roles::EDIT_DEBUG_LOG,
 						'CAPS_EDIT_EMAIL_LOG'                 => Roles::EDIT_EMAIL_LOG,
 						'CAPS_EDIT_EMAIL_LOG_DETAILS'         => Roles::EDIT_EMAIL_LOG_DETAILS,
@@ -88,9 +105,13 @@ class Apps_Config extends Config {
 						'CAPS_EDIT_GENERAL_SETTINGS'          => Roles::EDIT_GENERAL_SETTINGS,
 						'CAPS_EDIT_INTEGRATIONS'              => Roles::EDIT_INTEGRATIONS,
 						'CAPS_EDIT_LICENSE_KEY'               => Roles::EDIT_LICENSE_KEY,
+						'CAPS_EDIT_EXPERIMENTAL_FEATURES'     => Roles::EDIT_EXPERIMENTAL_FEATURES,
 						'CAPS_EDIT_TEST_MODE'                 => Roles::EDIT_TEST_MODE,
 						'CAPS_EDIT_UNINSTALL'                 => Roles::EDIT_UNINSTALL,
 						'CAPS_EDIT_USAGE_ANALYTICS'           => Roles::EDIT_USAGE_ANALYTICS,
+						'CAPS_VIEW_ALERTS'                    => Roles::VIEW_ALERTS,
+						'CAPS_VIEW_ALERTS_SLACK_SETTINGS'     => Roles::VIEW_ALERTS_SLACK_SETTINGS,
+						'CAPS_VIEW_ALERTS_TWILIO_SETTINGS'    => Roles::VIEW_ALERTS_TWILIO_SETTINGS,
 						'CAPS_VIEW_DEBUG_LOG'                 => Roles::VIEW_DEBUG_LOG,
 						'CAPS_VIEW_EMAIL_LOG'                 => Roles::VIEW_EMAIL_LOG,
 						'CAPS_VIEW_EMAIL_LOG_DETAILS'         => Roles::VIEW_EMAIL_LOG_DETAILS,
@@ -101,6 +122,7 @@ class Apps_Config extends Config {
 						'CAPS_VIEW_GENERAL_SETTINGS'          => Roles::VIEW_GENERAL_SETTINGS,
 						'CAPS_VIEW_INTEGRATIONS'              => Roles::VIEW_INTEGRATIONS,
 						'CAPS_VIEW_LICENSE_KEY'               => Roles::VIEW_LICENSE_KEY,
+						'CAPS_VIEW_EXPERIMENTAL_FEATURES'     => Roles::VIEW_EXPERIMENTAL_FEATURES,
 						'CAPS_VIEW_TEST_MODE'                 => Roles::VIEW_TEST_MODE,
 						'CAPS_VIEW_TOOLS'                     => Roles::VIEW_TOOLS,
 						'CAPS_VIEW_TOOLS_SENDATEST'           => Roles::VIEW_TOOLS_SENDATEST,
@@ -110,17 +132,26 @@ class Apps_Config extends Config {
 						'CAPS_VIEW_DASHBOARD'                 => Roles::VIEW_DASHBOARD,
 					),
 					'debug_log_enabled'       => $debug_log_enabled,
-					'param_keys' => array(
-						'debug_log_enabled'        => Save_Plugin_Settings_Endpoint::PARAM_DEBUG_LOG_ENABLED,
-						'debug_log_retention'      => Save_Plugin_Settings_Endpoint::PARAM_DEBUG_LOG_RETENTION,
-						'event_log_enabled'        => Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_ENABLED,
-						'event_log_retention'      => Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_RETENTION,
-						'license_key'              => Save_Plugin_Settings_Endpoint::PARAM_LICENSE_KEY,
-						'open_tracking'            => Tracking_Service_Provider::SETTING_OPEN_TRACKING,
-						'save_attachments_enabled' => Save_Plugin_Settings_Endpoint::PARAM_SAVE_ATTACHMENTS_ENABLED,
-						'save_email_body_enabled'  => Save_Plugin_Settings_Endpoint::PARAM_SAVE_EMAIL_BODY_ENABLED,
-						'test_mode'                => Save_Plugin_Settings_Endpoint::PARAM_TEST_MODE,
-						'usage_analytics'          => Save_Plugin_Settings_Endpoint::PARAM_USAGE_ANALYTICS,
+					'experimental_features'   => $experimental_features,
+					'param_keys'              => array(
+						'alert_threshold_count'                   => Save_Alerts_Settings_Endpoint::PARAM_ALERT_THRESHOLD_COUNT,
+						'alert_threshold_interval'                => Save_Alerts_Settings_Endpoint::PARAM_ALERT_THRESHOLD_INTERVAL,
+						'debug_log_enabled'                       => Save_Plugin_Settings_Endpoint::PARAM_DEBUG_LOG_ENABLED,
+						'debug_log_retention'                     => Save_Plugin_Settings_Endpoint::PARAM_DEBUG_LOG_RETENTION,
+						'enabled_experimental_features'           => Experiment_Features_Handler::ENABLED_EXPERIMENTS_PARAM,
+						'event_log_enabled'                       => Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_ENABLED,
+						'event_log_retention'                     => Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_RETENTION,
+						'license_key'                             => Save_Plugin_Settings_Endpoint::PARAM_LICENSE_KEY,
+						'notify_when_email_sending_fails_enabled' => Save_Plugin_Settings_Endpoint::PARAM_NOTIFY_WHEN_EMAIL_SENDING_FAILS_ENABLED,
+						'open_tracking'                           => Tracking_Service_Provider::SETTING_OPEN_TRACKING,
+						'save_attachments_enabled'                => Save_Plugin_Settings_Endpoint::PARAM_SAVE_ATTACHMENTS_ENABLED,
+						'save_email_body_enabled'                 => Save_Plugin_Settings_Endpoint::PARAM_SAVE_EMAIL_BODY_ENABLED,
+						'slack_alerts'                            => Save_Alerts_Settings_Endpoint::PARAM_SLACK_ALERTS,
+						'slack_alerts_enabled'                    => Save_Plugin_Settings_Endpoint::PARAM_SLACK_ALERTS_ENABLED,
+						'test_mode'                               => Save_Plugin_Settings_Endpoint::PARAM_TEST_MODE,
+						'twilio_alerts'                           => Save_Alerts_Settings_Endpoint::PARAM_TWILIO_ALERTS,
+						'twilio_alerts_enabled'                   => Save_Plugin_Settings_Endpoint::PARAM_TWILIO_ALERTS_ENABLED,
+						'usage_analytics'                         => Save_Plugin_Settings_Endpoint::PARAM_USAGE_ANALYTICS,
 					),
 					'locked_settings'         => $this->get_locked_settings(),
 					'test_mode_enabled'       => $test_mode,

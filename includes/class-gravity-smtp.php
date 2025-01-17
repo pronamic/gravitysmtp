@@ -2,6 +2,7 @@
 
 namespace Gravity_Forms\Gravity_SMTP;
 
+use Gravity_Forms\Gravity_SMTP\Alerts\Alerts_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Apps\App_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Apps\Setup_Wizard\Setup_Wizard_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Assets\Assets_Service_Provider;
@@ -14,6 +15,7 @@ use Gravity_Forms\Gravity_SMTP\Data_Store\Opts_Data_Store;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Plugin_Opts_Data_Store;
 use Gravity_Forms\Gravity_SMTP\Email_Management\Email_Management_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Environment\Environment_Service_Provider;
+use Gravity_Forms\Gravity_SMTP\Experimental_Features\Experimental_Features_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Feature_Flags\Feature_Flag_Manager;
 use Gravity_Forms\Gravity_SMTP\Feature_Flags\Feature_Flags_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Errors\Error_Handler_Service_Provider;
@@ -22,6 +24,7 @@ use Gravity_Forms\Gravity_SMTP\Logging\Logging_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Migration\Migration_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Pages\Page_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Routing\Routing_Service_Provider;
+use Gravity_Forms\Gravity_SMTP\Suppression\Suppression_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Telemetry\Telemetry_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Tracking\Tracking_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Translations\Translations_Service_Provider;
@@ -84,6 +87,9 @@ class Gravity_SMTP {
 
 		// Ensure tracking table is set up properly
 		$routines->add( 'tracking_tables', array( self::class, 'create_tracking_tables' ) );
+
+		// Ensure suppression table is set up properly
+		$routines->add( 'suppression_tables', array( self::class, 'create_suppression_table' ) );
 
 		add_action( 'plugins_loaded', function() use ( $routines ) {
 			$routines->handle();
@@ -211,6 +217,29 @@ class Gravity_SMTP {
 		dbDelta( $sql );
 	}
 
+	public static function create_suppression_table() {
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+
+		global $wpdb;
+
+		$table_name        = $wpdb->prefix . 'gravitysmtp_suppressed_emails';
+		$charset_collate   = $wpdb->get_charset_collate();
+
+		$sql = "
+			CREATE TABLE $table_name (
+				id mediumint(9) NOT NULL AUTO_INCREMENT,
+			    email varchar(100) NOT NULL,
+			    reason varchar(100) NOT NULL,
+			    notes text,
+			    date_created datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+			    PRIMARY KEY (id),
+			    FULLTEXT(email, notes)
+		    ) $charset_collate;
+		";
+
+		dbDelta( $sql );
+	}
+
 	public static function container() {
 		if ( is_null( self::$container ) ) {
 			self::load_providers();
@@ -244,6 +273,17 @@ class Gravity_SMTP {
 
 			Feature_Flag_Manager::add( 'email_open_tracking', 'Email Open Tracking' );
 			Feature_Flag_Manager::enable_flag( 'email_open_tracking' );
+
+			Feature_Flag_Manager::add( 'email_suppression', 'Email Suppression' );
+			Feature_Flag_Manager::enable_flag( 'email_suppression' );
+
+			Feature_Flag_Manager::add( 'zoho_integration', 'Zoho Integration' );
+			Feature_Flag_Manager::enable_flag( 'zoho_integration' );
+
+			Feature_Flag_Manager::add( 'experimental_features_setting', 'Experimental Features Setting' );
+			Feature_Flag_Manager::enable_flag( 'experimental_features_setting' );
+
+			Feature_Flag_Manager::add( 'alerts_management', 'Alerts Management' );
 		} );
 	}
 
@@ -264,11 +304,20 @@ class Gravity_SMTP {
 			self::load_early_providers();
 		}
 
+		if ( Feature_Flag_Manager::is_enabled( 'email_suppression' ) ) {
+			self::$container->add_provider( new Suppression_Service_Provider() );
+		}
+
 		// Common Providers
 		self::$container->add_provider( new Connector_Service_Provider() );
 		self::$container->add_provider( new Assets_Service_Provider( self::get_base_url(), self::get_local_dev_base_url(), self::get_base_dir() ) );
 		self::$container->add_provider( new App_Service_Provider( self::get_base_url() ) );
 		self::$container->add_provider( new Logging_Service_Provider() );
+
+		if ( Feature_Flag_Manager::is_enabled( 'experimental_features_setting' ) ) {
+			self::$container->add_provider( new Experimental_Features_Service_Provider() );
+		}
+
 		self::$container->add_provider( new Handler_Service_Provider() );
 		self::$container->add_provider( new Page_Service_Provider( self::get_base_url() ) );
 		self::$container->add_provider( new Setup_Wizard_Service_Provider() );
@@ -280,6 +329,10 @@ class Gravity_SMTP {
 
 		if ( Feature_Flag_Manager::is_enabled( 'wp_email_management' ) ) {
 			self::$container->add_provider( new Email_Management_Service_Provider() );
+		}
+
+		if ( Feature_Flag_Manager::is_enabled( 'alerts_management' ) ) {
+			self::$container->add_provider( new Alerts_Service_Provider() );
 		}
 
 		if ( Feature_Flag_Manager::is_enabled( 'email_open_tracking' ) ) {

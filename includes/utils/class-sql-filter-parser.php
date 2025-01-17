@@ -14,12 +14,25 @@ class SQL_Filter_Parser {
 		'status',
 	);
 
+	protected $date_queryable = array(
+		'date_created',
+		'date_updated',
+	);
+
 	public function process_filters( $filters, $trailing_union = false, $union = 'AND', $passed_key = null ) {
 		global $wpdb;
 
 		$sql_array = array();
 
 		foreach( $filters as $key => $value ) {
+
+			if ( in_array( $key, $this->date_queryable ) && is_array( $value ) ) {
+				$from = $value[0];
+				$to   = $value[1];
+
+				$sql_array[] = $wpdb->prepare( "`" . $key . "` BETWEEN %s AND %s", $from, $to );
+				continue;
+			}
 
 			if ( is_array( $value ) ) {
 				$sql_array[] = $this->process_filters( $value, false, 'OR', $key );
@@ -41,7 +54,7 @@ class SQL_Filter_Parser {
 				continue;
 			}
 
-			$sql_array[] = sprintf( 'REGEXP_LIKE( `extra`, \'"%s"[^"]+"%s"\' )', $key, $value );
+			$sql_array[] = sprintf( '`extra` RLIKE \'"%s"[^"]+"%s"\'', $key, $value );
 		}
 
 		$sql = implode( ' ' . $union . ' ', $sql_array );

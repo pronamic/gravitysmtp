@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitafc46fa43a9f59f1824e8877a98abe17
+class ComposerStaticInitdccbae485ed1cb784e521fe56eec9a94
 {
     public static $files = array (
         'de106312193d3b5d7e278f8e63c27774' => __DIR__ . '/../..' . '/includes/functions_include.php',
@@ -12,6 +12,17 @@ class ComposerStaticInitafc46fa43a9f59f1824e8877a98abe17
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'Get_Paginated_Debug_Log_Items' => __DIR__ . '/../..' . '/includes/logging/endpoints/get-paginated-debug-log-items.php',
+        'Get_Paginated_Log_Items' => __DIR__ . '/../..' . '/includes/logging/endpoints/get-paginated-items.php',
+        'Get_Paginated_Suppression_Items' => __DIR__ . '/../..' . '/includes/suppression/endpoints/get-paginated-items.php',
+        'Gravity_Forms\\Gravity_SMTP\\Alerts\\Alerts_Handler' => __DIR__ . '/../..' . '/includes/alerts/class-alerts-handler.php',
+        'Gravity_Forms\\Gravity_SMTP\\Alerts\\Alerts_Service_Provider' => __DIR__ . '/../..' . '/includes/alerts/class-alerts-service-provider.php',
+        'Gravity_Forms\\Gravity_SMTP\\Alerts\\Config\\Alerts_Config' => __DIR__ . '/../..' . '/includes/alerts/config/class-alerts-config.php',
+        'Gravity_Forms\\Gravity_SMTP\\Alerts\\Config\\Alerts_Endpoints_Config' => __DIR__ . '/../..' . '/includes/alerts/config/class-alerts-endpoints-config.php',
+        'Gravity_Forms\\Gravity_SMTP\\Alerts\\Connectors\\Alert_Connector' => __DIR__ . '/../..' . '/includes/alerts/connectors/interface-alert-connector.php',
+        'Gravity_Forms\\Gravity_SMTP\\Alerts\\Connectors\\Slack_Alert_Connector' => __DIR__ . '/../..' . '/includes/alerts/connectors/class-slack-alert-connector.php',
+        'Gravity_Forms\\Gravity_SMTP\\Alerts\\Connectors\\Twilio_Alert_Connector' => __DIR__ . '/../..' . '/includes/alerts/connectors/class-twilio-alert-connector.php',
+        'Gravity_Forms\\Gravity_SMTP\\Alerts\\Endpoints\\Save_Alerts_Settings_Endpoint' => __DIR__ . '/../..' . '/includes/alerts/endpoints/class-save-alerts-settings-endpoint.php',
         'Gravity_Forms\\Gravity_SMTP\\Apps\\App_Service_Provider' => __DIR__ . '/../..' . '/includes/apps/class-apps-service-provider.php',
         'Gravity_Forms\\Gravity_SMTP\\Apps\\Config\\Apps_Config' => __DIR__ . '/../..' . '/includes/apps/config/class-apps-config.php',
         'Gravity_Forms\\Gravity_SMTP\\Apps\\Config\\Dashboard_Config' => __DIR__ . '/../..' . '/includes/apps/config/class-dashboard-config.php',
@@ -40,6 +51,7 @@ class ComposerStaticInitafc46fa43a9f59f1824e8877a98abe17
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Endpoints\\Send_Test_Endpoint' => __DIR__ . '/../..' . '/includes/connectors/endpoints/class-send-test-endpoint.php',
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Oauth\\Google_Oauth_Handler' => __DIR__ . '/../..' . '/includes/connectors/oauth/class-google-oauth-handler.php',
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Oauth\\Microsoft_Oauth_Handler' => __DIR__ . '/../..' . '/includes/connectors/oauth/class-microsoft-oauth-handler.php',
+        'Gravity_Forms\\Gravity_SMTP\\Connectors\\Oauth\\Zoho_Oauth_Handler' => __DIR__ . '/../..' . '/includes/connectors/oauth/class-zoho-oauth-handler.php',
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Oauth_Data_Handler' => __DIR__ . '/../..' . '/includes/connectors/class-oauth-data-handler.php',
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Amazon' => __DIR__ . '/../..' . '/includes/connectors/types/class-connector-amazon.php',
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Brevo' => __DIR__ . '/../..' . '/includes/connectors/types/class-connector-brevo.php',
@@ -66,12 +78,16 @@ class ComposerStaticInitafc46fa43a9f59f1824e8877a98abe17
         'Gravity_Forms\\Gravity_SMTP\\Enums\\Connector_Status_Enum' => __DIR__ . '/../..' . '/includes/enums/class-connector-status-enum.php',
         'Gravity_Forms\\Gravity_SMTP\\Enums\\Integration_Enum' => __DIR__ . '/../..' . '/includes/enums/class-integration-enum.php',
         'Gravity_Forms\\Gravity_SMTP\\Enums\\Status_Enum' => __DIR__ . '/../..' . '/includes/enums/class-status-enum.php',
+        'Gravity_Forms\\Gravity_SMTP\\Enums\\Suppression_Reason_Enum' => __DIR__ . '/../..' . '/includes/enums/class-suppression-reason-enum.php',
+        'Gravity_Forms\\Gravity_SMTP\\Enums\\Zoho_Datacenters_Enum' => __DIR__ . '/../..' . '/includes/enums/class-zoho-datacenters-enum.php',
         'Gravity_Forms\\Gravity_SMTP\\Environment\\Config\\Environment_Endpoints_Config' => __DIR__ . '/../..' . '/includes/environment/config/class-environment-endpoints-config.php',
         'Gravity_Forms\\Gravity_SMTP\\Environment\\Endpoints\\Uninstall_Endpoint' => __DIR__ . '/../..' . '/includes/environment/endpoints/class-uninstall-endpoint.php',
         'Gravity_Forms\\Gravity_SMTP\\Environment\\Environment_Details' => __DIR__ . '/../..' . '/includes/environment/class-environment-details.php',
         'Gravity_Forms\\Gravity_SMTP\\Environment\\Environment_Service_Provider' => __DIR__ . '/../..' . '/includes/environment/class-environment-service-provider.php',
         'Gravity_Forms\\Gravity_SMTP\\Errors\\Error_Handler' => __DIR__ . '/../..' . '/includes/errors/class-error-handler.php',
         'Gravity_Forms\\Gravity_SMTP\\Errors\\Error_Handler_Service_Provider' => __DIR__ . '/../..' . '/includes/errors/class-error-handler-service-provider.php',
+        'Gravity_Forms\\Gravity_SMTP\\Experimental_Features\\Experiment_Features_Handler' => __DIR__ . '/../..' . '/includes/experimental-features/class-experimental-features-handler.php',
+        'Gravity_Forms\\Gravity_SMTP\\Experimental_Features\\Experimental_Features_Service_Provider' => __DIR__ . '/../..' . '/includes/experimental-features/class-experimental-features-service-provider.php',
         'Gravity_Forms\\Gravity_SMTP\\Feature_Flags\\Config\\Feature_Flags_Config' => __DIR__ . '/../..' . '/includes/feature-flags/config/class-feature-flags-config.php',
         'Gravity_Forms\\Gravity_SMTP\\Feature_Flags\\Feature_Flag_Manager' => __DIR__ . '/../..' . '/includes/feature-flags/class-feature-flag-manager.php',
         'Gravity_Forms\\Gravity_SMTP\\Feature_Flags\\Feature_Flag_Repository' => __DIR__ . '/../..' . '/includes/feature-flags/class-feature-flag-repository.php',
@@ -121,12 +137,17 @@ class ComposerStaticInitafc46fa43a9f59f1824e8877a98abe17
         'Gravity_Forms\\Gravity_SMTP\\Models\\Hydrators\\Hydrator_WP_Mail' => __DIR__ . '/../..' . '/includes/models/hydrators/class-hydrator-wp-mail.php',
         'Gravity_Forms\\Gravity_SMTP\\Models\\Log_Details_Model' => __DIR__ . '/../..' . '/includes/models/class-log-details-model.php',
         'Gravity_Forms\\Gravity_SMTP\\Models\\Notifications_Model' => __DIR__ . '/../..' . '/includes/models/class-notifications-model.php',
+        'Gravity_Forms\\Gravity_SMTP\\Models\\Suppressed_Emails_Model' => __DIR__ . '/../..' . '/includes/models/class-suppressed-emails-model.php',
         'Gravity_Forms\\Gravity_SMTP\\Models\\Traits\\Can_Compare_Dynamically' => __DIR__ . '/../..' . '/includes/models/traits/trait-can-compare-dynamically.php',
         'Gravity_Forms\\Gravity_SMTP\\Pages\\Admin_Page' => __DIR__ . '/../..' . '/includes/pages/class-admin-page.php',
         'Gravity_Forms\\Gravity_SMTP\\Pages\\Page_Service_Provider' => __DIR__ . '/../..' . '/includes/pages/class-page-service-provider.php',
         'Gravity_Forms\\Gravity_SMTP\\Routing\\Handlers\\Primary_Backup_Handler' => __DIR__ . '/../..' . '/includes/routing/handlers/class-primary-backup-handler.php',
         'Gravity_Forms\\Gravity_SMTP\\Routing\\Handlers\\Routing_Handler' => __DIR__ . '/../..' . '/includes/routing/handlers/interface-routing-handler.php',
         'Gravity_Forms\\Gravity_SMTP\\Routing\\Routing_Service_Provider' => __DIR__ . '/../..' . '/includes/routing/class-routing-service-provider.php',
+        'Gravity_Forms\\Gravity_SMTP\\Suppression\\Config\\Suppression_Settings_Config' => __DIR__ . '/../..' . '/includes/suppression/config/class-suppression-settings-config.php',
+        'Gravity_Forms\\Gravity_SMTP\\Suppression\\Endpoints\\Add_Suppressed_Emails_Endpoint' => __DIR__ . '/../..' . '/includes/suppression/endpoints/class-add-suppressed-emails-endpoint.php',
+        'Gravity_Forms\\Gravity_SMTP\\Suppression\\Endpoints\\Reactivate_Suppressed_Emails_Endpoint' => __DIR__ . '/../..' . '/includes/suppression/endpoints/class-reactivate-suppressed-emails-endpoint.php',
+        'Gravity_Forms\\Gravity_SMTP\\Suppression\\Suppression_Service_Provider' => __DIR__ . '/../..' . '/includes/suppression/class-suppression-service-provider.php',
         'Gravity_Forms\\Gravity_SMTP\\Telemetry\\Telemetry_Background_Processor' => __DIR__ . '/../..' . '/includes/telemetry/class-telemetry-background-processor.php',
         'Gravity_Forms\\Gravity_SMTP\\Telemetry\\Telemetry_Handler' => __DIR__ . '/../..' . '/includes/telemetry/class-telemetry-handler.php',
         'Gravity_Forms\\Gravity_SMTP\\Telemetry\\Telemetry_Service_Provider' => __DIR__ . '/../..' . '/includes/telemetry/class-telemetry-service-provider.php',
@@ -141,6 +162,7 @@ class ComposerStaticInitafc46fa43a9f59f1824e8877a98abe17
         'Gravity_Forms\\Gravity_SMTP\\Utils\\Attachments_Saver' => __DIR__ . '/../..' . '/includes/utils/class-attachments-saver.php',
         'Gravity_Forms\\Gravity_SMTP\\Utils\\Basic_Encrypted_Hash' => __DIR__ . '/../..' . '/includes/utils/class-basic-ecrypted-hash.php',
         'Gravity_Forms\\Gravity_SMTP\\Utils\\Booliesh' => __DIR__ . '/../..' . '/includes/utils/class-booleish.php',
+        'Gravity_Forms\\Gravity_SMTP\\Utils\\Fast_Endpoint' => __DIR__ . '/../..' . '/includes/utils/class-fast-endpoint.php',
         'Gravity_Forms\\Gravity_SMTP\\Utils\\Header_Parser' => __DIR__ . '/../..' . '/includes/utils/class-header-parser.php',
         'Gravity_Forms\\Gravity_SMTP\\Utils\\Import_Data_Checker' => __DIR__ . '/../..' . '/includes/utils/class-import-data-checker.php',
         'Gravity_Forms\\Gravity_SMTP\\Utils\\Recipient' => __DIR__ . '/../..' . '/includes/utils/class-recipient.php',
@@ -190,7 +212,7 @@ class ComposerStaticInitafc46fa43a9f59f1824e8877a98abe17
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->classMap = ComposerStaticInitafc46fa43a9f59f1824e8877a98abe17::$classMap;
+            $loader->classMap = ComposerStaticInitdccbae485ed1cb784e521fe56eec9a94::$classMap;
 
         }, null, ClassLoader::class);
     }

@@ -43,6 +43,12 @@ class Connector_Google extends Connector_Base {
 		return esc_html__( 'Integrate your website with Gmail or a Google Workspace account, helping to improve email deliverability and prevent your carefully crafted content from ending up in spam folders. Be sure to check the email sending limits for Gmail and Google Workspace. For more information on how to get started with Gmail / Google Workspace, read our documentation.', 'gravitysmtp' );
 	}
 
+	protected $sensitive_fields = array(
+		self::SETTING_ACCESS_TOKEN,
+		self::SETTING_CLIENT_ID,
+		self::SETTING_CLIENT_SECRET,
+	);
+
 	/**
 	 * Sending logic.
 	 *
@@ -72,7 +78,7 @@ class Connector_Google extends Connector_Base {
 
 		$this->logger->log( $email, 'started', __( 'Starting email send for Google connector.', 'gravitysmtp' ) );
 
-		$this->php_mailer->setFrom( $from['email'], $from['name'] );
+		$this->php_mailer->setFrom( $from['email'], empty( $from['name'] ) ? '' : $from['name'] );
 
 		foreach( $to->recipients() as $recipient ) {
 			if ( ! empty( $recipient->name() ) ) {
@@ -166,6 +172,10 @@ class Connector_Google extends Connector_Base {
 			 */
 			$oauth_handler = Gravity_SMTP::container()->get( Connector_Service_Provider::GOOGLE_OAUTH_HANDLER );
 			$token         = $oauth_handler->get_access_token();
+
+			if ( is_wp_error( $token ) ) {
+				throw new \Exception( $token->get_error_message() );
+			}
 
 			$headers = array(
 				'Authorization' => 'Bearer ' . $token,
@@ -282,6 +292,7 @@ class Connector_Google extends Connector_Base {
 			$settings['fields'][] = array(
 				'component' => 'Alert',
 				'props'     => array(
+					'id'               => 'google-connection-notice',
 					'customIconPrefix' => 'gravitysmtp-admin-icon',
 					'theme'            => 'cosmos',
 					'type'             => 'notice',
@@ -316,12 +327,47 @@ class Connector_Google extends Connector_Base {
 					),
 				),
 			);
+		} else {
+			$settings['fields'][] = array(
+				'component' => 'Alert',
+				'props'     => array(
+					'id'               => 'google-alias-notice',
+					'customIconPrefix' => 'gravitysmtp-admin-icon',
+					'theme'            => 'cosmos',
+					'type'             => 'info',
+					'spacing'          => 3,
+				),
+				'fields'    => array(
+					array(
+						'component' => 'LinkedText',
+						'external'  => true,
+						'links'     => array(
+							array(
+								'key'   => 'link',
+								'props' => array(
+									'href'   => 'https://docs.gravitysmtp.com/how-to-send-emails-from-an-alias-google-gmail/',
+									'size'   => 'text-sm',
+									'target' => '_blank',
+								),
+							),
+						),
+						'props'     => array(
+							'customClasses' => array( 'gform--display-block' ),
+							'content'       => esc_html__( 'Important: To use alias email addresses with Gravity SMTP, ensure your primary Google account is authenticated, then add and verify your alias in your Google account settings. For detailed instructions, please refer to our {{link}}documentation article{{link}}.', 'gravitysmtp' ),
+							'weight'        => 'medium',
+							'size'          => 'text-sm',
+							'tagName'       => 'span',
+						),
+					),
+				),
+			);
 		}
 
 		if ( isset( $_GET['code'] ) && ! $has_token ) {
 			$settings['fields'][] = array(
 				'component' => 'Alert',
 				'props'     => array(
+					'id'               => 'google-connection-error',
 					'customIconPrefix' => 'gravitysmtp-admin-icon',
 					'theme'            => 'cosmos',
 					'type'             => 'error',

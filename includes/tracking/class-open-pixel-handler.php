@@ -35,9 +35,10 @@ class Open_Pixel_Handler {
 			$to = $to->first()->email();
 		}
 
-		$hash         = $this->encrypter->encrypt( sprintf( '%s:%s:%s', $email_id, $to, $this->generate_random_string() ) );
-		$callback_url = $this->get_callback_url( $hash );
-		$image        = sprintf( '<img src="%s" />', $callback_url );
+		$hash          = $this->encrypter->encrypt( sprintf( '%s:%s:%s', $email_id, $to, $this->generate_random_string() ) );
+		$url_safe_hash = strtr( rtrim( $hash, '=' ), '+/', '-_' ); // Replace + with -, / with _, and remove padding =
+		$callback_url  = $this->get_callback_url( $url_safe_hash );
+		$image         = sprintf( '<img src="%s" />', $callback_url );
 
 		$message = str_replace( '</body>', $image . '</body>', $message );
 
@@ -72,8 +73,9 @@ class Open_Pixel_Handler {
 			$this->send_response();
 		}
 
-		$decrypted = $this->encrypter->decrypt( $message );
-		$parts     = explode( ':', $decrypted );
+		$encoded_hash = strtr( $message, '-_', '+/' ); // Replace - with +, _ with /
+		$decrypted    = $this->encrypter->decrypt( $encoded_hash );
+		$parts        = explode( ':', $decrypted );
 
 		if ( count( $parts ) !== 3 ) {
 			$this->send_response();

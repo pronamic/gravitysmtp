@@ -82,6 +82,12 @@ class Data_Store_Router {
 	}
 
 	public function get_connector_status_of_type( $status_type, $default = false ) {
+		$const_check = sprintf( 'GRAVITYSMTP_INTEGRATION_%s', strtoupper( $status_type ) );
+
+		if ( defined( $const_check ) ) {
+			return constant( $const_check );
+		}
+
 		$setting    = Connector_Status_Enum::setting_for_status( $status_type );
 		$connectors = $this->get_plugin_setting( $setting, array() );
 		$connectors = array_filter( $connectors, function( $enabled ) {

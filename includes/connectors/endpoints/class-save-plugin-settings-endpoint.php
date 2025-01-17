@@ -16,17 +16,20 @@ class Save_Plugin_Settings_Endpoint extends Endpoint {
 	const PARAM_SETTING_KEY   = 'key';
 	const PARAM_SETTING_VALUE = 'value';
 
-	const PARAM_LICENSE_KEY              = 'license_key';
-	const PARAM_TEST_MODE                = 'test_mode';
-	const PARAM_EVENT_LOG_ENABLED        = 'event_log_enabled';
-	const PARAM_SAVE_EMAIL_BODY_ENABLED  = 'save_email_body_enabled';
-	const PARAM_SAVE_ATTACHMENTS_ENABLED = 'save_attachments_enabled';
-	const PARAM_EVENT_LOG_RETENTION      = 'event_log_retention';
-	const PARAM_DEBUG_LOG_ENABLED        = 'debug_log_enabled';
-	const PARAM_DEBUG_LOG_RETENTION      = 'debug_log_retention';
-	const PARAM_USAGE_ANALYTICS          = 'usage_analytics';
-	const PARAM_PER_PAGE                 = 'activity_log_per_page';
-	const PARAM_MAX_EVENT_RECORDS        = 'max_event_records';
+	const PARAM_LICENSE_KEY                             = 'license_key';
+	const PARAM_TEST_MODE                               = 'test_mode';
+	const PARAM_EVENT_LOG_ENABLED                       = 'event_log_enabled';
+	const PARAM_SAVE_EMAIL_BODY_ENABLED                 = 'save_email_body_enabled';
+	const PARAM_SAVE_ATTACHMENTS_ENABLED                = 'save_attachments_enabled';
+	const PARAM_EVENT_LOG_RETENTION                     = 'event_log_retention';
+	const PARAM_DEBUG_LOG_ENABLED                       = 'debug_log_enabled';
+	const PARAM_DEBUG_LOG_RETENTION                     = 'debug_log_retention';
+	const PARAM_USAGE_ANALYTICS                         = 'usage_analytics';
+	const PARAM_PER_PAGE                                = 'activity_log_per_page';
+	const PARAM_MAX_EVENT_RECORDS                       = 'max_event_records';
+	const PARAM_NOTIFY_WHEN_EMAIL_SENDING_FAILS_ENABLED = 'notify_when_email_sending_fails_enabled';
+	const PARAM_SLACK_ALERTS_ENABLED                    = 'slack_alerts_enabled';
+	const PARAM_TWILIO_ALERTS_ENABLED                   = 'twilio_alerts_enabled';
 
 	const PARAM_SETUP_WIZARD_SHOULD_DISPLAY = 'setup_wizard_should_display';
 
@@ -79,10 +82,14 @@ class Save_Plugin_Settings_Endpoint extends Endpoint {
 	}
 
 	protected function handle_individual_setting() {
-		$key   = filter_input( INPUT_POST, self::PARAM_SETTING_KEY );
-		$key   = htmlspecialchars( $key );
-		$value = filter_input( INPUT_POST, self::PARAM_SETTING_VALUE );
-		$value = htmlspecialchars( $value );
+		$key   = htmlspecialchars( filter_input( INPUT_POST, self::PARAM_SETTING_KEY ) );
+		$value = isset( $_POST[ self::PARAM_SETTING_VALUE ] ) ? $_POST[ self::PARAM_SETTING_VALUE ] : null;
+
+		if ( is_array( $value ) ) {
+			$value = filter_input( INPUT_POST, self::PARAM_SETTING_VALUE, FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+		} else {
+			$value = htmlspecialchars( $value );
+		}
 
 		switch ( $key ) {
 			case self::PARAM_LICENSE_KEY:

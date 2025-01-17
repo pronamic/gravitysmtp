@@ -25,6 +25,9 @@ class Connector_Mailchimp extends Connector_Base {
 		return esc_html__( 'Reach inboxes when it matters most. Send email notifications to your contacts with MailChimp Transactional Email.', 'gravitysmtp' );
 	}
 
+	protected $sensitive_fields = array(
+		self::SETTING_API_KEY,
+	);
 
 	protected function get_merged_data() {
 		$data             = parent::get_merged_data();
@@ -123,6 +126,7 @@ class Connector_Mailchimp extends Connector_Base {
 			'message' => array(
 				'subject'    => $atts['subject'],
 				'from_email' => $atts['from']['email'],
+				'headers' => array(),
 			),
 		);
 
@@ -144,21 +148,33 @@ class Connector_Mailchimp extends Connector_Base {
 			$body['message']['text'] = $atts['message'];
 		}
 
+		// Setting reply-to
+		if ( ! empty( $atts['headers']['reply-to'] ) ) {
+			$address                                = str_replace( 'Reply-To: ', '', $atts['headers']['reply-to'] );
+			$body['message']['headers']['reply-to'] = $address;
+		}
+
 		// Setting cc
 		if ( ! empty( $atts['headers']['cc'] ) ) {
 			foreach ( $atts['headers']['cc']->as_array() as $recipient ) {
-				$data                    = $recipient->as_array();
-				$data['type']            = 'cc';
-				$body['message']['to'][] = array_filter( $data );
+				if ( isset( $recipient['email'] ) ) {
+					$body['message']['to'][] = array(
+						'type' => 'cc',
+						'email' => $recipient['email'],
+					);
+				}
 			}
 		}
 
 		// Setting bcc
 		if ( ! empty( $atts['headers']['bcc'] ) ) {
 			foreach ( $atts['headers']['bcc']->as_array() as $recipient ) {
-				$data                    = $recipient->as_array();
-				$data['type']            = 'bcc';
-				$body['message']['to'][] = array_filter( $data );
+				if ( isset( $recipient['email'] ) ) {
+					$body['message']['to'][] = array(
+						'type' => 'bcc',
+						'email' => $recipient['email'],
+					);
+				}
 			}
 		}
 

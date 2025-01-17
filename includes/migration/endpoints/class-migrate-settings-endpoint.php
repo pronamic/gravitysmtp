@@ -60,7 +60,8 @@ class Migrate_Settings_Endpoint extends Endpoint {
 		$handler_classname = $this->base_namespace . '\\Data\\Migration_Data_' . ucfirst( strtolower( $plugin_to_migrate ) );
 
 		if ( ! class_exists( $handler_classname ) ) {
-			wp_send_json_error( __( 'Could not find handler for migration type: ', 'gravitysmtp' ) . $plugin_to_migrate, 400 );
+			/* translators: %1$s: plugin name */
+			wp_send_json_error( sprintf( __( 'Could not find handler for migration type: %1$s', 'gravitysmtp' ), $plugin_to_migrate ), 400 );
 		}
 
 		$handler = new $handler_classname();

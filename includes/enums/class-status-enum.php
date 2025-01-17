@@ -40,19 +40,21 @@ class Status_Enum {
 
 	private static function get_status_map() {
 		return array(
-			'pending'   => 'warning',
-			'sent'      => 'active',
-			'failed'    => 'error',
-			'sandboxed' => 'warning',
+			'pending'    => 'warning',
+			'sent'       => 'active',
+			'failed'     => 'error',
+			'sandboxed'  => 'warning',
+			'suppressed' => 'warning',
 		);
 	}
 
 	private static function get_labels() {
 		return array(
-			'pending'   => __( 'Pending', 'gravitysmtp' ),
-			'sent'      => __( 'Sent', 'gravitysmtp' ),
-			'failed'    => __( 'Failed', 'gravitysmtp' ),
-			'sandboxed' => __( 'Sandboxed', 'gravitysmtp' ),
+			'pending'    => __( 'Pending', 'gravitysmtp' ),
+			'sent'       => __( 'Sent', 'gravitysmtp' ),
+			'failed'     => __( 'Failed', 'gravitysmtp' ),
+			'sandboxed'  => __( 'Sandboxed', 'gravitysmtp' ),
+			'suppressed' => __( 'Suppressed', 'gravitysmtp' ),
 		);
 	}
 

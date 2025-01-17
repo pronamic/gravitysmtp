@@ -74,7 +74,7 @@ class Common {
 	 *
 	 * @since 1.0
 	 *
-	 * @return string The version number or the version number and system type.
+	 * @return string Returns the raw value from a SELECT version() or SELECT sqlite_version() db query.
 	 */
 	public static function get_dbms_version() {
 		static $value;
@@ -82,6 +82,10 @@ class Common {
 		if ( empty( $value ) ) {
 			global $wpdb;
 			$value = $wpdb->get_var( 'SELECT version();' );
+
+			if ( ( get_class( $wpdb ) === 'WP_SQLite_DB' ) || $wpdb->last_error ) {
+				$value = $wpdb->get_var( 'SELECT sqlite_version();' );
+			}
 		}
 
 		return $value;
@@ -92,13 +96,18 @@ class Common {
 	 *
 	 * @since 1.0
 	 *
-	 * @return string either MySQL or MariaDB
+	 * @return string either MySQL, MariaDB, or SQLite.
 	 */
 	public static function get_dbms_type() {
 		static $type;
+		global $wpdb;
 
 		if ( empty( $type ) ) {
 			$type = strpos( strtolower( self::get_dbms_version() ), 'mariadb' ) ? 'MariaDB' : 'MySQL';
+
+			if ( get_class( $wpdb ) === 'WP_SQLite_DB' ) {
+				$type = 'SQLite';
+			}
 		}
 
 		return $type;

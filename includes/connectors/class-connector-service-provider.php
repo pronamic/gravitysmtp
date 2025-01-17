@@ -7,6 +7,7 @@ use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Get_Connector_Emails;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Migrate_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Connectors\Oauth\Google_Oauth_Handler;
 use Gravity_Forms\Gravity_SMTP\Connectors\Oauth\Microsoft_Oauth_Handler;
+use Gravity_Forms\Gravity_SMTP\Connectors\Oauth\Zoho_Oauth_Handler;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Mailchimp;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_PHPMail;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Data_Store_Router;
@@ -70,6 +71,7 @@ class Connector_Service_Provider extends Config_Service_Provider {
 	const OAUTH_DATA_HANDLER      = 'oauth_data_handler';
 	const GOOGLE_OAUTH_HANDLER    = 'google_oauth_handler';
 	const MICROSOFT_OAUTH_HANDLER = 'microsoft_oauth_handler';
+	const ZOHO_OAUTH_HANDLER      = 'zoho_oauth_handler';
 
 	const SEND_TEST_ENDPOINT               = 'send_test_endpoint';
 	const CLEANUP_DATA_ENDPOINT            = 'cleanup_data_endpoint';
@@ -247,7 +249,11 @@ class Connector_Service_Provider extends Config_Service_Provider {
 			return new Microsoft_Oauth_Handler( $container->get( self::OAUTH_DATA_HANDLER ) );
 		} );
 
-		$this->container->add( self::REGISTERED_CONNECTORS, function() use ( $self ) {
+		$this->container->add( self::ZOHO_OAUTH_HANDLER, function () use ( $container ) {
+			return new Zoho_Oauth_Handler( $container->get( self::OAUTH_DATA_HANDLER ) );
+		} );
+
+		$this->container->add( self::REGISTERED_CONNECTORS, function () use ( $self ) {
 			return $self->connectors;
 		} );
 
@@ -284,7 +290,7 @@ class Connector_Service_Provider extends Config_Service_Provider {
 				$connector_values = array();
 			}
 
-			$connector_values[ 'google' ] = 'false';
+			$connector_values['google'] = 'false';
 			$plugin_data_store->save( Save_Connector_Settings_Endpoint::SETTING_PRIMARY_CONNECTOR, $connector_values );
 
 			$connector_values = $data_router->get_plugin_setting( Save_Connector_Settings_Endpoint::SETTING_BACKUP_CONNECTOR, array() );
@@ -293,7 +299,7 @@ class Connector_Service_Provider extends Config_Service_Provider {
 				$connector_values = array();
 			}
 
-			$connector_values[ 'google' ] = 'false';
+			$connector_values['google'] = 'false';
 			$plugin_data_store->save( Save_Connector_Settings_Endpoint::SETTING_BACKUP_CONNECTOR, $connector_values );
 
 			$connector_values = $data_router->get_plugin_setting( Save_Connector_Settings_Endpoint::SETTING_ENABLED_CONNECTOR, array() );
@@ -302,7 +308,7 @@ class Connector_Service_Provider extends Config_Service_Provider {
 				$connector_values = array();
 			}
 
-			$connector_values[ 'google' ] = 'false';
+			$connector_values['google'] = 'false';
 			$plugin_data_store->save( Save_Connector_Settings_Endpoint::SETTING_ENABLED_CONNECTOR, $connector_values );
 
 			/**
@@ -314,7 +320,7 @@ class Connector_Service_Provider extends Config_Service_Provider {
 			wp_safe_redirect( $return_url );
 		} );
 
-		add_action( 'admin_post_smtp_disconnect_microsoft', function() use ( $container ) {
+		add_action( 'admin_post_smtp_disconnect_microsoft', function () use ( $container ) {
 			$configured_key = sprintf( 'gsmtp_connector_configured_%s', 'microsoft' );
 
 			delete_transient( $configured_key );
@@ -342,7 +348,7 @@ class Connector_Service_Provider extends Config_Service_Provider {
 				$connector_values = array();
 			}
 
-			$connector_values[ 'microsoft' ] = 'false';
+			$connector_values['microsoft'] = 'false';
 			$plugin_data_store->save( Save_Connector_Settings_Endpoint::SETTING_PRIMARY_CONNECTOR, $connector_values );
 
 			$connector_values = $data_router->get_plugin_setting( Save_Connector_Settings_Endpoint::SETTING_BACKUP_CONNECTOR, array() );
@@ -351,7 +357,7 @@ class Connector_Service_Provider extends Config_Service_Provider {
 				$connector_values = array();
 			}
 
-			$connector_values[ 'microsoft' ] = 'false';
+			$connector_values['microsoft'] = 'false';
 			$plugin_data_store->save( Save_Connector_Settings_Endpoint::SETTING_BACKUP_CONNECTOR, $connector_values );
 
 			$connector_values = $data_router->get_plugin_setting( Save_Connector_Settings_Endpoint::SETTING_ENABLED_CONNECTOR, array() );
@@ -360,7 +366,7 @@ class Connector_Service_Provider extends Config_Service_Provider {
 				$connector_values = array();
 			}
 
-			$connector_values[ 'microsoft' ] = 'false';
+			$connector_values['microsoft'] = 'false';
 			$plugin_data_store->save( Save_Connector_Settings_Endpoint::SETTING_ENABLED_CONNECTOR, $connector_values );
 
 			/**
@@ -370,7 +376,65 @@ class Connector_Service_Provider extends Config_Service_Provider {
 			$return_url    = urldecode( $oauth_handler->get_return_url( 'settings' ) );
 
 			wp_safe_redirect( $return_url );
-		});
+		} );
+
+		add_action( 'admin_post_smtp_disconnect_zoho', function () use ( $container ) {
+			$configured_key = sprintf( 'gsmtp_connector_configured_%s', 'zoho' );
+
+			delete_transient( $configured_key );
+
+			/**
+			 * @var Opts_Data_Store $data
+			 */
+			$data = $container->get( self::DATA_STORE_OPTS );
+
+			/**
+			 * @var Data_Store_Router
+			 */
+			$data_router = $container->get( self::DATA_STORE_ROUTER );
+
+			/**
+			 * @var Plugin_Opts_Data_Store
+			 */
+			$plugin_data_store = $container->get( self::DATA_STORE_PLUGIN_OPTS );
+
+			$data->delete_all( 'zoho' );
+
+			$connector_values = $data_router->get_plugin_setting( Save_Connector_Settings_Endpoint::SETTING_PRIMARY_CONNECTOR, array() );
+
+			if ( ! is_array( $connector_values ) ) {
+				$connector_values = array();
+			}
+
+			$connector_values['zoho'] = 'false';
+			$plugin_data_store->save( Save_Connector_Settings_Endpoint::SETTING_PRIMARY_CONNECTOR, $connector_values );
+
+			$connector_values = $data_router->get_plugin_setting( Save_Connector_Settings_Endpoint::SETTING_BACKUP_CONNECTOR, array() );
+
+			if ( ! is_array( $connector_values ) ) {
+				$connector_values = array();
+			}
+
+			$connector_values['zoho'] = 'false';
+			$plugin_data_store->save( Save_Connector_Settings_Endpoint::SETTING_BACKUP_CONNECTOR, $connector_values );
+
+			$connector_values = $data_router->get_plugin_setting( Save_Connector_Settings_Endpoint::SETTING_ENABLED_CONNECTOR, array() );
+
+			if ( ! is_array( $connector_values ) ) {
+				$connector_values = array();
+			}
+
+			$connector_values['zoho'] = 'false';
+			$plugin_data_store->save( Save_Connector_Settings_Endpoint::SETTING_ENABLED_CONNECTOR, $connector_values );
+
+			/**
+			 * @var Zoho_Oauth_Handler $oauth_handler
+			 */
+			$oauth_handler = $container->get( self::ZOHO_OAUTH_HANDLER );
+			$return_url    = urldecode( $oauth_handler->get_return_url( false ) );
+
+			wp_safe_redirect( $return_url );
+		} );
 
 		add_action( 'wp_ajax_' . Cleanup_Data_Endpoint::ACTION_NAME, function () use ( $container ) {
 			$container->get( self::CLEANUP_DATA_ENDPOINT )->handle();

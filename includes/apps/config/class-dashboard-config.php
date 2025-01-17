@@ -153,10 +153,10 @@ class Dashboard_Config extends Config {
 		return array(
 			'totals'   => array(
 				'headings' => array(
-					'emails'      => __( 'Total Emails', 'gravitysmtp' ),
-					'sent'        => __( 'Total Sent', 'gravitysmtp' ),
-					'percentOpen' => __( 'Percent Opened', 'gravitysmtp' ),
-					'failed'      => __( 'Total Failed', 'gravitysmtp' ),
+					'emails'      => __( 'Processed', 'gravitysmtp' ),
+					'sent'        => __( 'Sent', 'gravitysmtp' ),
+					'percentOpen' => __( 'Opened', 'gravitysmtp' ),
+					'failed'      => __( 'Failed', 'gravitysmtp' ),
 				),
 			),
 			'stats' => array(
@@ -315,6 +315,10 @@ class Dashboard_Config extends Config {
 					'sent'   => 0,
 					'failed' => 0,
 				);
+			}
+
+			if ( $datum['status'] !== 'sent' && $datum['status'] !== 'failed' ) {
+				continue;
 			}
 
 			$sorted[ $datum['date_created'] ][ $datum['status'] ] += $datum['total'];

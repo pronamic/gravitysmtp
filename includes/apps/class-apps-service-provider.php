@@ -14,6 +14,7 @@ use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Plugin_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Feature_Flags\Feature_Flag_Manager;
 use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
+use Gravity_Forms\Gravity_SMTP\Models\Suppressed_Emails_Model;
 use Gravity_Forms\Gravity_Tools\Apps\Registers_Apps;
 use Gravity_Forms\Gravity_Tools\Providers\Config_Service_Provider;
 use Gravity_Forms\Gravity_Tools\Service_Container;
@@ -78,6 +79,7 @@ class App_Service_Provider extends Config_Service_Provider {
 		$this->register_activity_log_app( $min, $ver );
 		$this->register_tools_app( $min, $ver );
 		$this->register_dashboard_app( $min, $ver );
+		$this->register_suppression_app( $min, $ver );
 
 		$this->container->add( self::GET_DASHBOARD_DATA_ENDPOINT, function() use ( $container ) {
 			$dashboard_config = $container->get( self::DASHBOARD_CONFIG );
@@ -186,6 +188,25 @@ class App_Service_Provider extends Config_Service_Provider {
 		$this->register_app( $args );
 	}
 
+	protected function register_suppression_app( $min, $ver ) {
+		$args = array(
+			'app_name'     => 'suppression',
+			'script_name'  => 'gravitysmtp_scripts_admin',
+			'object_name'  => 'gravitysmtp_admin_config',
+			'chunk'        => './suppression',
+			'enqueue'      => array( $this, 'should_enqueue_suppression' ),
+			'css'          => array(
+				'handle' => 'suppression_styles',
+				'src'    => $this->plugin_url . "/assets/css/dist/suppression{$min}.css",
+				'deps'   => array( 'gravitysmtp_styles_base' ),
+				'ver'    => $ver,
+			),
+			'root_element' => 'gravitysmtp-suppression-app-root',
+		);
+
+		$this->register_app( $args );
+	}
+
 	public function should_enqueue_dashboard() {
 		$enabled = Feature_Flag_Manager::is_enabled( self::FEATURE_FLAG_DASHBOARD );
 
@@ -238,6 +259,18 @@ class App_Service_Provider extends Config_Service_Provider {
 		$page = htmlspecialchars( $page );
 
 		return $page === 'gravitysmtp-tools';
+	}
+
+	public function should_enqueue_suppression() {
+		$page = filter_input( INPUT_GET, 'page' );
+
+		if ( ! is_string( $page ) ) {
+			return false;
+		}
+
+		$page = htmlspecialchars( $page );
+
+		return $page === 'gravitysmtp-suppression';
 	}
 
 	protected function get_root_markup( $root ) {

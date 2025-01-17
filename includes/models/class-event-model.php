@@ -169,7 +169,7 @@ class Event_Model {
 
 	public function count( $search_term = null, $search_type = null, $filters = array() ) {
 		global $wpdb;
-		$table_name = $this->get_table_name();
+		$table_name    = $this->get_table_name();
 		$search_clause = null;
 
 		if ( ! empty( $search_term ) ) {
@@ -188,7 +188,7 @@ class Event_Model {
 			}
 		}
 
-		$sql = "SELECT COUNT(1) as 'count' FROM $table_name $search_clause $filter_clause;";
+		$sql     = "SELECT COUNT(1) as 'count' FROM $table_name $search_clause $filter_clause;";
 		$results = $wpdb->get_row( $sql, ARRAY_A );
 
 		return $results['count'];
@@ -196,9 +196,9 @@ class Event_Model {
 
 	public function paginate( $page, $per_page, $max_date = false, $search_term = null, $search_type = null, $sort_by = null, $sort_order = null, $filters = array() ) {
 		global $wpdb;
-		$table_name = $this->get_table_name();
+		$table_name          = $this->get_table_name();
 		$tracking_table_name = $wpdb->prefix . 'gravitysmtp_event_tracking';
-		$offset = ( $page - 1 ) * $per_page;
+		$offset              = ( $page - 1 ) * $per_page;
 
 		if ( ! $max_date ) {
 			$max_date = current_time( 'mysql', true );
@@ -238,7 +238,7 @@ class Event_Model {
 		global $wpdb;
 		$table_name = $this->get_table_name();
 
-		switch( $search_type ) {
+		switch ( $search_type ) {
 			case 'email_and_headers':
 				$prepared_sql = $wpdb->prepare(
 					"`extra` LIKE '%%%s%%' AND",
@@ -275,7 +275,7 @@ class Event_Model {
 		}
 
 		if ( ! $this->save_email_body() ) {
-			$message = '';
+			$message                  = '';
 			$extra['message_omitted'] = true;
 		}
 
@@ -299,7 +299,7 @@ class Event_Model {
 			)
 		);
 
-		$created_id = $wpdb->insert_id;
+		$created_id      = $wpdb->insert_id;
 		$this->latest_id = $created_id;
 
 		do_action( 'gravitysmtp_after_mail_created', $created_id, compact( 'service', 'status', 'to', 'from', 'subject', 'message', 'extra' ) );
@@ -327,7 +327,7 @@ class Event_Model {
 
 		if ( ! $this->save_email_body() ) {
 			unset( $values['message'] );
-			$extra                    = unserialize( $values['extra'] );
+			$extra                    = isset( $values['extra'] ) ? unserialize( $values['extra'] ) : array();
 			$extra['message_omitted'] = true;
 			$values['extra']          = serialize( $extra );
 		}
@@ -349,6 +349,7 @@ class Event_Model {
 	public function delete( $id ) {
 		global $wpdb;
 
+		$wpdb->query( "SET FOREIGN_KEY_CHECKS = 0;" );
 		$wpdb->delete( $this->get_table_name(), array( 'id' => $id ) );
 	}
 
@@ -358,6 +359,7 @@ class Event_Model {
 		$table_name = $this->get_table_name();
 		$query      = $wpdb->prepare( "DELETE FROM $table_name WHERE `date_created` <= %s", $date );
 
+		$wpdb->query( "SET FOREIGN_KEY_CHECKS = 0;" );
 		$wpdb->query( $query );
 	}
 
@@ -365,7 +367,7 @@ class Event_Model {
 		global $wpdb;
 		$table_name = $this->get_table_name();
 
-		$wpdb->query( "SET FOREIGN_KEY_CHECKS = 0;");
+		$wpdb->query( "SET FOREIGN_KEY_CHECKS = 0;" );
 		$wpdb->query( "TRUNCATE TABLE $table_name" );
 	}
 
@@ -398,6 +400,11 @@ class Event_Model {
 				$service = 'amazon';
 			}
 
+			// Cleanup bad old data.
+			if ( $row['service'] === 'phpmail' ) {
+				$row['service'] = 'php';
+			}
+
 			if ( ! isset( $row['opened'] ) || is_null( $row['opened'] ) ) {
 				$row['opened'] = __( 'No', 'gravitysmtp' );
 			} else {
@@ -410,7 +417,7 @@ class Event_Model {
 				$row['clicked'] = $row['clicked'] ? __( 'Yes', 'gravitysmtp' ) : __( 'No', 'gravitysmtp' );
 			}
 
-			$extra   = strpos( $row['extra'], '{' ) === 0 ? json_decode( $row['extra'], true ) : unserialize( $row['extra'] );
+			$extra = strpos( $row['extra'], '{' ) === 0 ? json_decode( $row['extra'], true ) : unserialize( $row['extra'] );
 
 			try {
 				if ( isset( $hydrators[ $service ] ) ) {
@@ -425,7 +432,7 @@ class Event_Model {
 
 			$row['source']       = isset( $extra['source'] ) ? $extra['source'] : __( 'N/A', 'gravitysmtp' );
 			$row['email_counts'] = $this->get_email_counts( $extra );
-			$row['can_resend'] = empty( $extra['message_omitted'] ) && ( empty( $extra['attachments'] ) || ( ! empty( $extra['attachments_saved'] ) ) );
+			$row['can_resend']   = empty( $extra['message_omitted'] ) && ( empty( $extra['attachments'] ) || ( ! empty( $extra['attachments_saved'] ) ) );
 
 			if ( $hydrator ) {
 				$rows[ $idx ] = $hydrator->hydrate( $row );
@@ -453,14 +460,14 @@ class Event_Model {
 	public function get_earliest_event_date() {
 		static $found;
 
-		if ( ! empty( $found ) ){
+		if ( ! empty( $found ) ) {
 			return $found;
 		}
 
 		global $wpdb;
 		$table_name = $this->get_table_name();
 
-		$sql = $wpdb->prepare( "SELECT date_created FROM $table_name ORDER BY date_created ASC LIMIT %d, %d", 0, 1 );
+		$sql     = $wpdb->prepare( "SELECT date_created FROM $table_name ORDER BY date_created ASC LIMIT %d, %d", 0, 1 );
 		$results = $wpdb->get_results( $sql, ARRAY_A );
 
 		if ( empty( $results ) ) {
@@ -488,6 +495,34 @@ class Event_Model {
 		$results = $wpdb->get_results( $sql, ARRAY_A );
 
 		return $results;
+	}
+
+	public function get_all_sending_sources() {
+		global $wpdb;
+		$table_name = $this->get_table_name();
+
+		$sql = $wpdb->prepare( "SELECT SUBSTRING_INDEX(
+								SUBSTRING_INDEX( SUBSTRING(extra, (INSTR(extra, CONCAT('source', '\";')) + CHAR_LENGTH('source') + 1)), '\"', 2),
+								'\"', -1) as source
+								FROM ( SELECT * FROM $table_name LIMIT 0, %d ) AS timeboxed
+								GROUP BY source", 5000 );
+
+		$results = $wpdb->get_results( $sql, ARRAY_A );
+		$sources = wp_list_pluck( $results, 'source' );
+
+		$filtered = array_filter( $sources, function ( $source ) {
+			if ( strpos( $source, ':[' ) !== false || strpos( $source, ':{' ) !== false ) {
+				return false;
+			}
+
+			if ( $source === 'headers' || $source === 'params' || $source === 'to' || $source === 'message_omitted' ) {
+				return false;
+			}
+
+			return true;
+		} );
+
+		return $filtered;
 	}
 
 	public function get_top_recipients( $start, $end ) {
@@ -518,10 +553,13 @@ class Event_Model {
 
 		$results = $wpdb->get_results( $sql, ARRAY_A );
 
-		$return = array();
+		$return = array(
+			'failed' => 0,
+			'sent' => 0,
+		);
 
 		// Map to key/value pair.
-		foreach( $results as $result ) {
+		foreach ( $results as $result ) {
 			$return[ $result['status'] ] = (int) $result['total'];
 		}
 
@@ -531,18 +569,22 @@ class Event_Model {
 	public function get_opens_for_period( $start, $end ) {
 		global $wpdb;
 
-		$table_name = $this->get_table_name();
+		$table_name          = $this->get_table_name();
 		$tracking_table_name = $wpdb->prefix . 'gravitysmtp_event_tracking';
 
 		$sql = $wpdb->prepare( "SELECT count( * ) AS total FROM ( SELECT * FROM $table_name WHERE date_created >= %s AND date_created <= %s ORDER BY date_created DESC ) AS timeboxed LEFT JOIN $tracking_table_name AS tt ON tt.event_id = timeboxed.id WHERE tt.opened = 1", $start, $end );
 
 		$results = $wpdb->get_results( $sql, ARRAY_A );
 
+		if ( empty( $results ) ) {
+			return 0;
+		}
+
 		return (int) $results[0]['total'];
 	}
 
 	public function get_chart_data( $start, $end, $period = 'month' ) {
-		switch( $period ) {
+		switch ( $period ) {
 			case 'day':
 			default:
 				$format = '%b %d';
@@ -593,7 +635,7 @@ class Event_Model {
 
 		$table_name = $this->get_tracking_table_name();
 
-		$record = $this->get_existing_tracking_entry( $email_id, $email_address );
+		$record            = $this->get_existing_tracking_entry( $email_id, $email_address );
 		$record['clicked'] = $is;
 
 		$this->insert_tracking_record( $record );
@@ -604,7 +646,7 @@ class Event_Model {
 
 		$table_name = $this->get_tracking_table_name();
 
-		$record = $this->get_existing_tracking_entry( $email_id, $email_address );
+		$record           = $this->get_existing_tracking_entry( $email_id, $email_address );
 		$record['opened'] = $is;
 
 		$this->insert_tracking_record( $record );

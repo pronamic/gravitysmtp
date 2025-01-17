@@ -2,10 +2,13 @@
 
 namespace Gravity_Forms\Gravity_SMTP\Handler;
 
+use Gravity_Forms\Gravity_SMTP\Apps\Config\Email_Log_Config;
 use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Factory;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Connector_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Plugin_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Data_Store_Router;
+use Gravity_Forms\Gravity_SMTP\Feature_Flags\Feature_Flag_Manager;
+use Gravity_Forms\Gravity_SMTP\Models\Suppressed_Emails_Model;
 use Gravity_Forms\Gravity_SMTP\Utils\Source_Parser;
 
 class Mail_Handler {
@@ -28,14 +31,20 @@ class Mail_Handler {
 	private $source_parser;
 
 	/**
+	 * @var Suppressed_Emails_Model
+	 */
+	private $suppressed_model;
+
+	/**
 	 * @var null A way to store the entry ID being acted upon.
 	 */
 	protected $entry_id = null;
 
-	public function __construct( $connector_factory, $data_store, $source_parser ) {
+	public function __construct( $connector_factory, $data_store, $source_parser, $suppressed_model ) {
 		$this->connector_factory = $connector_factory;
 		$this->data_store = $data_store;
 		$this->source_parser = $source_parser;
+		$this->suppressed_model = $suppressed_model;
 	}
 
 	public function set_entry_id( $entry_id ) {
@@ -106,6 +115,9 @@ class Mail_Handler {
 	}
 
 	public function mail( $to, $subject, $message, $headers = '', $attachments = array() ) {
+		// Clear sources cache to ensure up-to-date info
+		delete_transient( Email_Log_Config::SOURCE_LIST_ITEMS_TRANSIENT );
+
 		// Re-send attempts put the source in the $headers array.
 		if ( is_array( $headers ) && isset( $headers['source'] ) ) {
 			$source = $headers['source'];
@@ -143,6 +155,14 @@ class Mail_Handler {
 		$connector = $this->get_connector( $type );
 
 		$connector->init( $to, $subject, $message, $headers, $attachments, $source );
+
+		$to_email = $connector->get_att( 'to' )->first()->email();
+
+		if ( Feature_Flag_Manager::is_enabled( 'email_suppression' ) && $this->suppressed_model->is_email_suppressed( $to_email ) ) {
+			$connector->handle_suppressed_email( $to_email, $source );
+			return false;
+		}
+
 		$send = $connector->send();
 
 		if ( $send === true ) {
@@ -150,6 +170,8 @@ class Mail_Handler {
 		}
 
 		if ( $send !== true && $skip_retry ) {
+			$failed_email_id = $send;
+			do_action( 'gravitysmtp_on_send_failure', $failed_email_id );
 			return false;
 		}
 

@@ -32,6 +32,10 @@ class Connector_Generic extends Connector_Base {
 		return __( "Use our Custom SMTP feature to easily connect to any SMTP server. If you don't want to use one of Gravity SMTP's built-in integrations, with Custom SMTP you can sync with a huge array of services that can reliably send your site's emails. For more information on how to get started with Custom SMTP, read our documentation.", 'gravitysmtp' );
 	}
 
+	protected $sensitive_fields = array(
+		self::SETTING_PASSWORD,
+	);
+
 	/**
 	 * Sending logic.
 	 *
@@ -66,9 +70,9 @@ class Connector_Generic extends Connector_Base {
 			$this->reset_phpmailer();
 			$this->configure_phpmailer();
 
-			$this->php_mailer->setFrom( $from['email'], $from['name'] );
+			$this->php_mailer->setFrom( $from['email'], empty( $from['name'] ) ? '' : $from['name'] );
 
-			$this->debug_logger->log_debug( $this->wrap_debug_with_details( __FUNCTION__, $email, sprintf( 'Using From Name: %s, From Email: %s', $from['name'], $from['email'] ) ) );
+			$this->debug_logger->log_debug( $this->wrap_debug_with_details( __FUNCTION__, $email, sprintf( 'Using From Name: %s, From Email: %s', empty( $from['name'] ) ? '' : $from['name'], $from['email'] ) ) );
 
 			foreach( $to->recipients() as $recipient ) {
 				if ( ! empty( $recipient->name() ) ) {

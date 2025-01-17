@@ -33,8 +33,24 @@ class Connector_Phpmail extends Connector_Base {
 	 * @return bool
 	 */
 	public function send() {
-		// noop - this connector just allows the default wp_mail to handle sends.
-		return;
+		$to          = $this->get_att( 'to', '' );
+		$subject     = $this->get_att( 'subject', '' );
+		$message     = $this->get_att( 'message', '' );
+		$headers     = $this->get_parsed_headers( $this->get_att( 'headers', array() ) );
+		$attachments = $this->get_att( 'attachments', array() );
+		$from        = $this->get_from( true );
+		$reply_to    = $this->get_reply_to( true );
+		$source      = $this->get_att( 'source' );
+		$params      = $this->get_request_params();
+		$email       = $this->email;
+
+		if ( ! empty( $headers['content-type'] ) ) {
+			$headers['content-type'] = $this->get_att( 'content_type', $headers['content-type'] );
+		}
+
+		$this->set_email_log_data( $subject, $message, $to, empty( $from['name'] ) ? $from['email'] : sprintf( '%s <%s>', $from['name'], $from['email'] ), $headers, $attachments, $source, $params );
+
+		return true;
 	}
 
 	/**

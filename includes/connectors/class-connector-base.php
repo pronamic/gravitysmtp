@@ -30,6 +30,8 @@ abstract class Connector_Base {
 	const SETTING_IS_PRIMARY       = 'is_primary';
 	const SETTING_IS_BACKUP        = 'is_backup';
 
+	const OBFUSCATED_STRING = '****************';
+
 	protected static $configured = null;
 
 	/**
@@ -111,6 +113,13 @@ abstract class Connector_Base {
 	 * @var int
 	 */
 	protected $email;
+
+	/**
+	 * If populated, these fields will be obfuscated when they are displayed. Useful for API keys, etc.
+	 *
+	 * @var array
+	 */
+	protected $sensitive_fields = array();
 
 	/**
 	 * Calls to wp_mail() will be routed to this method if this connector is enabled. Parameters
@@ -209,6 +218,14 @@ abstract class Connector_Base {
 		$this->debug_logger     = $debug_logger;
 	}
 
+	public function handle_suppressed_email( $email, $source ) {
+		$atts = $this->get_atts();
+		$this->set_email_log_data( $atts['subject'], $atts['message'], $email, $atts['from'], $atts['headers'], $atts['attachments'], $source, array() );
+		$this->events->update( array( 'status' => 'suppressed' ), $this->email );
+		$this->logger->log( $this->email, 'failed', 'Recipient email address ' . $email . ' is suppressed.' );
+		$this->debug_logger->log_error( $this->wrap_debug_with_details( __FUNCTION__, $this->email, 'Recipient email address ' . $email . ' is suppressed.' ) );
+	}
+
 	/**
 	 * Initialize the connector and map attributes as necessary.
 	 *
@@ -223,8 +240,10 @@ abstract class Connector_Base {
 	 * @return void
 	 */
 	public function init( $to, $subject, $message, $headers = '', $attachments = array(), $source = '' ) {
+		$service_name = $this->name === 'phpmail' ? 'wp_mail' : $this->name;
+
 		$this->email = $this->events->create(
-			$this->name,
+			$service_name,
 			'pending',
 			'',
 			'',
@@ -569,7 +588,53 @@ abstract class Connector_Base {
 	 * @return mixed
 	 */
 	protected function get_setting( $setting_name, $default = null ) {
+		if ( $setting_name === self::SETTING_IS_BACKUP || $setting_name === self::SETTING_IS_PRIMARY ) {
+			$const_setting = $this->check_for_connector_status_flag( $setting_name );
+			if ( ! empty( $const_setting ) ) {
+				return $const_setting === $this->name;
+			}
+		}
+
 		return $this->data_store->get_setting( $this->name, $setting_name, $default );
+	}
+
+	protected function setting_should_be_obfuscated( $setting_name ) {
+		if ( ! in_array( $setting_name, $this->sensitive_fields ) ) {
+			return false;
+		}
+
+		$locked = $this->get_locked_settings();
+
+		if ( ! in_array( sprintf( '%s_%s', $this->name, $setting_name ), $locked ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	protected function get_locked_settings() {
+		$return = array();
+
+		$defined_constants = array_filter( get_defined_constants(), function( $constant ) {
+			return strpos( $constant, 'GRAVITYSMTP_' ) !== false;
+		}, ARRAY_FILTER_USE_KEY );
+
+		foreach( $defined_constants as $constant => $constant_value ) {
+			$setting_name = strtolower( str_replace( 'GRAVITYSMTP_', '', $constant ) );
+			$return[] = $setting_name;
+		}
+
+		return $return;
+	}
+
+	private function check_for_connector_status_flag( $setting_name ) {
+		$const_check = $setting_name === self::SETTING_IS_PRIMARY ? 'GRAVITYSMTP_INTEGRATION_PRIMARY' : 'GRAVITYSMTP_INTEGRATION_BACKUP';
+
+		if ( defined( $const_check ) ) {
+			return constant( $const_check );
+		}
+
+		return false;
 	}
 
 	/**
@@ -580,9 +645,36 @@ abstract class Connector_Base {
 	 * @return array
 	 */
 	public function get_data() {
+		$fields = $this->settings_fields();
+		$data   = $this->get_merged_data();
+
+		if ( ! empty( $fields['fields'] ) ) {
+			foreach( $fields['fields'] as $idx => $field_data ) {
+				if ( ! array_key_exists( 'value', $field_data['props'] ) ) {
+					continue;
+				}
+
+				$name = $field_data['props']['name'];
+
+				if ( ! $this->setting_should_be_obfuscated( $name ) ) {
+					continue;
+				}
+
+				$fields['fields'][$idx]['props']['value'] = self::OBFUSCATED_STRING;
+			}
+		}
+
+		foreach( $data as $key => $value ) {
+			if ( ! $this->setting_should_be_obfuscated( $key ) ) {
+				continue;
+			}
+
+			$data[ $key ] = self::OBFUSCATED_STRING;
+		}
+
 		return array(
-			'fields'      => $this->settings_fields(),
-			'data'        => $this->get_merged_data(),
+			'fields'      => $fields,
+			'data'        => $data,
 			'i18n'        => $this->connector_i18n(),
 			'name'        => $this->name,
 			'logo'        => $this->logo,

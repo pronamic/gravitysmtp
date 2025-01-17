@@ -54,8 +54,8 @@ class Tools_Config extends Config {
 		 * @var Debug_Log_Model $debug_model
 		 */
 		$debug_model = $container->get( Logging_Service_Provider::DEBUG_LOG_MODEL );
-		$search_term = filter_input( INPUT_POST, 'search_term' );
-		$search_type = filter_input( INPUT_POST, 'search_type' );
+		$search_term = filter_input( INPUT_GET, 'search_term' );
+		$search_type = filter_input( INPUT_GET, 'search_type' );
 
 		if ( ! empty( $search_term ) ) {
 			$search_term = htmlspecialchars( $search_term );
@@ -116,7 +116,7 @@ class Tools_Config extends Config {
 						'system_report_clipboard' => $this->get_clipboard_string(),
 						'debug_log_settings'      => $this->get_debug_log_settings(),
 						'debug_log'               => array(
-							'ajax_grid_pagination_url' => site_url( 'wp-content/plugins/gravitysmtp/includes/logging/endpoints/get-paginated-debug-log-items.php' ),
+							'ajax_grid_pagination_url' => trailingslashit( GF_GRAVITY_SMTP_PLUGIN_URL ) . 'includes/logging/endpoints/get-paginated-debug-log-items.php',
 							'data_grid'                => array(
 								'columns'            => $this->get_debug_log_columns(),
 								'column_style_props' => $this->get_debug_log_column_style_props(),
@@ -841,8 +841,9 @@ class Tools_Config extends Config {
 
 	protected function get_database_server_data() {
 		global $wpdb;
-		$db_version = $wpdb->get_var( 'SELECT version();' );
-		$db_type    = strpos( strtolower( $db_version ), 'mariadb' ) ? 'MariaDB' : 'MySQL';
+
+		$db_version = Common::get_db_version();
+		$db_type = Common::get_dbms_type();
 
 		return array(
 			array(
@@ -858,12 +859,12 @@ class Tools_Config extends Config {
 			array(
 				'label'        => esc_html__( 'Database Character Set', 'gravitysmtp' ),
 				'label_export' => 'Database Character Set',
-				'value'        => esc_html( $wpdb->get_var( 'SELECT @@character_set_database' ) ),
+				'value'        => esc_html( ( Common::get_dbms_type() === 'SQLite' ) ? $wpdb->charset : $wpdb->get_var( 'SELECT @@character_set_database' ) ),
 			),
 			array(
 				'label'        => esc_html__( 'Database Collation', 'gravitysmtp' ),
 				'label_export' => 'Database Collation',
-				'value'        => esc_html( $wpdb->get_var( 'SELECT @@collation_database' ) ),
+				'value'        => esc_html( ( Common::get_dbms_type() === 'SQLite' ) ? ( empty( $wpdb->collate ) ? 'N/A' : $wpdb->collate ) : $wpdb->get_var( 'SELECT @@collation_database' ) ),
 			),
 		);
 	}
@@ -1040,8 +1041,18 @@ class Tools_Config extends Config {
 			$current_page = 1;
 		}
 
+		$search_term = filter_input( INPUT_GET, 'search_term' );
+		$search_type = filter_input( INPUT_GET, 'search_type' );
+		if ( ! empty( $search_term ) ) {
+			$search_term = htmlspecialchars( $search_term );
+		}
+
+		if ( ! empty( $search_type ) ) {
+			$search_type = htmlspecialchars( $search_type );
+		}
+
 		$per_page = $opts->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_PER_PAGE, 20 );
-		$lines    = $debug_model->paginate( $current_page, $per_page );
+		$lines    = $debug_model->paginate( $current_page, $per_page, false, $search_term, $search_type );
 
 		return $debug_model->lines_as_data_grid( $lines );
 	}

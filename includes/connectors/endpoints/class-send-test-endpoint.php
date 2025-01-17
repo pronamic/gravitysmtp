@@ -202,21 +202,30 @@ class Send_Test_Endpoint extends Endpoint {
 			$log_copy = implode( "\r\n", $full_log['technical_information']['log'] );
 		}
 
+		$reasons = array();
+		$steps   = array();
+
+		if ( empty( $issues ) ) {
+			$reasons = array(
+				__( 'Incorrect plugin settings, such as invalid SMTP credentials or expired API key.', 'gravitysmtp' ),
+				__( 'The SMTP server blocking the incoming connection.', 'gravitysmtp' ),
+				__( 'Your web host rejecting the connection.', 'gravitysmtp' ),
+			);
+
+			$steps = array(
+				__( 'Triple check the plugin settings and ensure they are accurate, especially if you copy-pasted the values.', 'gravitysmtp' ),
+				__( 'Contact your web hosting provider to verify if your server allows outside connections and if any firewall or security policies are in place that could interfere.', 'gravitysmtp' ),
+				__( 'Consider using one of the other available integration types.', 'gravitysmtp' ),
+			);
+		}
+
 		$error_data = array(
 			'error_message'     => __( 'There was a problem sending the test email.', 'gravitysmtp' ),
 			'issues'            => $issues,
 			'full_log'          => $full_log,
 			'log_copy'          => $log_copy,
-			'possible_reasons'  => array(
-				__( 'Incorrect plugin settings, such as invalid SMTP credentials or expired API key.', 'gravitysmtp' ),
-				__( 'The SMTP server blocking the incoming connection.', 'gravitysmtp' ),
-				__( 'Your web host rejecting the connection.', 'gravitysmtp' ),
-			),
-			'recommended_steps' => array(
-				__( 'Triple check the plugin settings and ensure they are accurate, especially if you copy-pasted the values.', 'gravitysmtp' ),
-				__( 'Contact your web hosting provider to verify if your server allows outside connections and if any firewall or security policies are in place that could interfere.', 'gravitysmtp' ),
-				__( 'Consider using one of the other available integration types.', 'gravitysmtp' ),
-			),
+			'possible_reasons'  => $reasons,
+			'recommended_steps' => $steps,
 		);
 
 		Debug_Logger::log_message(

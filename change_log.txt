@@ -1,3 +1,26 @@
+### 1.6.1 | 2025-01-16
+- Added a feature that obfuscates sensitive settings field values if those fields are set via a defined constant.
+- Added resend email button to the activity log.
+- Added support for SQLite in the System Report.
+- Added the ability to set Primary and Backup integrations via the constants `GRAVITYSMTP_INTEGRATION_PRIMARY` and `GRAVITYSMTP_INTEGRATION_BACKUP`
+- Fixed a bug that causes warnings or errors due to undefined array keys.
+- Fixed an issue that can cause email sends to fail when providing a BCC or Reply-to address while using the Mailchimp connector.
+- Fixed an issue that causes fatal errors with the Google Integration when there is a token error.
+- Fixed an issue that causes PHP notices if the from name of an email is empty in the Generic Integration.
+- Fixed an issue where the app size was incorrect when the menu is auto folded.
+- Fixed an issue where the tracking pixel url is generated with a slash.
+- Updated the resend email functionality to be confirmed through a confirmation dialog before resending the email.
+
+### 1.6.0 | 2024-12-12
+- Added Zoho Mail integration.
+- Added suppressions management system with manual email suppression capabilities.
+- Added date filters and simple filters to the activity log.
+- Added experiments setting area to the plugin general settings.
+- Added experimental alerts for when the plugin is unable to send emails (using Slack and Twilio).
+- Fixed a bug that causes the Email Log to not render when a service is missing for an entry.
+- Fixed a bug that causes pagination endpoints for the Email and Debug logs to not work when wp-includes is in a non-standard location.
+- Fixed a bug that causes the Amazon SES integration to not display the correct state of the force from email setting.
+
 ### 1.5.0 | 2024-11-06
 - Added Mailchimp as an integration type.
 - Added ability to track email open rates.

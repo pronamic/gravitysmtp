@@ -56,7 +56,8 @@ class Primary_Backup_Handler implements Routing_Handler {
 
 			$enabled = $this->data_router->get_setting( $type, Connector_Base::SETTING_ENABLED, false );
 
-			$this->logger->log_debug( $this->error_prefix() . __( 'Secondary integration identified: ', 'gravitysmtp' ) . $type );
+			/* translators: %1$s: integration type */
+			$this->logger->log_debug( $this->error_prefix() . sprintf( __( 'Secondary integration identified: %1$s', 'gravitysmtp' ), $type ) );
 
 			if ( $enabled ) {
 				return $type;
@@ -78,7 +79,8 @@ class Primary_Backup_Handler implements Routing_Handler {
 
 		$enabled = $this->data_router->get_setting( $type, Connector_Base::SETTING_ENABLED, false );
 
-		$this->logger->log_debug( $this->error_prefix() .  __( 'Primary integration identified: ', 'gravitysmtp' ) . $type );
+		/* translators: %1$s: integration type */
+		$this->logger->log_debug( $this->error_prefix() .  sprintf( __( 'Primary integration identified: %1$s', 'gravitysmtp' ), $type ) );
 
 		// Primary connection not enabled; immediately try backup connection.
 		if ( ! $enabled ) {

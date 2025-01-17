@@ -19,13 +19,15 @@ class Attachments_Saver {
 		$uploads_dir = $this->get_uploads_dir_path( $email_id, $attachments );
 
 		if ( ! is_dir( $uploads_dir ) ) {
-			$this->logger->log_debug( __METHOD__ . '(): ' . __( 'Creating a new uploads directory at path: ', 'gravitysmtp' ) . $uploads_dir );
+			/* translators: %1$s: directory path */
+			$this->logger->log_debug( __METHOD__ . '(): ' . sprintf( __( 'Creating a new uploads directory at path: %1$s', 'gravitysmtp' ), $uploads_dir ) );
 			mkdir( $uploads_dir, 0755, true );
 		}
 
 		foreach ( $attachments as $file_path ) {
 			if ( ! file_exists( $file_path ) ) {
-				$this->logger->log_warning( __METHOD__ . '(): ' . __( 'Could not locate file at path: ', 'gravitysmtp' ) . $file_path );
+				/* translators: %1$s: file path */
+				$this->logger->log_warning( __METHOD__ . '(): ' . sprintf( __( 'Could not locate file at path: %1$s', 'gravitysmtp' ), $file_path ) );
 				continue;
 			}
 
@@ -33,7 +35,8 @@ class Attachments_Saver {
 			$contents  = file_get_contents( $file_path );
 			$new_path  = sprintf( '%s%s', trailingslashit( $uploads_dir ), $file_name );
 
-			$this->logger->log_debug( __METHOD__ . '(): ' . $file_name . __( ' being moved to new location: ', 'gravitysmtp' ) . $new_path );
+			/* translators: %1$s: file name, %2$s: new path */
+			$this->logger->log_debug( __METHOD__ . '(): ' . sprintf( __( '%1$s being moved to new location: %2$s', 'gravitysmtp' ), $file_name, $new_path ) );
 
 			file_put_contents( $new_path, $contents );
 		}

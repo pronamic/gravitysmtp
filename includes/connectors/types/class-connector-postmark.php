@@ -19,6 +19,10 @@ class Connector_Postmark extends Connector_Base {
 		return esc_html__( 'Owned by ActiveCampaign, Postmark is a popular email-sending service with an impressive reputation for reliability and deliverability. Postmark offers a free plan that allows you to send up to 100 emails a month. Over 100, prices vary depending on the number of emails sent. For more information on how to get started with Postmark, read our documentation.', 'gravitysmtp' );
 	}
 
+	protected $sensitive_fields = array(
+		self::SETTING_SERVER_API_TOKEN,
+	);
+
 	/**
 	 * Sending logic.
 	 *

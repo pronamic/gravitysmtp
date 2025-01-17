@@ -33,6 +33,12 @@ class Connector_Microsoft extends Connector_Base {
 		return __( "Deliver emails with confidence using Microsoft 365 / Outlook. Connect to Microsoft’s API to securely authenticate and send any emails or form notifications from your website.", 'gravitysmtp' );
 	}
 
+	protected $sensitive_fields = array(
+		self::SETTING_ACCESS_TOKEN,
+		self::SETTING_CLIENT_ID,
+		self::SETTING_CLIENT_SECRET,
+	);
+
 	/**
 	 * Sending logic.
 	 *
