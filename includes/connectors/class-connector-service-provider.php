@@ -535,6 +535,19 @@ class Connector_Service_Provider extends Config_Service_Provider {
 			return $connector->update_wp_mail_froms( $atts );
 		}, - 10, 1 );
 
+		add_action( 'phpmailer_init', function( &$phpmailer ) use ( $container ) {
+			$type = $container->get( self::DATA_STORE_ROUTER )->get_connector_status_of_type( Connector_Status_Enum::PRIMARY, '' );
+
+			if ( $type !== 'phpmail' ) {
+				return;
+			}
+
+			$factory   = $container->get( self::CONNECTOR_FACTORY );
+			$connector = $factory->create( $type );
+
+			$connector->update_sender( $phpmailer );
+		}, 11 );
+
 		/**
 		 * If wp_mail() is being called, it means we likely don't have a primary or backup connector configured. Catch
 		 * that case and log details.

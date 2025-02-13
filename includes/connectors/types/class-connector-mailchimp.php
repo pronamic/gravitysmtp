@@ -207,10 +207,10 @@ class Connector_Mailchimp extends Connector_Base {
 	protected function get_attachments( $attachments ) {
 		$data = array();
 
-		foreach ( $attachments as $attachment ) {
+		foreach ( $attachments as $custom_name => $attachment ) {
 			try {
 				if ( is_file( $attachment ) && is_readable( $attachment ) ) {
-					$file_name = basename( $attachment );
+					$file_name = is_numeric( $custom_name ) ? basename( $attachment ) : $custom_name;
 					$content  = base64_encode( file_get_contents( $attachment ) );
 
 					$data[] = array(

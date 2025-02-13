@@ -17,6 +17,8 @@ use Gravity_Forms\Gravity_SMTP\Logging\Endpoints\Delete_Debug_Logs_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Logging\Endpoints\Delete_Email_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Logging\Endpoints\Delete_Events_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Logging\Endpoints\Get_Email_Message_Endpoint;
+use Gravity_Forms\Gravity_SMTP\Logging\Endpoints\Get_Paginated_Debug_Log_Items_Endpoint;
+use Gravity_Forms\Gravity_SMTP\Logging\Endpoints\Get_Paginated_Items_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Logging\Endpoints\Log_Item_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Logging\Endpoints\View_Log_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Logging\Log\Logger;
@@ -33,21 +35,23 @@ use Gravity_Forms\Gravity_Tools\Logging\Parsers\File_Log_Parser;
 
 class Logging_Service_Provider extends Config_Service_Provider {
 
-	const LOGGER                        = 'logger';
-	const WP_MAIL_LOGGER                = 'wp_mail_logger';
-	const DELETE_DEBUG_LOGS_ENDPOINT    = 'delete_debug_logs_endpoint';
-	const DELETE_EMAIL_ENDPOINT         = 'delete_email_endpoint';
-	const DELETE_EVENTS_ENDPOINT        = 'delete_events_endpoint';
-	const GET_EMAIL_MESSAGE_ENDPOINT    = 'get_email_message_endpoint';
-	const SCHEDULING_HANDLER            = 'scheduling_handler';
-	const LOG_ITEM_ENDPOINT             = 'log_item_endpoint';
-	const DEBUG_LOGGER                  = 'debug_logger_util';
-	const VIEW_DEBUG_LOG_ENDPOINT       = 'view_debug_log_endpoint';
-	const DEBUG_LOG_DIR                 = 'debug_log_dir';
-	const DEBUG_LOG_FILEPATH            = 'debug_log_filepath';
-	const DEBUG_LOG_MODEL               = 'debug_log_model';
-	const DB_LOGGING_PROVIDER           = 'db_logging_provider';
-	const DEBUG_LOG_EVENT_HANDLER       = 'debug_log_event_handler';
+	const LOGGER                                 = 'logger';
+	const WP_MAIL_LOGGER                         = 'wp_mail_logger';
+	const GET_PAGINATED_ITEMS_ENDPOINT           = 'get_paginated_items_endpoint';
+	const GET_PAGINATED_DEBUG_LOG_ITEMS_ENDPOINT = 'get_paginated_debug_log_items_endpoint';
+	const DELETE_DEBUG_LOGS_ENDPOINT             = 'delete_debug_logs_endpoint';
+	const DELETE_EMAIL_ENDPOINT                  = 'delete_email_endpoint';
+	const DELETE_EVENTS_ENDPOINT                 = 'delete_events_endpoint';
+	const GET_EMAIL_MESSAGE_ENDPOINT             = 'get_email_message_endpoint';
+	const SCHEDULING_HANDLER                     = 'scheduling_handler';
+	const LOG_ITEM_ENDPOINT                      = 'log_item_endpoint';
+	const DEBUG_LOGGER                           = 'debug_logger_util';
+	const VIEW_DEBUG_LOG_ENDPOINT                = 'view_debug_log_endpoint';
+	const DEBUG_LOG_DIR                          = 'debug_log_dir';
+	const DEBUG_LOG_FILEPATH                     = 'debug_log_filepath';
+	const DEBUG_LOG_MODEL                        = 'debug_log_model';
+	const DB_LOGGING_PROVIDER                    = 'db_logging_provider';
+	const DEBUG_LOG_EVENT_HANDLER                = 'debug_log_event_handler';
 
 	const LOGGING_ENDPOINTS_CONFIG = 'logging_endpoints_config';
 
@@ -88,6 +92,14 @@ class Logging_Service_Provider extends Config_Service_Provider {
 
 		$this->container->add( self::DEBUG_LOG_MODEL, function () use ( $container ) {
 			return new Debug_Log_Model();
+		} );
+
+		$this->container->add( self::GET_PAGINATED_ITEMS_ENDPOINT, function () use ( $container ) {
+			return new Get_Paginated_Items_Endpoint( $container->get( Connector_Service_Provider::EVENT_MODEL ), $container->get( Utils_Service_Provider::RECIPIENT_PARSER ) );
+		} );
+
+		$this->container->add( self::GET_PAGINATED_DEBUG_LOG_ITEMS_ENDPOINT, function () use ( $container ) {
+			return new Get_Paginated_Debug_Log_Items_Endpoint( $container->get( self::DEBUG_LOG_MODEL ) );
 		} );
 
 		$this->container->add( self::DELETE_DEBUG_LOGS_ENDPOINT, function () use ( $container ) {
@@ -136,12 +148,20 @@ class Logging_Service_Provider extends Config_Service_Provider {
 			return new Debug_Log_Event_Handler( $container->get( self::DEBUG_LOGGER ), $container->get( Connector_Service_Provider::DATA_STORE_ROUTER ) );
 		} );
 
-		$this->container->add( Utils_Service_Provider::ATTACHMENTS_SAVER, function() use ( $container ) {
+		$this->container->add( Utils_Service_Provider::ATTACHMENTS_SAVER, function () use ( $container ) {
 			return new Attachments_Saver( $container->get( Logging_Service_Provider::DEBUG_LOGGER ) );
 		} );
 	}
 
 	public function init( Service_Container $container ) {
+		add_action( 'wp_ajax_' . Get_Paginated_Items_Endpoint::ACTION_NAME, function () use ( $container ) {
+			$container->get( self::GET_PAGINATED_ITEMS_ENDPOINT )->handle();
+		} );
+
+		add_action( 'wp_ajax_' . Get_Paginated_Debug_Log_Items_Endpoint::ACTION_NAME, function () use ( $container ) {
+			$container->get( self::GET_PAGINATED_DEBUG_LOG_ITEMS_ENDPOINT )->handle();
+		} );
+
 		add_action( 'wp_ajax_' . Delete_Debug_Logs_Endpoint::ACTION_NAME, function () use ( $container ) {
 			$container->get( self::DELETE_DEBUG_LOGS_ENDPOINT )->handle();
 		} );
@@ -202,7 +222,7 @@ class Logging_Service_Provider extends Config_Service_Provider {
 			wp_schedule_event( time(), 'daily', self::DEBUG_LOG_RETENTION_CRON_HOOK );
 		}
 
-		add_action( self::DEBUG_LOG_RETENTION_CRON_HOOK, function() use ( $container ) {
+		add_action( self::DEBUG_LOG_RETENTION_CRON_HOOK, function () use ( $container ) {
 			$container->get( self::DEBUG_LOG_EVENT_HANDLER )->on_retention_cron();
 		} );
 	}

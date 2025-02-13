@@ -97,7 +97,7 @@ class Connector_Postmark extends Connector_Base {
 		$text_body = wp_strip_all_tags( $atts['message'] );
 
 		// Remove leftover double-linebreaks from plaintext.
-		$text_body = preg_replace("/([\r\n]{2,}|[\n]{2,}|[\r]{2,}|[\r\t]{2,}|[\n\t]{2,})/", "\n", $text_body);
+		$text_body = preg_replace( "/([\r\n]{2,}|[\n]{2,}|[\r]{2,}|[\r\t]{2,}|[\n\t]{2,})/", "\n", $text_body );
 
 		$body = array(
 			'from'     => $atts['from'],
@@ -170,12 +170,12 @@ class Connector_Postmark extends Connector_Base {
 	protected function get_attachments( $attachments ) {
 		$data = array();
 
-		foreach ( $attachments as $attachment ) {
+		foreach ( $attachments as $custom_name => $attachment ) {
 			$file = false;
 
 			try {
 				if ( is_file( $attachment ) && is_readable( $attachment ) ) {
-					$fileName  = basename( $attachment );
+					$fileName  = is_numeric( $custom_name ) ? basename( $attachment ) : $custom_name;
 					$contentId = wp_hash( $attachment );
 					$file      = file_get_contents( $attachment );
 					$content   = base64_encode( file_get_contents( $attachment ) );

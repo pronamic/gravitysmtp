@@ -6,6 +6,8 @@ use Gravity_Forms\Gravity_SMTP\Logging\Endpoints\Delete_Debug_Logs_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Logging\Endpoints\Delete_Email_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Logging\Endpoints\Delete_Events_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Logging\Endpoints\Get_Email_Message_Endpoint;
+use Gravity_Forms\Gravity_SMTP\Logging\Endpoints\Get_Paginated_Debug_Log_Items_Endpoint;
+use Gravity_Forms\Gravity_SMTP\Logging\Endpoints\Get_Paginated_Items_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Logging\Endpoints\Log_Item_Endpoint;
 use Gravity_Forms\Gravity_Tools\Config;
 
@@ -54,21 +56,21 @@ class Logging_Endpoints_Config extends Config {
 					),
 					'activity_log_page' => array(
 						'action' => array(
-							'value'   => 'activity_log_page',
+							'value'   => Get_Paginated_Items_Endpoint::ACTION_NAME,
 							'default' => 'mock_endpoint',
 						),
 						'nonce'  => array(
-							'value'   => wp_create_nonce( 'activity_log_page' ),
+							'value'   => wp_create_nonce( Get_Paginated_Items_Endpoint::ACTION_NAME ),
 							'default' => 'nonce',
 						),
 					),
 					'debug_log_page' => array(
 						'action' => array(
-							'value'   => 'debug_log_page',
+							'value'   => Get_Paginated_Debug_Log_Items_Endpoint::ACTION_NAME,
 							'default' => 'mock_endpoint',
 						),
 						'nonce'  => array(
-							'value'   => wp_create_nonce( 'debug_log_page' ),
+							'value'   => wp_create_nonce( Get_Paginated_Debug_Log_Items_Endpoint::ACTION_NAME ),
 							'default' => 'nonce',
 						),
 					),

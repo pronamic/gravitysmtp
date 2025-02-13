@@ -1,25 +1,39 @@
 <?php
 
-ini_set( 'html_errors', 0 );
-define( 'SHORTINIT', true );
+namespace Gravity_Forms\Gravity_SMTP\Logging\Endpoints;
 
-require '../../utils/class-fast-endpoint.php';
+use Gravity_Forms\Gravity_SMTP\Models\Debug_Log_Model;
+use Gravity_Forms\Gravity_SMTP\Users\Roles;
+use Gravity_Forms\Gravity_Tools\Endpoints\Endpoint;
 
-class Get_Paginated_Debug_Log_Items extends \Gravity_Forms\Gravity_SMTP\Utils\Fast_Endpoint {
+class Get_Paginated_Debug_Log_Items_Endpoint extends Endpoint {
 
-	protected function extra_includes() {
-		return array(
-			'../../models/class-debug-log-model.php',
-			'../../datastore/interface-data-store.php',
-			'../../datastore/class-plugin-opts-data-store.php',
-			'../../users/class-roles.php',
-			'../../utils/class-recipient.php',
-			'../../../vendor/gravityforms/gravity-tools/src/Logging/class-log-line.php',
-		);
+	const PARAM_PER_PAGE       = 'per_page';
+	const PARAM_REQUESTED_PAGE = 'requested_page';
+	const PARAM_MAX_DATE       = 'max_date';
+	const PARAM_SEARCH_TERM    = 'search_term';
+	const PARAM_SEARCH_TYPE    = 'search_type';
+	const PARAM_PRIORITY       = 'priority';
+
+	const ACTION_NAME = 'get_paginated_debug_log_items';
+
+	/**
+	 * @var Debug_Log_Model
+	 */
+	protected $events;
+
+	public function __construct( Debug_Log_Model $event_model ) {
+		$this->events = $event_model;
 	}
 
-	public function run() {
-		check_ajax_referer( 'debug_log_page', 'security' );
+	protected function get_nonce_name() {
+		return self::ACTION_NAME;
+	}
+
+	public function handle() {
+		if ( ! $this->validate() ) {
+			wp_send_json_error( __( 'Missing required parameters.', 'gravitysmtp' ), 400 );
+		}
 
 		$per_page       = filter_input( INPUT_POST, 'per_page', FILTER_SANITIZE_NUMBER_INT );
 		$requested_page = filter_input( INPUT_POST, 'requested_page', FILTER_SANITIZE_NUMBER_INT );
@@ -55,9 +69,8 @@ class Get_Paginated_Debug_Log_Items extends \Gravity_Forms\Gravity_SMTP\Utils\Fa
 			$per_page = 20;
 		}
 
-		$debug_log_model = new \Gravity_Forms\Gravity_SMTP\Models\Debug_Log_Model();
-		$rows            = $debug_log_model->paginate( $requested_page, $per_page, $max_date, $search_term, $search_type, $priority );
-		$count           = $debug_log_model->count( $search_term, $search_type, $priority );
+		$rows            = $this->events->paginate( $requested_page, $per_page, $max_date, $search_term, $search_type, $priority );
+		$count           = $this->events->count( $search_term, $search_type, $priority );
 
 		$data = array(
 			'rows'      => $this->get_formatted_data_rows( $rows ),
@@ -69,9 +82,7 @@ class Get_Paginated_Debug_Log_Items extends \Gravity_Forms\Gravity_SMTP\Utils\Fa
 	}
 
 	private function get_formatted_data_rows( $data ) {
-		$debug_log_model = new \Gravity_Forms\Gravity_SMTP\Models\Debug_Log_Model();
-
-		return $debug_log_model->lines_as_data_grid( $data );
+		return $this->events->lines_as_data_grid( $data );
 	}
 
 	private function get_grid_actions( $event_id ) {
@@ -94,7 +105,7 @@ class Get_Paginated_Debug_Log_Items extends \Gravity_Forms\Gravity_SMTP\Utils\Fa
 						'data'             => array(
 							'event_id' => $event_id,
 						),
-						'disabled'         => ! current_user_can( \Gravity_Forms\Gravity_SMTP\Users\Roles::VIEW_EMAIL_LOG_DETAILS ),
+						'disabled'         => ! current_user_can( Roles::VIEW_EMAIL_LOG_DETAILS ),
 					),
 				),
 				array(
@@ -113,7 +124,7 @@ class Get_Paginated_Debug_Log_Items extends \Gravity_Forms\Gravity_SMTP\Utils\Fa
 						'data'             => array(
 							'event_id' => $event_id,
 						),
-						'disabled'         => ! current_user_can( \Gravity_Forms\Gravity_SMTP\Users\Roles::VIEW_EMAIL_LOG_PREVIEW ),
+						'disabled'         => ! current_user_can( Roles::VIEW_EMAIL_LOG_PREVIEW ),
 					),
 				),
 				array(
@@ -131,16 +142,13 @@ class Get_Paginated_Debug_Log_Items extends \Gravity_Forms\Gravity_SMTP\Utils\Fa
 						'data'             => array(
 							'event_id' => $event_id,
 						),
-						'disabled'         => ! current_user_can( \Gravity_Forms\Gravity_SMTP\Users\Roles::DELETE_EMAIL_LOG ),
+						'disabled'         => ! current_user_can( Roles::DELETE_EMAIL_LOG ),
 					),
 				),
 			),
 		);
 
-		return apply_filters( 'gravitysmtp_email_log_actions', $actions );
+		return apply_filters( 'gravitysmtp_debug_log_actions', $actions );
 	}
 
 }
-
-$endpoint = new Get_Paginated_Debug_Log_Items();
-$endpoint->run();

@@ -304,6 +304,11 @@ class Gravity_SMTP {
 			self::load_early_providers();
 		}
 
+		// Has already initialized.
+		if ( ! empty( self::$container->get( Connector_Service_Provider::EVENT_MODEL ) ) ) {
+			return;
+		}
+
 		if ( Feature_Flag_Manager::is_enabled( 'email_suppression' ) ) {
 			self::$container->add_provider( new Suppression_Service_Provider() );
 		}

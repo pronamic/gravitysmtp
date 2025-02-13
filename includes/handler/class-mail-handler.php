@@ -64,6 +64,11 @@ class Mail_Handler {
 			return self::$configuration_status;
 		}
 
+		if ( defined( 'GRAVITYSMTP_INTEGRATION_PRIMARY' ) ) {
+			self::$configuration_status = true;
+			return true;
+		}
+
 		$connectors = self::get_connectors_from_options( Save_Connector_Settings_Endpoint::SETTING_PRIMARY_CONNECTOR );
 
 		// We want to bypass our custom wp_mail method if phpmail is being used.
@@ -149,6 +154,7 @@ class Mail_Handler {
 
 		// Either not connector is defined, or the router has determined that this email shouldn't send.
 		if ( $type === false ) {
+			do_action( 'gravitysmtp_on_send_failure', 0 );
 			return false;
 		}
 

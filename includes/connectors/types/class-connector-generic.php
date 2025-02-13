@@ -56,7 +56,7 @@ class Connector_Generic extends Connector_Base {
 			$from        = $this->get_from( true );
 			$reply_to    = $this->get_reply_to( true );
 			$source      = $this->get_att( 'source' );
-			$params      = $this->get_request_params();
+			$params      = array( 'body' => array( __( 'Body is not stored for Custom SMTP events.', 'gravitysmtp' ) ), 'headers' => $headers );
 			$email       = $this->email;
 
 			if ( ! empty( $headers['content-type'] ) ) {

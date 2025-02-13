@@ -223,13 +223,13 @@ class Connector_Mailgun extends Connector_Base {
 		$data    = array();
 		$payload = '';
 
-		foreach ( $attachments as $attachment ) {
+		foreach ( $attachments as $custom_name => $attachment ) {
 			$file = false;
 
 			try {
 				if ( is_file( $attachment ) && is_readable( $attachment ) ) {
-					$fileName = basename( $attachment );
-					$file     = file_get_contents( $attachment );
+					$fileName  = is_numeric( $custom_name ) ? basename( $attachment ) : $custom_name;
+					$file      = file_get_contents( $attachment );
 				}
 			} catch ( \Exception $e ) {
 				$file = false;

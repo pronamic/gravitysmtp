@@ -1,22 +1,61 @@
 <?php
 
-ini_set( 'html_errors', 0 );
-define( 'SHORTINIT', true );
+namespace Gravity_Forms\Gravity_SMTP\Logging\Endpoints;
 
-require '../../utils/class-fast-endpoint.php';
+use Gravity_Forms\Gravity_SMTP\Enums\Integration_Enum;
+use Gravity_Forms\Gravity_SMTP\Enums\Status_Enum;
+use Gravity_Forms\Gravity_SMTP\Logging\Debug\Debug_Logger;
+use Gravity_Forms\Gravity_SMTP\Models\Event_Model;
+use Gravity_Forms\Gravity_SMTP\Users\Roles;
+use Gravity_Forms\Gravity_SMTP\Utils\Recipient_Parser;
+use Gravity_Forms\Gravity_Tools\Endpoints\Endpoint;
+use Gravity_Forms\Gravity_Tools\Logging\File_Logging_Provider;
 
-class Get_Paginated_Log_Items extends \Gravity_Forms\Gravity_SMTP\Utils\Fast_Endpoint {
-	public function run() {
-		check_ajax_referer( 'activity_log_page', 'security' );
+class Get_Paginated_Items_Endpoint extends Endpoint {
 
-		$per_page       = filter_input( INPUT_POST, 'per_page', FILTER_SANITIZE_NUMBER_INT );
-		$requested_page = filter_input( INPUT_POST, 'requested_page', FILTER_SANITIZE_NUMBER_INT );
-		$max_date       = filter_input( INPUT_POST, 'max_date' );
-		$search_term    = filter_input( INPUT_POST, 'search_term' );
-		$search_type    = filter_input( INPUT_POST, 'search_type' );
-		$sort_by        = filter_input( INPUT_POST, 'sort_by' );
-		$sort_order     = filter_input( INPUT_POST, 'sort_order' );
-		$filters        = filter_input( INPUT_POST, 'filters', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+	const PARAM_PER_PAGE       = 'per_page';
+	const PARAM_REQUESTED_PAGE = 'requested_page';
+	const PARAM_MAX_DATE       = 'max_date';
+	const PARAM_SEARCH_TERM    = 'search_term';
+	const PARAM_SEARCH_TYPE    = 'search_type';
+	const PARAM_SORT_BY        = 'sort_by';
+	const PARAM_SORT_ORDER     = 'sort_order';
+	const PARAM_FILTERS        = 'filters';
+
+	const ACTION_NAME = 'get_paginated_items';
+
+	/**
+	 * @var Event_Model
+	 */
+	protected $events;
+
+	/**
+	 * @var Recipient_Parser
+	 */
+	protected $parser;
+
+	public function __construct( Event_Model $event_model, Recipient_Parser $parser ) {
+		$this->events = $event_model;
+		$this->parser = $parser;
+	}
+
+	protected function get_nonce_name() {
+		return self::ACTION_NAME;
+	}
+
+	public function handle() {
+		if ( ! $this->validate() ) {
+			wp_send_json_error( __( 'Missing required parameters.', 'gravitysmtp' ), 400 );
+		}
+
+		$per_page       = filter_input( INPUT_POST, self::PARAM_PER_PAGE, FILTER_SANITIZE_NUMBER_INT );
+		$requested_page = filter_input( INPUT_POST, self::PARAM_REQUESTED_PAGE, FILTER_SANITIZE_NUMBER_INT );
+		$max_date       = filter_input( INPUT_POST, self::PARAM_MAX_DATE );
+		$search_term    = filter_input( INPUT_POST, self::PARAM_SEARCH_TERM );
+		$search_type    = filter_input( INPUT_POST, self::PARAM_SEARCH_TYPE );
+		$sort_by        = filter_input( INPUT_POST, self::PARAM_SORT_BY );
+		$sort_order     = filter_input( INPUT_POST, self::PARAM_SORT_ORDER );
+		$filters        = filter_input( INPUT_POST, self::PARAM_FILTERS, FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
 
 		if ( ! empty( $max_date ) ) {
 			$max_date = htmlspecialchars( $max_date );
@@ -53,9 +92,8 @@ class Get_Paginated_Log_Items extends \Gravity_Forms\Gravity_SMTP\Utils\Fast_End
 			$filters = array();
 		}
 
-		$event_model = new \Gravity_Forms\Gravity_SMTP\Models\Event_Model( new \Gravity_Forms\Gravity_SMTP\Models\Hydrators\Hydrator_Factory(), new \Gravity_Forms\Gravity_SMTP\Data_Store\Plugin_Opts_Data_Store(), new \Gravity_Forms\Gravity_SMTP\Utils\Recipient_Parser(), new \Gravity_Forms\Gravity_SMTP\Utils\SQL_Filter_Parser() );
-		$rows        = $event_model->paginate( $requested_page, $per_page, $max_date, $search_term, $search_type, $sort_by, $sort_order, $filters );
-		$count       = $event_model->count( $search_term, $search_type, $filters );
+		$rows        = $this->events->paginate( $requested_page, $per_page, $max_date, $search_term, $search_type, $sort_by, $sort_order, $filters );
+		$count       = $this->events->count( $search_term, $search_type, $filters );
 
 		$data = array(
 			'rows'      => $this->get_formatted_data_rows( $rows ),
@@ -66,39 +104,14 @@ class Get_Paginated_Log_Items extends \Gravity_Forms\Gravity_SMTP\Utils\Fast_End
 		wp_send_json_success( $data );
 	}
 
-	protected function extra_includes() {
-		return array(
-			'../../models/traits/trait-can-compare-dynamically.php',
-			'../../models/class-event-model.php',
-			'../../models/hydrators/class-hydrator-factory.php',
-			'../../datastore/interface-data-store.php',
-			'../../datastore/class-plugin-opts-data-store.php',
-			'../../users/class-roles.php',
-			'../../utils/class-recipient.php',
-			'../../utils/class-recipient-collection.php',
-			'../../utils/class-recipient-parser.php',
-			'../../utils/class-sql-filter-parser.php',
-			'../../enums/class-integration-enum.php',
-			'../../enums/class-status-enum.php',
-			'../../models/hydrators/interface-hydrator.php',
-			'../../models/hydrators/class-hydrator-wp-mail.php',
-			'../../models/hydrators/class-hydrator-brevo.php',
-			'../../models/hydrators/class-hydrator-generic.php',
-			'../../models/hydrators/class-hydrator-mailgun.php',
-			'../../models/hydrators/class-hydrator-postmark.php',
-			'../../models/hydrators/class-hydrator-sendgrid.php',
-		);
-	}
-
 	private function get_formatted_data_rows( $data ) {
 		$rows             = array();
-		$recipient_parser = new \Gravity_Forms\Gravity_SMTP\Utils\Recipient_Parser();
 
 		foreach ( $data as $row ) {
 			$grid_actions = $this->get_grid_actions( $row );
 			$extra        = strpos( $row['extra'], '{' ) === 0 ? json_decode( $row['extra'], true ) : unserialize( $row['extra'] );
 			$to           = isset( $extra['to'] ) ? $extra['to'] : '';
-			$to_address   = $recipient_parser->parse( $to )->first()->email();
+			$to_address   = $this->parser->parse( $to )->first()->email();
 			$more_count   = max( 0, $row['email_counts'] - 1 );
 
 			$rows[] = array(
@@ -118,8 +131,8 @@ class Get_Paginated_Log_Items extends \Gravity_Forms\Gravity_SMTP\Utils\Fast_End
 				'status'      => array(
 					'component' => 'StatusIndicator',
 					'props'     => array(
-						'label'  => \Gravity_Forms\Gravity_SMTP\Enums\Status_Enum::label( $row['status'] ),
-						'status' => \Gravity_Forms\Gravity_SMTP\Enums\Status_Enum::indicator( $row['status'] ),
+						'label'  => Status_Enum::label( $row['status'] ),
+						'status' => Status_Enum::indicator( $row['status'] ),
 						'hasDot' => false,
 					),
 				),
@@ -187,7 +200,7 @@ class Get_Paginated_Log_Items extends \Gravity_Forms\Gravity_SMTP\Utils\Fast_End
 					'key'      => $row['service'] . '_logo',
 					'props'    => array(
 						'height' => 24,
-						'title'  => \Gravity_Forms\Gravity_SMTP\Enums\Integration_Enum::svg_title( $row['service'] ),
+						'title'  => Integration_Enum::svg_title( $row['service'] ),
 						'width'  => 24,
 					),
 				),
@@ -234,7 +247,7 @@ class Get_Paginated_Log_Items extends \Gravity_Forms\Gravity_SMTP\Utils\Fast_End
 						'data'             => array(
 							'event_id' => $row['id'],
 						),
-						'disabled'         => ! current_user_can( \Gravity_Forms\Gravity_SMTP\Users\Roles::VIEW_EMAIL_LOG_DETAILS ),
+						'disabled'         => ! current_user_can( Roles::VIEW_EMAIL_LOG_DETAILS ),
 					),
 				),
 				array(
@@ -253,7 +266,7 @@ class Get_Paginated_Log_Items extends \Gravity_Forms\Gravity_SMTP\Utils\Fast_End
 						'data'             => array(
 							'event_id' => $row['id'],
 						),
-						'disabled'         => ! current_user_can( \Gravity_Forms\Gravity_SMTP\Users\Roles::VIEW_EMAIL_LOG_PREVIEW ),
+						'disabled'         => ! current_user_can( Roles::VIEW_EMAIL_LOG_PREVIEW ),
 					),
 				),
 				array(
@@ -272,7 +285,8 @@ class Get_Paginated_Log_Items extends \Gravity_Forms\Gravity_SMTP\Utils\Fast_End
 						'data'             => array(
 							'event_id' => $row['id'],
 						),
-						'disabled'         => ! current_user_can( \Gravity_Forms\Gravity_SMTP\Users\Roles::VIEW_EMAIL_LOG_PREVIEW ) || ! $row['can_resend'], // @todo: Add resend permission?
+						'disabled'         => ! current_user_can( Roles::VIEW_EMAIL_LOG_PREVIEW ) || ! $row['can_resend'],
+						// @todo: Add resend permission?
 					),
 				),
 				array(
@@ -290,7 +304,7 @@ class Get_Paginated_Log_Items extends \Gravity_Forms\Gravity_SMTP\Utils\Fast_End
 						'data'             => array(
 							'event_id' => $row['id'],
 						),
-						'disabled'         => ! current_user_can( \Gravity_Forms\Gravity_SMTP\Users\Roles::DELETE_EMAIL_LOG ),
+						'disabled'         => ! current_user_can( Roles::DELETE_EMAIL_LOG ),
 					),
 				),
 			),
@@ -298,8 +312,5 @@ class Get_Paginated_Log_Items extends \Gravity_Forms\Gravity_SMTP\Utils\Fast_End
 
 		return apply_filters( 'gravitysmtp_email_log_actions', $actions );
 	}
+
 }
-
-
-$endpoint = new Get_Paginated_Log_Items();
-$endpoint->run();

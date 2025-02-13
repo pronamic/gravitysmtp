@@ -209,4 +209,30 @@ class Connector_Phpmail extends Connector_Base {
 		return $atts;
 	}
 
+	public function update_sender( &$phpmailer ) {
+		$from        = $this->get_from( true );
+		$force_name  = $this->get_setting( self::SETTING_FORCE_FROM_NAME, false );
+		$force_email = $this->get_setting( self::SETTING_FORCE_FROM_EMAIL, false );
+		$orig_froms  = empty( $atts['headers']['From'] ) ? array() : $this->get_email_from_header( 'From', $atts['headers']['From'] );
+		$from_name   = '';
+		$from_email  = '';
+
+		if ( ! empty( $orig_froms ) ) {
+			$from_name  = $orig_froms->recipients[0]->name();
+			$from_email = $orig_froms->recipients[0]->email();
+		}
+
+		if ( ! empty( $from['name'] ) && ( empty( $from_name ) || $force_name ) ) {
+			$from_name = $from['name'];
+		}
+
+		if ( empty( $from_email ) || $force_email ) {
+			$from_email = $from['email'];
+		}
+
+		if ( $this->get_setting( self::SETTING_USE_RETURN_PATH, false ) ) {
+			$phpmailer->Sender = $from_email;
+		}
+	}
+
 }

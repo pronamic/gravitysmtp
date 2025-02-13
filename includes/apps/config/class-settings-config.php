@@ -52,16 +52,12 @@ class Settings_Config extends Config {
 			$is_valid     = License_Statuses::VALID_KEY === $license_info->get_status();
 		}
 
-		$email_log_enabled        = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_ENABLED, 'true' );
-		$email_log_enabled        = ! empty( $email_log_enabled ) ? $email_log_enabled !== 'false' : true;
-		$save_email_body_enabled  = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_SAVE_EMAIL_BODY_ENABLED, 'true' );
-		$save_email_body_enabled  = ! empty( $save_email_body_enabled ) ? $save_email_body_enabled !== 'false' : true;
-		$save_attachments_enabled = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_SAVE_ATTACHMENTS_ENABLED, 'false' );
-		$save_attachments_enabled = ! empty( $save_attachments_enabled ) ? $save_attachments_enabled !== 'false' : false;
+		$email_log_enabled        = Booliesh::get( $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_ENABLED, 'true' ) );
+		$save_email_body_enabled  = Booliesh::get( $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_SAVE_EMAIL_BODY_ENABLED, 'true' ) );
+		$save_attachments_enabled = Booliesh::get( $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_SAVE_ATTACHMENTS_ENABLED, 'false' ) );
 		$email_log_retention      = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_RETENTION, 7 );
 		$max_records_value        = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_MAX_EVENT_RECORDS, 0 );
-		$open_tracking_enabled    = $plugin_data_store->get_plugin_setting( Tracking_Service_Provider::SETTING_OPEN_TRACKING, 'false' );
-		$open_tracking_enabled    = ! empty( $open_tracking_enabled ) ? $open_tracking_enabled !== 'false' : false;
+		$open_tracking_enabled    = Booliesh::get( $plugin_data_store->get_plugin_setting( Tracking_Service_Provider::SETTING_OPEN_TRACKING, 'false' ) );
 
 		$debug_log_enabled   = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_DEBUG_LOG_ENABLED, 'false' );
 		$debug_log_enabled   = ! empty( $debug_log_enabled ) ? $debug_log_enabled !== 'false' : false;

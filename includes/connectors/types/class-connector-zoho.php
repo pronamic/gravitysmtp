@@ -58,7 +58,7 @@ class Connector_Zoho extends Connector_Base {
 
 		$this->set_email_log_data( $atts['subject'], $atts['message'], $atts['to'], $atts['from']['from'], $atts['headers'], $atts['attachments'], $source, $params );
 
-		$this->logger->log( $email, 'started', __( 'Starting email send for Mailchimp connector.', 'gravitysmtp' ) );
+		$this->logger->log( $email, 'started', __( 'Starting email send for Zoho connector.', 'gravitysmtp' ) );
 
 		$this->debug_logger->log_debug( $this->wrap_debug_with_details( __FUNCTION__, $email, 'Starting email send with Zoho connector and the following params: ' . json_encode( $params ) ) );
 

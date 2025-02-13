@@ -1,3 +1,18 @@
+### 1.6.2 | 2025-02-12
+- Added a Headers section to Email Log Details sent via Custom SMTP.
+- Added a link to the attached files when viewing Email Log Details.
+- Added support for custom file names in attachments.
+- Fixed an issue that can cause some table pagination to break on custom site setups.
+- Fixed an issue that causes PHPMail to disregard the Return-Path value.
+- Fixed an issue that causes tooltip buttons to redirect to a blank page.
+- Fixed an issue where the drag handle icon for Twilio alerts was not displaying correctly.
+- Fixed an issue which can cause deferred EDD emails to fail.
+- Fixed an issue which can cause some failed emails to not trigger an alert.
+- Fixed an issue which can cause the Primary Connector to be ignored if settings have not been saved a single time.
+- Fixed an issue which causes some settings defined by constants to not display the correct value.
+- Updated all dialogs to be vertically centered on the page.
+- Updated saving of integration settings to assign the one being saved as Primary if none currently are.
+
 ### 1.6.1 | 2025-01-16
 - Added a feature that obfuscates sensitive settings field values if those fields are set via a defined constant.
 - Added resend email button to the activity log.

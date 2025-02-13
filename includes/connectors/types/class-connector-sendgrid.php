@@ -168,12 +168,12 @@ class Connector_Sendgrid extends Connector_Base {
 	protected function get_attachments( $attachments ) {
 		$data = array();
 
-		foreach ( $attachments as $attachment ) {
+		foreach ( $attachments as $custom_name => $attachment ) {
 			$file = false;
 
 			try {
 				if ( is_file( $attachment ) && is_readable( $attachment ) ) {
-					$fileName  = basename( $attachment );
+					$fileName  = is_numeric( $custom_name ) ? basename( $attachment ) : $custom_name;
 					$contentId = wp_hash( $attachment );
 					$file      = file_get_contents( $attachment );
 					$mimeType  = mime_content_type( $attachment );
