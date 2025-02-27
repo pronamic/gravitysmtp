@@ -63,6 +63,9 @@ class Settings_Config extends Config {
 		$debug_log_enabled   = ! empty( $debug_log_enabled ) ? $debug_log_enabled !== 'false' : false;
 		$debug_log_retention = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_DEBUG_LOG_RETENTION, 7 );
 
+		$primary_locked = defined( 'GRAVITYSMTP_INTEGRATION_PRIMARY' );
+		$backup_locked  = defined( 'GRAVITYSMTP_INTEGRATION_BACKUP' );
+
 		// @translators: %d is an integer representing the maximum number of records to store in the log.
 		$max_records_message = esc_html__( 'The Email Log is set to store a maximum of %d records. Any records over that limit will be deleted, starting with oldest records first.', 'gravitysmtp' );
 
@@ -81,7 +84,7 @@ class Settings_Config extends Config {
 						),
 						'unsaved_changes_title'       => esc_html__( 'Unsaved Changes', 'gravitysmtp' ),
 						'unsaved_changes_message'     => esc_html__( 'You have unsaved changes. Are you sure you want to leave this page?', 'gravitysmtp' ),
-						'settings'     =>
+						'settings'                    =>
 							array(
 								'top_heading'                                                   => esc_html__( 'Settings', 'gravitysmtp' ),
 								'top_content'                                                   => '',
@@ -96,7 +99,9 @@ class Settings_Config extends Config {
 								'experiments_box_heading'                                       => esc_html__( 'Experimental Features', 'gravitysmtp' ),
 								'experiments_box_content'                                       => esc_html__( 'These features are works-in-progress, so you may find some bugs along the way.', 'gravitysmtp' ),
 								'experiments_box_toggle_label'                                  => esc_html__( 'Alerts', 'gravitysmtp' ),
-								'experiments_box_toggle_help_text'                              => esc_html__( 'Setup alerts via Slack or SMS (using Twilio) to stay informed when emails fail to send.', 'gravitysmtp' ),
+								'experiments_box_toggle_help_text'                              => esc_html__( 'Get notified via webhook or SMS (Twilio) when emails fail to send.', 'gravitysmtp' ),
+								'experiments_box_toggle_label_opens'                            => esc_html__( 'Open Tracking', 'gravitysmtp' ),
+								'experiments_box_toggle_help_text_opens'                        => esc_html__( 'Track when recipients open emails sent by the system.', 'gravitysmtp' ),
 								'email_digest_box_heading'                                      => esc_html__( 'Email Digest Notification', 'gravitysmtp' ),
 								'email_digest_box_content'                                      => esc_html__( 'Keep track of your email communication with ease using our Email Digest Notification feature. Receive regular email updates on your email activity and address potential issues promptly. Stay in control of your WordPress email communication and never miss an important message again.', 'gravitysmtp' ),
 								'email_digest_box_summary_toggle_label'                         => esc_html__( 'Enable Digest Summary', 'gravitysmtp' ),
@@ -211,7 +216,7 @@ class Settings_Config extends Config {
 							'debug_log_url'       => admin_url( 'admin.php?page=gravitysmtp-tools&tab=debug-log' ),
 							'retention_options'   => $this->get_debug_log_retention_options(),
 						),
-						'caps' => array(
+						'caps'                       => array(
 							Roles::DELETE_DEBUG_LOG               => current_user_can( Roles::DELETE_DEBUG_LOG ),
 							Roles::DELETE_EMAIL_LOG               => current_user_can( Roles::DELETE_EMAIL_LOG ),
 							Roles::EDIT_ALERTS                    => current_user_can( Roles::EDIT_ALERTS ),
@@ -222,7 +227,7 @@ class Settings_Config extends Config {
 							Roles::EDIT_EMAIL_MANAGEMENT_SETTINGS => current_user_can( Roles::EDIT_EMAIL_MANAGEMENT_SETTINGS ),
 							Roles::EDIT_INTEGRATIONS              => current_user_can( Roles::EDIT_INTEGRATIONS ),
 							Roles::EDIT_LICENSE_KEY               => current_user_can( Roles::EDIT_LICENSE_KEY ),
-							Roles::EDIT_EXPERIMENTAL_FEATURES	  => current_user_can( Roles::EDIT_EXPERIMENTAL_FEATURES ),
+							Roles::EDIT_EXPERIMENTAL_FEATURES     => current_user_can( Roles::EDIT_EXPERIMENTAL_FEATURES ),
 							Roles::EDIT_TEST_MODE                 => current_user_can( Roles::EDIT_TEST_MODE ),
 							Roles::EDIT_UNINSTALL                 => current_user_can( Roles::EDIT_UNINSTALL ),
 							Roles::EDIT_USAGE_ANALYTICS           => current_user_can( Roles::EDIT_USAGE_ANALYTICS ),
@@ -236,7 +241,7 @@ class Settings_Config extends Config {
 							Roles::VIEW_EMAIL_MANAGEMENT_SETTINGS => current_user_can( Roles::VIEW_EMAIL_MANAGEMENT_SETTINGS ),
 							Roles::VIEW_INTEGRATIONS              => current_user_can( Roles::VIEW_INTEGRATIONS ),
 							Roles::VIEW_LICENSE_KEY               => current_user_can( Roles::VIEW_LICENSE_KEY ),
-							Roles::VIEW_EXPERIMENTAL_FEATURES	  => current_user_can( Roles::VIEW_EXPERIMENTAL_FEATURES ),
+							Roles::VIEW_EXPERIMENTAL_FEATURES     => current_user_can( Roles::VIEW_EXPERIMENTAL_FEATURES ),
 							Roles::VIEW_TEST_MODE                 => current_user_can( Roles::VIEW_TEST_MODE ),
 							Roles::VIEW_UNINSTALL                 => current_user_can( Roles::VIEW_UNINSTALL ),
 							Roles::VIEW_USAGE_ANALYTICS           => current_user_can( Roles::VIEW_USAGE_ANALYTICS ),
@@ -356,104 +361,7 @@ class Settings_Config extends Config {
 										'label'      => esc_html__( 'Set As Backup', 'gravitysmtp' ),
 									),
 								),
-//							4 =>
-//								array(
-//									'customAttributes' => array(
-//										'disabled' => true,
-//									),
-//									'element'          => 'button',
-//									'icon'             => 'mail',
-//									'iconPrefix'       => 'gravitysmtp-admin-icon',
-//									'key'              => 'delete',
-//									'label'            => esc_html__( 'Delete Email Log', 'gravitysmtp' ),
-//									'labelAttributes'  => array(
-//										'color' => 'red',
-//									),
-//									'style'            => 'error',
-//								),
-//							5 =>
-//								array(
-//									'customAttributes' => array(
-//										'disabled' => true,
-//									),
-//									'element'          => 'button',
-//									'icon'             => 'debug',
-//									'iconPrefix'       => 'gravitysmtp-admin-icon',
-//									'key'              => 'delete-log',
-//									'label'            => esc_html__( 'Delete Debug Log', 'gravitysmtp' ),
-//									'labelAttributes'  => array(
-//										'color' => 'red',
-//									),
-//									'style'            => 'error',
-//								),
 						),
-//						'alerts_notifications'       => array(
-//							0 =>
-//								array(
-//									'title'       => esc_html__( 'Slack', 'gravitysmtp' ),
-//									'description' => esc_html__( 'Slack is a popular and robust payment processing platform that allows businesses and websites to accept credit card payments online.', 'gravitysmtp' ),
-//									'logo'        => 'Slack',
-//									'id'          => 'slack',
-//									'data'        => array(
-//										'disabled'   => true,
-//										'activated'  => true,
-//										'enabled'    => false,
-//										'configured' => false,
-//									),
-//								),
-//							1 =>
-//								array(
-//									'title'       => esc_html__( 'Twilio', 'gravitysmtp' ),
-//									'description' => esc_html__( 'Twilio is a popular and robust payment processing platform that allows businesses and websites to accept credit card payments online.', 'gravitysmtp' ),
-//									'logo'        => 'Twilio',
-//									'id'          => 'twilio',
-//									'data'        => array(
-//										'disabled'   => true,
-//										'activated'  => true,
-//										'enabled'    => false,
-//										'configured' => false,
-//									),
-//								),
-//							2 =>
-//								array(
-//									'title'       => esc_html__( 'Brevo SMS', 'gravitysmtp' ),
-//									'description' => esc_html__( 'Brevo SMS is a popular and robust payment processing platform that allows businesses and websites to accept credit card payments online.', 'gravitysmtp' ),
-//									'logo'        => 'Brevo',
-//									'id'          => 'brevo-sms',
-//									'data'        => array(
-//										'disabled'   => true,
-//										'activated'  => true,
-//										'enabled'    => false,
-//										'configured' => false,
-//									),
-//								),
-//							3 =>
-//								array(
-//									'title'       => esc_html__( 'WhatsApp', 'gravitysmtp' ),
-//									'description' => esc_html__( 'WhatsApp is a popular and robust payment processing platform that allows businesses and websites to accept credit card payments online.', 'gravitysmtp' ),
-//									'logo'        => 'WhatsApp',
-//									'id'          => 'whatsapp',
-//									'data'        => array(
-//										'disabled'   => true,
-//										'activated'  => true,
-//										'enabled'    => false,
-//										'configured' => false,
-//									),
-//								),
-//							4 =>
-//								array(
-//									'title'       => esc_html__( 'Telegram', 'gravitysmtp' ),
-//									'description' => esc_html__( 'Telegram is a popular and robust payment processing platform that allows businesses and websites to accept credit card payments online.', 'gravitysmtp' ),
-//									'logo'        => 'Telegram',
-//									'id'          => 'telegram',
-//									'data'        => array(
-//										'disabled'   => true,
-//										'activated'  => true,
-//										'enabled'    => false,
-//										'configured' => false,
-//									),
-//								),
-//						),
 						'email_notifications'        => array(
 							array(
 								'title'    => esc_html__( 'Change of Admin Email', 'gravitysmtp' ),
@@ -591,6 +499,8 @@ class Settings_Config extends Config {
 								),
 							),
 						),
+						'primary_locked'             => $primary_locked,
+						'backup_locked'              => $backup_locked,
 					),
 					'endpoints' => array(),
 				),

@@ -1,3 +1,13 @@
+### 1.7.0 | 2025-02-26
+- Added the ability to send a test Alert for all existing Alert types.
+- Added a lock icon tooltip to integration card when the integration is set as primary or backup by a constant.
+- Added Elastic Email as an integration.
+- Added MailerSend as an integration.
+- Added SMTP2GO as an integration.
+- Added migration fields for Elastic Email and SMTP2GO
+- Fixed an issue that can cause Password Reset emails to ignore management settings if Woocommerce is the source.
+- Updated telemetry data for Setup Wizard.
+
 ### 1.6.2 | 2025-02-12
 - Added a Headers section to Email Log Details sent via Custom SMTP.
 - Added a link to the attached files when viewing Email Log Details.

@@ -6,30 +6,31 @@ use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Base;
 use Gravity_Forms\Gravity_SMTP\Feature_Flags\Feature_Flag_Manager;
 
 /**
- * Connector for SMTP2GO
+ * Connector for MailerSend
  *
  * @since 1.0
  */
-class Connector_Smtp2go extends Connector_Base {
+class Connector_MailerSend extends Connector_Base {
 
 	const SETTING_API_KEY = 'api_key';
 
-	protected $name      = 'smtp2go';
-	protected $title     = 'SMTP2GO';
-	protected $logo      = 'SMTP2GO';
-	protected $full_logo = 'SMTP2GOFull';
-	protected $url       = 'https://api.smtp2go.com/v3/email/send';
+	protected $name        = 'mailersend';
+	protected $title       = 'MailerSend';
+	protected $disabled    = true;
+	protected $logo        = 'MailerSend';
+	protected $full_logo   = 'MailerSendFull';
+	protected $url         = 'https://api.mailersend.com/v1';
 
 	protected $sensitive_fields = array(
 		self::SETTING_API_KEY,
 	);
 
 	public function get_description() {
-		return esc_html__( 'SMTP2GO is a cloud-based email delivery service that ensures reliable inbox placement with built-in analytics and automatic failover. Offering a free plan and scalable options, SMTP2GO helps businesses send transactional and marketing emails effortlessly.', 'gravitysmtp' );
+		return esc_html__( 'Elastic Email is a high-performance email platform offering both marketing and transactional email solutions. With a free plan for up to 100 daily emails and affordable paid options, Elastic Email provides detailed analytics and automation tools.', 'gravitysmtp' );
 	}
 
 	/**
-	 * Sends email via SMTP2GO.
+	 * Sends email via MailerSend.
 	 *
 	 * @since 1.0
 	 *
@@ -44,7 +45,7 @@ class Connector_Smtp2go extends Connector_Base {
 
 			$this->set_email_log_data( $atts['subject'], $atts['message'], $atts['to'], $atts['from']['from'], $atts['headers'], $atts['attachments'], $source, $params );
 
-			$this->logger->log( $email, 'started', __( 'Starting email send for SMTP2GO connector.', 'gravitysmtp' ) );
+			$this->logger->log( $email, 'started', __( 'Starting email send for MailerSend connector.', 'gravitysmtp' ) );
 
 			if ( $this->is_test_mode() ) {
 				$this->events->update( array( 'status' => 'sandboxed' ), $email );
@@ -53,7 +54,7 @@ class Connector_Smtp2go extends Connector_Base {
 				return true;
 			}
 
-			$response = wp_safe_remote_post( $this->url, $params );
+			$response = wp_safe_remote_post( $this->url . '/email', $params );
 
 			$is_success = in_array( (int) wp_remote_retrieve_response_code( $response ), array( 200, 201, 202 ) );
 			if ( ! $is_success ) {
@@ -86,40 +87,56 @@ class Connector_Smtp2go extends Connector_Base {
 		$api_key = $this->get_setting( self::SETTING_API_KEY );
 
 		$body = array(
-			'sender'  => $atts['from']['email'],
 			'subject' => $atts['subject'],
-			'to' => array(),
+			'from'    => array(
+				'email' => $atts['from']['email'],
+				'name'  => $atts['from']['name'],
+			),
+			'to'      => array(),
 		);
 
-		foreach( $atts['to']->as_array() as $to_value ) {
-			$body['to'][] = $to_value['email'];
+		$to                  = $atts['to']->first()->as_array();
+		$to_value['email'] = $to['email'];
+
+		if ( ! empty( $to['name'] ) ) {
+			$to_value['name'] = $to['name'];
 		}
+
+		$body['to'][] = $to_value;
 
 		// Setting content
 		$is_html = ! empty( $atts['headers']['content-type'] ) && strpos( $atts['headers']['content-type'], 'text/html' ) !== false;
 		if ( $is_html ) {
-			$body['html_body'] = $atts['message'];
+			$body['html'] = $atts['message'];
 		} else {
-			$body['text_body'] = $atts['message'];
+			$body['text'] = $atts['message'];
 		}
 
 		// Setting cc
 		if ( ! empty( $atts['headers']['cc'] ) ) {
 			$body['cc'] = array();
-			foreach( $atts['headers']['cc']->as_array() as $cc_value ) {
-				$body['cc'][] = $cc_value['email'];
+			foreach ( $atts['headers']['cc']->as_array() as $cc_value ) {
+				$values = array(
+					'email' => $cc_value['email'],
+					'name'  => ! empty( $cc_value['name'] ) ? $cc_value['name'] : null,
+				);
+
+				$body['cc'][] = array_filter( $values );
 			}
 		}
 
 		// Setting bcc
 		if ( ! empty( $atts['headers']['bcc'] ) ) {
 			$body['bcc'] = array();
-			foreach( $atts['headers']['bcc']->as_array() as $bcc_value ) {
-				$body['bcc'][] = $bcc_value['email'];
+			foreach ( $atts['headers']['bcc']->as_array() as $bcc_value ) {
+				$values = array(
+					'email' => $bcc_value['email'],
+					'name'  => ! empty( $bcc_value['name'] ) ? $bcc_value['name'] : null,
+				);
+
+				$body['bcc'][] = array_filter( $values );
 			}
 		}
-
-		$body['custom_headers'] = array();
 
 		// Setting reply to
 		if ( ! empty( $atts['reply_to'] ) ) {
@@ -129,9 +146,8 @@ class Connector_Smtp2go extends Connector_Base {
 				$reply_to = $atts['reply_to'][0];
 			}
 
-			$body['custom_headers'][] = array(
-				'header' => 'Reply-To',
-				'value'  => $reply_to['email'],
+			$body['reply_to'] = array(
+				'email' => $reply_to['email'],
 			);
 		}
 
@@ -189,9 +205,9 @@ class Connector_Smtp2go extends Connector_Base {
 					$content  = base64_encode( file_get_contents( $attachment ) );
 
 					$data[] = array(
-						'filename' => $fileName,
-						'fileblob' => $content,
-						'mimetype' => mime_content_type( $attachment ),
+						'filename'    => $fileName,
+						'content'     => $content,
+						'disposition' => 'attachment',
 					);
 				}
 			} catch ( \Exception $e ) {
@@ -207,13 +223,13 @@ class Connector_Smtp2go extends Connector_Base {
 	 *
 	 * @since 1.0
 	 *
-	 * @return array Returns the header array to be passed to SMTP2GO's API.
+	 * @return array Returns the header array to be passed to MailerSend's API.
 	 */
 	protected function get_request_headers( $api_key ) {
 		return array(
-			'content-type'      => 'application/json',
-			'accept'            => 'application/json',
-			'X-Smtp2go-Api-Key' => $api_key,
+			'content-type'  => 'application/json',
+			'accept'        => 'application/json',
+			'Authorization' => 'Bearer ' . $api_key,
 		);
 	}
 
@@ -256,7 +272,7 @@ class Connector_Smtp2go extends Connector_Base {
 	 */
 	public function settings_fields() {
 		return array(
-			'title'       => esc_html__( 'SMTP2GO Settings', 'gravitysmtp' ),
+			'title'       => esc_html__( 'MailerSend Settings', 'gravitysmtp' ),
 			'description' => '',
 			'fields'      => array_merge(
 				array(
@@ -282,7 +298,7 @@ class Connector_Smtp2go extends Connector_Base {
 							'helpTextAttributes' => array(
 								'asHtml'  => true,
 								/* translators: 1: opening anchor tag, 2: closing anchor tag */
-								'content' => sprintf( __( 'To generate an API key from SMTP2GO, log in to your SMTP2GO dashboard and navigate to the API section. %1$sCreate a new API key%2$s and ensure your %3$sverified senders%2$s are configured correctly.', 'gravitysmtp' ), '<a class="gform-link gform-typography--size-text-xs" href="https://app.smtp2go.com/sending/apikeys/" target="_blank" rel="noopener noreferrer">', '</a>', '<a class="gform-link gform-typography--size-text-xs" href="https://app.smtp2go.com/sending/verified_senders/" target="_blank" rel="noopener noreferrer">' ),
+								'content' => sprintf( __( 'To generate an API key from MailerSend, log in to your MailerSend dashboard and navigate to the Domain section. %1$sCreate a new domain%2$s and then %3$sgenerate your API token%2$s.', 'gravitysmtp' ), '<a class="gform-link gform-typography--size-text-xs" href="https://app.mailersend.com/domains" target="_blank" rel="noopener noreferrer">', '</a>', '<a class="gform-link gform-typography--size-text-xs" href="https://www.mailersend.com/help/managing-api-tokens" target="_blank" rel="noopener noreferrer">' ),
 								'size'    => 'text-xs',
 								'weight'  => 'regular',
 							),
@@ -339,13 +355,13 @@ class Connector_Smtp2go extends Connector_Base {
 	 */
 	private function verify_api_key() {
 		$api_key = $this->get_setting( self::SETTING_API_KEY );
-		$url     = 'https://api.smtp2go.com/v3/stats/email_bounces';
+		$url     = $this->url . '/api-quota';
 
 		if ( empty( $api_key ) ) {
 			return new \WP_Error( 'missing_api_key', __( 'No API Key provided.', 'gravitysmtp' ) );
 		}
 
-		$response = wp_remote_post(
+		$response = wp_remote_get(
 			$url,
 			array(
 				'headers' => $this->get_request_headers( $api_key ),
@@ -376,7 +392,7 @@ class Connector_Smtp2go extends Connector_Base {
 			self::SETTING_ENABLED    => $this->get_setting( self::SETTING_ENABLED, false ),
 			self::SETTING_IS_PRIMARY => $this->get_setting( self::SETTING_IS_PRIMARY, false ),
 			self::SETTING_IS_BACKUP  => $this->get_setting( self::SETTING_IS_BACKUP, false ),
-			'disabled'               => ! Feature_Flag_Manager::is_enabled( 'smtp2go_integration' ),
+			'disabled'               => ! Feature_Flag_Manager::is_enabled( 'mailersend_integration' ),
 		);
 
 		return array_merge( $this->connector_data(), $data );

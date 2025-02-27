@@ -6,30 +6,30 @@ use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Base;
 use Gravity_Forms\Gravity_SMTP\Feature_Flags\Feature_Flag_Manager;
 
 /**
- * Connector for SMTP2GO
+ * Connector for Elastic Email
  *
  * @since 1.0
  */
-class Connector_Smtp2go extends Connector_Base {
+class Connector_Elastic_Email extends Connector_Base {
 
 	const SETTING_API_KEY = 'api_key';
 
-	protected $name      = 'smtp2go';
-	protected $title     = 'SMTP2GO';
-	protected $logo      = 'SMTP2GO';
-	protected $full_logo = 'SMTP2GOFull';
-	protected $url       = 'https://api.smtp2go.com/v3/email/send';
+	protected $name      = 'elastic_email';
+	protected $title     = 'Elastic Email';
+	protected $logo      = 'ElasticEmail';
+	protected $full_logo = 'ElasticEmailFull';
+	protected $url       = 'https://api.elasticemail.com/v4';
 
 	protected $sensitive_fields = array(
 		self::SETTING_API_KEY,
 	);
 
 	public function get_description() {
-		return esc_html__( 'SMTP2GO is a cloud-based email delivery service that ensures reliable inbox placement with built-in analytics and automatic failover. Offering a free plan and scalable options, SMTP2GO helps businesses send transactional and marketing emails effortlessly.', 'gravitysmtp' );
+		return esc_html__( 'Elastic Email is a high-performance email platform offering both marketing and transactional email solutions. With a free plan for up to 100 daily emails and affordable paid options, Elastic Email provides detailed analytics and automation tools.', 'gravitysmtp' );
 	}
 
 	/**
-	 * Sends email via SMTP2GO.
+	 * Sends email via Elastic Email.
 	 *
 	 * @since 1.0
 	 *
@@ -44,7 +44,7 @@ class Connector_Smtp2go extends Connector_Base {
 
 			$this->set_email_log_data( $atts['subject'], $atts['message'], $atts['to'], $atts['from']['from'], $atts['headers'], $atts['attachments'], $source, $params );
 
-			$this->logger->log( $email, 'started', __( 'Starting email send for SMTP2GO connector.', 'gravitysmtp' ) );
+			$this->logger->log( $email, 'started', __( 'Starting email send for Elastic Email connector.', 'gravitysmtp' ) );
 
 			if ( $this->is_test_mode() ) {
 				$this->events->update( array( 'status' => 'sandboxed' ), $email );
@@ -53,7 +53,7 @@ class Connector_Smtp2go extends Connector_Base {
 				return true;
 			}
 
-			$response = wp_safe_remote_post( $this->url, $params );
+			$response = wp_safe_remote_post( $this->url . '/emails/transactional', $params );
 
 			$is_success = in_array( (int) wp_remote_retrieve_response_code( $response ), array( 200, 201, 202 ) );
 			if ( ! $is_success ) {
@@ -84,42 +84,44 @@ class Connector_Smtp2go extends Connector_Base {
 	public function get_request_params() {
 		$atts    = $this->get_send_atts();
 		$api_key = $this->get_setting( self::SETTING_API_KEY );
+		$is_html = ! empty( $atts['headers']['content-type'] ) && strpos( $atts['headers']['content-type'], 'text/html' ) !== false;
 
 		$body = array(
-			'sender'  => $atts['from']['email'],
-			'subject' => $atts['subject'],
-			'to' => array(),
+			'Recipients' => array(
+				'To' => array(),
+			),
+			'Content'    => array(
+				'From'    => $atts['from']['email'],
+				'Subject' => $atts['subject'],
+				'Body'    => array(
+					array(
+						'Charset'     => 'utf-8',
+						'Content'     => $atts['message'],
+						'ContentType' => $is_html ? 'HTML' : 'PlainText',
+					),
+				),
+			),
 		);
 
-		foreach( $atts['to']->as_array() as $to_value ) {
-			$body['to'][] = $to_value['email'];
-		}
-
-		// Setting content
-		$is_html = ! empty( $atts['headers']['content-type'] ) && strpos( $atts['headers']['content-type'], 'text/html' ) !== false;
-		if ( $is_html ) {
-			$body['html_body'] = $atts['message'];
-		} else {
-			$body['text_body'] = $atts['message'];
+		foreach ( $atts['to']->as_array() as $to_value ) {
+			$body['Recipients']['To'][] = $to_value['email'];
 		}
 
 		// Setting cc
 		if ( ! empty( $atts['headers']['cc'] ) ) {
-			$body['cc'] = array();
-			foreach( $atts['headers']['cc']->as_array() as $cc_value ) {
-				$body['cc'][] = $cc_value['email'];
+			$body['Recipients']['CC'] = array();
+			foreach ( $atts['headers']['cc']->as_array() as $cc_value ) {
+				$body['Recipients']['CC'][] = $cc_value['email'];
 			}
 		}
 
 		// Setting bcc
 		if ( ! empty( $atts['headers']['bcc'] ) ) {
-			$body['bcc'] = array();
-			foreach( $atts['headers']['bcc']->as_array() as $bcc_value ) {
-				$body['bcc'][] = $bcc_value['email'];
+			$body['Recipients']['BCC'] = array();
+			foreach ( $atts['headers']['bcc']->as_array() as $bcc_value ) {
+				$body['Recipients']['BCC'][] = $bcc_value['email'];
 			}
 		}
-
-		$body['custom_headers'] = array();
 
 		// Setting reply to
 		if ( ! empty( $atts['reply_to'] ) ) {
@@ -129,15 +131,12 @@ class Connector_Smtp2go extends Connector_Base {
 				$reply_to = $atts['reply_to'][0];
 			}
 
-			$body['custom_headers'][] = array(
-				'header' => 'Reply-To',
-				'value'  => $reply_to['email'],
-			);
+			$body['Content']['ReplyTo'] = $reply_to['email'];
 		}
 
 		// Setting attachments
 		if ( ! empty( $atts['attachments'] ) ) {
-			$body['attachments'] = $this->get_attachments( $atts['attachments'] );
+			$body['Content']['Attachments'] = $this->get_attachments( $atts['attachments'] );
 		}
 
 		return array(
@@ -189,9 +188,10 @@ class Connector_Smtp2go extends Connector_Base {
 					$content  = base64_encode( file_get_contents( $attachment ) );
 
 					$data[] = array(
-						'filename' => $fileName,
-						'fileblob' => $content,
-						'mimetype' => mime_content_type( $attachment ),
+						'Name'          => $fileName,
+						'BinaryContent' => $content,
+						'ContentType'   => mime_content_type( $attachment ),
+						'Size'          => filesize( $attachment ),
 					);
 				}
 			} catch ( \Exception $e ) {
@@ -207,13 +207,13 @@ class Connector_Smtp2go extends Connector_Base {
 	 *
 	 * @since 1.0
 	 *
-	 * @return array Returns the header array to be passed to SMTP2GO's API.
+	 * @return array Returns the header array to be passed to Elastic Email's API.
 	 */
 	protected function get_request_headers( $api_key ) {
 		return array(
-			'content-type'      => 'application/json',
-			'accept'            => 'application/json',
-			'X-Smtp2go-Api-Key' => $api_key,
+			'content-type'          => 'application/json',
+			'accept'                => 'application/json',
+			'X-ElasticEmail-ApiKey' => $api_key,
 		);
 	}
 
@@ -256,7 +256,7 @@ class Connector_Smtp2go extends Connector_Base {
 	 */
 	public function settings_fields() {
 		return array(
-			'title'       => esc_html__( 'SMTP2GO Settings', 'gravitysmtp' ),
+			'title'       => esc_html__( 'Elastic Email Settings', 'gravitysmtp' ),
 			'description' => '',
 			'fields'      => array_merge(
 				array(
@@ -282,7 +282,7 @@ class Connector_Smtp2go extends Connector_Base {
 							'helpTextAttributes' => array(
 								'asHtml'  => true,
 								/* translators: 1: opening anchor tag, 2: closing anchor tag */
-								'content' => sprintf( __( 'To generate an API key from SMTP2GO, log in to your SMTP2GO dashboard and navigate to the API section. %1$sCreate a new API key%2$s and ensure your %3$sverified senders%2$s are configured correctly.', 'gravitysmtp' ), '<a class="gform-link gform-typography--size-text-xs" href="https://app.smtp2go.com/sending/apikeys/" target="_blank" rel="noopener noreferrer">', '</a>', '<a class="gform-link gform-typography--size-text-xs" href="https://app.smtp2go.com/sending/verified_senders/" target="_blank" rel="noopener noreferrer">' ),
+								'content' => sprintf( __( 'To generate an API key from Elastic Email, log in to your Elastic Email dashboard and navigate to the API section. %1$sCreate a new API key%2$s and ensure your %3$sdomain settings%2$s are configured correctly.', 'gravitysmtp' ), '<a class="gform-link gform-typography--size-text-xs" href="https://app.elasticemail.com/api/settings/create-api" target="_blank" rel="noopener noreferrer">', '</a>', '<a class="gform-link gform-typography--size-text-xs" href="https://app.elasticemail.com/api/settings/domains" target="_blank" rel="noopener noreferrer">' ),
 								'size'    => 'text-xs',
 								'weight'  => 'regular',
 							),
@@ -339,16 +339,18 @@ class Connector_Smtp2go extends Connector_Base {
 	 */
 	private function verify_api_key() {
 		$api_key = $this->get_setting( self::SETTING_API_KEY );
-		$url     = 'https://api.smtp2go.com/v3/stats/email_bounces';
+		$url     = $this->url . '/statistics?from=' . date( 'Y-m-d h:i:s', time() );
 
 		if ( empty( $api_key ) ) {
 			return new \WP_Error( 'missing_api_key', __( 'No API Key provided.', 'gravitysmtp' ) );
 		}
 
-		$response = wp_remote_post(
+		$headers = $this->get_request_headers( $api_key );
+
+		$response = wp_remote_get(
 			$url,
 			array(
-				'headers' => $this->get_request_headers( $api_key ),
+				'headers' => $headers,
 			)
 		);
 
@@ -376,7 +378,7 @@ class Connector_Smtp2go extends Connector_Base {
 			self::SETTING_ENABLED    => $this->get_setting( self::SETTING_ENABLED, false ),
 			self::SETTING_IS_PRIMARY => $this->get_setting( self::SETTING_IS_PRIMARY, false ),
 			self::SETTING_IS_BACKUP  => $this->get_setting( self::SETTING_IS_BACKUP, false ),
-			'disabled'               => ! Feature_Flag_Manager::is_enabled( 'smtp2go_integration' ),
+			'disabled'               => ! Feature_Flag_Manager::is_enabled( 'elasticemail_integration' ),
 		);
 
 		return array_merge( $this->connector_data(), $data );

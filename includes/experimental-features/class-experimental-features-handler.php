@@ -10,7 +10,8 @@ class Experiment_Features_Handler {
 	const ENABLED_EXPERIMENTS_PARAM = 'enabled_experimental_features';
 
 	protected $experiments = array(
-		'alerts_management'
+		'alerts_management',
+		'email_open_tracking',
 	);
 
 	/**

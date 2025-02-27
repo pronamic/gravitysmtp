@@ -12,6 +12,8 @@ use Gravity_Forms\Gravity_Tools\Utils\Common;
 
 class Telemetry_Snapshot_Data extends Telemetry_Data {
 
+	const METRIC_MIGRATIONS_RUN = 'migrations_used';
+
 	/**
 	 * @var string $key Identifier for this data object.
 	 */
@@ -196,6 +198,7 @@ class Telemetry_Snapshot_Data extends Telemetry_Data {
 				Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_RETENTION    => $this->plugin_settings->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_RETENTION, 180 ),
 				Save_Plugin_Settings_Endpoint::PARAM_USAGE_ANALYTICS        => $this->plugin_settings->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_USAGE_ANALYTICS, true ),
 				Save_Connector_Settings_Endpoint::SETTING_ENABLED_CONNECTOR => $this->plugin_settings->get_plugin_setting( Save_Connector_Settings_Endpoint::SETTING_ENABLED_CONNECTOR ),
+				self::METRIC_MIGRATIONS_RUN => $this->plugin_settings->get_plugin_setting( self::METRIC_MIGRATIONS_RUN, array() ),
 			),
 		);
 	}

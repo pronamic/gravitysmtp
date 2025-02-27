@@ -215,7 +215,7 @@ class Dashboard_Config extends Config {
 				'sources'           => $this->get_top_sending_sources(),
 				'recipients'        => $this->get_top_email_recipients(),
 				'quick_links'       => $this->get_quick_links(),
-			)
+			),
 		);
 	}
 
@@ -482,8 +482,16 @@ class Dashboard_Config extends Config {
 				return 0;
 			}
 
+			if ( $a['is_backup'] && $b['is_backup'] ) {
+				return 0;
+			}
+
 			if ( $a['is_primary'] && $b['is_backup'] ) {
 				return - 1;
+			}
+
+			if ( $a['is_backup'] && $b['is_primary'] ) {
+				return 1;
 			}
 
 			if ( $a['is_primary'] ) {

@@ -15,7 +15,7 @@ class Suppression_Service_Provider extends Config_Service_Provider {
 	const SUPPRESSED_EMAILS_MODEL     = 'suppressed_emails_model';
 	const SUPPRESSION_SETTINGS_CONFIG = 'suppression_settings_config';
 
-	const GET_PAGINATED_ITEMS_ENDPOINT          = 'get_paginated_items_endpoint';
+	const GET_PAGINATED_ITEMS_ENDPOINT          = 'get_paginated_suppression_items_endpoint';
 	const ADD_SUPPRESSED_EMAILS_ENDPOINT        = 'add_suppressed_emails_endpoint';
 	const REACTIVATE_SUPPRESSED_EMAILS_ENDPOINT = 'reactivate_suppressed_emails_endpoint';
 

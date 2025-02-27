@@ -7,6 +7,7 @@ use Gravity_Forms\Gravity_SMTP\Alerts\Config\Alerts_Endpoints_Config;
 use Gravity_Forms\Gravity_SMTP\Alerts\Connectors\Slack_Alert_Connector;
 use Gravity_Forms\Gravity_SMTP\Alerts\Connectors\Twilio_Alert_Connector;
 use Gravity_Forms\Gravity_SMTP\Alerts\Endpoints\Save_Alerts_Settings_Endpoint;
+use Gravity_Forms\Gravity_SMTP\Alerts\Endpoints\Send_Test_Alert_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Logging\Logging_Service_Provider;
 use Gravity_Forms\Gravity_Tools\Providers\Config_Service_Provider;
@@ -23,6 +24,7 @@ class Alerts_Service_Provider extends Config_Service_Provider {
 	const SLACK_ALERT_CONNECTOR         = 'slack_alert_connector';
 	const SAVE_ALERTS_SETTINGS_ENDPOINT = 'save_alerts_settings_endpoint';
 	const ALERTS_HANDLER                = 'alerts_handler';
+	const SEND_TEST_ALERT_ENDPOINT      = 'send_test_alert_endpoint';
 
 	protected $configs = array(
 		self::ALERTS_CONFIG           => Alerts_Config::class,
@@ -50,13 +52,22 @@ class Alerts_Service_Provider extends Config_Service_Provider {
 			return new Save_Alerts_Settings_Endpoint( $plugin_data_store );
 		} );
 
-		$container->add( self::ALERTS_HANDLER, function() use ( $container ) {
+		$container->add( self::SEND_TEST_ALERT_ENDPOINT, function () use ( $container ) {
 			$connectors = array(
-				'slack' => $container->get( self::SLACK_ALERT_CONNECTOR ),
+				'slack'  => $container->get( self::SLACK_ALERT_CONNECTOR ),
 				'twilio' => $container->get( self::TWILIO_ALERT_CONNECTOR ),
 			);
 
-			$data_store = $container->get( Connector_Service_Provider::DATA_STORE_ROUTER );
+			return new Send_Test_Alert_Endpoint( $connectors );
+		} );
+
+		$container->add( self::ALERTS_HANDLER, function () use ( $container ) {
+			$connectors = array(
+				'slack'  => $container->get( self::SLACK_ALERT_CONNECTOR ),
+				'twilio' => $container->get( self::TWILIO_ALERT_CONNECTOR ),
+			);
+
+			$data_store  = $container->get( Connector_Service_Provider::DATA_STORE_ROUTER );
 			$event_model = $container->get( Connector_Service_Provider::EVENT_MODEL );
 
 			return new Alerts_Handler( $event_model, $data_store, $connectors );
@@ -66,6 +77,10 @@ class Alerts_Service_Provider extends Config_Service_Provider {
 	public function init( \Gravity_Forms\Gravity_Tools\Service_Container $container ) {
 		add_action( 'wp_ajax_' . Save_Alerts_Settings_Endpoint::ACTION_NAME, function () use ( $container ) {
 			$container->get( self::SAVE_ALERTS_SETTINGS_ENDPOINT )->handle();
+		} );
+
+		add_action( 'wp_ajax_' . Send_Test_Alert_Endpoint::ACTION_NAME, function () use ( $container ) {
+			$container->get( self::SEND_TEST_ALERT_ENDPOINT )->handle();
 		} );
 
 		if ( ! wp_next_scheduled( self::FAILED_EMAILS_ALERT_ACTION_NAME ) ) {

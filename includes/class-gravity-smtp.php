@@ -29,6 +29,7 @@ use Gravity_Forms\Gravity_SMTP\Telemetry\Telemetry_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Tracking\Tracking_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Translations\Translations_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Users\Users_Service_Provider;
+use Gravity_Forms\Gravity_SMTP\Utils\Booliesh;
 use Gravity_Forms\Gravity_Tools\Service_Container;
 use Gravity_Forms\Gravity_Tools\Providers\Config_Collection_Service_Provider;
 use Gravity_Forms\Gravity_Tools\Updates\Updates_Service_Provider;
@@ -91,6 +92,8 @@ class Gravity_SMTP {
 		// Ensure suppression table is set up properly
 		$routines->add( 'suppression_tables', array( self::class, 'create_suppression_table' ) );
 
+		// Ensure users who had tracking enabled previously have that feature migrated on update.
+		$routines->add( 'enabled_tracking_experimental_migration', array( self::class, 'migrate_enabled_tracking_to_experimental' ) );
 		add_action( 'plugins_loaded', function() use ( $routines ) {
 			$routines->handle();
 		}, 10 );
@@ -240,6 +243,32 @@ class Gravity_SMTP {
 		dbDelta( $sql );
 	}
 
+	/**
+	 * If a user previously had open tracking enabled before it was experimental, update
+	 * the experimental setting to be enabled on migration.
+	 *
+	 * @since 1.7.0
+	 *
+	 * @return void
+	 */
+	public static function migrate_enabled_tracking_to_experimental() {
+		$settings = get_option( 'gravitysmtp_config' );
+		$settings = json_decode( $settings, true );
+
+		$open_tracking = isset( $settings['open_tracking'] ) ? $settings['open_tracking'] : false;
+		$open_tracking = Booliesh::get( $open_tracking );
+
+		if ( ! $open_tracking ) {
+			return;
+		}
+
+		$experiments = isset( $settings['enabled_experimental_features'] ) ? $settings['enabled_experimental_features']  : array();
+		$experiments['email_open_tracking'] = true;
+		$settings['enabled_experimental_features'] = $experiments;
+
+		update_option( 'gravitysmtp_config', json_encode( $settings ) );
+	}
+
 	public static function container() {
 		if ( is_null( self::$container ) ) {
 			self::load_providers();
@@ -272,7 +301,7 @@ class Gravity_SMTP {
 			Feature_Flag_Manager::enable_flag( 'mailchimp_integration' );
 
 			Feature_Flag_Manager::add( 'email_open_tracking', 'Email Open Tracking' );
-			Feature_Flag_Manager::enable_flag( 'email_open_tracking' );
+//			Feature_Flag_Manager::enable_flag( 'email_open_tracking' );
 
 			Feature_Flag_Manager::add( 'email_suppression', 'Email Suppression' );
 			Feature_Flag_Manager::enable_flag( 'email_suppression' );
@@ -284,6 +313,15 @@ class Gravity_SMTP {
 			Feature_Flag_Manager::enable_flag( 'experimental_features_setting' );
 
 			Feature_Flag_Manager::add( 'alerts_management', 'Alerts Management' );
+
+			Feature_Flag_Manager::add( 'mailersend_integration', 'MailerSend Integration' );
+			Feature_Flag_Manager::enable_flag( 'mailersend_integration' );
+
+			Feature_Flag_Manager::add( 'elasticemail_integration', 'Elastic Email Integration' );
+			Feature_Flag_Manager::enable_flag( 'elasticemail_integration' );
+
+			Feature_Flag_Manager::add( 'smtp2go_integration', 'SMTP2GO Integration' );
+			Feature_Flag_Manager::enable_flag( 'smtp2go_integration' );
 		} );
 	}
 

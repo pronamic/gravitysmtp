@@ -47,7 +47,7 @@ class Twilio_Alert_Connector implements Alert_Connector {
 		$request = $this->make_request( $this->get_request_url( $account_id ), $request_params );
 
 		if ( is_wp_error( $request ) ) {
-			$this->debug_logger->log_error( __METHOD__ . '(): Request to Twilio failed.' );
+			$this->debug_logger->log_error( __METHOD__ . '(): Request to Twilio failed. Details: ' . $request->get_error_message() );
 
 			return false;
 		}

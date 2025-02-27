@@ -27,6 +27,18 @@ class Connector_Factory {
 			$type = 'Amazon_SES';
 		}
 
+		if ( $type === 'mailersend' ) {
+			$type = 'MailerSend';
+		}
+
+		if ( $type === 'elastic_email' ) {
+			$type = 'Elastic_Email';
+		}
+
+		if( $type === 'SMTP2GO' ) {
+			$type = 'smtp2go';
+		}
+
 		$classname = sprintf( '%s\Types\Connector_%s', __NAMESPACE__, ucfirst( $type ) );
 
 		if ( ! class_exists( $classname ) ) {

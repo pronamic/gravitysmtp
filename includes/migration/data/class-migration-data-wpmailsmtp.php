@@ -63,6 +63,12 @@ class Migration_Data_Wpmailsmtp {
 			'auth'       => "__transform_booleish",
 			'user'       => "username",
 		),
+		'elasticemail' => array(
+			'api_key' => '',
+		),
+		'smtp2go' => array(
+			'api_key' => '',
+		),
 	);
 
 	public function get_migrations() {

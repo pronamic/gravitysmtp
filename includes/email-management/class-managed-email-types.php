@@ -98,6 +98,7 @@ class Managed_Email_Types {
 				'description'      => __( 'Sent to the Site Admin email address when a User resets their password.', 'gravitysmtp' ),
 				'disable_callback' => function () {
 					remove_action( 'after_password_reset', 'wp_password_change_notification' );
+					add_filter( 'woocommerce_disable_password_change_notification', '__return_true' );
 				},
 			),
 			array(

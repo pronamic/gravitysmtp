@@ -37,12 +37,12 @@ class Slack_Alert_Connector implements Alert_Connector {
 		$request = $this->make_request( $webhook_url, $request_params );
 
 		if ( is_wp_error( $request ) ) {
-			$this->debug_logger->log_error( __METHOD__ . '(): Request to Slack failed.' );
+			$this->debug_logger->log_error( __METHOD__ . '(): Request to Webhook URL failed. Details: ' . $request->get_error_message() );
 
 			return false;
 		}
 
-		$this->debug_logger->log_debug( __METHOD__ . '(): Request to Slack succeeded.' );
+		$this->debug_logger->log_debug( __METHOD__ . '(): Request to Webhook URL succeeded.' );
 
 		return true;
 	}

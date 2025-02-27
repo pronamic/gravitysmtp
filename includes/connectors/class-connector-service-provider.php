@@ -8,7 +8,9 @@ use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Migrate_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Connectors\Oauth\Google_Oauth_Handler;
 use Gravity_Forms\Gravity_SMTP\Connectors\Oauth\Microsoft_Oauth_Handler;
 use Gravity_Forms\Gravity_SMTP\Connectors\Oauth\Zoho_Oauth_Handler;
+use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Elastic_Email;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Mailchimp;
+use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Mailersend;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_PHPMail;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Data_Store_Router;
 use Gravity_Forms\Gravity_SMTP\Enums\Connector_Status_Enum;
@@ -83,34 +85,38 @@ class Connector_Service_Provider extends Config_Service_Provider {
 
 	const CONNECTOR_ENDPOINTS_CONFIG = 'connector_endpoints_config';
 
-	const CONNECTOR_GENERIC    = 'Generic';
-	const CONNECTOR_SENDGRID   = 'Sendgrid';
-	const CONNECTOR_POSTMARK   = 'Postmark';
-	const CONNECTOR_AMAZON_SES = 'Amazon';
-	const CONNECTOR_GOOGLE     = 'Google';
-	const CONNECTOR_BREVO      = 'Brevo';
-	const CONNECTOR_MAILGUN    = 'Mailgun';
-	const CONNECTOR_ZOHO       = 'Zoho';
-	const CONNECTOR_MICROSOFT  = 'Microsoft';
-	const CONNECTOR_SPARKPOST  = 'Sparkpost';
-	const CONNECTOR_SMTP2GO    = 'SMTP2GO';
-	const CONNECTOR_MAILCHIMP  = 'Mailchimp';
-	const CONNECTOR_PHPMAIL    = 'Phpmail';
+	const CONNECTOR_AMAZON_SES    = 'Amazon';
+	const CONNECTOR_BREVO         = 'Brevo';
+	const CONNECTOR_ELASTIC_EMAIL = 'Elastic_Email';
+	const CONNECTOR_GENERIC       = 'Generic';
+	const CONNECTOR_GOOGLE        = 'Google';
+	const CONNECTOR_MAILCHIMP     = 'Mailchimp';
+	const CONNECTOR_MAILERSEND    = 'MailerSend';
+	const CONNECTOR_MAILGUN       = 'Mailgun';
+	const CONNECTOR_MICROSOFT     = 'Microsoft';
+	const CONNECTOR_PHPMAIL       = 'Phpmail';
+	const CONNECTOR_POSTMARK      = 'Postmark';
+	const CONNECTOR_SENDGRID      = 'Sendgrid';
+	const CONNECTOR_SMTP2GO       = 'SMTP2GO';
+	const CONNECTOR_SPARKPOST     = 'Sparkpost';
+	const CONNECTOR_ZOHO          = 'Zoho';
 
 	protected $connectors = array(
-		self::CONNECTOR_GENERIC    => Connector_Generic::class,
-		self::CONNECTOR_SENDGRID   => Connector_Sendgrid::class,
-		self::CONNECTOR_POSTMARK   => Connector_Postmark::class,
-		self::CONNECTOR_AMAZON_SES => Connector_Amazon::class,
-		self::CONNECTOR_GOOGLE     => Connector_Google::class,
-		self::CONNECTOR_BREVO      => Connector_Brevo::class,
-		self::CONNECTOR_MAILGUN    => Connector_Mailgun::class,
-		self::CONNECTOR_ZOHO       => Connector_Zoho::class,
-		self::CONNECTOR_MICROSOFT  => Connector_Microsoft::class,
-		self::CONNECTOR_SPARKPOST  => Connector_Sparkpost::class,
-		self::CONNECTOR_SMTP2GO    => Connector_SMTP2GO::class,
-		self::CONNECTOR_MAILCHIMP  => Connector_Mailchimp::class,
-		self::CONNECTOR_PHPMAIL    => Connector_PHPMail::class,
+		self::CONNECTOR_AMAZON_SES    => Connector_Amazon::class,
+		self::CONNECTOR_BREVO         => Connector_Brevo::class,
+		self::CONNECTOR_ELASTIC_EMAIL => Connector_Elastic_Email::class,
+		self::CONNECTOR_GENERIC       => Connector_Generic::class,
+		self::CONNECTOR_GOOGLE        => Connector_Google::class,
+		self::CONNECTOR_MAILCHIMP     => Connector_Mailchimp::class,
+		self::CONNECTOR_MAILERSEND    => Connector_Mailersend::class,
+		self::CONNECTOR_MAILGUN       => Connector_Mailgun::class,
+		self::CONNECTOR_MICROSOFT     => Connector_Microsoft::class,
+		self::CONNECTOR_PHPMAIL       => Connector_PHPMail::class,
+		self::CONNECTOR_POSTMARK      => Connector_Postmark::class,
+		self::CONNECTOR_SENDGRID      => Connector_Sendgrid::class,
+		self::CONNECTOR_SMTP2GO       => Connector_SMTP2GO::class,
+		self::CONNECTOR_SPARKPOST     => Connector_Sparkpost::class,
+		self::CONNECTOR_ZOHO          => Connector_Zoho::class,
 	);
 
 	protected $configs = array(
@@ -476,17 +482,19 @@ class Connector_Service_Provider extends Config_Service_Provider {
 			$order = array(
 				'amazon-ses',
 				'brevo',
+				'elastic_email',
+				'generic',
 				'google-gmail',
-				'mailgun',
 				'mailchimp',
+				'mailersend',
+				'mailgun',
 				'microsoft',
+				'phpmail',
 				'postmark',
 				'sendgrid',
 				'smtp2go',
 				'sparkpost',
 				'zoho-mail',
-				'generic',
-				'phpmail',
 			);
 
 			// todo: setup wizard data should only be injected if should display is true for the app: includes/apps/setup-wizard/config/class-setup-wizard-config.php:18
@@ -535,7 +543,7 @@ class Connector_Service_Provider extends Config_Service_Provider {
 			return $connector->update_wp_mail_froms( $atts );
 		}, - 10, 1 );
 
-		add_action( 'phpmailer_init', function( &$phpmailer ) use ( $container ) {
+		add_action( 'phpmailer_init', function ( &$phpmailer ) use ( $container ) {
 			$type = $container->get( self::DATA_STORE_ROUTER )->get_connector_status_of_type( Connector_Status_Enum::PRIMARY, '' );
 
 			if ( $type !== 'phpmail' ) {
