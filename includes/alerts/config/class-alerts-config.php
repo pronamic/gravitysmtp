@@ -77,7 +77,7 @@ class Alerts_Config extends Config {
 				'alert_threshold_interval_help_text' => esc_html__( 'Interval for sending alerts about failures (in minutes).', 'gravitysmtp' ),
 				'slack_heading'                      => esc_html__( 'Webhooks', 'gravitysmtp' ),
 				'slack_alerts_label'                 => esc_html__( 'Webhook Alerts', 'gravitysmtp' ),
-				'slack_alerts_help_text'             => esc_html__( "Enable the webhook URL to receive alerts when email sending fails.", 'gravitysmtp' ),
+				'slack_alerts_help_text'             => esc_html__( "Get notified via webhook or SMS (Twilio) when emails fail to send. Webhooks can be used with services like Slack, Zapier, and more.", 'gravitysmtp' ),
 				'slack_webhook_add_button_label'     => esc_html__( 'Add Webhook', 'gravitysmtp' ),
 				'slack_webhook_delete_button_label'  => esc_html__( 'Delete', 'gravitysmtp' ),
 				'start_sending_test_alert'           => esc_html__( 'Sending a test alert from the alerts settings page.', 'gravitysmtp' ),
@@ -203,7 +203,7 @@ class Alerts_Config extends Config {
 							'component' => 'Input',
 							'props'     => array(
 								'labelAttributes' => array(
-									'label'  => esc_html__( 'Twilio Account ID', 'gravitysmtp' ),
+									'label'  => esc_html__( 'Twilio Account SID', 'gravitysmtp' ),
 									'size'   => 'text-sm',
 									'weight' => 'medium',
 								),

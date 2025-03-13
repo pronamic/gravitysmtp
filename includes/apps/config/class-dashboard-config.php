@@ -326,21 +326,6 @@ class Dashboard_Config extends Config {
 
 		$sorted = $this->pad_with_empty_values( $sorted );
 
-		uksort( $sorted, function( $a, $b ) {
-			$a_date = strtotime( $a );
-			$b_date = strtotime( $b );
-
-			if ( $a_date === $b_date ) {
-				return 0;
-			}
-
-			if ( $a_date < $b_date ) {
-				return -1;
-			}
-
-			return 1;
-		} );
-
 		$chart_data = array();
 
 		foreach ( $sorted as $date => $values ) {
@@ -405,17 +390,21 @@ class Dashboard_Config extends Config {
 			new \DateTime( $this->end )
 		);
 
+		$sorted_values = array();
+
 		foreach( $period as $key => $value ) {
 			$date = $value->format( $format );
 			if ( ! array_key_exists( $date, $data ) ) {
-				$data[ $date ] = array(
+				$sorted_values[ $date ] = array(
 					'sent' => 0,
 					'failed' => 0,
 				);
+			} else {
+				$sorted_values[ $date ] = $data[ $date ];
 			}
 		}
 
-		return $data;
+		return $sorted_values;
 	}
 
 	protected function get_email_totals() {

@@ -333,6 +333,12 @@ class Connector_MailerSend extends Connector_Base {
 	 * @return bool|\WP_Error Returns true if configured, or a WP_Error object if not.
 	 */
 	public function is_configured() {
+		$configured = $this->get_setting( self::SETTING_CONFIGURED, null );
+
+		if ( ! is_null( $configured ) ) {
+			return $configured;
+		}
+
 		$valid_api = $this->verify_api_key();
 
 		if ( is_wp_error( $valid_api ) ) {

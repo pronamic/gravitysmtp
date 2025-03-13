@@ -93,6 +93,7 @@ class Connector_Service_Provider extends Config_Service_Provider {
 	const CONNECTOR_MAILCHIMP     = 'Mailchimp';
 	const CONNECTOR_MAILERSEND    = 'MailerSend';
 	const CONNECTOR_MAILGUN       = 'Mailgun';
+	const CONNECTOR_MAILJET       = 'Mailjet';
 	const CONNECTOR_MICROSOFT     = 'Microsoft';
 	const CONNECTOR_PHPMAIL       = 'Phpmail';
 	const CONNECTOR_POSTMARK      = 'Postmark';
@@ -110,6 +111,7 @@ class Connector_Service_Provider extends Config_Service_Provider {
 		self::CONNECTOR_MAILCHIMP     => Connector_Mailchimp::class,
 		self::CONNECTOR_MAILERSEND    => Connector_Mailersend::class,
 		self::CONNECTOR_MAILGUN       => Connector_Mailgun::class,
+		self::CONNECTOR_MAILJET       => Connector_Mailjet::class,
 		self::CONNECTOR_MICROSOFT     => Connector_Microsoft::class,
 		self::CONNECTOR_PHPMAIL       => Connector_PHPMail::class,
 		self::CONNECTOR_POSTMARK      => Connector_Postmark::class,

@@ -322,6 +322,12 @@ class Gravity_SMTP {
 
 			Feature_Flag_Manager::add( 'smtp2go_integration', 'SMTP2GO Integration' );
 			Feature_Flag_Manager::enable_flag( 'smtp2go_integration' );
+
+			Feature_Flag_Manager::add( 'mailjet_integration', 'Mailjet Integration' );
+			Feature_Flag_Manager::enable_flag( 'mailjet_integration' );
+
+			Feature_Flag_Manager::add( 'sparkpost_integration', 'SparkPost Integration' );
+			Feature_Flag_Manager::enable_flag( 'sparkpost_integration' );
 		} );
 	}
 

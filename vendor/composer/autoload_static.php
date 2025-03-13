@@ -59,6 +59,7 @@ class ComposerStaticInitdccbae485ed1cb784e521fe56eec9a94
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Mailchimp' => __DIR__ . '/../..' . '/includes/connectors/types/class-connector-mailchimp.php',
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_MailerSend' => __DIR__ . '/../..' . '/includes/connectors/types/class-connector-mailersend.php',
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Mailgun' => __DIR__ . '/../..' . '/includes/connectors/types/class-connector-mailgun.php',
+        'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Mailjet' => __DIR__ . '/../..' . '/includes/connectors/types/class-connector-mailjet.php',
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Microsoft' => __DIR__ . '/../..' . '/includes/connectors/types/class-connector-microsoft.php',
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Phpmail' => __DIR__ . '/../..' . '/includes/connectors/types/class-connector-phpmail.php',
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Postmark' => __DIR__ . '/../..' . '/includes/connectors/types/class-connector-postmark.php',

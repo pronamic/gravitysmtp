@@ -1,3 +1,10 @@
+### 1.8.0 | 2025-03-12
+- Added Mailjet as a connector.
+- Added SparkPost as a connector.
+- Fixed a bug that causes settings locked by a constant to save to the database on various operations.
+- Fixed an issue that causes the Events table on the Dashboard to show events in the incorrect order if they span multiple years.
+- Fixed an issue that causes the events log table to show no results if the date filter is used with a single date for to and from values.
+
 ### 1.7.0 | 2025-02-26
 - Added the ability to send a test Alert for all existing Alert types.
 - Added a lock icon tooltip to integration card when the integration is set as primary or backup by a constant.

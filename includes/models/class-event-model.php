@@ -601,7 +601,7 @@ class Event_Model {
 
 		$table_name = $this->get_table_name();
 
-		$sql = $wpdb->prepare( "SELECT count(*) as total, DATE_FORMAT(date_created, %s) as date_created, status FROM ( SELECT * FROM $table_name WHERE date_created >= %s AND date_created <= %s AND status != 'pending' ) AS timeboxed GROUP BY DATE_FORMAT(date_created, %s), status", $format, $start, $end, $format );
+		$sql = $wpdb->prepare( "SELECT count(*) as total, DATE_FORMAT(date_created, %s) as date_created, date_created as sort_date, status FROM ( SELECT * FROM $table_name WHERE date_created >= %s AND date_created <= %s AND status != 'pending' ) AS timeboxed GROUP BY DATE_FORMAT(date_created, %s), status", $format, $start, $end, $format );
 
 		$results = $wpdb->get_results( $sql, ARRAY_A );
 

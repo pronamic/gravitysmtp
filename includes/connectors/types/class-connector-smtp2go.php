@@ -282,7 +282,7 @@ class Connector_Smtp2go extends Connector_Base {
 							'helpTextAttributes' => array(
 								'asHtml'  => true,
 								/* translators: 1: opening anchor tag, 2: closing anchor tag */
-								'content' => sprintf( __( 'To generate an API key from SMTP2GO, log in to your SMTP2GO dashboard and navigate to the API section. %1$sCreate a new API key%2$s and ensure your %3$sverified senders%2$s are configured correctly.', 'gravitysmtp' ), '<a class="gform-link gform-typography--size-text-xs" href="https://app.smtp2go.com/sending/apikeys/" target="_blank" rel="noopener noreferrer">', '</a>', '<a class="gform-link gform-typography--size-text-xs" href="https://app.smtp2go.com/sending/verified_senders/" target="_blank" rel="noopener noreferrer">' ),
+								'content' => sprintf( __( 'To generate an API key from SMTP2GO, log in to your SMTP2GO dashboard and navigate to the API section. %1$sCreate a new API key%2$s and ensure your %3$sverified senders%2$s are configured correctly.', 'gravitysmtp' ), '<a class="gform-link gform-typography--size-text-xs" href="https://docs.gravitysmtp.com/obtaining-your-smtp2go-api-key/" target="_blank" rel="noopener noreferrer">', '</a>', '<a class="gform-link gform-typography--size-text-xs" href="https://docs.gravitysmtp.com/adding-verified-senders-in-smtp2go/" target="_blank" rel="noopener noreferrer">' ),
 								'size'    => 'text-xs',
 								'weight'  => 'regular',
 							),
@@ -317,6 +317,12 @@ class Connector_Smtp2go extends Connector_Base {
 	 * @return bool|\WP_Error Returns true if configured, or a WP_Error object if not.
 	 */
 	public function is_configured() {
+		$configured = $this->get_setting( self::SETTING_CONFIGURED, null );
+
+		if ( ! is_null( $configured ) ) {
+			return $configured;
+		}
+
 		$valid_api = $this->verify_api_key();
 
 		if ( is_wp_error( $valid_api ) ) {

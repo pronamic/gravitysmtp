@@ -54,6 +54,7 @@ return array(
     'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Mailchimp' => $baseDir . '/includes/connectors/types/class-connector-mailchimp.php',
     'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_MailerSend' => $baseDir . '/includes/connectors/types/class-connector-mailersend.php',
     'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Mailgun' => $baseDir . '/includes/connectors/types/class-connector-mailgun.php',
+    'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Mailjet' => $baseDir . '/includes/connectors/types/class-connector-mailjet.php',
     'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Microsoft' => $baseDir . '/includes/connectors/types/class-connector-microsoft.php',
     'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Phpmail' => $baseDir . '/includes/connectors/types/class-connector-phpmail.php',
     'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Postmark' => $baseDir . '/includes/connectors/types/class-connector-postmark.php',

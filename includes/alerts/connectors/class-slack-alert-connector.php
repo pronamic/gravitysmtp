@@ -25,7 +25,7 @@ class Slack_Alert_Connector implements Alert_Connector {
 
 		$request_body = apply_filters( 'gravitysmtp_slack_alert_request_body', $request_body, $send_args );
 
-		$this->debug_logger->log_debug( __METHOD__ . '(): About to make request to Slack with the following request args: ' . json_encode( $request_body ) );
+		$this->debug_logger->log_debug( __METHOD__ . '(): About to make request to a webhook url with the following request args: ' . json_encode( $request_body ) );
 
 		$request_params = array(
 			'body'    => json_encode( $request_body ),

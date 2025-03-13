@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Gravity SMTP 1.7.0\n"
+"Project-Id-Version: Gravity SMTP 1.8.0\n"
 "Report-Msgid-Bugs-To: https://gravityforms.com/support\n"
 "Last-Translator: Gravity Forms <support@gravityforms.com>\n"
 "Language-Team: Gravity Forms <support@gravityforms.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-02-26T18:48:12+00:00\n"
+"POT-Creation-Date: 2025-03-12T16:17:32+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: gravitysmtp\n"
@@ -83,7 +83,7 @@ msgid "Webhook Alerts"
 msgstr ""
 
 #: includes/alerts/config/class-alerts-config.php:80
-msgid "Enable the webhook URL to receive alerts when email sending fails."
+msgid "Get notified via webhook or SMS (Twilio) when emails fail to send. Webhooks can be used with services like Slack, Zapier, and more."
 msgstr ""
 
 #: includes/alerts/config/class-alerts-config.php:81
@@ -175,7 +175,7 @@ msgid "Account Name"
 msgstr ""
 
 #: includes/alerts/config/class-alerts-config.php:206
-msgid "Twilio Account ID"
+msgid "Twilio Account SID"
 msgstr ""
 
 #: includes/alerts/config/class-alerts-config.php:217
@@ -392,7 +392,7 @@ msgstr ""
 
 #: includes/apps/config/class-dashboard-config.php:157
 #: includes/apps/config/class-dashboard-config.php:167
-#: includes/apps/config/class-dashboard-config.php:364
+#: includes/apps/config/class-dashboard-config.php:349
 #: includes/apps/config/class-email-log-config.php:2555
 #: includes/apps/config/class-email-log-config.php:2559
 #: includes/enums/class-status-enum.php:54
@@ -406,7 +406,7 @@ msgstr ""
 
 #: includes/apps/config/class-dashboard-config.php:159
 #: includes/apps/config/class-dashboard-config.php:168
-#: includes/apps/config/class-dashboard-config.php:370
+#: includes/apps/config/class-dashboard-config.php:355
 #: includes/apps/config/class-email-log-config.php:2568
 #: includes/apps/config/class-email-log-config.php:2572
 #: includes/enums/class-status-enum.php:55
@@ -502,37 +502,37 @@ msgstr ""
 msgid "Last 365 Days"
 msgstr ""
 
-#: includes/apps/config/class-dashboard-config.php:515
+#: includes/apps/config/class-dashboard-config.php:504
 msgid "Getting Started"
 msgstr ""
 
-#: includes/apps/config/class-dashboard-config.php:519
+#: includes/apps/config/class-dashboard-config.php:508
 msgid "Troubleshooting Gravity SMTP"
 msgstr ""
 
-#: includes/apps/config/class-dashboard-config.php:523
+#: includes/apps/config/class-dashboard-config.php:512
 msgid "Email Delivery Best Practices"
 msgstr ""
 
-#: includes/apps/config/class-dashboard-config.php:527
+#: includes/apps/config/class-dashboard-config.php:516
 msgid "An Overview of Gravity SMTP"
 msgstr ""
 
-#: includes/apps/config/class-dashboard-config.php:531
+#: includes/apps/config/class-dashboard-config.php:520
 #: includes/apps/config/class-settings-config.php:130
 #: includes/apps/config/class-settings-config.php:295
 msgid "Integrations"
 msgstr ""
 
-#: includes/apps/config/class-dashboard-config.php:535
+#: includes/apps/config/class-dashboard-config.php:524
 msgid "Frequently Asked Questions"
 msgstr ""
 
-#: includes/apps/config/class-dashboard-config.php:539
+#: includes/apps/config/class-dashboard-config.php:528
 msgid "Gravity SMTP Changelog"
 msgstr ""
 
-#: includes/apps/config/class-dashboard-config.php:543
+#: includes/apps/config/class-dashboard-config.php:532
 msgid "Open Support Ticket"
 msgstr ""
 
@@ -1145,10 +1145,12 @@ msgstr ""
 #: includes/connectors/types/class-connector-mailchimp.php:322
 #: includes/connectors/types/class-connector-mailersend.php:314
 #: includes/connectors/types/class-connector-mailgun.php:370
+#: includes/connectors/types/class-connector-mailjet.php:346
 #: includes/connectors/types/class-connector-phpmail.php:119
 #: includes/connectors/types/class-connector-postmark.php:268
 #: includes/connectors/types/class-connector-sendgrid.php:267
 #: includes/connectors/types/class-connector-smtp2go.php:298
+#: includes/connectors/types/class-connector-sparkpost.php:354
 msgid "General Settings"
 msgstr ""
 
@@ -2207,7 +2209,7 @@ msgstr ""
 msgid "If Force Name is enabled, the Default From Name will override other plugin settings for all outgoing emails."
 msgstr ""
 
-#: includes/connectors/class-connector-service-provider.php:573
+#: includes/connectors/class-connector-service-provider.php:575
 msgid "No Primary or Backup connections enabled. Using wp_mail() to send message."
 msgstr ""
 
@@ -2333,10 +2335,12 @@ msgstr ""
 #: includes/connectors/types/class-connector-mailchimp.php:64
 #: includes/connectors/types/class-connector-mailersend.php:52
 #: includes/connectors/types/class-connector-mailgun.php:60
+#: includes/connectors/types/class-connector-mailjet.php:53
 #: includes/connectors/types/class-connector-microsoft.php:144
 #: includes/connectors/types/class-connector-postmark.php:46
 #: includes/connectors/types/class-connector-sendgrid.php:39
 #: includes/connectors/types/class-connector-smtp2go.php:51
+#: includes/connectors/types/class-connector-sparkpost.php:56
 #: includes/connectors/types/class-connector-zoho.php:67
 #: includes/logging/log/class-wp-mail-logger.php:76
 msgid "Email sandboxed."
@@ -2349,10 +2353,12 @@ msgstr ""
 #: includes/connectors/types/class-connector-mailchimp.php:87
 #: includes/connectors/types/class-connector-mailersend.php:67
 #: includes/connectors/types/class-connector-mailgun.php:86
+#: includes/connectors/types/class-connector-mailjet.php:68
 #: includes/connectors/types/class-connector-microsoft.php:176
 #: includes/connectors/types/class-connector-postmark.php:63
 #: includes/connectors/types/class-connector-sendgrid.php:56
 #: includes/connectors/types/class-connector-smtp2go.php:66
+#: includes/connectors/types/class-connector-sparkpost.php:71
 #: includes/connectors/types/class-connector-zoho.php:89
 #: includes/logging/log/class-wp-mail-logger.php:79
 msgid "Email successfully sent."
@@ -2371,11 +2377,13 @@ msgstr ""
 #: includes/connectors/types/class-connector-mailchimp.php:288
 #: includes/connectors/types/class-connector-mailersend.php:282
 #: includes/connectors/types/class-connector-mailgun.php:338
+#: includes/connectors/types/class-connector-mailjet.php:299
 #: includes/connectors/types/class-connector-microsoft.php:325
 #: includes/connectors/types/class-connector-microsoft.php:537
 #: includes/connectors/types/class-connector-postmark.php:222
 #: includes/connectors/types/class-connector-sendgrid.php:221
 #: includes/connectors/types/class-connector-smtp2go.php:266
+#: includes/connectors/types/class-connector-sparkpost.php:298
 #: includes/connectors/types/class-connector-zoho.php:361
 #: includes/connectors/types/class-connector-zoho.php:562
 msgid "Configuration"
@@ -2502,7 +2510,9 @@ msgstr ""
 #: includes/connectors/types/class-connector-elasticemail.php:278
 #: includes/connectors/types/class-connector-mailchimp.php:300
 #: includes/connectors/types/class-connector-mailersend.php:294
+#: includes/connectors/types/class-connector-mailjet.php:311
 #: includes/connectors/types/class-connector-smtp2go.php:278
+#: includes/connectors/types/class-connector-sparkpost.php:334
 msgid "API Key"
 msgstr ""
 
@@ -2512,22 +2522,25 @@ msgid "To generate an API key from Brevo, log in to your Brevo dashboard and nav
 msgstr ""
 
 #: includes/connectors/types/class-connector-brevo.php:343
-#: includes/connectors/types/class-connector-elasticemail.php:345
-#: includes/connectors/types/class-connector-mailersend.php:361
+#: includes/connectors/types/class-connector-elasticemail.php:351
+#: includes/connectors/types/class-connector-mailersend.php:367
 #: includes/connectors/types/class-connector-mailgun.php:524
 #: includes/connectors/types/class-connector-postmark.php:304
 #: includes/connectors/types/class-connector-sendgrid.php:303
-#: includes/connectors/types/class-connector-smtp2go.php:345
+#: includes/connectors/types/class-connector-smtp2go.php:351
+#: includes/connectors/types/class-connector-sparkpost.php:422
 msgid "No API Key provided."
 msgstr ""
 
 #: includes/connectors/types/class-connector-brevo.php:354
-#: includes/connectors/types/class-connector-elasticemail.php:358
-#: includes/connectors/types/class-connector-mailersend.php:372
+#: includes/connectors/types/class-connector-elasticemail.php:364
+#: includes/connectors/types/class-connector-mailersend.php:378
 #: includes/connectors/types/class-connector-mailgun.php:542
+#: includes/connectors/types/class-connector-mailjet.php:411
 #: includes/connectors/types/class-connector-postmark.php:315
 #: includes/connectors/types/class-connector-sendgrid.php:316
-#: includes/connectors/types/class-connector-smtp2go.php:356
+#: includes/connectors/types/class-connector-smtp2go.php:362
+#: includes/connectors/types/class-connector-sparkpost.php:433
 msgid "Invalid API Key provided."
 msgstr ""
 
@@ -2583,6 +2596,7 @@ msgstr ""
 #: includes/connectors/types/class-connector-mailgun.php:382
 #: includes/connectors/types/class-connector-microsoft.php:550
 #: includes/connectors/types/class-connector-phpmail.php:131
+#: includes/connectors/types/class-connector-sparkpost.php:366
 msgid "If Return Path is enabled this adds the return path to the email header which indicates where non-deliverable notifications should be sent. Bounce messages may be lost if not enabled."
 msgstr ""
 
@@ -2592,6 +2606,7 @@ msgstr ""
 #: includes/connectors/types/class-connector-mailgun.php:390
 #: includes/connectors/types/class-connector-microsoft.php:558
 #: includes/connectors/types/class-connector-phpmail.php:139
+#: includes/connectors/types/class-connector-sparkpost.php:374
 msgid "Return Path"
 msgstr ""
 
@@ -2749,11 +2764,11 @@ msgstr ""
 msgid "To generate an API key from Mailchimp, navigate to the %ssettings of your Mailchimp Transactional account%s and look for the API Keys section."
 msgstr ""
 
-#: includes/connectors/types/class-connector-mailchimp.php:383
+#: includes/connectors/types/class-connector-mailchimp.php:389
 msgid "Could not authenticate with Mailchimp."
 msgstr ""
 
-#: includes/connectors/types/class-connector-mailchimp.php:403
+#: includes/connectors/types/class-connector-mailchimp.php:409
 msgid "No authenticated Domains found in your account. Sending will not be possible until you add a verified domain to your Mailchimp Account."
 msgstr ""
 
@@ -2815,6 +2830,31 @@ msgstr ""
 
 #: includes/connectors/types/class-connector-mailgun.php:566
 msgid "Invalid sending domain provided."
+msgstr ""
+
+#: includes/connectors/types/class-connector-mailjet.php:30
+msgid "Mailjet is a powerful transactional email system built for developers but designed so non-tech teams can contribute without coding."
+msgstr ""
+
+#: includes/connectors/types/class-connector-mailjet.php:49
+msgid "Starting email send for Mailjet connector."
+msgstr ""
+
+#: includes/connectors/types/class-connector-mailjet.php:292
+msgid "Mailjet Settings"
+msgstr ""
+
+#. translators: 1: opening anchor tag, 2: closing anchor tag
+#: includes/connectors/types/class-connector-mailjet.php:318
+msgid "To generate an API key from Mailjet, log in to your Mailjet dashboard and navigate to the API section and then %1$sgenerate your API key%2$s."
+msgstr ""
+
+#: includes/connectors/types/class-connector-mailjet.php:332
+msgid "API Secret Key"
+msgstr ""
+
+#: includes/connectors/types/class-connector-mailjet.php:400
+msgid "No API Key or Secret provided."
 msgstr ""
 
 #: includes/connectors/types/class-connector-microsoft.php:33
@@ -2950,6 +2990,37 @@ msgstr ""
 #. translators: 1: opening anchor tag, 2: closing anchor tag
 #: includes/connectors/types/class-connector-smtp2go.php:285
 msgid "To generate an API key from SMTP2GO, log in to your SMTP2GO dashboard and navigate to the API section. %1$sCreate a new API key%2$s and ensure your %3$sverified senders%2$s are configured correctly."
+msgstr ""
+
+#: includes/connectors/types/class-connector-sparkpost.php:33
+msgid "SparkPost provides email delivery services and transactional email for developers at companies of all sizes."
+msgstr ""
+
+#: includes/connectors/types/class-connector-sparkpost.php:52
+msgid "Starting email send for SparkPost connector."
+msgstr ""
+
+#: includes/connectors/types/class-connector-sparkpost.php:291
+msgid "SparkPost Settings"
+msgstr ""
+
+#: includes/connectors/types/class-connector-sparkpost.php:310
+msgid "Account Location"
+msgstr ""
+
+#: includes/connectors/types/class-connector-sparkpost.php:320
+#: includes/enums/class-zoho-datacenters-enum.php:9
+msgid "United States"
+msgstr ""
+
+#: includes/connectors/types/class-connector-sparkpost.php:324
+#: includes/enums/class-zoho-datacenters-enum.php:10
+msgid "Europe"
+msgstr ""
+
+#. translators: 1: opening anchor tag, 2: closing anchor tag
+#: includes/connectors/types/class-connector-sparkpost.php:341
+msgid "To generate an API key from SparkPost, log in to your SparkPost dashboard, navigate to the API Keys section, and %1$sgenerate your API key%2$s."
 msgstr ""
 
 #: includes/connectors/types/class-connector-zoho.php:61
@@ -3275,14 +3346,6 @@ msgstr ""
 
 #: includes/enums/class-suppression-reason-enum.php:49
 msgid "Manually Suppressed"
-msgstr ""
-
-#: includes/enums/class-zoho-datacenters-enum.php:9
-msgid "United States"
-msgstr ""
-
-#: includes/enums/class-zoho-datacenters-enum.php:10
-msgid "Europe"
 msgstr ""
 
 #: includes/enums/class-zoho-datacenters-enum.php:11

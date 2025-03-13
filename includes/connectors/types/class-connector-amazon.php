@@ -423,6 +423,12 @@ class Connector_Amazon extends Connector_Base {
 	}
 
 	public function is_configured() {
+		$configured = $this->get_setting( self::SETTING_CONFIGURED, null );
+
+		if ( ! is_null( $configured ) ) {
+			return $configured;
+		}
+
 		if ( ! $this->get_setting( self::SETTING_CLIENT_ID, '' ) || ! $this->get_setting( self::SETTING_CLIENT_SECRET, '' ) ) {
 			return false;
 		}

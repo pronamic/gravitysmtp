@@ -24,11 +24,16 @@ class SQL_Filter_Parser {
 
 		$sql_array = array();
 
-		foreach( $filters as $key => $value ) {
+		foreach ( $filters as $key => $value ) {
 
 			if ( in_array( $key, $this->date_queryable ) && is_array( $value ) ) {
 				$from = $value[0];
 				$to   = $value[1];
+
+				if ( $from == $to ) {
+					$from = sprintf( '%s 00:00:00', $from );
+					$to   = sprintf( '%s 23:59:59', $to );
+				}
 
 				$sql_array[] = $wpdb->prepare( "`" . $key . "` BETWEEN %s AND %s", $from, $to );
 				continue;
