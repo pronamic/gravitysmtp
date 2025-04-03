@@ -118,7 +118,6 @@ class Connector_Mailgun extends Connector_Base {
 		$body = [
 			'from'           => $atts['from'],
 			'subject'        => $atts['subject'],
-			'h:X-Mailer'     => 'GravitySMTP - Mailgun',
 			'h:Content-Type' => $content_type
 		];
 

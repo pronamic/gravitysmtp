@@ -82,16 +82,21 @@ class Connector_Elastic_Email extends Connector_Base {
 	 * @return array
 	 */
 	public function get_request_params() {
-		$atts    = $this->get_send_atts();
-		$api_key = $this->get_setting( self::SETTING_API_KEY );
-		$is_html = ! empty( $atts['headers']['content-type'] ) && strpos( $atts['headers']['content-type'], 'text/html' ) !== false;
+		$atts       = $this->get_send_atts();
+		$api_key    = $this->get_setting( self::SETTING_API_KEY );
+		$is_html    = ! empty( $atts['headers']['content-type'] ) && strpos( $atts['headers']['content-type'], 'text/html' ) !== false;
+		$from_email = $atts['from']['email'];
+
+		if ( ! empty( $atts['from']['name'] ) ) {
+			$from_email = sprintf( '%s <%s>', $atts['from']['name'], $atts['from']['email'] );
+		}
 
 		$body = array(
 			'Recipients' => array(
 				'To' => array(),
 			),
 			'Content'    => array(
-				'From'    => $atts['from']['email'],
+				'From'    => $from_email,
 				'Subject' => $atts['subject'],
 				'Body'    => array(
 					array(

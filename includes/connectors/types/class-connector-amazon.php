@@ -153,7 +153,8 @@ class Connector_Amazon extends Connector_Base {
 
 		if ( ! empty( $additional_headers ) ) {
 			foreach ( $additional_headers as $key => $value ) {
-				$this->php_mailer->addCustomHeader( $key, $value );
+				$value = str_replace( sprintf( '%s:', $key ), '', $value );
+				$this->php_mailer->addCustomHeader( $key, trim( $value ) );
 			}
 		}
 

@@ -1,3 +1,11 @@
+### 1.8.1 | 2025-04-02
+- Added BCC and CC details to the Email Log Detail screen.
+- Fixed an issue that causes emails sent from the Group File Access plugin to fail.
+- Fixed an issue that causes From Name to not be included when using the Elastic Email integration.
+- Fixed an issue that causes messages from Groundhogg to fail to send if sent via the AWS integration.
+- Fixed an issue which can cause some emails to not be logged when their message body exceeds a certain length.
+- Removed an unnecessary X-Mailer header from Mailgun requests.
+
 ### 1.8.0 | 2025-03-12
 - Added Mailjet as a connector.
 - Added SparkPost as a connector.

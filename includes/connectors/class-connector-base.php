@@ -295,6 +295,8 @@ abstract class Connector_Base {
 	}
 
 	protected function set_email_log_data( $subject, $message, $to, $from, $headers, $attachments, $source, $params = array() ) {
+		unset( $params['body'] );
+
 		$this->events->update(
 			array(
 				'subject' => $subject,

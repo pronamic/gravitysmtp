@@ -166,6 +166,26 @@ class Log_Details_Model {
 
 		$clean_from_email = $this->extract_email( $extra['from'] );
 
+		$cc = array();
+		$bcc = array();
+
+		if ( ! empty( $extra['headers']['cc'] ) ) {
+			// @var Recipient_Collection $cc_values
+			$cc_values = $extra['headers']['cc'];
+
+			foreach( $cc_values->as_array() as $cc_value ) {
+				$cc[] = $cc_value['email']; 
+			}
+		}
+
+		if ( ! empty( $extra['headers']['bcc'] ) ) {
+			$bcc_values = $extra['headers']['bcc'];
+
+			foreach( $bcc_values->as_array() as $bcc_value ) {
+				$bcc[] = $bcc_value['email'];
+			}
+		}
+
 		$details = array(
 			'date'                  => $this->convert_dates_to_timezone( $row['date_updated'] ),
 			'from'                  => $extra['from'],
@@ -195,6 +215,14 @@ class Log_Details_Model {
 
 		if ( Feature_Flag_Manager::is_enabled( 'email_open_tracking' ) && $open_tracking_enabled ) {
 			$details[ 'opened' ] = isset( $row['opened'] ) ? $row['opened'] : __( 'No', 'gravitysmtp' );
+		}
+
+		if ( ! empty( $cc ) ) {
+			$details['cc'] = implode( ', ', $cc );
+		}
+
+		if ( ! empty( $bcc ) ) {
+			$details['bcc'] = implode( ', ', $bcc );
 		}
 
 		return $details;

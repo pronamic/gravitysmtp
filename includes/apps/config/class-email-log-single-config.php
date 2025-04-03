@@ -43,35 +43,37 @@ class Email_Log_Single_Config extends Config {
 			'error_alert_generic_message' => esc_html__( 'Could not save; please check your logs.', 'gravitysmtp' ),
 			'error_alert_close_text'      => esc_html__( 'Close', 'gravitysmtp' ),
 			'log_detail'                  => array(
-				'top_heading'                    => esc_html__( 'Email Log Details', 'gravitysmtp' ),
-//				'top_content'                    => esc_html__( '', 'gravitysmtp' ),
-				'top_error'                      => esc_html__( 'The email could not be found, go back and try again.', 'gravitysmtp' ),
-				'action_button_view_email_label' => esc_html__( 'View Email', 'gravitysmtp' ),
-				'action_button_resend_label'     => esc_html__( 'Resend', 'gravitysmtp' ),
-				'action_button_print_label'      => esc_html__( 'Print', 'gravitysmtp' ),
-				'action_button_export_label'     => esc_html__( 'Export', 'gravitysmtp' ),
-				'action_button_delete_label'     => esc_html__( 'Delete Log Entry', 'gravitysmtp' ),
-				'back_button_label'              => esc_html__( 'Back to Email Log', 'gravitysmtp' ),
-				'main_box_heading'               => esc_html__( 'Email Details', 'gravitysmtp' ),
-				'main_box_date_label'            => esc_html__( 'Date Sent', 'gravitysmtp' ),
-				'main_box_from_label'            => esc_html__( 'From', 'gravitysmtp' ),
-				'main_box_to_label'              => esc_html__( 'To', 'gravitysmtp' ),
-				'main_box_subject_label'         => esc_html__( 'Subject', 'gravitysmtp' ),
-				'nav_button_next_title'          => esc_html__( 'Navigate to the next log detail', 'gravitysmtp' ),
-				'nav_button_prev_title'          => esc_html__( 'Navigate to the previous log detail', 'gravitysmtp' ),
-				'secondary_box_heading'          => esc_html__( 'Technical Information', 'gravitysmtp' ),
-				'secondary_box_log_heading'      => esc_html__( 'Log', 'gravitysmtp' ),
-				'secondary_box_headers_heading'  => esc_html__( 'Headers', 'gravitysmtp' ),
-				'sidebar_status_heading'         => esc_html__( 'Log Details', 'gravitysmtp' ),
-				'sidebar_status_label'           => esc_html__( 'Status:', 'gravitysmtp' ),
-				'sidebar_opened_label'           => esc_html__( 'Opened:', 'gravitysmtp' ),
-				'sidebar_service_label'          => esc_html__( 'Service:', 'gravitysmtp' ),
-				'sidebar_has_attachment_label'   => esc_html__( 'Has attachment:', 'gravitysmtp' ),
-				'sidebar_log_id_label'           => esc_html__( 'Log ID:', 'gravitysmtp' ),
-				'sidebar_source_label'           => esc_html__( 'Source:', 'gravitysmtp' ),
-				'sidebar_attachments_heading'    => esc_html__( 'Attachments', 'gravitysmtp' ),
-				'view_email_desktop_mode'        => esc_html__( 'Preview email in desktop mode', 'gravitysmtp' ),
-				'view_email_mobile_mode'         => esc_html__( 'Preview email in mobile mode', 'gravitysmtp' ),
+				'top_heading'                       => esc_html__( 'Email Log Details', 'gravitysmtp' ),
+				// 'top_content'                    => esc_html__( '', 'gravitysmtp' ),
+										'top_error' => esc_html__( 'The email could not be found, go back and try again.', 'gravitysmtp' ),
+				'action_button_view_email_label'    => esc_html__( 'View Email', 'gravitysmtp' ),
+				'action_button_resend_label'        => esc_html__( 'Resend', 'gravitysmtp' ),
+				'action_button_print_label'         => esc_html__( 'Print', 'gravitysmtp' ),
+				'action_button_export_label'        => esc_html__( 'Export', 'gravitysmtp' ),
+				'action_button_delete_label'        => esc_html__( 'Delete Log Entry', 'gravitysmtp' ),
+				'back_button_label'                 => esc_html__( 'Back to Email Log', 'gravitysmtp' ),
+				'main_box_heading'                  => esc_html__( 'Email Details', 'gravitysmtp' ),
+				'main_box_bcc_label'                => esc_html__( 'BCC', 'gravitysmtp' ),
+				'main_box_cc_label'                 => esc_html__( 'CC', 'gravitysmtp' ),
+				'main_box_date_label'               => esc_html__( 'Date Sent', 'gravitysmtp' ),
+				'main_box_from_label'               => esc_html__( 'From', 'gravitysmtp' ),
+				'main_box_to_label'                 => esc_html__( 'To', 'gravitysmtp' ),
+				'main_box_subject_label'            => esc_html__( 'Subject', 'gravitysmtp' ),
+				'nav_button_next_title'             => esc_html__( 'Navigate to the next log detail', 'gravitysmtp' ),
+				'nav_button_prev_title'             => esc_html__( 'Navigate to the previous log detail', 'gravitysmtp' ),
+				'secondary_box_heading'             => esc_html__( 'Technical Information', 'gravitysmtp' ),
+				'secondary_box_log_heading'         => esc_html__( 'Log', 'gravitysmtp' ),
+				'secondary_box_headers_heading'     => esc_html__( 'Headers', 'gravitysmtp' ),
+				'sidebar_status_heading'            => esc_html__( 'Log Details', 'gravitysmtp' ),
+				'sidebar_status_label'              => esc_html__( 'Status:', 'gravitysmtp' ),
+				'sidebar_opened_label'              => esc_html__( 'Opened:', 'gravitysmtp' ),
+				'sidebar_service_label'             => esc_html__( 'Service:', 'gravitysmtp' ),
+				'sidebar_has_attachment_label'      => esc_html__( 'Has attachment:', 'gravitysmtp' ),
+				'sidebar_log_id_label'              => esc_html__( 'Log ID:', 'gravitysmtp' ),
+				'sidebar_source_label'              => esc_html__( 'Source:', 'gravitysmtp' ),
+				'sidebar_attachments_heading'       => esc_html__( 'Attachments', 'gravitysmtp' ),
+				'view_email_desktop_mode'           => esc_html__( 'Preview email in desktop mode', 'gravitysmtp' ),
+				'view_email_mobile_mode'            => esc_html__( 'Preview email in mobile mode', 'gravitysmtp' ),
 			),
 			/* translators: %1$s is the body of the ajax request. */
 			'resending_email'             => esc_html__( 'Resending email: %1$s', 'gravitysmtp' ),
@@ -103,7 +105,7 @@ class Email_Log_Single_Config extends Config {
 			),
 		);
 
-		$text = "Received: from antivirus1.its.rochester.edu (antivirus.its.rochester.edu [128.151.57.50])
+		$text = 'Received: from antivirus1.its.rochester.edu (antivirus.its.rochester.edu [128.151.57.50])
 				by mail.rochester.edu (8.12.8/8.12.4) with ESMTP id h20GQs90002563;
 				Mon, 24 Mar 2003 11:26:54 -0500 (EST)
 				Received: from antivirus.its.rochester.edu (localhost [127.0.0.1])
@@ -119,7 +121,7 @@ class Email_Log_Single_Config extends Config {
 				From: somesender@mail.rochester.edu
 				Message-Id: <200303241626.h20GQoit002507@mail.rochester.edu>
 				To: someuser@its.rochester.edu
-				Subject: My mail message is about.";
+				Subject: My mail message is about.';
 
 		$lines                          = explode( "\n", $text );
 		$temp_log_detail_techincal_data = array();
@@ -226,9 +228,8 @@ class Email_Log_Single_Config extends Config {
 					'data'      => array_merge( $this->get_log_single_data(), $log_config->get_log_data() ),
 					'i18n'      => array_merge( $this->get_i18n(), $log_config->get_i18n() ),
 					'endpoints' => array(),
-				)
+				),
 			),
 		);
 	}
-
 }
