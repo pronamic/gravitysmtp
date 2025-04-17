@@ -285,7 +285,8 @@ class Debug_Log_Model {
 
 	protected function hydrate( $items ) {
 		return array_map( function( $item ) {
-			return new Log_Line( $item['date_created'], $item['priority'], $item['line'], $item['id'] );
+			$parsed_date = get_date_from_gmt( $item['date_created'], 'Y-m-d H:i:s' );
+			return new Log_Line( $parsed_date, $item['priority'], $item['line'], $item['id'] );
 		}, $items );
 	}
 

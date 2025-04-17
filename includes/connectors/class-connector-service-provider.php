@@ -524,59 +524,6 @@ class Connector_Service_Provider extends Config_Service_Provider {
 			return $data;
 		} );
 
-		/**
-		 * When PHP Mail connector is used, wp_mail() is called. This ensures that the From settings
-		 * in the Integration are respected when sending via this method.
-		 *
-		 * @since 1.1
-		 *
-		 * @return array
-		 */
-		add_filter( 'wp_mail', function ( $atts ) use ( $container ) {
-			$type = $container->get( self::DATA_STORE_ROUTER )->get_connector_status_of_type( Connector_Status_Enum::PRIMARY, '' );
-
-			if ( $type !== 'phpmail' ) {
-				return $atts;
-			}
-
-			$factory   = $container->get( self::CONNECTOR_FACTORY );
-			$connector = $factory->create( $type );
-
-			return $connector->update_wp_mail_froms( $atts );
-		}, - 10, 1 );
-
-		add_action( 'phpmailer_init', function ( &$phpmailer ) use ( $container ) {
-			$type = $container->get( self::DATA_STORE_ROUTER )->get_connector_status_of_type( Connector_Status_Enum::PRIMARY, '' );
-
-			if ( $type !== 'phpmail' ) {
-				return;
-			}
-
-			$factory   = $container->get( self::CONNECTOR_FACTORY );
-			$connector = $factory->create( $type );
-
-			$connector->update_sender( $phpmailer );
-		}, 11 );
-
-		/**
-		 * If wp_mail() is being called, it means we likely don't have a primary or backup connector configured. Catch
-		 * that case and log details.
-		 *
-		 * @since 1.1
-		 *
-		 * @return array
-		 */
-		add_filter( 'wp_mail', function ( $atts ) use ( $container ) {
-			$primary = $container->get( self::DATA_STORE_ROUTER )->get_connector_status_of_type( Connector_Status_Enum::PRIMARY, false );
-			$backup  = $container->get( self::DATA_STORE_ROUTER )->get_connector_status_of_type( Connector_Status_Enum::BACKUP, false );
-
-			if ( ! $primary && ! $backup ) {
-				$logger = $container->get( Logging_Service_Provider::DEBUG_LOGGER );
-				$logger->log_debug( __( 'No Primary or Backup connections enabled. Using wp_mail() to send message.', 'gravitysmtp' ) );
-			}
-
-			return $atts;
-		}, - 10, 1 );
 	}
 
 	private function register_connector_data() {

@@ -28,6 +28,10 @@ class Tools_Config extends Config {
 	protected $name               = 'gravitysmtp_admin_config';
 	protected $overwrite          = false;
 
+	protected $sensitive_keys = [
+		'license_key',
+	];
+
 	public function should_enqueue() {
 		if ( ! is_admin() ) {
 			return false;
@@ -770,27 +774,49 @@ class Tools_Config extends Config {
 	}
 
 	protected function get_defined_constants() {
-		$defined_constants = array_filter( get_defined_constants(), function( $constant ) {
+		$defined_constants = array_filter( get_defined_constants(), function ( $constant ) {
 			return strpos( $constant, 'GRAVITYSMTP_' ) !== false;
 		}, ARRAY_FILTER_USE_KEY );
 
-		$values = array();
+		$connector_factory = Gravity_SMTP::$container->get( Connector_Service_Provider::CONNECTOR_FACTORY );
+		$connector_types   = Gravity_SMTP::$container->get( Connector_Service_Provider::REGISTERED_CONNECTORS );
 
-		foreach ( $defined_constants as $key => $value ) {
-			if ( is_bool( $value ) ) {
-				$value_string = $value ? 'true' : 'false';
-			} else {
-				$value_string = (string) $value;
-			}
-
-			$values[] = array(
-				'label'        => $key,
-				'label_export' => $key,
-				'value'        => $value_string,
-			);
+		$sensitive_fields_by_connector = [];
+		foreach ( $connector_types as $name => $class ) {
+			$sensitive_fields_by_connector[ $name ] = array_fill_keys( $connector_factory->create( $name )->get_sensitive_fields(), true );
 		}
 
-		return $values;
+		$sensitive_lookup = array_fill_keys( $this->sensitive_keys, true );
+
+		return array_map( function ( $key ) use ( $defined_constants, $sensitive_fields_by_connector, $sensitive_lookup ) {
+			$value        = $defined_constants[ $key ];
+			$value_string = is_bool( $value ) ? ( $value ? 'true' : 'false' ) : (string) $value;
+			$setting_key  = strtolower( str_replace( 'GRAVITYSMTP_', '', $key ) );
+
+			$should_obfuscate = isset( $sensitive_lookup[ $setting_key ] ) || $this->is_sensitive_connector_key( $setting_key, $sensitive_fields_by_connector );
+
+			return [
+				'label'        => $key,
+				'label_export' => $key,
+				'value'        => $should_obfuscate && ! empty( $value_string ) ? str_repeat( '*', strlen( $value_string ) ) : $value_string,
+			];
+		}, array_keys( $defined_constants ) );
+	}
+
+	protected function is_sensitive_connector_key( $setting_key, $sensitive_fields_by_connector ) {
+		foreach ( $sensitive_fields_by_connector as $connector_name => $sensitive_fields ) {
+			$connector_prefix_length = strlen( $connector_name ) + 1;
+
+			if ( strncmp( $setting_key, strtolower( $connector_name ) . '_', $connector_prefix_length ) === 0 ) {
+				return isset( $sensitive_fields[ substr( $setting_key, $connector_prefix_length ) ] );
+			}
+
+			if ( isset( $sensitive_fields[ $setting_key ] ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	protected function get_integrations_data() {

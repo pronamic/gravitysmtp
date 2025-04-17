@@ -1,3 +1,12 @@
+### 1.9.0 | 2025-04-16
+- Fixed an issue that causes SMTP2GO to ignore forced from names.
+- Fixed an issue that allows sensitive keys set by constant to display their values in the system report.
+- Fixed an issue that causes the usage analytics constant override to not display its state properly.
+- Fixed an issue that causes the debug log timestamps to always display in UTC.
+- Updated plugin init to a priority of -10 to ensure we run before most other plugins.
+- Updated MailerSend integration description to properly describe the integration.
+- Updated the Microsoft Integration settings to clarify how From Name is handled.
+
 ### 1.8.1 | 2025-04-02
 - Added BCC and CC details to the Email Log Detail screen.
 - Fixed an issue that causes emails sent from the Group File Access plugin to fail.

@@ -25,13 +25,6 @@ class Connector_Phpmail extends Connector_Base {
 		return __( "Use your server's default PHP Mailer to send email.", 'gravitysmtp' );
 	}
 
-	/**
-	 * Sending logic.
-	 *
-	 * @since 1.0
-	 *
-	 * @return bool
-	 */
 	public function send() {
 		$to          = $this->get_att( 'to', '' );
 		$subject     = $this->get_att( 'subject', '' );
@@ -44,13 +37,152 @@ class Connector_Phpmail extends Connector_Base {
 		$params      = $this->get_request_params();
 		$email       = $this->email;
 
+		$this->reset_phpmailer();
+
 		if ( ! empty( $headers['content-type'] ) ) {
 			$headers['content-type'] = $this->get_att( 'content_type', $headers['content-type'] );
 		}
 
 		$this->set_email_log_data( $subject, $message, $to, empty( $from['name'] ) ? $from['email'] : sprintf( '%s <%s>', $from['name'], $from['email'] ), $headers, $attachments, $source, $params );
 
-		return true;
+		$this->logger->log( $email, 'started', __( 'Starting email send for PHPMail connector.', 'gravitysmtp' ) );
+
+		$this->php_mailer->setFrom( $from['email'], empty( $from['name'] ) ? '' : $from['name'] );
+
+		foreach( $to->recipients() as $recipient ) {
+			if ( ! empty( $recipient->name() ) ) {
+				$this->php_mailer->addAddress( $recipient->email(), $recipient->name() );
+			} else {
+				$this->php_mailer->addAddress( $recipient->email() );
+			}
+		}
+
+		$this->php_mailer->Subject = $subject;
+
+		$this->php_mailer->Body = $message;
+
+		if ( ! empty( $headers['cc'] ) ) {
+			foreach ( $headers['cc']->recipients() as $recipient ) {
+				if ( ! empty( $recipient->name() ) ) {
+					$this->php_mailer->addCC( $recipient->email(), $recipient->name() );
+				} else {
+					$this->php_mailer->addCC( $recipient->email() );
+				}
+			}
+		}
+
+		if ( ! empty( $headers['bcc'] ) ) {
+			foreach ( $headers['bcc']->recipients() as $recipient ) {
+				if ( ! empty( $recipient->name() ) ) {
+					$this->php_mailer->addBCC( $recipient->email(), $recipient->name() );
+				} else {
+					$this->php_mailer->addBCC( $recipient->email() );
+				}
+			}
+		}
+
+		if ( ! empty( $attachments ) ) {
+			foreach ( $attachments as $attachment ) {
+				$this->php_mailer->addAttachment( $attachment );
+			}
+		}
+
+		if ( ! empty( $reply_to ) ) {
+			foreach( $reply_to as $address ) {
+				if ( isset( $address['name'] ) ) {
+					$this->php_mailer->addReplyTo( $address['email'], $address['name'] );
+				} else {
+					$this->php_mailer->addReplyTo( $address['email'] );
+				}
+			}
+		}
+
+		if ( ! empty( $headers['content-type'] ) && strpos( $headers['content-type'], 'text/html' ) !== false ) {
+			$this->php_mailer->isHTML( true );
+		} else {
+			$this->php_mailer->isHTML( false );
+			$this->php_mailer->ContentType = 'text/plain';
+		}
+
+		$this->php_mailer->CharSet = 'UTF-8';
+
+		$additional_headers = $this->get_filtered_message_headers();
+
+		if ( ! empty( $additional_headers ) ) {
+			foreach ( $additional_headers as $key => $value ) {
+				$this->php_mailer->addCustomHeader( $key, $value );
+			}
+		}
+
+		if ( (bool) $this->get_setting( self::SETTING_USE_RETURN_PATH, false ) ) {
+			$this->php_mailer->Sender = $this->php_mailer->From;
+		}
+
+		if ( $this->is_test_mode() ) {
+			$this->events->update( array( 'status' => 'sandboxed' ), $email );
+			$this->logger->log( $email, 'sandboxed', __( 'Email sandboxed.', 'gravitysmtp' ) );
+
+			return true;
+		}
+		/**
+		 * Fires after PHPMailer is initialized.
+		 *
+		 * @since 2.2.0
+		 *
+		 * @param PHPMailer $phpmailer The PHPMailer instance (passed by reference).
+		 */
+		do_action_ref_array( 'phpmailer_init', array( &$this->php_mailer ) );
+
+		$mail_data = compact( 'to', 'subject', 'message', 'headers', 'attachments' );
+
+		// Send!
+		try {
+			$debug_atts = compact( 'to', 'from', 'subject', 'headers', 'source', 'attachments', 'reply_to' );
+			$this->debug_logger->log_debug( $this->wrap_debug_with_details( __FUNCTION__, $email, 'Attempting send with the following attributes: ' . json_encode( $debug_atts ) ) );
+			$send = $this->php_mailer->send();
+
+			/**
+			 * Fires after PHPMailer has successfully sent an email.
+			 *
+			 * The firing of this action does not necessarily mean that the recipient(s) received the
+			 * email successfully. It only means that the `send` method above was able to
+			 * process the request without any errors.
+			 *
+			 * @since 5.9.0
+			 *
+			 * @param array $mail_data {
+			 *     An array containing the email recipient(s), subject, message, headers, and attachments.
+			 *
+			 *     @type string[] $to          Email addresses to send message.
+			 *     @type string   $subject     Email subject.
+			 *     @type string   $message     Message contents.
+			 *     @type string[] $headers     Additional headers.
+			 *     @type string[] $attachments Paths to files to attach.
+			 * }
+			 */
+			do_action( 'wp_mail_succeeded', $mail_data );
+
+			$this->events->update( array( 'status' => 'sent' ), $this->email );
+			$this->logger->log( $this->email, 'sent', __( 'Email successfully sent.', 'gravitysmtp' ) );
+
+			return $send;
+		} catch ( \PHPMailer\PHPMailer\Exception $e ) {
+			$mail_data['phpmailer_exception_code'] = $e->getCode();
+
+			/**
+			 * Fires after a PHPMailer\PHPMailer\Exception is caught.
+			 *
+			 * @since 4.4.0
+			 *
+			 * @param WP_Error $error A WP_Error object with the PHPMailer\PHPMailer\Exception message, and an array
+			 *                        containing the mail recipient, subject, message, headers, and attachments.
+			 */
+			do_action( 'wp_mail_failed', new \WP_Error( 'wp_mail_failed', $e->getMessage(), $mail_data ) );
+
+			$this->log_failure( $this->email, $e->getMessage() );
+
+			return $this->email;
+		}
 	}
 
 	/**
@@ -163,76 +295,30 @@ class Connector_Phpmail extends Connector_Base {
 		return ! empty( $phpmailer );
 	}
 
-	public function update_wp_mail_froms( $atts ) {
-		// This is how wp_mail() handles headers.
-		if ( empty( $atts['headers'] ) ) {
-			$atts['headers'] = array();
-		} elseif ( ! is_array( $atts['headers'] ) ) {
-			$atts['headers'] = explode( "\n", str_replace( "\r\n", "\n", $atts['headers'] ) );
-		}
-
-		$from        = $this->get_from( true );
-		$force_name  = $this->get_setting( self::SETTING_FORCE_FROM_NAME, false );
-		$force_email = $this->get_setting( self::SETTING_FORCE_FROM_EMAIL, false );
-		$orig_froms  = empty( $atts['headers']['From'] ) ? array() : $this->get_email_from_header( 'From', $atts['headers']['From'] );
-		$from_name   = '';
-		$from_email  = '';
-
-		if ( ! empty( $orig_froms ) ) {
-			$from_name  = $orig_froms->recipients[0]->name();
-			$from_email = $orig_froms->recipients[0]->email();
-		}
-
-
-		if ( ! empty( $from['name'] ) && ( empty( $from_name ) || $force_name ) ) {
-			$from_name = $from['name'];
-		}
-
-		if ( empty( $from_email ) || $force_email ) {
-			$from_email = $from['email'];
-		}
-
-		$recipient = new Recipient( $from_email, $from_name );
-
-		if ( ! empty( $from_email ) ) {
-			$atts['headers']['From'] = 'From: ' . $recipient->mailbox();
-		}
-
-		if ( isset( $atts['headers']['content-type'] ) && strpos( $atts['headers']['content-type'], 'Content-type' ) === false ) {
-			$atts['headers']['content-type'] = 'Content-type: ' . $atts['headers']['content-type'];
-		}
-
-		if ( $this->get_setting( self::SETTING_USE_RETURN_PATH, false ) ) {
-			$atts['headers']['Return-Path'] = 'Return-Path: ' . $from_email;
-		}
-
-		return $atts;
+	/**
+	 * Logs an email send failure.
+	 *
+	 * @since 1.0
+	 *
+	 * @param string $email         The email that failed.
+	 * @param string $error_message The error message.
+	 */
+	private function log_failure( $email, $error_message ) {
+		$this->events->update( array( 'status' => 'failed' ), $email );
+		$this->logger->log( $email, 'failed', $error_message );
 	}
 
-	public function update_sender( &$phpmailer ) {
-		$from        = $this->get_from( true );
-		$force_name  = $this->get_setting( self::SETTING_FORCE_FROM_NAME, false );
-		$force_email = $this->get_setting( self::SETTING_FORCE_FROM_EMAIL, false );
-		$orig_froms  = empty( $atts['headers']['From'] ) ? array() : $this->get_email_from_header( 'From', $atts['headers']['From'] );
-		$from_name   = '';
-		$from_email  = '';
-
-		if ( ! empty( $orig_froms ) ) {
-			$from_name  = $orig_froms->recipients[0]->name();
-			$from_email = $orig_froms->recipients[0]->email();
-		}
-
-		if ( ! empty( $from['name'] ) && ( empty( $from_name ) || $force_name ) ) {
-			$from_name = $from['name'];
-		}
-
-		if ( empty( $from_email ) || $force_email ) {
-			$from_email = $from['email'];
-		}
-
-		if ( $this->get_setting( self::SETTING_USE_RETURN_PATH, false ) ) {
-			$phpmailer->Sender = $from_email;
-		}
+	/**
+	 * Reset the PHPMailer instance to prevent carryover from previous send.
+	 *
+	 * @since 1.0
+	 *
+	 * @return void
+	 */
+	private function reset_phpmailer() {
+		$this->php_mailer->clearAllRecipients();
+		$this->php_mailer->clearReplyTos();
+		$this->php_mailer->clearAttachments();
 	}
 
 }

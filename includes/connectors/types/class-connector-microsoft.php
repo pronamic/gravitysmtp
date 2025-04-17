@@ -571,6 +571,20 @@ class Connector_Microsoft extends Connector_Base {
 		return $settings;
 	}
 
+	protected function get_from_settings_fields() {
+		$fields = parent::get_from_settings_fields();
+
+		$fields[2]['component']        = 'Text';
+		$fields[2]['props']['size']    = 'text-sm';
+		$fields[2]['props']['weight']  = 'medium';
+		$fields[2]['props']['content'] = esc_html__( 'Force From Name', 'gravitysmtp' );
+		$fields[2]['props']['spacing'] = '2';
+
+		$fields[3]['component']        = 'Text';
+		$fields[3]['props']['content'] = esc_html__( 'Microsoft automatically forces the From Name associated with the From Email configured within their system.', 'gravitysmtp' );
+		return $fields;
+	}
+
 	public function is_configured() {
 		if ( $this->get_setting( 'access_token', false ) ) {
 			/**

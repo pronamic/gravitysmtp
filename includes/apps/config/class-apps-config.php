@@ -28,7 +28,7 @@ class Apps_Config extends Config {
 		$test_mode = ! empty( $test_mode ) ? $test_mode !== 'false' : false;
 
 		$usage_analytics_enabled = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_USAGE_ANALYTICS, 'true' );
-		$usage_analytics_enabled = isset( $usage_analytics_enabled ) && $usage_analytics_enabled !== 'false';
+		$usage_analytics_enabled = ! empty( $usage_analytics_enabled ) ? $usage_analytics_enabled !== 'false' : false;
 
 		// todo: @aaron from here to line 42, please refactor as you see fit. We need deep defaults maybe, or a pattern, and i need deep Booliesh hahaha unless what i did there is cool
 		$experimental_features = $plugin_data_store->get_plugin_setting( Experiment_Features_Handler::ENABLED_EXPERIMENTS_PARAM, array() );

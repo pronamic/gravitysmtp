@@ -26,7 +26,7 @@ class Connector_MailerSend extends Connector_Base {
 	);
 
 	public function get_description() {
-		return esc_html__( 'Elastic Email is a high-performance email platform offering both marketing and transactional email solutions. With a free plan for up to 100 daily emails and affordable paid options, Elastic Email provides detailed analytics and automation tools.', 'gravitysmtp' );
+		return esc_html__( 'Deliver transactional emails fast with MailerSend, a developer-friendly platform built for performance and scalability. Easily send notifications, receipts, and more with advanced analytics, templates, and robust API support.', 'gravitysmtp' );
 	}
 
 	/**

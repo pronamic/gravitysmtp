@@ -71,12 +71,6 @@ class Mail_Handler {
 
 		$connectors = self::get_connectors_from_options( Save_Connector_Settings_Endpoint::SETTING_PRIMARY_CONNECTOR );
 
-		// We want to bypass our custom wp_mail method if phpmail is being used.
-		if ( isset( $connectors['phpmail'] ) && $connectors['phpmail'] !== false && $connectors['phpmail'] != 'false' ) {
-			self::$configuration_status = false;
-			return false;
-		}
-
 		$configured = ! empty( array_filter( $connectors, function( $enabled ) {
 			return ! empty( $enabled ) && $enabled !== false && $enabled !== 'false';
 		} ) );
@@ -87,12 +81,6 @@ class Mail_Handler {
 		}
 
 		$connectors = self::get_connectors_from_options( Save_Connector_Settings_Endpoint::SETTING_BACKUP_CONNECTOR );
-
-		// We want to bypass our custom wp_mail method if phpmail is being used.
-		if ( isset( $connectors['phpmail'] ) && $connectors['phpmail'] !== false && $connectors['phpmail'] != 'false' ) {
-			self::$configuration_status = false;
-			return false;
-		}
 
 		$configured = ! empty( array_filter( $connectors, function( $enabled ) {
 			return ! empty( $enabled ) && $enabled !== false && $enabled !== 'false';
