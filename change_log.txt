@@ -1,3 +1,6 @@
+### 1.9.1 | 2025-04-17
+- Fixed an issue that can cause script conflicts in other applications such as Yoast and Customizer. 
+
 ### 1.9.0 | 2025-04-16
 - Fixed an issue that causes SMTP2GO to ignore forced from names.
 - Fixed an issue that allows sensitive keys set by constant to display their values in the system report.
