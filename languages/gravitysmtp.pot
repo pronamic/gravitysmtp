@@ -2,16 +2,16 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Gravity SMTP 1.9.1\n"
+"Project-Id-Version: Gravity SMTP 1.9.2\n"
 "Report-Msgid-Bugs-To: https://gravityforms.com/support\n"
 "Last-Translator: Gravity Forms <support@gravityforms.com>\n"
 "Language-Team: Gravity Forms <support@gravityforms.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-04-17T16:42:36+00:00\n"
+"POT-Creation-Date: 2025-05-08T18:17:40+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.11.0\n"
+"X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: gravitysmtp\n"
 
 #. Plugin Name of the plugin
@@ -204,7 +204,7 @@ msgstr ""
 #: includes/connectors/endpoints/class-save-connector-settings-endpoint.php:57
 #: includes/connectors/endpoints/class-send-test-endpoint.php:161
 #: includes/handler/endpoints/class-resend-email-endpoint.php:47
-#: includes/logging/endpoints/class-delete-debug-logs-endpoint.php:36
+#: includes/logging/endpoints/class-delete-debug-logs-endpoint.php:33
 #: includes/logging/endpoints/class-delete-email-endpoint.php:29
 #: includes/logging/endpoints/class-delete-events-endpoint.php:36
 #: includes/logging/endpoints/class-get-email-message-endpoint.php:29
@@ -392,7 +392,7 @@ msgstr ""
 
 #: includes/apps/config/class-dashboard-config.php:157
 #: includes/apps/config/class-dashboard-config.php:167
-#: includes/apps/config/class-dashboard-config.php:349
+#: includes/apps/config/class-dashboard-config.php:372
 #: includes/apps/config/class-email-log-config.php:2555
 #: includes/apps/config/class-email-log-config.php:2559
 #: includes/enums/class-status-enum.php:54
@@ -406,7 +406,7 @@ msgstr ""
 
 #: includes/apps/config/class-dashboard-config.php:159
 #: includes/apps/config/class-dashboard-config.php:168
-#: includes/apps/config/class-dashboard-config.php:355
+#: includes/apps/config/class-dashboard-config.php:378
 #: includes/apps/config/class-email-log-config.php:2568
 #: includes/apps/config/class-email-log-config.php:2572
 #: includes/enums/class-status-enum.php:55
@@ -502,37 +502,37 @@ msgstr ""
 msgid "Last 365 Days"
 msgstr ""
 
-#: includes/apps/config/class-dashboard-config.php:504
+#: includes/apps/config/class-dashboard-config.php:532
 msgid "Getting Started"
 msgstr ""
 
-#: includes/apps/config/class-dashboard-config.php:508
+#: includes/apps/config/class-dashboard-config.php:536
 msgid "Troubleshooting Gravity SMTP"
 msgstr ""
 
-#: includes/apps/config/class-dashboard-config.php:512
+#: includes/apps/config/class-dashboard-config.php:540
 msgid "Email Delivery Best Practices"
 msgstr ""
 
-#: includes/apps/config/class-dashboard-config.php:516
+#: includes/apps/config/class-dashboard-config.php:544
 msgid "An Overview of Gravity SMTP"
 msgstr ""
 
-#: includes/apps/config/class-dashboard-config.php:520
+#: includes/apps/config/class-dashboard-config.php:548
 #: includes/apps/config/class-settings-config.php:130
 #: includes/apps/config/class-settings-config.php:295
 msgid "Integrations"
 msgstr ""
 
-#: includes/apps/config/class-dashboard-config.php:524
+#: includes/apps/config/class-dashboard-config.php:552
 msgid "Frequently Asked Questions"
 msgstr ""
 
-#: includes/apps/config/class-dashboard-config.php:528
+#: includes/apps/config/class-dashboard-config.php:556
 msgid "Gravity SMTP Changelog"
 msgstr ""
 
-#: includes/apps/config/class-dashboard-config.php:532
+#: includes/apps/config/class-dashboard-config.php:560
 msgid "Open Support Ticket"
 msgstr ""
 
@@ -628,7 +628,7 @@ msgstr ""
 #: includes/apps/config/class-email-log-single-config.php:44
 #: includes/apps/config/class-settings-config.php:78
 #: includes/apps/config/class-tools-config.php:146
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:97
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:98
 #: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:77
 msgid "Close"
 msgstr ""
@@ -735,8 +735,8 @@ msgstr ""
 
 #: includes/apps/config/class-email-log-config.php:2463
 #: includes/apps/config/class-tools-config.php:156
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:87
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:100
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:88
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:101
 #: includes/suppression/config/class-suppression-settings-config.php:94
 msgid "Next"
 msgstr ""
@@ -1158,7 +1158,7 @@ msgstr ""
 #: includes/connectors/types/class-connector-postmark.php:268
 #: includes/connectors/types/class-connector-sendgrid.php:267
 #: includes/connectors/types/class-connector-smtp2go.php:300
-#: includes/connectors/types/class-connector-sparkpost.php:354
+#: includes/connectors/types/class-connector-sparkpost.php:358
 msgid "General Settings"
 msgstr ""
 
@@ -1217,7 +1217,7 @@ msgid "More Settings"
 msgstr ""
 
 #: includes/apps/config/class-settings-config.php:145
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:116
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:117
 msgid "There was an error saving your settings"
 msgstr ""
 
@@ -2019,173 +2019,173 @@ msgid "Must provide both start and end dates."
 msgstr ""
 
 #. translators: %1$s is the request data.
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:61
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:62
 msgid "Setup Wizard Screen 01: Checking license key: %1$s"
 msgstr ""
 
 #. translators: %1$s is the error data.
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:63
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:64
 msgid "Setup Wizard Screen 01: Error checking license key: %1$s"
 msgstr ""
 
 #. translators: %1$s is the request data.
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:65
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:66
 msgid "Setup Wizard Screen 02: Migrating data: %1$s"
 msgstr ""
 
 #. translators: %1$s is the error data.
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:67
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:68
 msgid "Setup Wizard Screen 02: Error migrating data: %1$s"
 msgstr ""
 
 #. translators: %1$s is the request data.
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:69
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:70
 msgid "Setup Wizard Screen 01: Saving license key: %1$s"
 msgstr ""
 
 #. translators: %1$s is the error data.
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:71
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:72
 msgid "Setup Wizard Screen 01: Error saving license key: %1$s"
 msgstr ""
 
 #. translators: %1$s is the error data.
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:73
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:74
 msgid "Setup Wizard Screen 01: Error saving should display: %1$s"
 msgstr ""
 
 #. translators: %1$s is the settings data.
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:75
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:76
 msgid "Setup Wizard Screen 01: Starting wizard for first run: %1$s"
 msgstr ""
 
 #. translators: %1$s is the settings data.
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:77
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:78
 msgid "Setup Wizard Screen 01: Starting wizard from the settings screen: %1$s"
 msgstr ""
 
 #. translators: %1$s is the request data.
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:79
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:80
 msgid "Setup Wizard Screen 01: Setting should display to false: %1$s"
 msgstr ""
 
 #. translators: %1$s is the request data.
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:81
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:82
 msgid "Setup Wizard Screen 01: Updating usage analytics: %1$s"
 msgstr ""
 
 #. translators: %1$s is the error data.
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:83
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:84
 msgid "Setup Wizard Screen 01: Error updating usage analytics: %1$s"
 msgstr ""
 
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:85
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:86
 msgid "Welcome to Gravity SMTP"
 msgstr ""
 
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:86
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:87
 msgid "You're only minutes away from sending emails with confidence! Use the setup wizard to get started if this is your first time using Gravity SMTP."
 msgstr ""
 
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:88
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:89
 msgid "The Most Popular WordPress SMTP Plugin"
 msgstr ""
 
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:89
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:90
 msgid "Advanced Open & Click Tracking"
 msgstr ""
 
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:90
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:91
 msgid "Weekly Email Summaries"
 msgstr ""
 
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:91
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:92
 msgid "Text Alerts For Service Interruptions"
 msgstr ""
 
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:92
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:93
 msgid "Let's Get Started"
 msgstr ""
 
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:93
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:94
 msgid "Verify License"
 msgstr ""
 
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:94
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:95
 msgid "Checking License"
 msgstr ""
 
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:95
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:96
 msgid "Enter License Key"
 msgstr ""
 
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:96
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:97
 msgid "Enter your license key here"
 msgstr ""
 
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:98
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:99
 msgid "Back"
 msgstr ""
 
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:99
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:100
 msgid "Skip This Step"
 msgstr ""
 
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:101
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:102
 msgid "Return to Dashboard"
 msgstr ""
 
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:102
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:103
 msgid "Migrate Your SMTP Settings"
 msgstr ""
 
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:103
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:104
 msgid "Gravity SMTP is compatible with multiple SMTP plugins. We’ve detected other SMTP plugins installed on your website. Choose which plugin’s data you want to import to Gravity SMTP for a seamless migration experience."
 msgstr ""
 
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:104
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:105
 msgid "Choose Your SMTP Mail Solution"
 msgstr ""
 
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:105
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:106
 msgid "Which SMTP mail solution would you like to use to send emails?"
 msgstr ""
 
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:106
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:107
 msgid "Not sure which to choose? Check out our Ultimate Gravity SMTP Guide for details on each option."
 msgstr ""
 
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:107
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:108
 msgid "Configure Mail Settings"
 msgstr ""
 
 #. translators: %s: integration name.
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:109
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:110
 msgid "Get Started With %s"
 msgstr ""
 
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:110
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:111
 msgid "Setup Skipped"
 msgstr ""
 
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:111
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:113
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:112
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:114
 msgid "Congratulations, you're ready to start reliably and securely sending email from your site using Gravity SMTP. Head on over to the plugin dashboard to check out all the features Gravity SMTP has to offer."
 msgstr ""
 
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:112
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:113
 msgid "Setup Complete"
 msgstr ""
 
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:114
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:115
 msgid "Whoops, looks like things aren't configured properly."
 msgstr ""
 
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:115
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:116
 msgid "We just tried to send a test email, but something prevented that from working. To see more details about the issue we detected, as well as our suggestions to fix it, please start troubleshooting."
 msgstr ""
 
 #. translators: %s: integration name.
-#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:118
+#: includes/apps/setup-wizard/config/class-setup-wizard-config.php:119
 msgid "Activate %s Integration"
 msgstr ""
 
@@ -2390,7 +2390,7 @@ msgstr ""
 #: includes/connectors/types/class-connector-postmark.php:222
 #: includes/connectors/types/class-connector-sendgrid.php:221
 #: includes/connectors/types/class-connector-smtp2go.php:268
-#: includes/connectors/types/class-connector-sparkpost.php:298
+#: includes/connectors/types/class-connector-sparkpost.php:302
 #: includes/connectors/types/class-connector-zoho.php:361
 #: includes/connectors/types/class-connector-zoho.php:562
 msgid "Configuration"
@@ -2519,7 +2519,7 @@ msgstr ""
 #: includes/connectors/types/class-connector-mailersend.php:294
 #: includes/connectors/types/class-connector-mailjet.php:311
 #: includes/connectors/types/class-connector-smtp2go.php:280
-#: includes/connectors/types/class-connector-sparkpost.php:334
+#: includes/connectors/types/class-connector-sparkpost.php:338
 msgid "API Key"
 msgstr ""
 
@@ -2535,7 +2535,7 @@ msgstr ""
 #: includes/connectors/types/class-connector-postmark.php:304
 #: includes/connectors/types/class-connector-sendgrid.php:303
 #: includes/connectors/types/class-connector-smtp2go.php:353
-#: includes/connectors/types/class-connector-sparkpost.php:422
+#: includes/connectors/types/class-connector-sparkpost.php:426
 msgid "No API Key provided."
 msgstr ""
 
@@ -2547,7 +2547,7 @@ msgstr ""
 #: includes/connectors/types/class-connector-postmark.php:315
 #: includes/connectors/types/class-connector-sendgrid.php:316
 #: includes/connectors/types/class-connector-smtp2go.php:364
-#: includes/connectors/types/class-connector-sparkpost.php:433
+#: includes/connectors/types/class-connector-sparkpost.php:437
 msgid "Invalid API Key provided."
 msgstr ""
 
@@ -2602,7 +2602,7 @@ msgstr ""
 #: includes/connectors/types/class-connector-mailgun.php:381
 #: includes/connectors/types/class-connector-microsoft.php:550
 #: includes/connectors/types/class-connector-phpmail.php:263
-#: includes/connectors/types/class-connector-sparkpost.php:366
+#: includes/connectors/types/class-connector-sparkpost.php:370
 msgid "If Return Path is enabled this adds the return path to the email header which indicates where non-deliverable notifications should be sent. Bounce messages may be lost if not enabled."
 msgstr ""
 
@@ -2612,7 +2612,7 @@ msgstr ""
 #: includes/connectors/types/class-connector-mailgun.php:389
 #: includes/connectors/types/class-connector-microsoft.php:558
 #: includes/connectors/types/class-connector-phpmail.php:271
-#: includes/connectors/types/class-connector-sparkpost.php:374
+#: includes/connectors/types/class-connector-sparkpost.php:378
 msgid "Return Path"
 msgstr ""
 
@@ -3018,26 +3018,26 @@ msgstr ""
 msgid "Starting email send for SparkPost connector."
 msgstr ""
 
-#: includes/connectors/types/class-connector-sparkpost.php:291
+#: includes/connectors/types/class-connector-sparkpost.php:295
 msgid "SparkPost Settings"
 msgstr ""
 
-#: includes/connectors/types/class-connector-sparkpost.php:310
+#: includes/connectors/types/class-connector-sparkpost.php:314
 msgid "Account Location"
 msgstr ""
 
-#: includes/connectors/types/class-connector-sparkpost.php:320
+#: includes/connectors/types/class-connector-sparkpost.php:324
 #: includes/enums/class-zoho-datacenters-enum.php:9
 msgid "United States"
 msgstr ""
 
-#: includes/connectors/types/class-connector-sparkpost.php:324
+#: includes/connectors/types/class-connector-sparkpost.php:328
 #: includes/enums/class-zoho-datacenters-enum.php:10
 msgid "Europe"
 msgstr ""
 
 #. translators: 1: opening anchor tag, 2: closing anchor tag
-#: includes/connectors/types/class-connector-sparkpost.php:341
+#: includes/connectors/types/class-connector-sparkpost.php:345
 msgid "To generate an API key from SparkPost, log in to your SparkPost dashboard, navigate to the API Keys section, and %1$sgenerate your API key%2$s."
 msgstr ""
 
@@ -3410,7 +3410,7 @@ msgstr ""
 msgid " Email sent via Gravity SMTP. %sView Email%s"
 msgstr ""
 
-#: includes/logging/endpoints/class-delete-debug-logs-endpoint.php:54
+#: includes/logging/endpoints/class-delete-debug-logs-endpoint.php:41
 msgid "All logs deleted successfully"
 msgstr ""
 

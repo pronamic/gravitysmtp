@@ -93,8 +93,9 @@ class Connector_Sparkpost extends Connector_Base {
 	 * @return array
 	 */
 	public function get_request_params() {
-		$atts    = $this->get_send_atts();
-		$api_key = $this->get_setting( self::SETTING_API_KEY );
+		$atts                  = $this->get_send_atts();
+		$api_key               = $this->get_setting( self::SETTING_API_KEY );
+		$send_as_transactional = apply_filters( 'gravitysmtp_sparkpost_send_as_transactional', true );
 
 		$body = array(
 			'recipients' => array(),
@@ -105,6 +106,9 @@ class Connector_Sparkpost extends Connector_Base {
 				),
 				'subject' => $atts['subject'],
 				'headers' => array(),
+			),
+			'options'    => array(
+				'transactional' => $send_as_transactional,
 			),
 		);
 
@@ -148,7 +152,7 @@ class Connector_Sparkpost extends Connector_Base {
 					'header_to' => $main_recipient['email'],
 				);
 
-				$body['recipients'][] = array( 'address' =>  array_filter( $values ) );
+				$body['recipients'][] = array( 'address' => array_filter( $values ) );
 			}
 		}
 
@@ -366,7 +370,7 @@ class Connector_Sparkpost extends Connector_Base {
 								'content' => esc_html__( 'If Return Path is enabled this adds the return path to the email header which indicates where non-deliverable notifications should be sent. Bounce messages may be lost if not enabled.', 'gravitysmtp' ),
 								'size'    => 'text-xs',
 								'weight'  => 'regular',
-								'spacing' => [ 2, 0, 0, 0 ],
+								'spacing' => array( 2, 0, 0, 0 ),
 							),
 							'helpTextWidth'      => 'full',
 							'initialChecked'     => (bool) $this->get_setting( self::SETTING_USE_RETURN_PATH, false ),
@@ -458,5 +462,4 @@ class Connector_Sparkpost extends Connector_Base {
 
 		return array_merge( $this->connector_data(), $data );
 	}
-
 }

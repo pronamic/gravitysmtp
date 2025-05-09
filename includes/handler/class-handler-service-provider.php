@@ -94,6 +94,27 @@ class Handler_Service_Provider extends Config_Service_Provider {
 
 			return $note_args;
 		}, 10, 3 );
+
+		// When an email fails to send, clear the configuration cache for oauth providers to ensure the UI reflects any errors.
+		add_action( 'gravitysmtp_on_send_failure', function( $email_id ) use ( $container ) {
+			$events_model = $container->get( Connector_Service_Provider::EVENT_MODEL );
+			$event = $events_model->get( $email_id );
+
+			// Couldn't find event, bail.
+			if ( empty( $event ) ) {
+				return;
+			}
+
+			$service = $event['service'];
+
+			// Not an oAuth service, bail.
+			if ( ! in_array( $service, array( 'google', 'microsoft', 'zoho' ) ) ) {
+				return;
+			}
+
+			$configured_key = sprintf( 'gsmtp_connector_configured_%s', $service );
+			delete_transient( $configured_key );
+		} );
 	}
 
 }

@@ -15,6 +15,7 @@ use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Plugin_Settings_Endpoin
 use Gravity_Forms\Gravity_SMTP\Feature_Flags\Feature_Flag_Manager;
 use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
 use Gravity_Forms\Gravity_SMTP\Models\Suppressed_Emails_Model;
+use Gravity_Forms\Gravity_SMTP\Utils\Booliesh;
 use Gravity_Forms\Gravity_Tools\Apps\Registers_Apps;
 use Gravity_Forms\Gravity_Tools\Providers\Config_Service_Provider;
 use Gravity_Forms\Gravity_Tools\Service_Container;
@@ -62,12 +63,14 @@ class App_Service_Provider extends Config_Service_Provider {
 					return false;
 				}
 
+				$setup_wizard_page = filter_input( INPUT_GET, 'setup-wizard-page' );
+
 				$page = htmlspecialchars( $page );
 
 				$container      = Gravity_SMTP::container();
-				$should_display = $container->get( Connector_Service_Provider::DATA_STORE_ROUTER )->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_SETUP_WIZARD_SHOULD_DISPLAY, 'true' ) === 'true';
+				$should_display = Booliesh::get( $container->get( Connector_Service_Provider::DATA_STORE_ROUTER )->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_SETUP_WIZARD_SHOULD_DISPLAY, 'true' ) );
 
-				return $should_display ? strpos( $page, 'gravitysmtp-' ) !== false : $page === 'gravitysmtp-settings';
+				return $should_display ? strpos( $page, 'gravitysmtp-' ) !== false : is_string( $setup_wizard_page );
 			};
 		}, true );
 

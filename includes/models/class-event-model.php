@@ -357,7 +357,7 @@ class Event_Model {
 		global $wpdb;
 
 		$table_name = $this->get_table_name();
-		$query      = $wpdb->prepare( "DELETE FROM $table_name WHERE `date_created` <= %s", $date );
+		$query      = $wpdb->prepare( "DELETE FROM $table_name WHERE `date_created` <= %s", get_gmt_from_date( $date ) );
 
 		$wpdb->query( "SET FOREIGN_KEY_CHECKS = 0;" );
 		$wpdb->query( $query );
@@ -474,9 +474,9 @@ class Event_Model {
 			return gmdate( 'Y-m-d 00:00:00', time() );
 		}
 
-		$found = $results[0]['date_created'];
+		$found = get_date_from_gmt( $results[0]['date_created'] );
 
-		return gmdate( 'Y-m-d 00:00:00', strtotime( $results[0]['date_created'] ) );
+		return gmdate( 'Y-m-d 00:00:00', strtotime( $found ) );
 	}
 
 	public function get_top_sending_sources( $start, $end ) {
@@ -490,7 +490,7 @@ class Event_Model {
 								FROM ( SELECT * FROM $table_name WHERE date_created >= %s AND date_created <= %s ORDER BY date_created DESC LIMIT 0, 5000 ) AS timeboxed
 								GROUP BY source
 								ORDER BY total DESC
-								LIMIT 0, 8", $start, $end );
+								LIMIT 0, 8", get_gmt_from_date( $start ), get_gmt_from_date( $end ) );
 
 		$results = $wpdb->get_results( $sql, ARRAY_A );
 
@@ -537,7 +537,7 @@ class Event_Model {
 								FROM ( SELECT * FROM $table_name WHERE date_created >= %s AND date_created <= %s ORDER BY date_created DESC LIMIT 0, 5000 ) AS timeboxed
 								GROUP BY recipients
 								ORDER BY total DESC
-								LIMIT 0, 8", $start, $end );
+								LIMIT 0, 8", get_gmt_from_date( $start ), get_gmt_from_date( $end ) );
 
 		$results = $wpdb->get_results( $sql, ARRAY_A );
 
@@ -549,7 +549,7 @@ class Event_Model {
 
 		$table_name = $this->get_table_name();
 
-		$sql = $wpdb->prepare( "SELECT status, count( * ) AS total FROM ( SELECT * FROM $table_name WHERE date_created >= %s AND date_created <= %s AND status != 'pending' ORDER BY date_created DESC ) AS timeboxed GROUP BY status", $start, $end );
+		$sql = $wpdb->prepare( "SELECT status, count( * ) AS total FROM ( SELECT * FROM $table_name WHERE date_created >= %s AND date_created <= %s AND status != 'pending' ORDER BY date_created DESC ) AS timeboxed GROUP BY status", get_gmt_from_date( $start ), get_gmt_from_date( $end ) );
 
 		$results = $wpdb->get_results( $sql, ARRAY_A );
 
@@ -572,7 +572,7 @@ class Event_Model {
 		$table_name          = $this->get_table_name();
 		$tracking_table_name = $wpdb->prefix . 'gravitysmtp_event_tracking';
 
-		$sql = $wpdb->prepare( "SELECT count( * ) AS total FROM ( SELECT * FROM $table_name WHERE date_created >= %s AND date_created <= %s ORDER BY date_created DESC ) AS timeboxed LEFT JOIN $tracking_table_name AS tt ON tt.event_id = timeboxed.id WHERE tt.opened = 1", $start, $end );
+		$sql = $wpdb->prepare( "SELECT count( * ) AS total FROM ( SELECT * FROM $table_name WHERE date_created >= %s AND date_created <= %s ORDER BY date_created DESC ) AS timeboxed LEFT JOIN $tracking_table_name AS tt ON tt.event_id = timeboxed.id WHERE tt.opened = 1", get_gmt_from_date( $start ), get_gmt_from_date( $end ) );
 
 		$results = $wpdb->get_results( $sql, ARRAY_A );
 
@@ -583,25 +583,26 @@ class Event_Model {
 		return (int) $results[0]['total'];
 	}
 
-	public function get_chart_data( $start, $end, $period = 'month' ) {
-		switch ( $period ) {
-			case 'day':
-			default:
-				$format = '%b %d';
-				break;
-			case 'month':
-				$format = '%b %Y';
-				break;
-			case 'hour':
-				$format = '%H:00 %b %d';
-				break;
-		}
-
+	public function get_chart_data( $start, $end ) {
+//		switch ( $period ) {
+//			case 'day':
+//			default:
+//				$format = '%b %d';
+//				break;
+//			case 'month':
+//				$format = '%b %Y';
+//				break;
+//			case 'hour':
+//				$format = '%H:00 %b %d';
+//				break;
+//		}
+//
 		global $wpdb;
 
 		$table_name = $this->get_table_name();
 
-		$sql = $wpdb->prepare( "SELECT count(*) as total, DATE_FORMAT(date_created, %s) as date_created, date_created as sort_date, status FROM ( SELECT * FROM $table_name WHERE date_created >= %s AND date_created <= %s AND status != 'pending' ) AS timeboxed GROUP BY DATE_FORMAT(date_created, %s), status", $format, $start, $end, $format );
+//		$sql = $wpdb->prepare( "SELECT count(*) as total, DATE_FORMAT(date_created, %s) as date_created, date_created as sort_date, status FROM ( SELECT * FROM $table_name WHERE date_created >= %s AND date_created <= %s AND status != 'pending' ) AS timeboxed GROUP BY DATE_FORMAT(date_created, %s), status", $format, get_gmt_from_date( $start ), get_gmt_from_date( $end ), $format );
+		$sql = $wpdb->prepare( "SELECT date_created, status FROM $table_name WHERE date_created >= %s AND date_created <= %s AND status != 'pending'", get_gmt_from_date( $start ), get_gmt_from_date( $end ) );
 
 		$results = $wpdb->get_results( $sql, ARRAY_A );
 

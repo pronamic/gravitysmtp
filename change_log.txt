@@ -1,5 +1,13 @@
+### 1.9.2 | 2025-05-08
+- Fixed a bug where the app will show an integration as not configured when it is activated in the setup wizard.
+- Fixed an issue that causes all SparkPost emails to include List-related headers.
+- Fixed an issue that causes date filters and on the email log to not respect the server timezone settings.
+- Fixed an issue that causes special characters in the From Name value to interfere with SMTP2GO sends.
+- Fixed an issue that causes the encryption settings for Custom SMTP to not be clickable in some cases.
+- Fixed an issue that causes the Integrations Settings page to show outdated configurations statuses for oauth connections.
+
 ### 1.9.1 | 2025-04-17
-- Fixed an issue that can cause script conflicts in other applications such as Yoast and Customizer. 
+- Fixed an issue that can cause script conflicts in other applications such as Yoast and Customizer.
 
 ### 1.9.0 | 2025-04-16
 - Fixed an issue that causes SMTP2GO to ignore forced from names.

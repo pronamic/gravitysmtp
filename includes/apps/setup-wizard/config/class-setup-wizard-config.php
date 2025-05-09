@@ -6,6 +6,7 @@ use Gravity_Forms\Gravity_SMTP\Apps\App_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Plugin_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
+use Gravity_Forms\Gravity_SMTP\Utils\Booliesh;
 use Gravity_Forms\Gravity_Tools\Config;
 use Gravity_Forms\Gravity_Tools\License\License_Statuses;
 use Gravity_Forms\Gravity_Tools\Updates\Updates_Service_Provider;
@@ -39,7 +40,7 @@ class Setup_Wizard_Config extends Config {
 		}
 
 		// should display logic check
-		$should_display    = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_SETUP_WIZARD_SHOULD_DISPLAY, 'true' ) === 'true';
+		$should_display    = Booliesh::get( $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_SETUP_WIZARD_SHOULD_DISPLAY, 'true' ) );
 		$setup_wizard_page = filter_input( INPUT_GET, 'setup-wizard-page' );
 		$is_wizard_open    = $should_display;
 

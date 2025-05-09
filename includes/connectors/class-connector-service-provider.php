@@ -45,6 +45,7 @@ use Gravity_Forms\Gravity_SMTP\Models\Hydrators\Hydrator_Factory;
 use Gravity_Forms\Gravity_SMTP\Models\Log_Details_Model;
 use Gravity_Forms\Gravity_SMTP\Models\Notifications_Model;
 use Gravity_Forms\Gravity_SMTP\Connectors\Oauth_Data_Handler;
+use Gravity_Forms\Gravity_SMTP\Utils\Booliesh;
 use Gravity_Forms\Gravity_SMTP\Utils\Recipient;
 use Gravity_Forms\Gravity_Tools\Logging\DB_Logging_Provider;
 use Gravity_Forms\Gravity_Tools\Updates\Updates_Service_Provider;
@@ -540,13 +541,14 @@ class Connector_Service_Provider extends Config_Service_Provider {
 		}
 
 		$plugin_data_store = $this->container->get( self::DATA_STORE_PLUGIN_OPTS );
-		$should_display    = $plugin_data_store->get( Save_Plugin_Settings_Endpoint::PARAM_SETUP_WIZARD_SHOULD_DISPLAY, 'config', 'true' ) === 'true';
+		$should_display    = Booliesh::get( $plugin_data_store->get( Save_Plugin_Settings_Endpoint::PARAM_SETUP_WIZARD_SHOULD_DISPLAY, 'config', 'true' ) );
 
 		$should_register = $should_display ? strpos( $page, 'gravitysmtp-' ) !== false : in_array( $page, array(
-			'gravitysmtp-settings',
 			'gravitysmtp-activity-log',
-			'gravitysmtp-tools',
-			'gravitysmtp-dashboard'
+			'gravitysmtp-dashboard',
+			'gravitysmtp-settings',
+			'gravitysmtp-suppression',
+			'gravitysmtp-tools'
 		) );
 
 		if ( $is_ajax ) {

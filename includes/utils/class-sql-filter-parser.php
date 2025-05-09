@@ -35,6 +35,9 @@ class SQL_Filter_Parser {
 					$to   = sprintf( '%s 23:59:59', $to );
 				}
 
+				$from = get_gmt_from_date( $from );
+				$to   = get_gmt_from_date( $to );
+
 				$sql_array[] = $wpdb->prepare( "`" . $key . "` BETWEEN %s AND %s", $from, $to );
 				continue;
 			}

@@ -51,6 +51,9 @@ class Get_Dashboard_Data_Endpoint extends Endpoint {
 
 		$period = 0;
 
+		$start = get_gmt_from_date( $start );
+		$end   = get_gmt_from_date( $end );
+
 		$data = $this->dasbhoard_config->ajax_data( $start, $end, $period );
 
 		wp_send_json_success( $data );
@@ -58,8 +61,8 @@ class Get_Dashboard_Data_Endpoint extends Endpoint {
 
 	private function get_data_for_range( $date_range ) {
 		$mod_string = sprintf( "-%d days", ( $date_range - 1 ) );
-		$start      = gmdate( 'Y-m-d 00:00:00', strtotime( $mod_string ) );
-		$end        = gmdate( 'Y-m-d 23:59:59' );
+		$start      = get_gmt_from_date( gmdate( 'Y-m-d 00:00:00', strtotime( $mod_string ) ) );
+		$end        = get_gmt_from_date( gmdate( 'Y-m-d 23:59:59' ) );
 		$period     = $date_range;
 
 		return $this->dasbhoard_config->ajax_data( $start, $end, $period );

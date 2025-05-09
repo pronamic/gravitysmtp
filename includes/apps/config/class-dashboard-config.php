@@ -206,7 +206,7 @@ class Dashboard_Config extends Config {
 				'options'       => $this->get_date_options(),
 				'initial_value' => $this->get_initial_range_value_from_data( true ),
 				'min_start'     => $this->model->get_earliest_event_date(),
-				'max_end'       => $this->end,
+				'max_end'       => get_date_from_gmt( $this->end ),
 			),
 			'integrations_url'      => admin_url( 'admin.php?page=gravitysmtp-settings&tab=integrations&integration=%1$s' ),
 			'source_icons_url'      => trailingslashit( GF_GRAVITY_SMTP_PLUGIN_URL ) . 'assets/images/plugin-icons/',
@@ -305,24 +305,47 @@ class Dashboard_Config extends Config {
 	}
 
 	protected function get_chart_data() {
-		$data = $this->model->get_chart_data( $this->start, $this->end, $this->period );
+		$data = $this->model->get_chart_data( $this->start, $this->end );
 
-		$sorted = array();
+		list( $format ) = $this->get_date_format_and_interval();
 
-		foreach( $data as $datum ) {
-			if ( ! array_key_exists( $datum['date_created'], $sorted ) ) {
-				$sorted[ $datum['date_created'] ] = array(
-					'sent'   => 0,
-					'failed' => 0,
-				);
-			}
+		$sorted = array_reduce(
+			$data,
+			function( $carry, $item ) use ( $format ) {
+				$key = get_date_from_gmt( $item['date_created'], $format );
+				if ( ! array_key_exists( $key , $carry ) ) {
+					$carry[ $key ] = array(
+						'sent'   => 0,
+						'failed' => 0,
+					);
+				}
+				if ( $item['status'] === 'sent' ) {
+					$carry[ $key ]['sent'] += 1;
+				} elseif ( $item['status'] === 'failed' ) {
+					$carry[ $key ]['failed'] += 1;
+				}
 
-			if ( $datum['status'] !== 'sent' && $datum['status'] !== 'failed' ) {
-				continue;
-			}
+				return $carry;
+			},
+			array()
+		);
 
-			$sorted[ $datum['date_created'] ][ $datum['status'] ] += $datum['total'];
-		}
+//		$sorted = array();
+//
+//		foreach( $data as $datum ) {
+//			if ( ! array_key_exists( $datum['date_created'], $sorted ) ) {
+//				$sorted[ $datum['date_created'] ] = array(
+//					'sent'   => 0,
+//					'failed' => 0,
+//				);
+//			}
+//
+//			if ( $datum['status'] !== 'sent' && $datum['status'] !== 'failed' ) {
+//				continue;
+//			}
+//
+//			$sorted[ $datum['date_created'] ][ $datum['status'] ] += $datum['total'];
+//		}
 
 		$sorted = $this->pad_with_empty_values( $sorted );
 
@@ -340,7 +363,7 @@ class Dashboard_Config extends Config {
 		return array(
 			'config'     => array(
 				'start'  => $this->get_min_start_date(),
-				'end'    => $this->end,
+				'end'    => get_date_from_gmt( $this->end ),
 				'period' => $this->period
 			),
 			'values' => $chart_data,
@@ -362,32 +385,17 @@ class Dashboard_Config extends Config {
 	}
 
 	protected function pad_with_empty_values( $data ) {
-
 		// Don't pad empty results.
 		if ( empty( $data ) ) {
 			return $data;
 		}
 
-		switch( $this->period ) {
-			case 'day':
-			default:
-				$format = 'M d';
-				$interval = 'P1D';
-				break;
-			case 'month':
-				$format = 'M Y';
-				$interval = 'P1M';
-				break;
-			case 'hour':
-				$format = 'H:00 M d';
-				$interval = 'PT1H';
-				break;
-		}
+		list( $format, $interval ) = $this->get_date_format_and_interval();
 
 		$period = new \DatePeriod(
-			new \DateTime( $this->start ),
+			new \DateTime( get_date_from_gmt( $this->start ) ),
 			new \DateInterval( $interval ),
-			new \DateTime( $this->end )
+			new \DateTime( get_date_from_gmt( $this->end ) )
 		);
 
 		$sorted_values = array();
@@ -405,6 +413,26 @@ class Dashboard_Config extends Config {
 		}
 
 		return $sorted_values;
+	}
+
+	protected function get_date_format_and_interval() {
+		switch( $this->period ) {
+			case 'day':
+			default:
+				$format = 'M d';
+				$interval = 'P1D';
+				break;
+			case 'month':
+				$format = 'M Y';
+				$interval = 'P1M';
+				break;
+			case 'hour':
+				$format = 'H:00 M d';
+				$interval = 'PT1H';
+				break;
+		}
+
+		return array( $format, $interval );
 	}
 
 	protected function get_email_totals() {
@@ -542,7 +570,7 @@ class Dashboard_Config extends Config {
 
 		// Passed start is after the minimum retention period start, return it.
 		if ( $calculated_start <= $passed_start ) {
-			return $this->start;
+			return get_date_from_gmt( $this->start );
 		}
 
 		if ( ! $restrict_to_range ) {
