@@ -507,7 +507,7 @@ abstract class Connector_Base {
 	public function get_reply_to( $return_as_array = false ) {
 		$parsed_headers = $this->get_parsed_headers( $this->atts['headers'] );
 
-		if ( ! isset( $parsed_headers['reply-to'] ) ) {
+		if ( ! isset( $parsed_headers['reply-to'] ) || empty( $parsed_headers['reply-to'] ) ) {
 			return $return_as_array ? array() : '';
 		}
 

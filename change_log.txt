@@ -1,3 +1,8 @@
+### 1.9.3 | 2025-06-03
+- Fixed an issue which can cause emails with invalid reply-to addresses to fail to send.
+- Fixed an issue that can cause calls to strpos to use a deprecated null value.
+- Fixed an issue that causes resends to fail if the original message had a BCC or CC.
+
 ### 1.9.2 | 2025-05-08
 - Fixed a bug where the app will show an integration as not configured when it is activated in the setup wizard.
 - Fixed an issue that causes all SparkPost emails to include List-related headers.

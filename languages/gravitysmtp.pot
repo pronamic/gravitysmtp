@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Gravity SMTP 1.9.2\n"
+"Project-Id-Version: Gravity SMTP 1.9.3\n"
 "Report-Msgid-Bugs-To: https://gravityforms.com/support\n"
 "Last-Translator: Gravity Forms <support@gravityforms.com>\n"
 "Language-Team: Gravity Forms <support@gravityforms.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-05-08T18:17:40+00:00\n"
+"POT-Creation-Date: 2025-06-03T17:37:34+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: gravitysmtp\n"
@@ -203,7 +203,7 @@ msgstr ""
 #: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:46
 #: includes/connectors/endpoints/class-save-connector-settings-endpoint.php:57
 #: includes/connectors/endpoints/class-send-test-endpoint.php:161
-#: includes/handler/endpoints/class-resend-email-endpoint.php:47
+#: includes/handler/endpoints/class-resend-email-endpoint.php:48
 #: includes/logging/endpoints/class-delete-debug-logs-endpoint.php:33
 #: includes/logging/endpoints/class-delete-email-endpoint.php:29
 #: includes/logging/endpoints/class-delete-events-endpoint.php:36
@@ -3394,15 +3394,15 @@ msgstr ""
 msgid "A fatal error occured when sending"
 msgstr ""
 
-#: includes/handler/endpoints/class-resend-email-endpoint.php:58
+#: includes/handler/endpoints/class-resend-email-endpoint.php:59
 msgid "Attempted to resend email %s, but could not due to either the message body not being stored, or attachments not being saved."
 msgstr ""
 
-#: includes/handler/endpoints/class-resend-email-endpoint.php:60
+#: includes/handler/endpoints/class-resend-email-endpoint.php:61
 msgid "Email could not be resent as it was not stored with all required values."
 msgstr ""
 
-#: includes/handler/endpoints/class-resend-email-endpoint.php:75
+#: includes/handler/endpoints/class-resend-email-endpoint.php:89
 msgid "Email could not be resent; check your logs for more details."
 msgstr ""
 

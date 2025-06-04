@@ -5,6 +5,7 @@ namespace Gravity_Forms\Gravity_SMTP\Handler\Endpoints;
 use Gravity_Forms\Gravity_SMTP\Logging\Debug\Debug_Logger;
 use Gravity_Forms\Gravity_SMTP\Models\Event_Model;
 use Gravity_Forms\Gravity_SMTP\Utils\Attachments_Saver;
+use Gravity_Forms\Gravity_SMTP\Utils\Recipient_Collection;
 use Gravity_Forms\Gravity_Tools\Endpoints\Endpoint;
 
 class Resend_Email_Endpoint extends Endpoint {
@@ -68,6 +69,19 @@ class Resend_Email_Endpoint extends Endpoint {
 		}
 
 		$headers['source'] = $extra['source'];
+
+		foreach ( $headers as $idx => $header ) {
+			if ( is_a( $header, Recipient_Collection::class ) ) {
+				$emails       = $header->recipients();
+				$emails_array = array();
+
+				foreach ( $emails as $email_recipient ) {
+					$emails_array[] = $email_recipient->email();
+				}
+
+				$headers[ $idx ] = implode( ', ', $emails_array );
+			}
+		}
 
 		$success = wp_mail( $extra['to'], $email['subject'], $email['message'], $headers, $extra['attachments'] );
 
