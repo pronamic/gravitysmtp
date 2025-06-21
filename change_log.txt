@@ -1,3 +1,7 @@
+### 1.9.4 | 2025-06-20
+- Fixed an issue that can cause some emails to fail to send due to duplicate headers.
+- Fixed an issue that causes some WordFence emails not to send.
+
 ### 1.9.3 | 2025-06-03
 - Fixed an issue which can cause emails with invalid reply-to addresses to fail to send.
 - Fixed an issue that can cause calls to strpos to use a deprecated null value.

@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Gravity SMTP 1.9.3\n"
+"Project-Id-Version: Gravity SMTP 1.9.4\n"
 "Report-Msgid-Bugs-To: https://gravityforms.com/support\n"
 "Last-Translator: Gravity Forms <support@gravityforms.com>\n"
 "Language-Team: Gravity Forms <support@gravityforms.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-06-03T17:37:34+00:00\n"
+"POT-Creation-Date: 2025-06-20T15:28:34+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: gravitysmtp\n"
@@ -1146,7 +1146,7 @@ msgid "Enable Test Mode"
 msgstr ""
 
 #: includes/apps/config/class-settings-config.php:119
-#: includes/connectors/types/class-connector-amazon.php:351
+#: includes/connectors/types/class-connector-amazon.php:355
 #: includes/connectors/types/class-connector-brevo.php:296
 #: includes/connectors/types/class-connector-elasticemail.php:303
 #: includes/connectors/types/class-connector-generic.php:322
@@ -2371,11 +2371,11 @@ msgstr ""
 msgid "Email successfully sent."
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:273
+#: includes/connectors/types/class-connector-amazon.php:277
 msgid "Amazon SES Settings"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:280
+#: includes/connectors/types/class-connector-amazon.php:284
 #: includes/connectors/types/class-connector-brevo.php:264
 #: includes/connectors/types/class-connector-elasticemail.php:271
 #: includes/connectors/types/class-connector-generic.php:265
@@ -2396,108 +2396,108 @@ msgstr ""
 msgid "Configuration"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:304
+#: includes/connectors/types/class-connector-amazon.php:308
 msgid "Log in to your {{link}}AWS Console{{link}}, go to the IAM dashboard, and create a new access key for an IAM user with AmazonSESFullAccess and AmazonSNSFullAccess permissions."
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:309
+#: includes/connectors/types/class-connector-amazon.php:313
 msgid "Access Key ID"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:323
+#: includes/connectors/types/class-connector-amazon.php:327
 msgid "Secret Access Key"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:337
+#: includes/connectors/types/class-connector-amazon.php:341
 #: includes/connectors/types/class-connector-mailgun.php:408
 msgid "Region"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:367
+#: includes/connectors/types/class-connector-amazon.php:371
 msgid "US East (N. Virginia)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:368
+#: includes/connectors/types/class-connector-amazon.php:372
 msgid "US East (Ohio)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:369
+#: includes/connectors/types/class-connector-amazon.php:373
 msgid "US West (N. California)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:370
+#: includes/connectors/types/class-connector-amazon.php:374
 msgid "US West (Oregon)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:371
+#: includes/connectors/types/class-connector-amazon.php:375
 msgid "Africa (Cape Town)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:372
+#: includes/connectors/types/class-connector-amazon.php:376
 msgid "Asia Pacific (Hong Kong)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:373
+#: includes/connectors/types/class-connector-amazon.php:377
 msgid "Asia Pacific (Jakarta)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:374
+#: includes/connectors/types/class-connector-amazon.php:378
 msgid "Asia Pacific (Mumbai)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:375
+#: includes/connectors/types/class-connector-amazon.php:379
 msgid "Asia Pacific (Osaka)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:376
+#: includes/connectors/types/class-connector-amazon.php:380
 msgid "Asia Pacific (Seoul)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:377
+#: includes/connectors/types/class-connector-amazon.php:381
 msgid "Asia Pacific (Singapore)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:378
+#: includes/connectors/types/class-connector-amazon.php:382
 msgid "Asia Pacific (Sydney)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:379
+#: includes/connectors/types/class-connector-amazon.php:383
 msgid "Asia Pacific (Tokyo)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:380
+#: includes/connectors/types/class-connector-amazon.php:384
 msgid "Canada (Central)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:381
+#: includes/connectors/types/class-connector-amazon.php:385
 msgid "Europe (Frankfurt)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:382
+#: includes/connectors/types/class-connector-amazon.php:386
 msgid "Europe (Ireland)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:383
+#: includes/connectors/types/class-connector-amazon.php:387
 msgid "Europe (London)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:384
+#: includes/connectors/types/class-connector-amazon.php:388
 msgid "Europe (Milan)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:385
+#: includes/connectors/types/class-connector-amazon.php:389
 msgid "Europe (Paris)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:386
+#: includes/connectors/types/class-connector-amazon.php:390
 msgid "Europe (Stockholm)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:387
+#: includes/connectors/types/class-connector-amazon.php:391
 msgid "Middle East (Bahrain)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:388
+#: includes/connectors/types/class-connector-amazon.php:392
 msgid "South America (São Paulo)"
 msgstr ""
 

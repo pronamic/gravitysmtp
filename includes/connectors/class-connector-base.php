@@ -531,7 +531,7 @@ abstract class Connector_Base {
 			unset( $headers[ $header ] );
 		}
 
-		return $headers;
+		return array_unique( $headers );
 	}
 
 	/**

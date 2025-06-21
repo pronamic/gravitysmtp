@@ -607,6 +607,10 @@ class Connector_Microsoft extends Connector_Base {
 	 * @return void
 	 */
 	private function reset_phpmailer() {
+		$this->php_mailer->clearCustomHeaders();
+		$this->php_mailer->clearAddresses();
+		$this->php_mailer->clearBCCs();
+		$this->php_mailer->clearCCs();
 		$this->php_mailer->clearAllRecipients();
 		$this->php_mailer->clearReplyTos();
 		$this->php_mailer->clearAttachments();
