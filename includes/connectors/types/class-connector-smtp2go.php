@@ -2,8 +2,10 @@
 
 namespace Gravity_Forms\Gravity_SMTP\Connectors\Types;
 
+use Exception;
 use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Base;
 use Gravity_Forms\Gravity_SMTP\Feature_Flags\Feature_Flag_Manager;
+use WP_Error;
 
 /**
  * Connector for SMTP2GO
@@ -33,7 +35,7 @@ class Connector_Smtp2go extends Connector_Base {
 	 *
 	 * @since 1.0
 	 *
-	 * @return int Returns the email ID.
+	 * @return int returns the email ID
 	 */
 	public function send() {
 		try {
@@ -56,6 +58,7 @@ class Connector_Smtp2go extends Connector_Base {
 			$response = wp_safe_remote_post( $this->url, $params );
 
 			$is_success = in_array( (int) wp_remote_retrieve_response_code( $response ), array( 200, 201, 202 ) );
+
 			if ( ! $is_success ) {
 				$this->log_failure( $email, wp_remote_retrieve_body( $response ) );
 
@@ -66,8 +69,7 @@ class Connector_Smtp2go extends Connector_Base {
 			$this->logger->log( $email, 'sent', __( 'Email successfully sent.', 'gravitysmtp' ) );
 
 			return true;
-
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$this->log_failure( $email, $e->getMessage() );
 
 			return $email;
@@ -86,19 +88,20 @@ class Connector_Smtp2go extends Connector_Base {
 		$api_key = $this->get_setting( self::SETTING_API_KEY );
 
 		$from_value = isset( $atts['from']['name'] ) ? sprintf( '"%s" <%s>', $atts['from']['name'], $atts['from']['email'] ) : $atts['from']['email'];
-		$body = array(
+		$body       = array(
 			'sender'  => $from_value,
 			'subject' => $atts['subject'],
-			'to' => array(),
+			'to'      => array(),
 		);
 
-		foreach( $atts['to']->as_array() as $to_value ) {
-			$email_value = isset( $to_value['name'] ) ? sprintf( '%s <%s>', $to_value['name'], $to_value['email'] ) : $to_value['email'];
+		foreach ( $atts['to']->as_array() as $to_value ) {
+			$email_value  = isset( $to_value['name'] ) ? sprintf( '%s <%s>', $to_value['name'], $to_value['email'] ) : $to_value['email'];
 			$body['to'][] = $email_value;
 		}
 
 		// Setting content
 		$is_html = ! empty( $atts['headers']['content-type'] ) && strpos( $atts['headers']['content-type'], 'text/html' ) !== false;
+
 		if ( $is_html ) {
 			$body['html_body'] = $atts['message'];
 		} else {
@@ -108,7 +111,8 @@ class Connector_Smtp2go extends Connector_Base {
 		// Setting cc
 		if ( ! empty( $atts['headers']['cc'] ) ) {
 			$body['cc'] = array();
-			foreach( $atts['headers']['cc']->as_array() as $cc_value ) {
+
+			foreach ( $atts['headers']['cc']->as_array() as $cc_value ) {
 				$body['cc'][] = $cc_value['email'];
 			}
 		}
@@ -116,7 +120,8 @@ class Connector_Smtp2go extends Connector_Base {
 		// Setting bcc
 		if ( ! empty( $atts['headers']['bcc'] ) ) {
 			$body['bcc'] = array();
-			foreach( $atts['headers']['bcc']->as_array() as $bcc_value ) {
+
+			foreach ( $atts['headers']['bcc']->as_array() as $bcc_value ) {
 				$body['bcc'][] = $bcc_value['email'];
 			}
 		}
@@ -157,6 +162,7 @@ class Connector_Smtp2go extends Connector_Base {
 	 */
 	protected function get_send_atts() {
 		$headers = $this->get_parsed_headers( $this->get_att( 'headers', array() ) );
+
 		if ( ! empty( $headers['content-type'] ) ) {
 			$headers['content-type'] = $this->get_att( 'content_type', $headers['content-type'] );
 		}
@@ -175,7 +181,7 @@ class Connector_Smtp2go extends Connector_Base {
 	/**
 	 * Gets a list of attachments, and returns them in a format that can be used by the API.
 	 *
-	 * @param array $attachments The list of attachments.
+	 * @param array $attachments the list of attachments
 	 *
 	 * @since 1.0
 	 *
@@ -196,7 +202,7 @@ class Connector_Smtp2go extends Connector_Base {
 						'mimetype' => mime_content_type( $attachment ),
 					);
 				}
-			} catch ( \Exception $e ) {
+			} catch ( Exception $e ) {
 				continue;
 			}
 		}
@@ -209,7 +215,7 @@ class Connector_Smtp2go extends Connector_Base {
 	 *
 	 * @since 1.0
 	 *
-	 * @return array Returns the header array to be passed to SMTP2GO's API.
+	 * @return array returns the header array to be passed to SMTP2GO's API
 	 */
 	protected function get_request_headers( $api_key ) {
 		return array(
@@ -224,8 +230,8 @@ class Connector_Smtp2go extends Connector_Base {
 	 *
 	 * @since 1.0
 	 *
-	 * @param string $email         The email that failed.
-	 * @param string $error_message The error message.
+	 * @param string $email         the email that failed
+	 * @param string $error_message the error message
 	 */
 	private function log_failure( $email, $error_message ) {
 		$this->events->update( array( 'status' => 'failed' ), $email );
@@ -316,15 +322,9 @@ class Connector_Smtp2go extends Connector_Base {
 	 *
 	 * @since 1.0
 	 *
-	 * @return bool|\WP_Error Returns true if configured, or a WP_Error object if not.
+	 * @return bool|WP_Error returns true if configured, or a WP_Error object if not
 	 */
 	public function is_configured() {
-		$configured = $this->get_setting( self::SETTING_CONFIGURED, null );
-
-		if ( ! is_null( $configured ) ) {
-			return $configured;
-		}
-
 		$valid_api = $this->verify_api_key();
 
 		if ( is_wp_error( $valid_api ) ) {
@@ -343,14 +343,14 @@ class Connector_Smtp2go extends Connector_Base {
 	 *
 	 * @since 1.0
 	 *
-	 * @return true|\WP_Error
+	 * @return true|WP_Error
 	 */
 	private function verify_api_key() {
 		$api_key = $this->get_setting( self::SETTING_API_KEY );
 		$url     = 'https://api.smtp2go.com/v3/stats/email_bounces';
 
 		if ( empty( $api_key ) ) {
-			return new \WP_Error( 'missing_api_key', __( 'No API Key provided.', 'gravitysmtp' ) );
+			return new WP_Error( 'missing_api_key', __( 'No API Key provided.', 'gravitysmtp' ) );
 		}
 
 		$response = wp_remote_post(
@@ -361,7 +361,7 @@ class Connector_Smtp2go extends Connector_Base {
 		);
 
 		if ( wp_remote_retrieve_response_code( $response ) != '200' ) {
-			return new \WP_Error( 'invalid_api_key', __( 'Invalid API Key provided.', 'gravitysmtp' ) );
+			return new WP_Error( 'invalid_api_key', __( 'Invalid API Key provided.', 'gravitysmtp' ) );
 		}
 
 		return true;
@@ -376,18 +376,9 @@ class Connector_Smtp2go extends Connector_Base {
 	 * @return array
 	 */
 	protected function get_merged_data() {
-		$is_configured = $this->is_configured();
+		$data             = parent::get_merged_data();
+		$data['disabled'] = ! Feature_Flag_Manager::is_enabled( 'smtp2go_integration' );
 
-		$data = array(
-			self::SETTING_ACTIVATED  => $this->get_setting( self::SETTING_ACTIVATED, true ),
-			self::SETTING_CONFIGURED => ! is_wp_error( $is_configured ),
-			self::SETTING_ENABLED    => $this->get_setting( self::SETTING_ENABLED, false ),
-			self::SETTING_IS_PRIMARY => $this->get_setting( self::SETTING_IS_PRIMARY, false ),
-			self::SETTING_IS_BACKUP  => $this->get_setting( self::SETTING_IS_BACKUP, false ),
-			'disabled'               => ! Feature_Flag_Manager::is_enabled( 'smtp2go_integration' ),
-		);
-
-		return array_merge( $this->connector_data(), $data );
+		return $data;
 	}
-
 }

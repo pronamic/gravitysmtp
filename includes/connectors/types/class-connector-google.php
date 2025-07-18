@@ -9,6 +9,7 @@ use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Connectors\Oauth\Google_Oauth_Handler;
 use Gravity_Forms\Gravity_SMTP\Connectors\Oauth_Handler;
 use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
+use Gravity_Forms\Gravity_SMTP\Utils\Booliesh;
 
 /**
  * Connector for Google / Gmail
@@ -605,7 +606,7 @@ class Connector_Google extends Connector_Base {
 	}
 
 	public function is_configured() {
-		if ( $this->get_setting( 'access_token', false ) ) {
+		if ( Booliesh::get( $this->get_setting( 'access_token', false ) ) ) {
 			/**
 			 * @var Google_Oauth_Handler $oauth_handler
 			 */

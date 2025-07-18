@@ -10,9 +10,7 @@ use Gravity_Forms\Gravity_SMTP\Data_Store\Opts_Data_Store;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Plugin_Opts_Data_Store;
 use Gravity_Forms\Gravity_SMTP\Logging\Debug\Null_Logger;
 use Gravity_Forms\Gravity_SMTP\Logging\Debug\Null_Logging_Provider;
-use Gravity_Forms\Gravity_SMTP\Logging\Logging_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Models\Event_Model;
-use Gravity_Forms\Gravity_SMTP\Utils\Attachments_Saver;
 use Gravity_Forms\Gravity_SMTP\Utils\AWS_Signature_Handler;
 use Gravity_Forms\Gravity_SMTP\Utils\Basic_Encrypted_Hash;
 use Gravity_Forms\Gravity_SMTP\Utils\Header_Parser;
@@ -58,6 +56,7 @@ class Utils_Service_Provider extends Service_Provider {
 		$container->add( self::COMMON, function () use ( $container ) {
 			$data = $container->get( Connector_Service_Provider::DATA_STORE_ROUTER );
 			$key  = $data->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_LICENSE_KEY, '' );
+
 			return new Common( GRAVITY_MANAGER_URL, GRAVITY_SUPPORT_URL, $key );
 		} );
 
@@ -77,39 +76,47 @@ class Utils_Service_Provider extends Service_Provider {
 			return new Source_Parser();
 		} );
 
-		$container->add( self::LOGGER, function() {
+		$container->add( self::LOGGER, function () {
 			return new Null_Logger( new Null_Logging_Provider() );
 		} );
 
-		$container->add( self::RECIPIENT_PARSER, function() {
+		$container->add( self::RECIPIENT_PARSER, function () {
 			return new Recipient_Parser();
 		} );
 
-		$container->add( self::FILTER_PARSER, function() {
+		$container->add( self::FILTER_PARSER, function () {
 			return new SQL_Filter_Parser();
 		} );
 
-		$container->add( self::AWS_SIGNATURE_HANDLER, function() {
+		$container->add( self::AWS_SIGNATURE_HANDLER, function () {
 			return new AWS_Signature_Handler();
 		} );
 
-		$container->add( self::BASIC_ENCRYPTED_HASH, function() {
+		$container->add( self::BASIC_ENCRYPTED_HASH, function () {
 			return new Basic_Encrypted_Hash();
 		} );
 	}
 
 	public function init( \Gravity_Forms\Gravity_Tools\Service_Container $container ) {
-		add_filter( 'cron_schedules', function( $schedules ) {
+		add_filter( 'cron_schedules', function ( $schedules ) {
 			$schedules[ 'every-minute' ] = array(
 				'interval' => MINUTE_IN_SECONDS,
-				'display' =>  esc_html__( 'Every Minute', 'gravitysmtp' ),
+				'display'  => esc_html__( 'Every Minute', 'gravitysmtp' ),
 			);
 
 			return $schedules;
 		} );
 
-		add_action( 'gravitysmtp_after_mail_created', function ( $email_id, $email_data ) use ( $container ) {
+		add_action( 'gravitysmtp_after_mail_updated', function ( $email_id, $email_data ) use ( $container ) {
+			if ( ! empty( $email_data['extra'] ) && is_string( $email_data['extra'] ) ) {
+				$email_data['extra'] = unserialize( $email_data['extra'] );
+			}
+
 			if ( empty( $email_data['extra']['attachments'] ) ) {
+				return;
+			}
+
+			if ( ! empty( $email_data['extra']['attachments_saved'] ) ) {
 				return;
 			}
 
@@ -123,9 +130,9 @@ class Utils_Service_Provider extends Service_Provider {
 				return;
 			}
 
-			$container->get( self::ATTACHMENTS_SAVER )->save_attachments( $email_id, $email_data['extra']['attachments'] );
+			$new_attachments                          = $container->get( self::ATTACHMENTS_SAVER )->save_attachments( $email_id, $email_data['extra']['attachments'] );
 			$email_data['extra']['attachments_saved'] = true;
-
+			$email_data['extra']['attachments']       = $new_attachments;
 			/**
 			 * @var Event_Model $events
 			 */
@@ -133,5 +140,4 @@ class Utils_Service_Provider extends Service_Provider {
 			$events->update( array( 'extra' => serialize( $email_data['extra'] ) ), $email_id );
 		}, 10, 2 );
 	}
-
 }

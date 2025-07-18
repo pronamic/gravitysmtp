@@ -2,8 +2,10 @@
 
 namespace Gravity_Forms\Gravity_SMTP\Connectors\Types;
 
+use Exception;
 use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Base;
 use Gravity_Forms\Gravity_SMTP\Feature_Flags\Feature_Flag_Manager;
+use WP_Error;
 
 /**
  * Connector for Mailjet
@@ -35,7 +37,7 @@ class Connector_Mailjet extends Connector_Base {
 	 *
 	 * @since 1.0
 	 *
-	 * @return int Returns the email ID.
+	 * @return int returns the email ID
 	 */
 	public function send() {
 		try {
@@ -58,6 +60,7 @@ class Connector_Mailjet extends Connector_Base {
 			$response = wp_safe_remote_post( $this->url . '/send', $params );
 
 			$is_success = in_array( (int) wp_remote_retrieve_response_code( $response ), array( 200, 201, 202 ) );
+
 			if ( ! $is_success ) {
 				$this->log_failure( $email, wp_remote_retrieve_body( $response ) );
 
@@ -68,8 +71,7 @@ class Connector_Mailjet extends Connector_Base {
 			$this->logger->log( $email, 'sent', __( 'Email successfully sent.', 'gravitysmtp' ) );
 
 			return true;
-
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$this->log_failure( $email, $e->getMessage() );
 
 			return $email;
@@ -99,7 +101,7 @@ class Connector_Mailjet extends Connector_Base {
 
 		foreach ( $atts['to']->as_array() as $recipient ) {
 			$to_value = array(
-				'Email' => $recipient['email']
+				'Email' => $recipient['email'],
 			);
 
 			if ( ! empty( $recipient['name'] ) ) {
@@ -111,6 +113,7 @@ class Connector_Mailjet extends Connector_Base {
 
 		// Setting content
 		$is_html = ! empty( $atts['headers']['content-type'] ) && strpos( $atts['headers']['content-type'], 'text/html' ) !== false;
+
 		if ( $is_html ) {
 			$message['HTMLPart'] = $atts['message'];
 			// Strip tags from plaintext
@@ -127,6 +130,7 @@ class Connector_Mailjet extends Connector_Base {
 		// Setting cc
 		if ( ! empty( $atts['headers']['cc'] ) ) {
 			$message['Cc'] = array();
+
 			foreach ( $atts['headers']['cc']->as_array() as $cc_value ) {
 				$values = array(
 					'Email' => $cc_value['email'],
@@ -140,6 +144,7 @@ class Connector_Mailjet extends Connector_Base {
 		// Setting Bcc
 		if ( ! empty( $atts['headers']['bcc'] ) ) {
 			$message['Bcc'] = array();
+
 			foreach ( $atts['headers']['bcc']->as_array() as $bcc_value ) {
 				$values = array(
 					'Email' => $bcc_value['email'],
@@ -187,6 +192,7 @@ class Connector_Mailjet extends Connector_Base {
 	 */
 	protected function get_send_atts() {
 		$headers = $this->get_parsed_headers( $this->get_att( 'headers', array() ) );
+
 		if ( ! empty( $headers['content-type'] ) ) {
 			$headers['content-type'] = $this->get_att( 'content_type', $headers['content-type'] );
 		}
@@ -205,7 +211,7 @@ class Connector_Mailjet extends Connector_Base {
 	/**
 	 * Gets a list of attachments, and returns them in a format that can be used by the API.
 	 *
-	 * @param array $attachments The list of attachments.
+	 * @param array $attachments the list of attachments
 	 *
 	 * @since 1.0
 	 *
@@ -226,7 +232,7 @@ class Connector_Mailjet extends Connector_Base {
 						'ContentType'   => mime_content_type( $attachment ),
 					);
 				}
-			} catch ( \Exception $e ) {
+			} catch ( Exception $e ) {
 				continue;
 			}
 		}
@@ -239,7 +245,7 @@ class Connector_Mailjet extends Connector_Base {
 	 *
 	 * @since 1.0
 	 *
-	 * @return array Returns the header array to be passed to Mailjet's API.
+	 * @return array returns the header array to be passed to Mailjet's API
 	 */
 	protected function get_request_headers( $api_key, $api_secret ) {
 		return array(
@@ -254,8 +260,8 @@ class Connector_Mailjet extends Connector_Base {
 	 *
 	 * @since 1.0
 	 *
-	 * @param string $email         The email that failed.
-	 * @param string $error_message The error message.
+	 * @param string $email         the email that failed
+	 * @param string $error_message the error message
 	 */
 	private function log_failure( $email, $error_message ) {
 		$this->events->update( array( 'status' => 'failed' ), $email );
@@ -352,8 +358,8 @@ class Connector_Mailjet extends Connector_Base {
 							),
 						),
 					),
-					$this->get_from_settings_fields(),
-				),
+				$this->get_from_settings_fields(),
+			),
 			);
 	}
 
@@ -362,15 +368,9 @@ class Connector_Mailjet extends Connector_Base {
 	 *
 	 * @since 1.0
 	 *
-	 * @return bool|\WP_Error Returns true if configured, or a WP_Error object if not.
+	 * @return bool|WP_Error returns true if configured, or a WP_Error object if not
 	 */
 	public function is_configured() {
-		$configured = $this->get_setting( self::SETTING_CONFIGURED, null );
-
-		if ( ! is_null( $configured ) ) {
-			return $configured;
-		}
-
 		$valid_api = $this->verify_api_key();
 
 		if ( is_wp_error( $valid_api ) ) {
@@ -389,7 +389,7 @@ class Connector_Mailjet extends Connector_Base {
 	 *
 	 * @since 1.0
 	 *
-	 * @return true|\WP_Error
+	 * @return true|WP_Error
 	 */
 	private function verify_api_key() {
 		$api_key    = $this->get_setting( self::SETTING_API_KEY, '' );
@@ -397,7 +397,7 @@ class Connector_Mailjet extends Connector_Base {
 		$url        = 'https://api.mailjet.com/v3/REST/geostatistics';
 
 		if ( empty( $api_key ) || empty( $api_secret ) ) {
-			return new \WP_Error( 'missing_api_key', __( 'No API Key or Secret provided.', 'gravitysmtp' ) );
+			return new WP_Error( 'missing_api_key', __( 'No API Key or Secret provided.', 'gravitysmtp' ) );
 		}
 
 		$response = wp_remote_get(
@@ -408,7 +408,7 @@ class Connector_Mailjet extends Connector_Base {
 		);
 
 		if ( wp_remote_retrieve_response_code( $response ) != '200' ) {
-			return new \WP_Error( 'invalid_api_key', __( 'Invalid API Key provided.', 'gravitysmtp' ) );
+			return new WP_Error( 'invalid_api_key', __( 'Invalid API Key provided.', 'gravitysmtp' ) );
 		}
 
 		return true;
@@ -423,18 +423,9 @@ class Connector_Mailjet extends Connector_Base {
 	 * @return array
 	 */
 	protected function get_merged_data() {
-		$is_configured = $this->is_configured();
+		$data             = parent::get_merged_data();
+		$data['disabled'] = ! Feature_Flag_Manager::is_enabled( 'mailjet_integration' );
 
-		$data = array(
-			self::SETTING_ACTIVATED  => $this->get_setting( self::SETTING_ACTIVATED, true ),
-			self::SETTING_CONFIGURED => ! is_wp_error( $is_configured ),
-			self::SETTING_ENABLED    => $this->get_setting( self::SETTING_ENABLED, false ),
-			self::SETTING_IS_PRIMARY => $this->get_setting( self::SETTING_IS_PRIMARY, false ),
-			self::SETTING_IS_BACKUP  => $this->get_setting( self::SETTING_IS_BACKUP, false ),
-			'disabled'               => ! Feature_Flag_Manager::is_enabled( 'mailjet_integration' ),
-		);
-
-		return array_merge( $this->connector_data(), $data );
+		return $data;
 	}
-
 }

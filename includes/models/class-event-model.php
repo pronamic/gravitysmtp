@@ -6,7 +6,6 @@ use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Plugin_Settings_Endpoin
 use Gravity_Forms\Gravity_SMTP\Data_Store\Plugin_Opts_Data_Store;
 use Gravity_Forms\Gravity_SMTP\Models\Hydrators\Hydrator_Factory;
 use Gravity_Forms\Gravity_SMTP\Models\Traits\Can_Compare_Dynamically;
-use Gravity_Forms\Gravity_SMTP\Utils\Recipient_Collection;
 use Gravity_Forms\Gravity_SMTP\Utils\Recipient_Parser;
 use Gravity_Forms\Gravity_SMTP\Utils\SQL_Filter_Parser;
 
@@ -344,6 +343,8 @@ class Event_Model {
 			$values,
 			array( 'id' => $id )
 		);
+
+		do_action( 'gravitysmtp_after_mail_updated', $id, $values );
 	}
 
 	public function delete( $id ) {

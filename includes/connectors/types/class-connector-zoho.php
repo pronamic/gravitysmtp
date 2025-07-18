@@ -8,6 +8,7 @@ use Gravity_Forms\Gravity_SMTP\Connectors\Oauth\Zoho_Oauth_Handler;
 use Gravity_Forms\Gravity_SMTP\Enums\Zoho_Datacenters_Enum;
 use Gravity_Forms\Gravity_SMTP\Feature_Flags\Feature_Flag_Manager;
 use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
+use Gravity_Forms\Gravity_SMTP\Utils\Booliesh;
 
 /**
  * Connector for Zoho
@@ -251,7 +252,7 @@ class Connector_Zoho extends Connector_Base {
 	}
 
 	public function is_configured() {
-		if ( $this->get_setting( 'access_token', false ) ) {
+		if ( Booliesh::get( $this->get_setting( 'access_token', false ) ) ) {
 			/**
 			 * @var Zoho_Oauth_Handler $oauth_handler
 			 */

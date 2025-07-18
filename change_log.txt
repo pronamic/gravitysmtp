@@ -1,3 +1,15 @@
+### 1.9.5 | 2025-07-17
+- Added email address validation for the force from email setting in all integrations.
+- Added a database check section to the system report to confirm required tables are in place.
+- Fixed an issue that causes fatal errors when Signup Sheets forms are submitted.
+- Fixed an issue that can cause resending to fail when attachments are deleted by third-party code.
+- Fixed an issue that causes SVG's to not display for certain company logos.
+- Fixed an issue that can cause a fatal error when some other plugins bypass normal WordPress init in certain contexts.
+- Fixed an issue that causes fatal errors when Signup Sheets forms are submitted.
+- Fixed an issue where the `pre_wp_mail` filter is not applied when sending emails.
+- Fixed an issue that can cause the Configuration status of Connectors to be inaccurate if cached.
+- Updated data grids to use the latest version of our components.
+
 ### 1.9.4 | 2025-06-20
 - Fixed an issue that can cause some emails to fail to send due to duplicate headers.
 - Fixed an issue that causes some WordFence emails not to send.

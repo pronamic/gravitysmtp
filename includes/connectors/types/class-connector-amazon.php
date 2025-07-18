@@ -2,6 +2,7 @@
 
 namespace Gravity_Forms\Gravity_SMTP\Connectors\Types;
 
+use Exception;
 use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Base;
 use Gravity_Forms\Gravity_SMTP\Feature_Flags\Feature_Flag_Manager;
 use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
@@ -19,30 +20,30 @@ class Connector_Amazon extends Connector_Base {
 	const SETTING_CLIENT_SECRET = 'secret_access_key';
 	const SETTING_REGION        = 'region';
 
-	const REGION_US_EAST_N_VIRGINIA      = "us-east-1";
-	const REGION_US_EAST_OHIO            = "us-east-2";
-	const REGION_US_WEST_N_CALIFORNIA    = "us-west-1";
-	const REGION_US_WEST_OREGON          = "us-west-2";
-	const REGION_AFRICA_CAPE_TOWN        = "af-south-1";
-	const REGION_ASIA_PACIFIC_HONG_KONG  = "ap-east-1";
-	const REGION_ASIA_PACIFIC_JAKARTA    = "ap-southeast-3";
-	const REGION_ASIA_PACIFIC_MUMBAI     = "ap-south-1";
-	const REGION_ASIA_PACIFIC_OSAKA      = "ap-northeast-3";
-	const REGION_ASIA_PACIFIC_SEOUL      = "ap-northeast-2";
-	const REGION_ASIA_PACIFIC_SINGAPORE  = "ap-southeast-1";
-	const REGION_ASIA_PACIFIC_SYDNEY     = "ap-southeast-2";
-	const REGION_ASIA_PACIFIC_TOKYO      = "ap-northeast-1";
-	const REGION_CANADA_CENTRAL          = "ca-central-1";
-	const REGION_EUROPE_FRANKFURT        = "eu-central-1";
-	const REGION_EUROPE_IRELAND          = "eu-west-1";
-	const REGION_EUROPE_LONDON           = "eu-west-2";
-	const REGION_EUROPE_MILAN            = "eu-south-1";
-	const REGION_EUROPE_PARIS            = "eu-west-3";
-	const REGION_EUROPE_STOCKHOLM        = "eu-north-1";
-	const REGION_MIDDLE_EAST_BAHRAIN     = "me-south-1";
-	const REGION_SOUTH_AMERICA_SAO_PAULO = "sa-east-1";
+	const REGION_US_EAST_N_VIRGINIA      = 'us-east-1';
+	const REGION_US_EAST_OHIO            = 'us-east-2';
+	const REGION_US_WEST_N_CALIFORNIA    = 'us-west-1';
+	const REGION_US_WEST_OREGON          = 'us-west-2';
+	const REGION_AFRICA_CAPE_TOWN        = 'af-south-1';
+	const REGION_ASIA_PACIFIC_HONG_KONG  = 'ap-east-1';
+	const REGION_ASIA_PACIFIC_JAKARTA    = 'ap-southeast-3';
+	const REGION_ASIA_PACIFIC_MUMBAI     = 'ap-south-1';
+	const REGION_ASIA_PACIFIC_OSAKA      = 'ap-northeast-3';
+	const REGION_ASIA_PACIFIC_SEOUL      = 'ap-northeast-2';
+	const REGION_ASIA_PACIFIC_SINGAPORE  = 'ap-southeast-1';
+	const REGION_ASIA_PACIFIC_SYDNEY     = 'ap-southeast-2';
+	const REGION_ASIA_PACIFIC_TOKYO      = 'ap-northeast-1';
+	const REGION_CANADA_CENTRAL          = 'ca-central-1';
+	const REGION_EUROPE_FRANKFURT        = 'eu-central-1';
+	const REGION_EUROPE_IRELAND          = 'eu-west-1';
+	const REGION_EUROPE_LONDON           = 'eu-west-2';
+	const REGION_EUROPE_MILAN            = 'eu-south-1';
+	const REGION_EUROPE_PARIS            = 'eu-west-3';
+	const REGION_EUROPE_STOCKHOLM        = 'eu-north-1';
+	const REGION_MIDDLE_EAST_BAHRAIN     = 'me-south-1';
+	const REGION_SOUTH_AMERICA_SAO_PAULO = 'sa-east-1';
 
-	const API_ENDPOINT = '/v2/email/outbound-emails';
+	const API_ENDPOINT  = '/v2/email/outbound-emails';
 	const ISO8601_BASIC = 'Ymd\THis\Z';
 
 	protected $name        = 'amazon';
@@ -52,7 +53,7 @@ class Connector_Amazon extends Connector_Base {
 	protected $full_logo   = 'AmazonAWSFull';
 
 	public function get_description() {
-		return __( "Amazon SES offers a reliable and cost-effective service for sending and receiving emails using your own domain. It leverages Amazon’s robust infrastructure, making it a powerful option for managing your email communication.", 'gravitysmtp' );
+		return __( 'Amazon SES offers a reliable and cost-effective service for sending and receiving emails using your own domain. It leverages Amazon’s robust infrastructure, making it a powerful option for managing your email communication.', 'gravitysmtp' );
 	}
 
 	protected $sensitive_fields = array(
@@ -64,7 +65,6 @@ class Connector_Amazon extends Connector_Base {
 	 * Sending logic.
 	 *
 	 * @since 1.0
-	 *
 	 *
 	 * @return bool
 	 */
@@ -94,7 +94,7 @@ class Connector_Amazon extends Connector_Base {
 
 		$this->php_mailer->setFrom( $from['email'], empty( $from['name'] ) ? '' : $from['name'] );
 
-		foreach( $to->recipients() as $recipient ) {
+		foreach ( $to->recipients() as $recipient ) {
 			if ( ! empty( $recipient->name() ) ) {
 				$this->php_mailer->addAddress( $recipient->email(), $recipient->name() );
 			} else {
@@ -133,7 +133,7 @@ class Connector_Amazon extends Connector_Base {
 		}
 
 		if ( ! empty( $reply_to ) ) {
-			foreach( $reply_to as $address ) {
+			foreach ( $reply_to as $address ) {
 				if ( isset( $address['name'] ) ) {
 					$this->php_mailer->addReplyTo( $address['email'], $address['name'] );
 				} else {
@@ -179,7 +179,7 @@ class Connector_Amazon extends Connector_Base {
 			$body = array(
 				'Action'           => 'SendRawEmail',
 				'Version'          => '2010-12-01',
-				'RawMessage' => array(
+				'RawMessage'       => array(
 					'Data' => $raw,
 				),
 			);
@@ -201,8 +201,7 @@ class Connector_Amazon extends Connector_Base {
 			$this->logger->log( $email, 'sent', __( 'Email successfully sent.', 'gravitysmtp' ) );
 
 			return true;
-
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$this->log_failure( $email, $e->getMessage() );
 			$this->debug_logger->log_fatal( $this->wrap_debug_with_details( __FUNCTION__, $email, 'Failed to send: ' . $e->getMessage() ) );
 
@@ -215,8 +214,8 @@ class Connector_Amazon extends Connector_Base {
 	 *
 	 * @since 1.4.0
 	 *
-	 * @param string $email         The email that failed.
-	 * @param string $error_message The error message.
+	 * @param string $email         the email that failed
+	 * @param string $error_message the error message
 	 */
 	private function log_failure( $email, $error_message ) {
 		$this->events->update( array( 'status' => 'failed' ), $email );
@@ -226,6 +225,7 @@ class Connector_Amazon extends Connector_Base {
 	private function get_raw_message() {
 		$this->php_mailer->preSend();
 		$raw = $this->php_mailer->getSentMIMEMessage();
+
 		return base64_encode( $raw );
 	}
 
@@ -317,7 +317,7 @@ class Connector_Amazon extends Connector_Base {
 							'name'               => self::SETTING_CLIENT_ID,
 							'spacing'            => 4,
 							'size'               => 'size-l',
-							'value'              =>  $this->get_setting( self::SETTING_CLIENT_ID, '' ),
+							'value'              => $this->get_setting( self::SETTING_CLIENT_ID, '' ),
 						),
 					),
 					array(
@@ -397,7 +397,7 @@ class Connector_Amazon extends Connector_Base {
 		foreach ( $region_options as $name => $slug ) {
 			$settings[] = array(
 				'label' => $name,
-				'value' => $slug
+				'value' => $slug,
 			);
 		}
 
@@ -413,32 +413,17 @@ class Connector_Amazon extends Connector_Base {
 	 * @return array
 	 */
 	protected function get_merged_data() {
-		$is_configured = $this->is_configured();
+		$data             = parent::get_merged_data();
+		$data['disabled'] =  ! Feature_Flag_Manager::is_enabled( 'amazon_ses_integration' );
 
-		$data = array(
-			self::SETTING_ACTIVATED  => $this->get_setting( self::SETTING_ACTIVATED, true ),
-			self::SETTING_CONFIGURED => $is_configured,
-			self::SETTING_ENABLED    => $this->get_setting( self::SETTING_ENABLED, false ),
-			self::SETTING_IS_PRIMARY => $this->get_setting( self::SETTING_IS_PRIMARY, false ),
-			self::SETTING_IS_BACKUP  => $this->get_setting( self::SETTING_IS_BACKUP, false ),
-			'disabled' => ! Feature_Flag_Manager::is_enabled( 'amazon_ses_integration' ),
-		);
-
-		return array_merge( $this->connector_data(), $data );
+		return $data;
 	}
 
 	public function is_configured() {
-		$configured = $this->get_setting( self::SETTING_CONFIGURED, null );
-
-		if ( ! is_null( $configured ) ) {
-			return $configured;
-		}
-
 		if ( ! $this->get_setting( self::SETTING_CLIENT_ID, '' ) || ! $this->get_setting( self::SETTING_CLIENT_SECRET, '' ) ) {
 			return false;
 		}
 
 		return true;
 	}
-
 }

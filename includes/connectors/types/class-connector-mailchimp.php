@@ -355,12 +355,6 @@ class Connector_Mailchimp extends Connector_Base {
 	}
 
 	public function is_configured() {
-		$configured = $this->get_setting( self::SETTING_CONFIGURED, null );
-
-		if ( ! is_null( $configured ) ) {
-			return $configured;
-		}
-
 		static $configured;
 
 		if ( ! is_null( $configured ) ) {

@@ -244,6 +244,23 @@ class Gravity_SMTP {
 	}
 
 	/**
+	 * Get a list of all custom table names for the plugin.
+	 *
+	 * @since 1.9.5
+	 *
+	 * @return string[]
+	 */
+	public static function get_table_names() {
+		return array(
+			'gravitysmtp_events',
+			'gravitysmtp_event_logs',
+			'gravitysmtp_debug_log',
+			'gravitysmtp_event_tracking',
+			'gravitysmtp_suppressed_emails',
+		);
+	}
+
+	/**
 	 * If a user previously had open tracking enabled before it was experimental, update
 	 * the experimental setting to be enabled on migration.
 	 *

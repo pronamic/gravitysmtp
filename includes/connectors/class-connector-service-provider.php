@@ -3,56 +3,50 @@
 namespace Gravity_Forms\Gravity_SMTP\Connectors;
 
 use Gravity_Forms\Gravity_SMTP\Apps\Config\Tools_Config;
-use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Get_Connector_Emails;
-use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Migrate_Settings_Endpoint;
-use Gravity_Forms\Gravity_SMTP\Connectors\Oauth\Google_Oauth_Handler;
-use Gravity_Forms\Gravity_SMTP\Connectors\Oauth\Microsoft_Oauth_Handler;
-use Gravity_Forms\Gravity_SMTP\Connectors\Oauth\Zoho_Oauth_Handler;
-use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Elastic_Email;
-use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Mailchimp;
-use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Mailersend;
-use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_PHPMail;
-use Gravity_Forms\Gravity_SMTP\Data_Store\Data_Store_Router;
-use Gravity_Forms\Gravity_SMTP\Enums\Connector_Status_Enum;
-use Gravity_Forms\Gravity_SMTP\Logging\Debug\Debug_Logger;
-use Gravity_Forms\Gravity_SMTP\Logging\Log\Logger;
-use Gravity_Forms\Gravity_SMTP\Logging\Logging_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Connectors\Config\Connector_Config;
 use Gravity_Forms\Gravity_SMTP\Connectors\Config\Connector_Endpoints_Config;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Check_Background_Tasks_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Cleanup_Data_Endpoint;
+use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Get_Connector_Emails;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Get_Single_Email_Data_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Connector_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Plugin_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Send_Test_Endpoint;
+use Gravity_Forms\Gravity_SMTP\Connectors\Oauth\Google_Oauth_Handler;
+use Gravity_Forms\Gravity_SMTP\Connectors\Oauth\Microsoft_Oauth_Handler;
+use Gravity_Forms\Gravity_SMTP\Connectors\Oauth\Zoho_Oauth_Handler;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Amazon;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Brevo;
+use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Elastic_Email;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Generic;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Google;
+use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Mailchimp;
+use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Mailersend;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Mailgun;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Microsoft;
+use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_PHPMail;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Postmark;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Sendgrid;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_SMTP2GO;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Sparkpost;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Zoho;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Const_Data_Store;
+use Gravity_Forms\Gravity_SMTP\Data_Store\Data_Store_Router;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Opts_Data_Store;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Plugin_Opts_Data_Store;
+use Gravity_Forms\Gravity_SMTP\Logging\Debug\Debug_Logger;
+use Gravity_Forms\Gravity_SMTP\Logging\Log\Logger;
+use Gravity_Forms\Gravity_SMTP\Logging\Logging_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Models\Debug_Log_Model;
 use Gravity_Forms\Gravity_SMTP\Models\Event_Model;
 use Gravity_Forms\Gravity_SMTP\Models\Hydrators\Hydrator_Factory;
 use Gravity_Forms\Gravity_SMTP\Models\Log_Details_Model;
 use Gravity_Forms\Gravity_SMTP\Models\Notifications_Model;
-use Gravity_Forms\Gravity_SMTP\Connectors\Oauth_Data_Handler;
 use Gravity_Forms\Gravity_SMTP\Utils\Booliesh;
-use Gravity_Forms\Gravity_SMTP\Utils\Recipient;
 use Gravity_Forms\Gravity_Tools\Logging\DB_Logging_Provider;
-use Gravity_Forms\Gravity_Tools\Updates\Updates_Service_Provider;
 use Gravity_Forms\Gravity_Tools\Providers\Config_Collection_Service_Provider;
 use Gravity_Forms\Gravity_Tools\Providers\Config_Service_Provider;
-use Gravity_Forms\Gravity_Tools\Service_Container;
-use Gravity_Forms\Gravity_Tools\Service_Provider;
+use Gravity_Forms\Gravity_Tools\Updates\Updates_Service_Provider;
 use Gravity_Forms\Gravity_Tools\Utils\Utils_Service_Provider;
 
 class Connector_Service_Provider extends Config_Service_Provider {
@@ -270,6 +264,21 @@ class Connector_Service_Provider extends Config_Service_Provider {
 	}
 
 	public function init( \Gravity_Forms\Gravity_Tools\Service_Container $container ) {
+		add_action( 'init', function () use ( $container ) {
+			$page = filter_input( INPUT_GET, 'page' );
+
+			if ( $page !== 'gravitysmtp-settings' ) {
+				return;
+			}
+
+			$connectors = $container->get( self::REGISTERED_CONNECTORS );
+
+			foreach ( $connectors as $service => $class ) {
+				$configured_key = sprintf( 'gsmtp_connector_configured_%s', strtolower( $service ) );
+				delete_transient( $configured_key );
+			}
+		}, 11 );
+
 		// @todo - replace this with some AJAX action via JS
 		add_action( 'admin_post_smtp_disconnect_google', function () use ( $container ) {
 			$configured_key = sprintf( 'gsmtp_connector_configured_%s', 'google' );
@@ -524,7 +533,6 @@ class Connector_Service_Provider extends Config_Service_Provider {
 
 			return $data;
 		} );
-
 	}
 
 	private function register_connector_data() {
@@ -552,11 +560,12 @@ class Connector_Service_Provider extends Config_Service_Provider {
 			'gravitysmtp-dashboard',
 			'gravitysmtp-settings',
 			'gravitysmtp-suppression',
-			'gravitysmtp-tools'
+			'gravitysmtp-tools',
 		) );
 
 		if ( $is_ajax ) {
 			$action = filter_input( INPUT_POST, 'action' );
+
 			if ( $action === 'migrate_settings' || $action === 'get_dashboard_data' ) {
 				$should_register = true;
 			}
@@ -591,5 +600,4 @@ class Connector_Service_Provider extends Config_Service_Provider {
 		$this->container->add( self::NAME_MAP, $name_map );
 		$this->container->add( self::CONNECTOR_DATA_MAP, $data_map );
 	}
-
 }

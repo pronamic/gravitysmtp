@@ -46,7 +46,15 @@ if ( ! function_exists( 'gsmtp_fi_third_party_needs_init' ) ) {
 
 		$wfFunc = filter_input( INPUT_GET, '_wfsf' );
 
+		// Wordfence check.
 		if ( $wfFunc == 'unlockEmail' ) {
+			return true;
+		}
+
+		$fdsusSignupNonce = filter_input( INPUT_POST, 'signup_nonce' );
+
+		// Sign-up Sheets check.
+		if ( ! empty( $fdsusSignupNonce ) && wp_verify_nonce( $fdsusSignupNonce, 'fdsus_signup_submit' ) ) {
 			return true;
 		}
 

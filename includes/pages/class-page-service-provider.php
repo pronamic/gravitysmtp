@@ -35,6 +35,10 @@ class Page_Service_Provider extends Service_Provider {
 			return $links;
 		}
 
+		if ( ! is_array( $links ) ) {
+			$links = array();
+		}
+
 		array_unshift( $links, '<a href="' . esc_url( admin_url( 'admin.php' ) ) . '?page=gravitysmtp-settings">' . esc_html__( 'Settings', 'gravitysmtp' ) . '</a>' );
 
 		return $links;

@@ -119,6 +119,40 @@ class Mail_Handler {
 			$source = $this->source_parser->get_source_from_trace( $debug );
 		}
 
+		/**
+		 * Filters the wp_mail() arguments.
+		 *
+		 * @since 2.2.0
+		 *
+		 * @param array $args A compacted array of wp_mail() arguments, including the "to" email,
+		 *                    subject, message, headers, and attachments values.
+		 */
+		$atts = apply_filters( 'wp_mail', compact( 'to', 'subject', 'message', 'headers', 'attachments' ) );
+
+		/**
+		 * Filters whether to preempt sending an email.
+		 *
+		 * Returning a non-null value will short-circuit wp_mail(), returning
+		 * that value instead. A boolean return value should be used to indicate whether
+		 * the email was successfully sent.
+		 *
+		 * @since 1.9.5
+		 *
+		 * @param null|bool $return Short-circuit return value.
+		 * @param array     $atts {
+		 *     Array of the `wp_mail()` arguments.
+		 *
+		 *     @type string|string[] $to          Array or comma-separated list of email addresses to send message.
+		 *     @type string          $subject     Email subject.
+		 *     @type string          $message     Message contents.
+		 *     @type string|string[] $headers     Additional headers.
+		 *     @type string|string[] $attachments Paths to files to attach.
+		 * }
+		 */
+		$pre_wp_mail = apply_filters( 'pre_wp_mail', null, $atts );
+		if ( null !== $pre_wp_mail ) {
+			return $pre_wp_mail;
+		}
 
 		/**
 		 * Allows external code to modify which connector type is used for sending this email.
@@ -133,14 +167,14 @@ class Mail_Handler {
 		 * @return string $type The connector type to use for sending.
 		 */
 		$type = apply_filters( 'gravitysmtp_connector_for_sending', false, array( 'to' => $to, 'subject' => $subject, 'message' => $message, 'headers' => $headers, 'attachments' => $attachments ) );
-		$skip_retry =false;
+		$skip_retry = false;
 
 		if ( is_array( $type ) && isset( $type['force'] ) ) {
 			$skip_retry = true;
 			$type = $type['connector'];
 		}
 
-		// Either not connector is defined, or the router has determined that this email shouldn't send.
+		// Either no connector is defined, or the router has determined that this email shouldn't send.
 		if ( $type === false ) {
 			do_action( 'gravitysmtp_on_send_failure', 0 );
 			return false;

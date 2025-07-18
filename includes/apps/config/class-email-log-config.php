@@ -2418,7 +2418,7 @@ class Email_Log_Config extends Config {
 		$props['source']      = array( 'flexBasis' => '104px' );
 		$props['integration'] = array( 'flex' => '0 0 122px' );
 		$props['date']        = array( 'flexBasis' => '250px' );
-		$props['actions']     = array( 'flex' => '0 0 168px' );
+		$props['actions']     = array( 'flex' => '0 0 180px' );
 
 		return apply_filters( 'gravitysmtp_email_log_column_style_props', $props );
 	}

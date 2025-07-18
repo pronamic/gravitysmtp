@@ -333,12 +333,6 @@ class Connector_MailerSend extends Connector_Base {
 	 * @return bool|\WP_Error Returns true if configured, or a WP_Error object if not.
 	 */
 	public function is_configured() {
-		$configured = $this->get_setting( self::SETTING_CONFIGURED, null );
-
-		if ( ! is_null( $configured ) ) {
-			return $configured;
-		}
-
 		$valid_api = $this->verify_api_key();
 
 		if ( is_wp_error( $valid_api ) ) {
@@ -390,18 +384,10 @@ class Connector_MailerSend extends Connector_Base {
 	 * @return array
 	 */
 	protected function get_merged_data() {
-		$is_configured = $this->is_configured();
+		$data = parent::get_merged_data();
+		$data['disabled'] = ! Feature_Flag_Manager::is_enabled( 'mailersend_integration' );
 
-		$data = array(
-			self::SETTING_ACTIVATED  => $this->get_setting( self::SETTING_ACTIVATED, true ),
-			self::SETTING_CONFIGURED => ! is_wp_error( $is_configured ),
-			self::SETTING_ENABLED    => $this->get_setting( self::SETTING_ENABLED, false ),
-			self::SETTING_IS_PRIMARY => $this->get_setting( self::SETTING_IS_PRIMARY, false ),
-			self::SETTING_IS_BACKUP  => $this->get_setting( self::SETTING_IS_BACKUP, false ),
-			'disabled'               => ! Feature_Flag_Manager::is_enabled( 'mailersend_integration' ),
-		);
-
-		return array_merge( $this->connector_data(), $data );
+		return $data;
 	}
 
 }

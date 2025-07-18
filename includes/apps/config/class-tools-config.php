@@ -229,6 +229,7 @@ class Tools_Config extends Config {
 		$web_server_data            = $this->get_web_server_data();
 		$php_data                   = $this->get_php_data();
 		$database_server_data       = $this->get_database_server_data();
+		$database_table_data        = $this->get_database_table_data();
 		$date_and_time_data         = $this->get_date_and_time_data();
 		$debug_data                 = $this->get_debug_data();
 		$constants_data             = $this->get_defined_constants();
@@ -273,6 +274,11 @@ class Tools_Config extends Config {
 					'title'  => esc_html__( 'Database Server', 'gravitysmtp' ),
 					'groups' => $this->get_groups( $database_server_data ),
 					'key'    => 'database-server',
+				),
+				array(
+					'title'  => esc_html__( 'Database Tables', 'gravitysmtp' ),
+					'groups' => $this->get_groups( $database_table_data ),
+					'key'    => 'database-tables',
 				),
 				array(
 					'title'  => esc_html__( 'Date and Time', 'gravitysmtp' ),
@@ -417,6 +423,10 @@ class Tools_Config extends Config {
 					'data'  => $this->get_database_server_data(),
 				),
 				array(
+					'title' => 'Database Tables',
+					'data'  => $this->get_database_table_data(),
+				),
+				array(
 					'title' => 'Date and Time',
 					'data'  => $this->get_date_and_time_data(),
 				),
@@ -492,6 +502,12 @@ class Tools_Config extends Config {
 		// Trims the background tasks response to prevent extraneous characters causing unexpected content in the response.
 		$background_tasks = trim( wp_remote_retrieve_body( $response ) ) == 'ok';
 
+		$filters_to_check = array(
+			'pre_wp_mail' => has_filter( 'pre_wp_mail' ),
+		);
+
+		$registered_filters = array_keys( array_filter( $filters_to_check ) );
+
 		return array(
 			array(
 				'label'        => esc_html__( 'Home URL', 'gravitysmtp' ),
@@ -555,10 +571,16 @@ class Tools_Config extends Config {
 				'value_export' => $alternate_wp_cron ? 'Yes' : 'No',
 			),
 			array(
-				'label'        => esc_html__( 'Background tasks', 'gravitysmtp' ),
+				'label'        => esc_html__( 'Background Tasks', 'gravitysmtp' ),
 				'label_export' => 'Background tasks',
 				'value'        => $background_tasks ? __( 'Yes', 'gravitysmtp' ) : __( 'No', 'gravitysmtp' ),
 				'value_export' => $background_tasks ? 'Yes' : 'No',
+			),
+			array(
+				'label'        => esc_html__( 'Registered Filters', 'gravitysmtp' ),
+				'label_export' => 'Registered filters',
+				'value'        => empty( $registered_filters ) ? esc_html__( 'N/A', 'gravitysmtp' ) : join( ', ', $registered_filters ),
+				'value_export' => empty( $registered_filters ) ? 'N/A' : join( ', ', $registered_filters ),
 			),
 		);
 	}
@@ -843,7 +865,7 @@ class Tools_Config extends Config {
 
 		$values[] = array(
 			'label'        => esc_html__( 'Enabled Integrations', 'gravitysmtp' ),
-			'label_export' => esc_html__( 'Enabled Integrations', 'gravitysmtp' ),
+			'label_export' => 'Enabled Integrations',
 			'value'        => implode( ', ', $enabled_connectors ),
 		);
 
@@ -852,13 +874,13 @@ class Tools_Config extends Config {
 
 		$values[] = array(
 			'label'        => esc_html__( 'Primary Integration', 'gravitysmtp' ),
-			'label_export' => esc_html__( 'Primary Integration', 'gravitysmtp' ),
+			'label_export' => 'Primary Integration',
 			'value'        => isset( $connector_names[ $primary_connector ] ) ? $connector_names[ $primary_connector ] : $primary_connector,
 		);
 
 		$values[] = array(
 			'label'        => esc_html__( 'Backup Integration', 'gravitysmtp' ),
-			'label_export' => esc_html__( 'Backup Integration', 'gravitysmtp' ),
+			'label_export' => 'Backup Integration',
 			'value'        => isset( $connector_names[ $backup_connector ] ) ? $connector_names[ $backup_connector ] : $backup_connector,
 		);
 
@@ -893,6 +915,27 @@ class Tools_Config extends Config {
 				'value'        => esc_html( ( Common::get_dbms_type() === 'SQLite' ) ? ( empty( $wpdb->collate ) ? 'N/A' : $wpdb->collate ) : $wpdb->get_var( 'SELECT @@collation_database' ) ),
 			),
 		);
+	}
+
+	protected function get_database_table_data() {
+		global $wpdb;
+
+		$tables = Gravity_SMTP::get_table_names();
+		$data   = array();
+
+		foreach ( $tables as $table ) {
+			$full_table_name = $wpdb->prefix . $table;
+			$table_exists    = $wpdb->get_var( "SHOW TABLES LIKE '{$full_table_name}'" ) === $full_table_name;
+
+			$data[] = array(
+				'label'        => $table,
+				'label_export' => $table,
+				'value'        => $table_exists ? esc_html__( 'Exists', 'gravitysmtp' ) : esc_html__( 'Missing', 'gravitysmtp' ),
+				'value_export' => $table_exists ? 'Exists' : 'Missing',
+			);
+		}
+
+		return $data;
 	}
 
 	protected function get_date_and_time_data() {

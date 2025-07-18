@@ -7,8 +7,8 @@ use Gravity_Forms\Gravity_SMTP\Logging\Debug\Debug_Logger;
 class Attachments_Saver {
 
 	/**
-	 * @var Debug_Logger
-	 */
+		 * @var Debug_Logger
+		 */
 	protected $logger;
 
 	public function __construct( $logger ) {
@@ -16,7 +16,8 @@ class Attachments_Saver {
 	}
 
 	public function save_attachments( $email_id, $attachments ) {
-		$uploads_dir = $this->get_uploads_dir_path( $email_id, $attachments );
+		$uploads_dir     = $this->get_uploads_dir_path( $email_id, $attachments );
+		$new_attachments = array();
 
 		if ( ! is_dir( $uploads_dir ) ) {
 			/* translators: %1$s: directory path */
@@ -39,7 +40,11 @@ class Attachments_Saver {
 			$this->logger->log_debug( __METHOD__ . '(): ' . sprintf( __( '%1$s being moved to new location: %2$s', 'gravitysmtp' ), $file_name, $new_path ) );
 
 			file_put_contents( $new_path, $contents );
+
+			$new_attachments[] = $new_path;
 		}
+
+		return $new_attachments;
 	}
 
 	public function get_saved_attachment( $email_id, $og_path ) {
@@ -56,11 +61,10 @@ class Attachments_Saver {
 		/**
 		 * Allows third-party code to modify where attachments are stored for a given upload.
 		 *
-		 * @param string $uploads_dir The current directory for uploading this file.
-		 * @param int    $email_id    The current email ID.
-		 * @param array  $attachments An array of attachment paths.
+		 * @param string $uploads_dir the current directory for uploading this file
+		 * @param int    $email_id    the current email ID
+		 * @param array  $attachments an array of attachment paths
 		 */
 		return apply_filters( 'gravitysmtp_attachment_uploads_dir_path', $uploads_dir, $email_id, $attachments );
 	}
-
 }

@@ -710,16 +710,12 @@ abstract class Connector_Base {
 		$configured_key = sprintf( 'gsmtp_connector_configured_%s', $this->name );
 		$cached = get_transient( $configured_key );
 
-		$configured = $this->get_setting( self::SETTING_CONFIGURED, null );
-
-		if ( is_null( $configured ) ) {
-			if ( $cached === false ) {
-				$is_configured = $this->is_configured();
-				$configured = ( ! is_wp_error( $is_configured ) && $is_configured !== false );
-				set_transient( $configured_key, array( 'configured' => $configured ), DAY_IN_SECONDS );
-			} else {
-				$configured = $cached['configured'];
-			}
+		if ( $cached === false ) {
+			$is_configured = $this->is_configured();
+			$configured = ( ! is_wp_error( $is_configured ) && $is_configured !== false );
+			set_transient( $configured_key, array( 'configured' => $configured ), DAY_IN_SECONDS );
+		} else {
+			$configured = $cached['configured'];
 		}
 
 		$defaults = array(
