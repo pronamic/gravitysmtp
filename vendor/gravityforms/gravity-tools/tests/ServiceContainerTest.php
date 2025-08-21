@@ -33,29 +33,4 @@ class ServiceContainerTest extends TestCase {
 		$this->assertEquals( 'after', $foo );
 	}
 
-	public function testProviderIsRegistered() {
-		global $fooReg;
-		$fooReg = 'before';
-		$mock = $this->getMockForAbstractClass( Service_Provider::class );
-		$mock->expects( $this->any() )->method( 'register' )->willReturnCallback( function() {
-			global $fooReg;
-			$fooReg = 'after';
-		});
-
-		$this->assertEquals( 'before', $fooReg );
-
-		$container = new Service_Container();
-		$container->add_provider( $mock );
-
-		$this->assertEquals( 'after', $fooReg );
-	}
-
-	public function testProviderIsInitialized() {
-		$mock = $this->getMockForAbstractClass( Service_Provider::class, array(), '', true, true, true, array( 'init' ) );
-		$mock->expects( $this->once() )->method( 'init' );
-
-		$container = new Service_Container();
-		$container->add_provider( $mock );
-	}
-
 }

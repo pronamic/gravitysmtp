@@ -1,0 +1,11 @@
+{
+    contact {
+        first_name,
+        main_email: email,
+        phone,
+        phone_two: secondary_phone
+        friends: contact {
+            first_name
+        }
+    }
+}

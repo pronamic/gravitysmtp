@@ -69,7 +69,7 @@ class Send_Test_Endpoint extends Endpoint {
 				esc_html__( 'Gravity SMTP is taking care of sending your emails, so now you can focus on the content of your emails and leave the technical details to us.', 'gravitysmtp' );
 		}
 
-		$image_base_url = \Gravity_Forms\Gravity_SMTP\Gravity_SMTP::get_base_url() . '/assets/images/send-test/';
+		$image_base_url = \Gravity_Forms\Gravity_SMTP\Gravity_SMTP::get_base_url() . '/assets/images/email-templates/';
 
 		return '<!DOCTYPE html>
 <html lang="en">
@@ -138,7 +138,7 @@ class Send_Test_Endpoint extends Endpoint {
 				<!-- Content Area -->
 				<tr>
 					<td class="content">
-						<img src="' . $image_base_url . 'gravitysmtp-success.png" alt="' . esc_html__( 'Mail Icon', 'gravitysmtp' ) . '"
+						<img src="' . $image_base_url . 'send-test/gravitysmtp-success.png" alt="' . esc_html__( 'Mail Icon', 'gravitysmtp' ) . '"
 						     style="display: block; margin: 0 auto; max-width: 308px">
 						<h1 style="color: #242748; text-align: center; font-family: inter, -apple-system, blinkmacsystemfont, \'Segoe UI\', roboto, oxygen-sans, ubuntu, cantarell, \'Helvetica Neue\', sans-serif; font-size: 30px; font-style: normal; font-weight: 600; line-height: 30px; padding: 20px 0 32px; margin: 0;">' . esc_html__( 'Test Successful', 'gravitysmtp' ) . '</h1>
 						<div

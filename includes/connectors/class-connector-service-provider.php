@@ -18,14 +18,17 @@ use Gravity_Forms\Gravity_SMTP\Connectors\Oauth\Zoho_Oauth_Handler;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Amazon;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Brevo;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Elastic_Email;
+use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Emailit;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Generic;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Google;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Mailchimp;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Mailersend;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Mailgun;
+use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Mailjet;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Microsoft;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_PHPMail;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Postmark;
+use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Resend;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Sendgrid;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_SMTP2GO;
 use Gravity_Forms\Gravity_SMTP\Connectors\Types\Connector_Sparkpost;
@@ -83,6 +86,7 @@ class Connector_Service_Provider extends Config_Service_Provider {
 	const CONNECTOR_AMAZON_SES    = 'Amazon';
 	const CONNECTOR_BREVO         = 'Brevo';
 	const CONNECTOR_ELASTIC_EMAIL = 'Elastic_Email';
+	const CONNECTOR_EMAILIT       = 'Emailit';
 	const CONNECTOR_GENERIC       = 'Generic';
 	const CONNECTOR_GOOGLE        = 'Google';
 	const CONNECTOR_MAILCHIMP     = 'Mailchimp';
@@ -92,6 +96,7 @@ class Connector_Service_Provider extends Config_Service_Provider {
 	const CONNECTOR_MICROSOFT     = 'Microsoft';
 	const CONNECTOR_PHPMAIL       = 'Phpmail';
 	const CONNECTOR_POSTMARK      = 'Postmark';
+	const CONNECTOR_RESEND        = 'Resend';
 	const CONNECTOR_SENDGRID      = 'Sendgrid';
 	const CONNECTOR_SMTP2GO       = 'SMTP2GO';
 	const CONNECTOR_SPARKPOST     = 'Sparkpost';
@@ -101,6 +106,7 @@ class Connector_Service_Provider extends Config_Service_Provider {
 		self::CONNECTOR_AMAZON_SES    => Connector_Amazon::class,
 		self::CONNECTOR_BREVO         => Connector_Brevo::class,
 		self::CONNECTOR_ELASTIC_EMAIL => Connector_Elastic_Email::class,
+		self::CONNECTOR_EMAILIT       => Connector_Emailit::class,
 		self::CONNECTOR_GENERIC       => Connector_Generic::class,
 		self::CONNECTOR_GOOGLE        => Connector_Google::class,
 		self::CONNECTOR_MAILCHIMP     => Connector_Mailchimp::class,
@@ -110,6 +116,7 @@ class Connector_Service_Provider extends Config_Service_Provider {
 		self::CONNECTOR_MICROSOFT     => Connector_Microsoft::class,
 		self::CONNECTOR_PHPMAIL       => Connector_PHPMail::class,
 		self::CONNECTOR_POSTMARK      => Connector_Postmark::class,
+		self::CONNECTOR_RESEND        => Connector_Resend::class,
 		self::CONNECTOR_SENDGRID      => Connector_Sendgrid::class,
 		self::CONNECTOR_SMTP2GO       => Connector_SMTP2GO::class,
 		self::CONNECTOR_SPARKPOST     => Connector_Sparkpost::class,
@@ -495,6 +502,7 @@ class Connector_Service_Provider extends Config_Service_Provider {
 				'amazon-ses',
 				'brevo',
 				'elastic_email',
+				'emailit',
 				'generic',
 				'google-gmail',
 				'mailchimp',

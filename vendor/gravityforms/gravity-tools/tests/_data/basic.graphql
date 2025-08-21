@@ -1,0 +1,18 @@
+{
+    hero {
+        name
+        metricHeight: height(format: METRIC)
+        mainFriends: friends {
+            id(format: INT)
+            date
+            secondaryFriends: friends(created_gt: 11/12/2023) {
+                created_at
+                website
+                tertiaryFriends: friends {
+                    email
+                    phone
+                }
+            }
+        }
+    }
+}

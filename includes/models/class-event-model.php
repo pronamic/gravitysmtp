@@ -324,7 +324,7 @@ class Event_Model {
 			return;
 		}
 
-		if ( ! $this->save_email_body() ) {
+		if ( isset( $values['extra'] ) && ! $this->save_email_body() ) {
 			unset( $values['message'] );
 			$extra                    = isset( $values['extra'] ) ? unserialize( $values['extra'] ) : array();
 			$extra['message_omitted'] = true;

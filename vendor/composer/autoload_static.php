@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitdccbae485ed1cb784e521fe56eec9a94
+class ComposerStaticInitf07447bb71a3faf88bd2cf120f9886cc
 {
     public static $files = array (
         'de106312193d3b5d7e278f8e63c27774' => __DIR__ . '/../..' . '/includes/functions_include.php',
@@ -12,6 +12,7 @@ class ComposerStaticInitdccbae485ed1cb784e521fe56eec9a94
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'Gravity_Forms\\Gravity_CRM\\Gravity_Tools\\Hermes\\Tokens\\Mutations\\Update\\Fields_To_Update_Token' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Tokens/Mutations/Update/class-fields-to-update-token.php',
         'Gravity_Forms\\Gravity_SMTP\\Alerts\\Alerts_Handler' => __DIR__ . '/../..' . '/includes/alerts/class-alerts-handler.php',
         'Gravity_Forms\\Gravity_SMTP\\Alerts\\Alerts_Service_Provider' => __DIR__ . '/../..' . '/includes/alerts/class-alerts-service-provider.php',
         'Gravity_Forms\\Gravity_SMTP\\Alerts\\Config\\Alerts_Config' => __DIR__ . '/../..' . '/includes/alerts/config/class-alerts-config.php',
@@ -54,6 +55,7 @@ class ComposerStaticInitdccbae485ed1cb784e521fe56eec9a94
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Amazon' => __DIR__ . '/../..' . '/includes/connectors/types/class-connector-amazon.php',
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Brevo' => __DIR__ . '/../..' . '/includes/connectors/types/class-connector-brevo.php',
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Elastic_Email' => __DIR__ . '/../..' . '/includes/connectors/types/class-connector-elasticemail.php',
+        'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Emailit' => __DIR__ . '/../..' . '/includes/connectors/types/class-connector-emailit.php',
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Generic' => __DIR__ . '/../..' . '/includes/connectors/types/class-connector-generic.php',
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Google' => __DIR__ . '/../..' . '/includes/connectors/types/class-connector-google.php',
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Mailchimp' => __DIR__ . '/../..' . '/includes/connectors/types/class-connector-mailchimp.php',
@@ -63,6 +65,7 @@ class ComposerStaticInitdccbae485ed1cb784e521fe56eec9a94
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Microsoft' => __DIR__ . '/../..' . '/includes/connectors/types/class-connector-microsoft.php',
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Phpmail' => __DIR__ . '/../..' . '/includes/connectors/types/class-connector-phpmail.php',
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Postmark' => __DIR__ . '/../..' . '/includes/connectors/types/class-connector-postmark.php',
+        'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Resend' => __DIR__ . '/../..' . '/includes/connectors/types/class-connector-resend.php',
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Sendgrid' => __DIR__ . '/../..' . '/includes/connectors/types/class-connector-sendgrid.php',
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Smtp2go' => __DIR__ . '/../..' . '/includes/connectors/types/class-connector-smtp2go.php',
         'Gravity_Forms\\Gravity_SMTP\\Connectors\\Types\\Connector_Sparkpost' => __DIR__ . '/../..' . '/includes/connectors/types/class-connector-sparkpost.php',
@@ -142,6 +145,9 @@ class ComposerStaticInitdccbae485ed1cb784e521fe56eec9a94
         'Gravity_Forms\\Gravity_SMTP\\Models\\Notifications_Model' => __DIR__ . '/../..' . '/includes/models/class-notifications-model.php',
         'Gravity_Forms\\Gravity_SMTP\\Models\\Suppressed_Emails_Model' => __DIR__ . '/../..' . '/includes/models/class-suppressed-emails-model.php',
         'Gravity_Forms\\Gravity_SMTP\\Models\\Traits\\Can_Compare_Dynamically' => __DIR__ . '/../..' . '/includes/models/traits/trait-can-compare-dynamically.php',
+        'Gravity_Forms\\Gravity_SMTP\\Notifications\\Config\\Notifications_Endpoints_Config' => __DIR__ . '/../..' . '/includes/notifications/config/class-notifications-endpoints-config.php',
+        'Gravity_Forms\\Gravity_SMTP\\Notifications\\Email_Summary_Handler' => __DIR__ . '/../..' . '/includes/notifications/class-email-summary-handler.php',
+        'Gravity_Forms\\Gravity_SMTP\\Notifications\\Notifications_Service_Provider' => __DIR__ . '/../..' . '/includes/notifications/class-notifications-service-provider.php',
         'Gravity_Forms\\Gravity_SMTP\\Pages\\Admin_Page' => __DIR__ . '/../..' . '/includes/pages/class-admin-page.php',
         'Gravity_Forms\\Gravity_SMTP\\Pages\\Page_Service_Provider' => __DIR__ . '/../..' . '/includes/pages/class-page-service-provider.php',
         'Gravity_Forms\\Gravity_SMTP\\Routing\\Handlers\\Primary_Backup_Handler' => __DIR__ . '/../..' . '/includes/routing/handlers/class-primary-backup-handler.php',
@@ -187,7 +193,45 @@ class ComposerStaticInitdccbae485ed1cb784e521fe56eec9a94
         'Gravity_Forms\\Gravity_Tools\\Config_Data_Parser' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/class-config-data-parser.php',
         'Gravity_Forms\\Gravity_Tools\\Data\\Oauth_Data_Handler' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Data/interface-oauth-data-handler.php',
         'Gravity_Forms\\Gravity_Tools\\Data\\Transient_Strategy' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Data/class-transient-strategy.php',
+        'Gravity_Forms\\Gravity_Tools\\Data_Import\\Destination' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Data_Import/interface-destination.php',
+        'Gravity_Forms\\Gravity_Tools\\Data_Import\\Import_Handler' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Data_Import/class-import-handler.php',
+        'Gravity_Forms\\Gravity_Tools\\Data_Import\\Record' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Data_Import/class-record.php',
+        'Gravity_Forms\\Gravity_Tools\\Data_Import\\Source' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Data_Import/interface-source.php',
+        'Gravity_Forms\\Gravity_Tools\\Data_Import\\Sources\\CSV_Source' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Data_Import/Sources/class-csv-source.php',
+        'Gravity_Forms\\Gravity_Tools\\Emails\\Email_Templatizer' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Emails/class-email-templatizer.php',
         'Gravity_Forms\\Gravity_Tools\\Endpoints\\Endpoint' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Endpoints/class-endpoint.php',
+        'Gravity_Forms\\Gravity_Tools\\Hermes\\Enum\\Field_Type_Validation_Enum' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Enum/class-field-type-validation-enum.php',
+        'Gravity_Forms\\Gravity_Tools\\Hermes\\Models\\Model' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Models/class-model.php',
+        'Gravity_Forms\\Gravity_Tools\\Hermes\\Mutation_Handler' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/class-mutation-handler.php',
+        'Gravity_Forms\\Gravity_Tools\\Hermes\\Query_Handler' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/class-query-handler.php',
+        'Gravity_Forms\\Gravity_Tools\\Hermes\\Runners\\Connect_Runner' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Runners/class-connect-runner.php',
+        'Gravity_Forms\\Gravity_Tools\\Hermes\\Runners\\Delete_Runner' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Runners/class-delete-runner.php',
+        'Gravity_Forms\\Gravity_Tools\\Hermes\\Runners\\Disconnect_Runner' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Runners/class-disconnect-runner.php',
+        'Gravity_Forms\\Gravity_Tools\\Hermes\\Runners\\Insert_Runner' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Runners/class-insert-runner.php',
+        'Gravity_Forms\\Gravity_Tools\\Hermes\\Runners\\Runner' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Runners/class-runner.php',
+        'Gravity_Forms\\Gravity_Tools\\Hermes\\Runners\\Schema_Runner' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Runners/class-schema-runner.php',
+        'Gravity_Forms\\Gravity_Tools\\Hermes\\Runners\\Update_Runner' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Runners/class-update-runner.php',
+        'Gravity_Forms\\Gravity_Tools\\Hermes\\Tokens\\Arguments_Token' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Tokens/class-arguments-token.php',
+        'Gravity_Forms\\Gravity_Tools\\Hermes\\Tokens\\Base_Token' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Tokens/class-base-token.php',
+        'Gravity_Forms\\Gravity_Tools\\Hermes\\Tokens\\Data_Object_From_Array_Token' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Tokens/class-data-object-from-array-token.php',
+        'Gravity_Forms\\Gravity_Tools\\Hermes\\Tokens\\Field_Token' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Tokens/class-field-token.php',
+        'Gravity_Forms\\Gravity_Tools\\Hermes\\Tokens\\Mutation_Token' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Tokens/class-mutation-token.php',
+        'Gravity_Forms\\Gravity_Tools\\Hermes\\Tokens\\Mutations\\Connect\\Connect_Mutation_Token' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Tokens/Mutations/Connect/class-connect-mutation-token.php',
+        'Gravity_Forms\\Gravity_Tools\\Hermes\\Tokens\\Mutations\\Connect\\Connection_Values_Token' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Tokens/Mutations/Connect/class-connection-values-token.php',
+        'Gravity_Forms\\Gravity_Tools\\Hermes\\Tokens\\Mutations\\Connect\\Disconnect_Mutation_Token' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Tokens/Mutations/Connect/class-disconnect-mutation-token.php',
+        'Gravity_Forms\\Gravity_Tools\\Hermes\\Tokens\\Mutations\\Delete\\Delete_Mutation_Token' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Tokens/Mutations/Delete/class-delete-mutation-token.php',
+        'Gravity_Forms\\Gravity_Tools\\Hermes\\Tokens\\Mutations\\Delete\\ID_To_Delete_Token' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Tokens/Mutations/Delete/class-id-to-delete-token.php',
+        'Gravity_Forms\\Gravity_Tools\\Hermes\\Tokens\\Mutations\\Generic_Mutation_Token' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Tokens/Mutations/class-generic-mutation-token.php',
+        'Gravity_Forms\\Gravity_Tools\\Hermes\\Tokens\\Mutations\\Insert\\Insert_Mutation_Token' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Tokens/Mutations/Insert/class-insert-mutation-token.php',
+        'Gravity_Forms\\Gravity_Tools\\Hermes\\Tokens\\Mutations\\Insert\\Insertion_Object_Token' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Tokens/Mutations/Insert/class-insertion-object-token.php',
+        'Gravity_Forms\\Gravity_Tools\\Hermes\\Tokens\\Mutations\\Insert\\Insertion_Objects_Token' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Tokens/Mutations/Insert/class-insertion-objects-token.php',
+        'Gravity_Forms\\Gravity_Tools\\Hermes\\Tokens\\Mutations\\Update\\Update_Mutation_Token' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Tokens/Mutations/Update/class-update-mutation-token.php',
+        'Gravity_Forms\\Gravity_Tools\\Hermes\\Tokens\\Query_Token' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Tokens/class-query-token.php',
+        'Gravity_Forms\\Gravity_Tools\\Hermes\\Tokens\\Token' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Tokens/class-token.php',
+        'Gravity_Forms\\Gravity_Tools\\Hermes\\Tokens\\Token_From_Array' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Tokens/class-token-from-array.php',
+        'Gravity_Forms\\Gravity_Tools\\Hermes\\Utils\\Model_Collection' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Utils/class-model-collection.php',
+        'Gravity_Forms\\Gravity_Tools\\Hermes\\Utils\\Relationship' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Utils/class-relationship.php',
+        'Gravity_Forms\\Gravity_Tools\\Hermes\\Utils\\Relationship_Collection' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Utils/class-relationship-collection.php',
         'Gravity_Forms\\Gravity_Tools\\License\\API_Response' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/License/class-api-response.php',
         'Gravity_Forms\\Gravity_Tools\\License\\License_API_Connector' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/License/class-license-api-connector.php',
         'Gravity_Forms\\Gravity_Tools\\License\\License_API_Response' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/License/class-license-api-response.php',
@@ -209,14 +253,17 @@ class ComposerStaticInitdccbae485ed1cb784e521fe56eec9a94
         'Gravity_Forms\\Gravity_Tools\\Updates\\Auto_Updater' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Updates/class-auto-updater.php',
         'Gravity_Forms\\Gravity_Tools\\Updates\\Updates_Service_Provider' => __DIR__ . '/../..' . '/includes/updates/class-updates-service-provider.php',
         'Gravity_Forms\\Gravity_Tools\\Upgrades\\Upgrade_Routines' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Upgrades/class-upgrade-routines.php',
+        'Gravity_Forms\\Gravity_Tools\\Utils\\Bettarray' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Utils/class-bettarray.php',
+        'Gravity_Forms\\Gravity_Tools\\Utils\\Booliesh' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Utils/class-booliesh.php',
         'Gravity_Forms\\Gravity_Tools\\Utils\\Common' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Utils/class-common.php',
+        'Gravity_Forms\\Gravity_Tools\\Utils\\GeoData' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Utils/class-geodata.php',
         'Gravity_Forms\\Gravity_Tools\\Utils\\Utils_Service_Provider' => __DIR__ . '/../..' . '/includes/utils/class-utils-service-provider.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->classMap = ComposerStaticInitdccbae485ed1cb784e521fe56eec9a94::$classMap;
+            $loader->classMap = ComposerStaticInitf07447bb71a3faf88bd2cf120f9886cc::$classMap;
 
         }, null, ClassLoader::class);
     }

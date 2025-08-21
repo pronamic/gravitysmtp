@@ -42,7 +42,7 @@ class Apps_Config extends Config {
 		}
 
 		return array(
-			'common' => array(
+			'common'      => array(
 				'i18n' => array(
 					'aria_label_collapsed_metabox'               => esc_html__( 'Expand', 'gravitysmtp' ),
 					'aria_label_expanded_metabox'                => esc_html__( 'Collapse', 'gravitysmtp' ),
@@ -53,9 +53,9 @@ class Apps_Config extends Config {
 					'setting_locked'                             => esc_html__( 'This setting is locked due to a defined constant and cannot be modified.', 'gravitysmtp' ),
 					'debug_messages'                             => array(
 						/* translators: %1$s is the body of the ajax request. */
-						'deleting_activity_log_rows'         => esc_html__( 'Deleting activity log rows: %1$s', 'gravitysmtp' ),
+						'deleting_activity_log_rows'        => esc_html__( 'Deleting activity log rows: %1$s', 'gravitysmtp' ),
 						/* translators: %1$s is the error. */
-						'deleting_activity_log_rows_error'   => esc_html__( 'Error deleting activity log rows: %1$s', 'gravitysmtp' ),
+						'deleting_activity_log_rows_error'  => esc_html__( 'Error deleting activity log rows: %1$s', 'gravitysmtp' ),
 						/* translators: %1$s is the body of the ajax request. */
 						'deleting_all_debug_logs'           => esc_html__( 'Deleting all debug logs: %1$s', 'gravitysmtp' ),
 						/* translators: %1$s is the error. */
@@ -73,6 +73,7 @@ class Apps_Config extends Config {
 					/* translators: {{learn_link}} tags are replaced by opening and closing tags for a link to our learn more page for usage */
 					'general_settings_usage_analytics_help_text' => esc_html__( 'We love improving the email sending experience for everyone in our community. By enabling analytics you can help us learn more about how our customers use Gravity SMTP. {{learn_link}}Learn more{{learn_link}}', 'gravitysmtp' ),
 					'snackbar_api_save_success'                  => esc_html__( 'API settings saved', 'gravitysmtp' ),
+					'snackbar_api_save_integration_enabled'      => esc_html__( 'API settings saved and %1$s integration enabled', 'gravitysmtp' ),
 					'snackbar_generic_update_error'              => esc_html__( 'Error saving setting', 'gravitysmtp' ),
 					'snackbar_generic_update_success'            => esc_html__( 'Setting successfully updated', 'gravitysmtp' ),
 					'snackbar_send_test_mail_error'              => esc_html__( 'Could not send test email; please check your logs', 'gravitysmtp' ),
@@ -89,7 +90,7 @@ class Apps_Config extends Config {
 					'test_mode_warning_notice'                   => esc_html__( 'Test mode is enabled, emails will not be sent.', 'gravitysmtp' ),
 				),
 				'data' => array(
-					'constants' => array(
+					'constants'                          => array(
 						'CAPS_DELETE_DEBUG_LOG'               => Roles::DELETE_DEBUG_LOG,
 						'CAPS_DELETE_EMAIL_LOG'               => Roles::DELETE_EMAIL_LOG,
 						'CAPS_DELETE_EMAIL_LOG_DETAILS'       => Roles::DELETE_EMAIL_LOG_DETAILS,
@@ -106,6 +107,7 @@ class Apps_Config extends Config {
 						'CAPS_EDIT_INTEGRATIONS'              => Roles::EDIT_INTEGRATIONS,
 						'CAPS_EDIT_LICENSE_KEY'               => Roles::EDIT_LICENSE_KEY,
 						'CAPS_EDIT_EXPERIMENTAL_FEATURES'     => Roles::EDIT_EXPERIMENTAL_FEATURES,
+						'CAPS_EDIT_NOTIFICATIONS_SETTINGS'    => Roles::EDIT_NOTIFICATIONS_SETTINGS,
 						'CAPS_EDIT_TEST_MODE'                 => Roles::EDIT_TEST_MODE,
 						'CAPS_EDIT_UNINSTALL'                 => Roles::EDIT_UNINSTALL,
 						'CAPS_EDIT_USAGE_ANALYTICS'           => Roles::EDIT_USAGE_ANALYTICS,
@@ -123,6 +125,7 @@ class Apps_Config extends Config {
 						'CAPS_VIEW_INTEGRATIONS'              => Roles::VIEW_INTEGRATIONS,
 						'CAPS_VIEW_LICENSE_KEY'               => Roles::VIEW_LICENSE_KEY,
 						'CAPS_VIEW_EXPERIMENTAL_FEATURES'     => Roles::VIEW_EXPERIMENTAL_FEATURES,
+						'CAPS_VIEW_NOTIFICATIONS_SETTINGS'    => Roles::VIEW_NOTIFICATIONS_SETTINGS,
 						'CAPS_VIEW_TEST_MODE'                 => Roles::VIEW_TEST_MODE,
 						'CAPS_VIEW_TOOLS'                     => Roles::VIEW_TOOLS,
 						'CAPS_VIEW_TOOLS_SENDATEST'           => Roles::VIEW_TOOLS_SENDATEST,
@@ -131,9 +134,9 @@ class Apps_Config extends Config {
 						'CAPS_VIEW_USAGE_ANALYTICS'           => Roles::VIEW_USAGE_ANALYTICS,
 						'CAPS_VIEW_DASHBOARD'                 => Roles::VIEW_DASHBOARD,
 					),
-					'debug_log_enabled'       => $debug_log_enabled,
-					'experimental_features'   => $experimental_features,
-					'param_keys'              => array(
+					'debug_log_enabled'                  => $debug_log_enabled,
+					'experimental_features'              => $experimental_features,
+					'param_keys'                         => array(
 						'alert_threshold_count'                   => Save_Alerts_Settings_Endpoint::PARAM_ALERT_THRESHOLD_COUNT,
 						'alert_threshold_interval'                => Save_Alerts_Settings_Endpoint::PARAM_ALERT_THRESHOLD_INTERVAL,
 						'debug_log_enabled'                       => Save_Plugin_Settings_Endpoint::PARAM_DEBUG_LOG_ENABLED,
@@ -142,6 +145,8 @@ class Apps_Config extends Config {
 						'event_log_enabled'                       => Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_ENABLED,
 						'event_log_retention'                     => Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_RETENTION,
 						'license_key'                             => Save_Plugin_Settings_Endpoint::PARAM_LICENSE_KEY,
+						'notifications_email_digest_enabled'      => Save_Plugin_Settings_Endpoint::PARAM_NOTIFICATIONS_EMAIL_DIGEST_ENABLED,
+						'notifications_email_digest_frequency'    => Save_Plugin_Settings_Endpoint::PARAM_NOTIFICATIONS_EMAIL_DIGEST_FREQUENCY,
 						'notify_when_email_sending_fails_enabled' => Save_Plugin_Settings_Endpoint::PARAM_NOTIFY_WHEN_EMAIL_SENDING_FAILS_ENABLED,
 						'open_tracking'                           => Tracking_Service_Provider::SETTING_OPEN_TRACKING,
 						'save_attachments_enabled'                => Save_Plugin_Settings_Endpoint::PARAM_SAVE_ATTACHMENTS_ENABLED,
@@ -153,10 +158,10 @@ class Apps_Config extends Config {
 						'twilio_alerts_enabled'                   => Save_Plugin_Settings_Endpoint::PARAM_TWILIO_ALERTS_ENABLED,
 						'usage_analytics'                         => Save_Plugin_Settings_Endpoint::PARAM_USAGE_ANALYTICS,
 					),
-					'locked_settings'         => $this->get_locked_settings(),
-					'test_mode_enabled'       => $test_mode,
-					'usage_analytics_enabled' => $usage_analytics_enabled,
-					'usage_analytics_link'    => 'https://docs.gravitysmtp.com/about-additional-data-collection/',
+					'locked_settings'                    => $this->get_locked_settings(),
+					'test_mode_enabled'                  => $test_mode,
+					'usage_analytics_enabled'            => $usage_analytics_enabled,
+					'usage_analytics_link'               => 'https://docs.gravitysmtp.com/about-additional-data-collection/',
 				),
 			),
 			'hmr_dev'     => defined( 'GRAVITYSMTP_ENABLE_HMR' ) && GRAVITYSMTP_ENABLE_HMR,

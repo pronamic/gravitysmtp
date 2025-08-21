@@ -1,0 +1,492 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="format-detection" content="date=no" />
+    <meta name="format-detection" content="address=no" />
+    <meta name="format-detection" content="email=no" />
+    <title>{{ strings.title }}</title>
+    <!--[if gte mso 9]>
+    <xml>
+        <o:OfficeDocumentSettings>
+            <o:AllowPNG/>
+            <o:PixelsPerInch>96</o:PixelsPerInch>
+        </o:OfficeDocumentSettings>
+    </xml>
+    <![endif]-->
+    <style>
+        body {
+            margin: 0 !important;
+            padding: 0 !important;
+            background: #ffffff !important;
+            font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif !important;
+            -webkit-text-size-adjust: 100% !important;
+            -ms-text-size-adjust: 100% !important;
+        }
+
+        img {
+            border: 0 none !important;
+            height: auto !important;
+            line-height: 100% !important;
+            outline: none !important;
+            text-decoration: none !important;
+        }
+
+        a img {
+            border: 0 none;
+        }
+
+        table {
+            border-collapse: collapse !important;
+            mso-table-lspace: 0pt !important;
+            mso-table-rspace: 0pt !important;
+        }
+
+        @media only screen and (max-width: 699px) {
+            .wrapper { width: 100% !important; max-width: 600px !important; }
+            .mobile-padding { padding-left: 20px !important; padding-right: 20px !important; }
+            .mobile-stack { display: block !important; width: 100% !important; }
+            .mobile-spacer { display: block !important; }
+            .card-container { width: 100% !important; padding: 0 !important; }
+        }
+    </style>
+</head>
+<body style="margin: 0; padding: 0; width: 100%; background-color: #ffffff; font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">
+<!-- Preheader -->
+<div style="display: none; max-height: 0; overflow: hidden; font-size: 1px; line-height: 1px; color: transparent;">
+    {{ strings.preheader }}
+</div>
+<!-- Wrapper: Main Container -->
+<table role="presentation" border="0" width="100%" align="center" cellpadding="0" cellspacing="0" background="{{ images.arrow_bg }}"
+       style="background-color: #ffffff; background-image: url('{{ images.arrow_bg }}'); background-repeat: no-repeat; background-position: top right; background-size: 514px 647px; margin: 0;">
+    <tr>
+        <td align="center" style="padding: 0;">
+
+            <!-- Wrapper: Content -->
+            <table role="presentation" class="wrapper" cellspacing="0" cellpadding="0" border="0" width="700"
+                   style="margin: 0 auto; width: 700px; max-width: 700px; background-color: transparent;">
+
+                <!-- Header -->
+                <tr>
+                    <td align="center" class="mobile-padding" style="padding: 64px 56px 0;">
+                        <img src="{{ images.gsmtp_logo }}" alt="{{ strings.gravity_smtp }}" width="240" height="auto"
+                             style="border: 0; display: block; height: auto; margin: 0 auto; max-width: 240px; outline: none; text-decoration: none; width: 240px;" />
+                    </td>
+                </tr>
+
+                <!-- Sub-Header -->
+                <tr>
+                    <td align="center" class="mobile-padding" style="padding: 32px 56px;">
+
+                        <!-- Sub-Header: User Avatar -->
+                        <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                            <tr>
+                                <td align="center" style="padding: 0 0 16px;">
+                                    <img src="{{ user.avatar }}" alt="{{ user.name }}" width="54" height="54"
+                                         style="display: block; width: 54px; height: 54px; border: 0; border-radius: 50%; outline: none; text-decoration: none;" />
+                                </td>
+                            </tr>
+                        </table>
+
+                        <!-- Sub-Header: User Greeting -->
+                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                            <tr>
+                                <td align="center" style="padding: 0 0 16px;">
+                                    <h1 style="margin: 0; padding: 0; font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; font-size: 30px; font-style: normal; line-height: 38px; font-weight: 600; color: #242748; text-align: center;">
+                                        {{ strings.greeting }}
+                                    </h1>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center">
+                                    <p style="margin: 0; padding: 0; font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; font-size: 16px; font-style: normal; line-height: 24px; font-weight: 400; color: #5b5e80; text-align: center;">
+                                        {{ strings.intro_message }}
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <!-- Content: Sent & Failed Metrics -->
+                <tr>
+                    <td style="padding: 0 24px;" class="mobile-padding">
+                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                            <tr>
+                                <!-- Content: Sent Metrics Card -->
+                                <td class="card-container mobile-stack"
+                                    style="width: 48%; padding-right: 12px; vertical-align: top;">
+                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+                                           style="border-collapse: separate !important;">
+                                        <tr>
+                                            <td style="padding: 24px; background-color: #ffffff; border: 1px solid #d3d3e0; border-radius: 3px; box-shadow: 0px 2px 2px 0px rgba(58,58,87,0.06);">
+                                                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="border-collapse: collapse !important;">
+                                                    <tr>
+                                                        <td>
+
+                                                            <!-- Card Header -->
+                                                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                                                <tr>
+                                                                    <td style="padding-bottom: 12px;">
+                                                                        <p style="margin: 0; padding: 0; font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; font-size: 14px; line-height: 20px; font-weight: 500; color: #5b5e80;">
+                                                                            {{ strings.sent_label }}
+                                                                        </p>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+
+                                                            <!-- Number and Badge -->
+                                                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                                                <tr>
+                                                                    <td style="padding-bottom: 12px;">
+                                                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                                                            <tr>
+                                                                                <td style="vertical-align: middle;">
+                                                                                    <h2 style="margin: 0; padding: 0; font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; font-size: 30px; line-height: 38px; font-weight: 600; color: #242748;">
+                                                                                        {{ stats.sent }}
+                                                                                    </h2>
+                                                                                </td>
+                                                                                <td align="right" style="vertical-align: middle;">
+                                                                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                                                                        <tr>
+                                                                                            <td style="background-color: {{ stats.sent_change_color_bg }}; border-radius: 16px; padding: 2px 8px 2px 10px;">
+                                                                                                <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                                                                                    <tr>
+                                                                                                        <td style="padding-right: 4px; vertical-align: middle;">
+                                                                                                            <span style="color: {{ stats.sent_change_color_fg }}; font-size: 12px;">
+                                                                                                                {{ stats.sent_change_direction }}
+                                                                                                            </span>
+                                                                                                        </td>
+                                                                                                        <td style="vertical-align: middle;">
+                                                                                                            <span style="font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; font-size: 14px; line-height: 20px; font-weight: 500; color: {{ stats.sent_change_color_fg }};">
+                                                                                                                {{ stats.sent_change }}%
+                                                                                                            </span>
+                                                                                                        </td>
+                                                                                                    </tr>
+                                                                                                </table>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </table>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+
+                                                            <!-- Button -->
+                                                            <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                                                <tr>
+                                                                    <td>
+                                                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                                                            <tr>
+                                                                                <td style="padding-top: 6px;">
+                                                                                    <a href="{{ links.sent }}"
+                                                                                       style="text-decoration: none; color: #242748; font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; font-size: 12px; line-height: 18px; font-weight: 500; background-color: #fdfdff; border: 1px solid #d5d7e9; border-radius: 3px; box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.05); padding: 7px 8px;">
+                                                                                        {{ strings.view_sent_button }}
+                                                                                    </a>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+
+                                <!-- Content: Mobile Spacer -->
+                                <td class="mobile-spacer" style="display: none; height: 24px; line-height: 24px;">&nbsp;</td>
+
+                                <!-- Content: Failed Metrics Card -->
+                                <td style="width: 48%; padding-left: 12px; vertical-align: top;" class="card-container mobile-stack">
+                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="border-collapse: separate !important;">
+                                        <tr>
+                                            <td style="padding: 24px; background-color: #ffffff; border: 1px solid #d3d3e0; border-radius: 3px; box-shadow: 0px 2px 2px 0px rgba(58,58,87,0.06);">
+                                                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="border-collapse: collapse !important;">
+                                                    <tr>
+                                                        <td>
+
+                                                            <!-- Card Header -->
+                                                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                                                <tr>
+                                                                    <td style="padding-bottom: 12px;">
+                                                                        <p style="margin: 0; padding: 0; font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; font-size: 14px; line-height: 20px; font-weight: 500; color: #5b5e80;">
+                                                                            {{ strings.failed_label }}
+                                                                        </p>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+
+                                                            <!-- Number and Badge -->
+                                                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                                                <tr>
+                                                                    <td style="padding-bottom: 12px;">
+                                                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                                                            <tr>
+                                                                                <td style="vertical-align: middle;">
+                                                                                    <h2 style="margin: 0; padding: 0; font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; font-size: 30px; line-height: 38px; font-weight: 600; color: #242748;">
+                                                                                        {{ stats.failed }}
+                                                                                    </h2>
+                                                                                </td>
+                                                                                <td align="right" style="vertical-align: middle;">
+                                                                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                                                                        <tr>
+                                                                                            <td style="background-color: {{ stats.failed_change_color_bg }}; border-radius: 16px; padding: 2px 8px 2px 10px;">
+                                                                                                <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                                                                                    <tr>
+                                                                                                        <td style="padding-right: 4px; vertical-align: middle;">
+                                                                                                            <span style="color: {{ stats.failed_change_color_fg }}; font-size: 12px;">
+                                                                                                                {{ stats.failed_change_direction }}
+                                                                                                            </span>
+                                                                                                        </td>
+                                                                                                        <td style="vertical-align: middle;">
+                                                                                                            <span style="font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; font-size: 14px; line-height: 20px; font-weight: 500; color: {{ stats.failed_change_color_fg }};">
+                                                                                                                {{ stats.failed_change }}%
+                                                                                                            </span>
+                                                                                                        </td>
+                                                                                                    </tr>
+                                                                                                </table>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </table>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+
+                                                            <!-- Button -->
+                                                            <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                                                <tr>
+                                                                    <td>
+                                                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                                                            <tr>
+                                                                                <td style="padding-top: 6px;">
+                                                                                    <a href="{{ links.failed }}"
+                                                                                       style="text-decoration: none; color: #242748; font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; font-size: 12px; line-height: 18px; font-weight: 500; background-color: #fdfdff; border: 1px solid #d5d7e9; border-radius: 3px; box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.05); padding: 7px 8px;">
+                                                                                        {{ strings.view_failed_button }}
+                                                                                    </a>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <!-- Content: Metrics Spacer -->
+                <tr>
+                    <td style="height: 24px; line-height: 24px;">&nbsp;</td>
+                </tr>
+
+                <!-- Content: Top Email Recipients & Sending Sources Metrics -->
+                <tr>
+                    <td style="padding: 0 24px;" class="mobile-padding">
+                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                            <tr>
+                                <!-- Content: Top Email Recipients Card -->
+                                <td class="card-container mobile-stack"
+                                    style="width: 48%; padding-right: 12px; vertical-align: top;">
+                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+                                           style="border-collapse: separate !important;">
+                                        <tr>
+                                            <td style="background-color: #ffffff; border: 1px solid #d3d3e0; border-radius: 3px; box-shadow: 0px 2px 2px 0px rgba(58,58,87,0.06);">
+                                                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+                                                       style="border-collapse: collapse !important;">
+
+                                                    <!-- Card Header -->
+                                                    <tr>
+                                                        <td style="padding: 20px 24px 0 24px; border-bottom: 1px solid #d5d7e9;">
+                                                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                                                <tr>
+                                                                    <td style="padding-bottom: 19px;">
+                                                                        <h3 style="margin: 0; padding: 0; font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; font-size: 18px; line-height: 28px; font-weight: 500; color: #242748;">
+                                                                            {{ strings.top_email_recipients_title }}
+                                                                        </h3>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+
+                                                    <!-- Recipients List -->
+                                                    <tr>
+                                                        <td style="padding: 24px 24px 8px;">
+                                                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                                                {{|for recipient in stats.recipients|}}
+                                                                    <tr>
+                                                                        <td style="height: 40px; vertical-align: top;">
+                                                                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                                                                <tr>
+                                                                                    <td style="vertical-align: middle;">
+                                                                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                                                                            <tr>
+                                                                                                <td style="padding-right: 8px; vertical-align: middle;">
+                                                                                                    <img src="{{ recipient.img }}" alt="{{ recipient.email }}" width="24" height="24"
+                                                                                                         style="display: block; width: 24px; height: 24px; border: 0; border-radius: 50%; outline: none; text-decoration: none;" />
+                                                                                                </td>
+                                                                                                <td style="vertical-align: middle;">
+                                                                                                    <span style="font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; font-size: 14px; line-height: 20px; font-weight: 400; color: #242748;">
+                                                                                                        {{ recipient.email }}
+                                                                                                    </span>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </table>
+                                                                                    </td>
+                                                                                    <td align="right" style="vertical-align: middle;">
+                                                                                        <span style="font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; font-size: 14px; line-height: 20px; font-weight: 400; color: #5b5e80;">
+                                                                                            {{ recipient.count_formatted }}
+                                                                                        </span>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </td>
+                                                                    </tr>
+                                                                {{|endfor|}}
+                                                                {{|for recipient_ph in stats.recipient_ph |}}
+                                                                    <tr>
+                                                                        <td style="height: 40px; vertical-align: top;">
+                                                                            <div>&nbsp;</div>
+                                                                        </td>
+                                                                    </tr>
+                                                                {{|endfor|}}
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+
+                                <!-- Content: Mobile Spacer -->
+                                <td class="mobile-spacer" style="display: none; height: 24px; line-height: 24px;">&nbsp;</td>
+
+                                <!-- Content: Top Sending Sources Card -->
+                                <td class="card-container mobile-stack"
+                                    style="width: 48%; padding-left: 12px; vertical-align: top;">
+                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="border-collapse: separate !important;">
+                                        <tr>
+                                            <td style="background-color: #ffffff; border: 1px solid #d3d3e0; border-radius: 3px; box-shadow: 0px 2px 2px 0px rgba(58,58,87,0.06);">
+                                                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="border-collapse: collapse !important;">
+
+                                                    <!-- Card Header -->
+                                                    <tr>
+                                                        <td style="padding: 20px 24px 0 24px; border-bottom: 1px solid #d5d7e9;">
+                                                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                                                <tr>
+                                                                    <td style="padding-bottom: 19px;">
+                                                                        <h3 style="margin: 0; padding: 0; font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; font-size: 18px; line-height: 28px; font-weight: 500; color: #242748;">
+                                                                            {{ strings.top_sending_sources_title }}
+                                                                        </h3>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+
+                                                    <!-- Sources List -->
+                                                    <tr>
+                                                        <td style="padding: 24px 24px 8px;">
+                                                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                                                {{|for source in stats.sources|}}
+                                                                    <tr>
+                                                                        <td style="height: 40px; vertical-align: top;">
+                                                                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                                                                <tr>
+                                                                                    <td style="vertical-align: middle;">
+                                                                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                                                                                            <tr>
+                                                                                                <td style="padding-right: 8px; vertical-align: middle;">
+                                                                                                    <div style="width: 24px; height: 24px; background-color: #f1f1f1; border-radius: 50%; display: inline-block; text-align: center; line-height: 24px; font-size: 12px; color: #535353;">
+                                                                                                        <img style="width:24px; height: 24px;" src="{{ source.img }}" alt="{{ source.name }}" />
+                                                                                                    </div>
+                                                                                                </td>
+                                                                                                <td style="vertical-align: middle;">
+                                                                                                    <span style="font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; font-size: 14px; line-height: 20px; font-weight: 400; color: #242748;">
+                                                                                                        {{ source.name }}
+                                                                                                    </span>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </table>
+                                                                                    </td>
+                                                                                    <td align="right" style="vertical-align: middle;">
+                                                                                        <span style="font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; font-size: 14px; line-height: 20px; font-weight: 400; color: #5b5e80;">
+                                                                                            {{ source.count_formatted }}
+                                                                                        </span>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </td>
+                                                                    </tr>
+                                                                {{|endfor|}}
+                                                                {{|for source_ph in stats.source_ph |}}
+                                                                    <tr>
+                                                                        <td style="height: 40px; vertical-align: top;">
+                                                                            <div>&nbsp;</div>
+                                                                        </td>
+                                                                    </tr>
+                                                                {{|endfor|}}
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <!-- Footer -->
+                <tr>
+                    <td align="center" style="padding: 32px 32px 56px;" class="mobile-padding">
+                        <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+
+                            <!-- Footer: Logo -->
+                            <tr>
+                                <td align="center" style="padding: 0 0 16px;">
+                                    <img src="{{ images.gsmtp_logo }}" alt="{{ strings.gravity_smtp }}" width="220" height="auto"
+                                         style="display: block; width: 220px; height: auto; max-width: 220px; border: 0; outline: none; text-decoration: none;" />
+                                </td>
+                            </tr>
+
+                            <!-- Footer: Copyright -->
+                            <tr>
+                                <td align="center">
+                                    <p style="color: #5b5e80; font-family: Inter, -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, oxygen-sans, ubuntu, cantarell, 'Helvetica Neue', sans-serif; font-size: 12px; font-style: normal; font-weight: 400; line-height: 18px; margin: 0; padding: 0; text-align: center;">
+                                        {{ strings.footer }}<br/>
+                                        {{ strings.setting }}<br/>
+                                        {{ strings.copyright }}
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

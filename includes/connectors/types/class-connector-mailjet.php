@@ -26,6 +26,7 @@ class Connector_Mailjet extends Connector_Base {
 
 	protected $sensitive_fields = array(
 		self::SETTING_API_KEY,
+		self::SETTING_API_SECRET,
 	);
 
 	public function get_description() {

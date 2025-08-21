@@ -19,6 +19,7 @@ class Roles {
 	const EDIT_GENERAL_SETTINGS          = 'gravitysmtp_edit_general_settings';
 	const EDIT_INTEGRATIONS              = 'gravitysmtp_edit_integrations';
 	const EDIT_LICENSE_KEY               = 'gravitysmtp_edit_license_key';
+	const EDIT_NOTIFICATIONS_SETTINGS    = 'gravitysmtp_edit_notifications_settings';
 	const EDIT_TEST_MODE                 = 'gravitysmtp_edit_test_mode';
 	const EDIT_UNINSTALL                 = 'gravitysmtp_edit_uninstall';
 	const EDIT_USAGE_ANALYTICS           = 'gravitysmtp_edit_usage_analytics';
@@ -36,6 +37,7 @@ class Roles {
 	const VIEW_GENERAL_SETTINGS          = 'gravitysmtp_view_general_settings';
 	const VIEW_INTEGRATIONS              = 'gravitysmtp_view_integrations';
 	const VIEW_LICENSE_KEY               = 'gravitysmtp_view_license_key';
+	const VIEW_NOTIFICATIONS_SETTINGS    = 'gravitysmtp_view_notifications_settings';
 	const VIEW_TEST_MODE                 = 'gravitysmtp_view_test_mode';
 	const VIEW_TOOLS                     = 'gravitysmtp_view_tools';
 	const VIEW_TOOLS_SENDATEST           = 'gravitysmtp_view_tools_sendatest';
@@ -66,6 +68,7 @@ class Roles {
 		self::EDIT_GENERAL_SETTINGS,
 		self::EDIT_INTEGRATIONS,
 		self::EDIT_LICENSE_KEY,
+		self::EDIT_NOTIFICATIONS_SETTINGS,
 		self::EDIT_TEST_MODE,
 		self::EDIT_UNINSTALL,
 		self::EDIT_USAGE_ANALYTICS,
@@ -83,6 +86,7 @@ class Roles {
 		self::VIEW_GENERAL_SETTINGS,
 		self::VIEW_INTEGRATIONS,
 		self::VIEW_LICENSE_KEY,
+		self::VIEW_NOTIFICATIONS_SETTINGS,
 		self::VIEW_TEST_MODE,
 		self::VIEW_TOOLS,
 		self::VIEW_TOOLS_SENDATEST,

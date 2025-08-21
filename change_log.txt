@@ -1,3 +1,11 @@
+### 2.0.0 | 2025-08-20
+- Added the ability to send an activity digest summary email based on selected frequency.
+- Added Resend integration.
+- Added Emailit integration.
+- Updated dialogs to use the latest version of our components.
+- Updated the Integrations screen to only show cards that are enabled.
+- Updated integrations to use a new flyout screen for adding new ones and configuring existing ones.
+
 ### 1.9.5 | 2025-07-17
 - Added email address validation for the force from email setting in all integrations.
 - Added a database check section to the system report to confirm required tables are in place.

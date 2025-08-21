@@ -22,6 +22,7 @@ use Gravity_Forms\Gravity_SMTP\Errors\Error_Handler_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Handler\Handler_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Logging\Logging_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Migration\Migration_Service_Provider;
+use Gravity_Forms\Gravity_SMTP\Notifications\Notifications_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Pages\Page_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Routing\Routing_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Suppression\Suppression_Service_Provider;
@@ -345,6 +346,12 @@ class Gravity_SMTP {
 
 			Feature_Flag_Manager::add( 'sparkpost_integration', 'SparkPost Integration' );
 			Feature_Flag_Manager::enable_flag( 'sparkpost_integration' );
+
+			Feature_Flag_Manager::add( 'resend_integration', 'Resend Integration' );
+			Feature_Flag_Manager::enable_flag( 'resend_integration' );
+
+			Feature_Flag_Manager::add( 'emailit_integration', 'Emailit Integration' );
+			Feature_Flag_Manager::enable_flag( 'emailit_integration' );
 		} );
 	}
 
@@ -391,6 +398,7 @@ class Gravity_SMTP {
 		self::$container->add_provider( new Environment_Service_Provider() );
 		self::$container->add_provider( new Routing_Service_Provider() );
 		self::$container->add_provider( new Migration_Service_Provider() );
+		self::$container->add_provider( new Notifications_Service_Provider() );
 		self::$container->add_provider( new Error_Handler_Service_Provider() );
 
 		if ( Feature_Flag_Manager::is_enabled( 'wp_email_management' ) ) {

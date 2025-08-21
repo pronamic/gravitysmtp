@@ -31,6 +31,9 @@ class Save_Plugin_Settings_Endpoint extends Endpoint {
 	const PARAM_SLACK_ALERTS_ENABLED                    = 'slack_alerts_enabled';
 	const PARAM_TWILIO_ALERTS_ENABLED                   = 'twilio_alerts_enabled';
 
+	const PARAM_NOTIFICATIONS_EMAIL_DIGEST_ENABLED    = 'notifications_email_digest_enabled';
+	const PARAM_NOTIFICATIONS_EMAIL_DIGEST_FREQUENCY  = 'notifications_email_digest_frequency';
+
 	const PARAM_SETUP_WIZARD_SHOULD_DISPLAY = 'setup_wizard_should_display';
 
 	const ACTION_NAME = 'save_plugin_settings';

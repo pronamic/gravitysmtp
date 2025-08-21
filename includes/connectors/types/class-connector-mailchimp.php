@@ -361,6 +361,10 @@ class Connector_Mailchimp extends Connector_Base {
 			return $configured;
 		}
 
+		if ( empty( $this->get_setting( self::SETTING_API_KEY, '' ) ) ) {
+			return false;
+		}
+
 		$base_url = $this->url . 'users/ping';
 		$body     = json_encode( array(
 			'key' => $this->get_setting( self::SETTING_API_KEY, '' ),

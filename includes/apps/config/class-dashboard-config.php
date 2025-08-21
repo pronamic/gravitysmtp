@@ -454,7 +454,7 @@ class Dashboard_Config extends Config {
 
 		// Some old entries are missing the source param and return the `headers` instead.
 		$sources = array_filter( $sources, function ( $data ) {
-			return $data['source'] !== 'headers';
+			return $data['source'] !== 'headers' && $data['source'] !== 'message_omitted';
 		} );
 
 		return array_values( $sources );
@@ -468,7 +468,7 @@ class Dashboard_Config extends Config {
 		} );
 
 		$recipients = array_filter( $recipients, function ( $data ) {
-			return $data['recipients'] !== 'headers' && ! empty( $data['recipients'] );
+			return $data['recipients'] !== 'headers' && $data['recipients'] !== 'message_omitted' && ! empty( $data['recipients'] );
 		} );
 
 		return array_values( $recipients );

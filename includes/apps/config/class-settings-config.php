@@ -63,6 +63,10 @@ class Settings_Config extends Config {
 		$debug_log_enabled   = ! empty( $debug_log_enabled ) ? $debug_log_enabled !== 'false' : false;
 		$debug_log_retention = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_DEBUG_LOG_RETENTION, 7 );
 
+		$notifications_email_digest_enabled   = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_NOTIFICATIONS_EMAIL_DIGEST_ENABLED, 'false' );
+		$notifications_email_digest_enabled   = ! empty( $notifications_email_digest_enabled ) ? $notifications_email_digest_enabled !== 'false' : false;
+		$notifications_email_digest_frequency = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_NOTIFICATIONS_EMAIL_DIGEST_FREQUENCY, 7 );
+
 		$primary_locked = defined( 'GRAVITYSMTP_INTEGRATION_PRIMARY' );
 		$backup_locked  = defined( 'GRAVITYSMTP_INTEGRATION_BACKUP' );
 
@@ -102,15 +106,6 @@ class Settings_Config extends Config {
 								'experiments_box_toggle_help_text'                              => esc_html__( 'Get notified via webhook or SMS (Twilio) when emails fail to send.', 'gravitysmtp' ),
 								'experiments_box_toggle_label_opens'                            => esc_html__( 'Open Tracking', 'gravitysmtp' ),
 								'experiments_box_toggle_help_text_opens'                        => esc_html__( 'Track when recipients open emails sent by the system.', 'gravitysmtp' ),
-								'email_digest_box_heading'                                      => esc_html__( 'Email Digest Notification', 'gravitysmtp' ),
-								'email_digest_box_content'                                      => esc_html__( 'Keep track of your email communication with ease using our Email Digest Notification feature. Receive regular email updates on your email activity and address potential issues promptly. Stay in control of your WordPress email communication and never miss an important message again.', 'gravitysmtp' ),
-								'email_digest_box_summary_toggle_label'                         => esc_html__( 'Enable Digest Summary', 'gravitysmtp' ),
-								'email_digest_box_notification_day_dropdown_label'              => esc_html__( 'Notification Day', 'gravitysmtp' ),
-								'email_digest_box_notification_day_dropdown_help_text'          => esc_html__( 'Select when you want the email digest to be sent.', 'gravitysmtp' ),
-								'email_digest_box_notification_email_addresses_input_label'     => esc_html__( 'Notification Email Addresses', 'gravitysmtp' ),
-								'email_digest_box_notification_email_addresses_input_help_text' => esc_html__( 'This is a hint text to help users.', 'gravitysmtp' ),
-								'email_digest_box_html_mode_toggle_label'                       => esc_html__( 'Enable HTML Mode', 'gravitysmtp' ),
-								'email_digest_box_button_text'                                  => esc_html__( 'Save Settings', 'gravitysmtp' ),
 								'test_mode_box_heading'                                         => esc_html__( 'Test Mode', 'gravitysmtp' ),
 								/* translators: %s: opening and closing anchor tags */
 								'test_mode_box_content_1'                                       => esc_html__( 'When test mode is on, your site will not send out any emails. If you turn on %semail logging%s, all emails will be stored in the Email Logs.', 'gravitysmtp' ),
@@ -128,32 +123,34 @@ class Settings_Config extends Config {
 						'integrations'                =>
 							array(
 								'top_heading'                 => esc_html__( 'Integrations', 'gravitysmtp' ),
-								'top_content'                 => __( "Select and configure the integration you would like to use to send emails from this site. Don't see an integration you're looking for?", 'gravitysmtp' ),
-								'suggestion_link_text'        => esc_html__( 'Suggest an integration.', 'gravitysmtp' ),
-								'lower_heading'               => __( 'Alerts & Notifications', 'gravitysmtp' ),
-								'lower_content'               => __( 'Don\'t miss important notifications, leads, or sales again. Get notified instantly through Slack, SMS, WhatsApp, or Telegram if there are any issues with your SMTP service.', 'gravitysmtp' ),
-								'card_activate'               => esc_html__( 'Activate Integration', 'gravitysmtp' ),
-								'card_toggle'                 => esc_html__( 'Currently Enabled', 'gravitysmtp' ),
-								'card_learn_more'             => esc_html__( 'Learn More', 'gravitysmtp' ),
+								'top_content'                 => esc_html__( 'Manage all your email connections. Click the + icon to add an integration; you can connect one or multiple services to handle your site’s emails.', 'gravitysmtp' ),
 								'card_more_settings'          => esc_html__( 'More Settings', 'gravitysmtp' ),
 								'card_settings'               => esc_html__( 'Settings', 'gravitysmtp' ),
-								'card_connected'              => esc_html__( 'Connected', 'gravitysmtp' ),
-								'card_configured'             => esc_html__( 'Configured', 'gravitysmtp' ),
 								'card_primary'                => esc_html__( 'Primary', 'gravitysmtp' ),
 								'card_backup'                 => esc_html__( 'Backup', 'gravitysmtp' ),
-								'card_not_configured'         => esc_html__( 'Not Configured', 'gravitysmtp' ),
 								'integration_settings_error'  => esc_html__( 'There was an error saving your settings', 'gravitysmtp' ),
-								'integration_settings_cancel' => esc_html__( 'Cancel', 'gravitysmtp' ),
-								'integration_settings_apply'  => esc_html__( 'Save Changes', 'gravitysmtp' ),
-								'integration_settings_saved'  => esc_html__( 'Saved', 'gravitysmtp' ),
-								'confirm_change_heading'      => esc_html__( 'Confirm Change', 'gravitysmtp' ),
-								'confirm_change_content'      => __( 'Please confirm that you\'d like to switch the active email integration.', 'gravitysmtp' ),
 								/* translators: %1$s is the integration name */
 								'set_primary_integration'     => esc_html__( '%1$s set as primary integration', 'gravitysmtp' ),
 								/* translators: %1$s is the integration name */
 								'set_backup_integration'      => esc_html__( '%1$s set as backup integration', 'gravitysmtp' ),
 								'primary_disabled_heading'    => esc_html__( 'Primary Integration Disabled', 'gravitysmtp' ),
 								'primary_disabled_content'    => esc_html__( 'You have disabled your primary email integration. To continue sending emails via Gravity SMTP, please enable a backup integration or set and enable a new primary integration.', 'gravitysmtp' ),
+								/* translators: %1$s is the integration name */
+								'integration_disabled'        => esc_html__( '%1$s integration has been disabled', 'gravitysmtp' ),
+								'flyout'                      => array(
+									'screen01' => array(
+										'heading'            => esc_html__( 'New Connection', 'gravitysmtp' ),
+										/* translators: {{suggest_link}} tags are replaced by opening and closing tags for a link to our suggest integration page */
+										'description'        => __( "Select and configure the integration you would like to use to send emails from this site. Don't see an integration you're looking for? {{suggest_link}}Suggest an integration.{{suggest_link}}", 'gravitysmtp' ),
+										'search_placeholder' => esc_html__( 'Search integration', 'gravitysmtp' ),
+										'search_label'       => esc_html__( 'Search integration', 'gravitysmtp' ),
+									),
+									'screen02' => array(
+										'back_button_label'        => esc_html__( 'Back', 'gravitysmtp' ),
+										'save_button_label'        => esc_html__( 'Save Settings', 'gravitysmtp' ),
+										'save_enable_button_label' => __( 'Save & Enable', 'gravitysmtp' ),
+									),
+								),
 							),
 						'emails'                      =>
 							array(
@@ -193,6 +190,17 @@ class Settings_Config extends Config {
 								'delete_debug_log_dialog_confirm_change_content' => esc_html__( 'This operation deletes ALL debug logs. If you continue, you will NOT be able to retrieve these logs.', 'gravitysmtp' ),
 								'delete_debug_log_dialog_confirm_change_confirm' => esc_html__( 'Delete', 'gravitysmtp' ),
 							),
+						'notifications' =>
+							array(
+								'email_digest_box_heading'                     => esc_html__( 'Email Activity Digest', 'gravitysmtp' ),
+								'email_digest_box_enabled_label'               => esc_html__( 'Email Activity Digest', 'gravitysmtp' ),
+								'email_digest_box_enabled_helper_text'         => __( 'Get a summary of your site\'s recent email activity delivered to your inbox. Includes key metrics like send volume, failures, and top emails.', 'gravitysmtp' ),
+								'email_digest_box_frequency_label'             => esc_html__( 'Send Digest', 'gravitysmtp' ),
+								'email_digest_box_frequency_helper_text'       => esc_html__( 'Select how often you want the email activity digest to be sent.', 'gravitysmtp' ),
+								'email_digest_box_send_preview_button_text'    => esc_html__( 'Send Email Preview', 'gravitysmtp' ),
+								'error_sending_email_digest_preview_message'   => esc_html__( 'Error sending email preview.', 'gravitysmtp' ),
+								'success_sending_email_digest_preview_message' => esc_html__( 'Email preview successfully sent!', 'gravitysmtp' ),
+							),
 					),
 					'data'      => array(
 						'license_key'                => $license_key,
@@ -216,6 +224,11 @@ class Settings_Config extends Config {
 							'debug_log_url'       => admin_url( 'admin.php?page=gravitysmtp-tools&tab=debug-log' ),
 							'retention_options'   => $this->get_debug_log_retention_options(),
 						),
+						'notifications_settings'     => array(
+							'email_digest_enabled'           => $notifications_email_digest_enabled,
+							'email_digest_frequency'         => $notifications_email_digest_frequency,
+							'email_digest_frequency_options' => $this->get_notifications_email_digest_frequency_options(),
+						),
 						'caps'                       => array(
 							Roles::DELETE_DEBUG_LOG               => current_user_can( Roles::DELETE_DEBUG_LOG ),
 							Roles::DELETE_EMAIL_LOG               => current_user_can( Roles::DELETE_EMAIL_LOG ),
@@ -228,6 +241,7 @@ class Settings_Config extends Config {
 							Roles::EDIT_INTEGRATIONS              => current_user_can( Roles::EDIT_INTEGRATIONS ),
 							Roles::EDIT_LICENSE_KEY               => current_user_can( Roles::EDIT_LICENSE_KEY ),
 							Roles::EDIT_EXPERIMENTAL_FEATURES     => current_user_can( Roles::EDIT_EXPERIMENTAL_FEATURES ),
+							Roles::EDIT_NOTIFICATIONS_SETTINGS 	  => current_user_can( Roles::EDIT_NOTIFICATIONS_SETTINGS ),
 							Roles::EDIT_TEST_MODE                 => current_user_can( Roles::EDIT_TEST_MODE ),
 							Roles::EDIT_UNINSTALL                 => current_user_can( Roles::EDIT_UNINSTALL ),
 							Roles::EDIT_USAGE_ANALYTICS           => current_user_can( Roles::EDIT_USAGE_ANALYTICS ),
@@ -242,6 +256,7 @@ class Settings_Config extends Config {
 							Roles::VIEW_INTEGRATIONS              => current_user_can( Roles::VIEW_INTEGRATIONS ),
 							Roles::VIEW_LICENSE_KEY               => current_user_can( Roles::VIEW_LICENSE_KEY ),
 							Roles::VIEW_EXPERIMENTAL_FEATURES     => current_user_can( Roles::VIEW_EXPERIMENTAL_FEATURES ),
+							Roles::VIEW_NOTIFICATIONS_SETTINGS 	  => current_user_can( Roles::VIEW_NOTIFICATIONS_SETTINGS ),
 							Roles::VIEW_TEST_MODE                 => current_user_can( Roles::VIEW_TEST_MODE ),
 							Roles::VIEW_UNINSTALL                 => current_user_can( Roles::VIEW_UNINSTALL ),
 							Roles::VIEW_USAGE_ANALYTICS           => current_user_can( Roles::VIEW_USAGE_ANALYTICS ),
@@ -359,6 +374,17 @@ class Settings_Config extends Config {
 										'iconBefore' => 'circle-lightning-bolt',
 										'iconPrefix' => 'gravitysmtp-admin-icon',
 										'label'      => esc_html__( 'Set As Backup', 'gravitysmtp' ),
+									),
+								),
+							4 =>
+								array(
+									'key'   => 'remove',
+									'props' => array(
+										'element'    => 'button',
+										'iconBefore' => 'trash',
+										'iconPrefix' => 'gravitysmtp-admin-icon',
+										'label'      => esc_html__( 'Remove Integration', 'gravitysmtp' ),
+										'style'      => 'error',
 									),
 								),
 						),
@@ -556,5 +582,24 @@ class Settings_Config extends Config {
 		);
 
 		return apply_filters( 'gravitysmtp_debug_log_retention_options', $options );
+	}
+
+	public function get_notifications_email_digest_frequency_options() {
+		$options = array(
+			array(
+				'label' => esc_html__( 'Daily', 'gravitysmtp' ),
+				'value' => 1,
+			),
+			array(
+				'label' => esc_html__( 'Weekly (recommended)', 'gravitysmtp' ),
+				'value' => 7,
+			),
+			array(
+				'label' => esc_html__( 'Monthly', 'gravitysmtp' ),
+				'value' => 30,
+			),
+		);
+
+		return apply_filters( 'gravitysmtp_notifications_email_digest_frequency_options', $options );
 	}
 }

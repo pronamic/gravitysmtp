@@ -1,0 +1,18 @@
+{
+    group {
+        name: label,
+        employees: contact {
+            first_name,
+            lname: last_name,
+            phone_two: secondary_phone
+        }
+    },
+    company: group {
+        name: label,
+        employees: contact {
+            first_name,
+            lname: last_name,
+            phone_two: secondary_phone
+        }
+    }
+}
