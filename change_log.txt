@@ -1,3 +1,22 @@
+### 2.1.0 | 2025-11-06
+- Added settings of Default Reply-To Email and Force Reply-To Email to all integrations.
+- Added the ability to set from email address when using the Send a Test tool.
+- Added missing svg title tag for several integrations.
+- Added alerts for logging settings with best practices and recommendations.
+- Added active theme data to system report.
+- Fixed an issue where using MailerSend cannot send to multiple email addresses.
+- Fixed an issue where Cc and Bcc headers are not fully respected when passed as separate array items.
+- Fixed an issue where Emailit integration is not connecting with a 404.
+- Fixed an issue where long subject lines can cause the Email Log to store empty log entries.
+- Fixed an issue that can cause notices to be thrown when Alerts are enabled.
+- Fixed an issue that causes constants to be ignored when checking if Email Logging is enabled.
+- Fixed an issue that causes fatal errors when Signup Sheet forms are submitted with no recipient email.
+- Updated preview and view log item action icons to be clearer and more intuitive for users.
+- Updated the log retention and debug log retention dropdowns to show the constant value if defined.
+- Updated the activity digest summary email to have clearer copy and better no data handling.
+- Updated the Microsoft integration client secret input field descriptor to be more instructive.
+- Updated the Emailit integration to use API v2.
+
 ### 2.0.0 | 2025-08-20
 - Added the ability to send an activity digest summary email based on selected frequency.
 - Added Resend integration.

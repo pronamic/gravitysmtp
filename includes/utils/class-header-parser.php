@@ -50,9 +50,15 @@ class Header_Parser {
 				continue;
 			}
 
+			if ( ! isset( $parsed[ $parsed_key ] ) ) {
+				$parsed[ $parsed_key ] = new Recipient_Collection( array() );
+			}
+
 			$parsed_value = $this->get_email_from_header( $key, $parsed_value );
 
-			$parsed[ $parsed_key ] = $parsed_value;
+			foreach( $parsed_value->recipients() as $recipient ) {
+				$parsed[ $parsed_key ]->add( $recipient );
+			}
 		}
 
 		return $parsed;
@@ -145,3 +151,4 @@ class Header_Parser {
 	}
 
 }
+

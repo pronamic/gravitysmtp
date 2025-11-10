@@ -183,10 +183,13 @@ class Tools_Config extends Config {
 							'send_test_box_input_label'                     => esc_html__( 'Send To', 'gravitysmtp' ),
 							'send_test_box_input_placeholder'               => esc_html__( 'Enter an email address', 'gravitysmtp' ),
 							'send_test_box_input_description'               => esc_html__( 'Enter the email address you want to send the test email to.', 'gravitysmtp' ),
+							'send_test_box_from_label'                      => esc_html__( 'Send From', 'gravitysmtp' ),
+							'send_test_box_from_placeholder'                => esc_html__( 'Enter an email address', 'gravitysmtp' ),
+							'send_test_box_from_description'                => esc_html__( 'Enter the email address you want to send the test email from.', 'gravitysmtp' ),
 							'send_test_box_send_with_label'                 => esc_html__( 'Send With', 'gravitysmtp' ),
-							'send_test_box_send_with_description'           => esc_html__( 'Choose which integration you would like to send a test with.', 'gravitysmtp' ),
+							'send_test_box_send_with_description'           => esc_html__( 'Choose which integration to send the test with.', 'gravitysmtp' ),
 							'send_test_box_send_as_html_label'              => esc_html__( 'HTML', 'gravitysmtp' ),
-							'send_test_box_send_as_html_description'        => esc_html__( 'Send test email as HTML.', 'gravitysmtp' ),
+							'send_test_box_send_as_html_description'        => esc_html__( 'Send the test email as HTML.', 'gravitysmtp' ),
 							'send_test_box_alerts_button_label'             => esc_html__( 'Send Test', 'gravitysmtp' ),
 							'send_test_box_try_again_button_label'          => esc_html__( 'Try Again', 'gravitysmtp' ),
 							'send_test_box_error_issue_heading'             => esc_html__( 'Issue Detected:', 'gravitysmtp' ),
@@ -225,6 +228,7 @@ class Tools_Config extends Config {
 	protected function get_system_report() {
 		$gravity_smtp_data          = $this->get_gravity_smtp_data();
 		$wordpress_environment_data = $this->get_wordpress_environment_data();
+		$active_theme_data          = $this->get_active_theme_data();
 		$active_plugins_data        = $this->get_active_plugins_data();
 		$web_server_data            = $this->get_web_server_data();
 		$php_data                   = $this->get_php_data();
@@ -248,6 +252,14 @@ class Tools_Config extends Config {
 				'key'    => 'wordpress-environment',
 			),
 		);
+
+		if ( ! empty( $active_theme_data ) ) {
+			$system_report[] = array(
+				'title'  => esc_html__( 'Active Theme', 'gravitysmtp' ),
+				'groups' => $this->get_groups( $active_theme_data, true ),
+				'key'    => 'active-theme',
+			);
+		}
 
 		if ( ! empty( $active_plugins_data ) ) {
 			$system_report[] = array(
@@ -398,6 +410,14 @@ class Tools_Config extends Config {
 				'data'  => $this->get_wordpress_environment_data(),
 			),
 		);
+
+		$active_theme_data = $this->get_active_theme_data();
+		if ( ! empty( $active_theme_data ) ) {
+			$data[] = array(
+				'title' => 'Active Theme',
+				'data'  => $active_theme_data,
+			);
+		}
 
 		$active_plugins_data = $this->get_active_plugins_data();
 		if ( ! empty( $active_plugins_data ) ) {
@@ -583,6 +603,107 @@ class Tools_Config extends Config {
 				'value_export' => empty( $registered_filters ) ? 'N/A' : join( ', ', $registered_filters ),
 			),
 		);
+	}
+
+	protected function get_active_theme_data() {
+		$themes = array();
+		$active_theme = wp_get_theme();
+		$parent_theme = $active_theme->parent();
+
+		// Add active theme data
+		$label = ! empty( $active_theme->get( 'ThemeURI' ) )
+			? '<a class="gform-link" href="' . esc_url( $active_theme->get( 'ThemeURI' ) ) . '" target="_blank" rel="noopener noreferrer">' . esc_html( $active_theme->get( 'Name' ) ) . '</a>'
+			: esc_html( $active_theme->get( 'Name' ) );
+
+		if ( ! empty( $active_theme->get( 'AuthorURI' ) ) ) {
+			$author = '<a class="gform-link" href="' . esc_url( $active_theme->get( 'AuthorURI' ) ) . '" target="_blank" rel="noopener noreferrer">' . esc_html( $active_theme->get( 'Author' ) ) . '</a>';
+		} else {
+			$author = preg_replace_callback( '/(<a[^>]*>)/', function( $matches ) {
+				preg_match( '/class="[^"]*"/', $matches[1], $class_matches );
+				if ( empty( $class_matches ) ) {
+					return str_replace( '<a', '<a class="gform-link"', $matches[1] );
+				}
+
+				return preg_replace( '/class="([^"]*)"/', 'class="$1 gform-link"', $matches[1] );
+			}, $active_theme->get( 'Author' ) );
+		}
+
+		$value = wp_kses_post(
+			sprintf(
+				/* translators: 1: Theme author and URL. 2: Theme version. */
+				__( 'by %1$s - %2$s', 'gravitysmtp' ),
+				$author,
+				$active_theme->get( 'Version' )
+			)
+		);
+
+		$value_export = esc_html(
+			sprintf(
+				/* translators: 1: Theme author and URL. 2: Theme version. */
+				__( 'by %1$s - %2$s', 'gravitysmtp' ),
+				strip_tags( $active_theme->get( 'Author' ) ),
+				$active_theme->get( 'Version' )
+			)
+		);
+
+		$themes[] = array(
+			'label'         => $label,
+			'label_export'  => strip_tags( $active_theme->get( 'Name' ) ),
+			'label_as_html' => true,
+			'value'         => $value,
+			'value_export'  => $value_export,
+			'value_as_html' => true,
+		);
+
+		// Add parent theme data if it exists
+		if ( $parent_theme instanceof \WP_Theme ) {
+			$parent_label = ! empty( $parent_theme->get( 'ThemeURI' ) )
+				? '<a class="gform-link" href="' . esc_url( $parent_theme->get( 'ThemeURI' ) ) . '" target="_blank" rel="noopener noreferrer">' . esc_html( $parent_theme->get( 'Name' ) ) . ' (Parent)</a>'
+				: esc_html( $parent_theme->get( 'Name' ) . ' (Parent)' );
+
+			$parent_author_uri = $parent_theme->get( 'AuthorURI' );
+			if ( ! empty( $parent_theme->get( 'AuthorURI' ) ) ) {
+				$parent_author = '<a class="gform-link" href="' . esc_url( $parent_theme->get( 'AuthorURI' ) ) . '" target="_blank" rel="noopener noreferrer">' . esc_html( $parent_theme->get( 'Author' ) ) . '</a>';
+			} else {
+				$parent_author = preg_replace_callback( '/(<a[^>]*>)/', function( $matches ) {
+					preg_match( '/class="[^"]*"/', $matches[1], $class_matches );
+					if ( empty( $class_matches ) ) {
+						return str_replace( '<a', '<a class="gform-link"', $matches[1] );
+					}
+
+					return preg_replace( '/class="([^"]*)"/', 'class="$1 gform-link"', $matches[1] );
+				}, $parent_theme->get( 'Author' ) );
+			}
+
+			$parent_value = wp_kses_post(
+				sprintf(
+					/* translators: 1: Theme author and URL. 2: Theme version. */
+					__( 'by %1$s - %2$s', 'gravitysmtp' ),
+					$parent_author,
+					$parent_theme->get( 'Version' )
+				)
+			);
+
+			$parent_value_export = esc_html(
+				sprintf(
+					/* translators: 1: Theme author and URL. 2: Theme version. */
+					__( 'by %1$s - %2$s', 'gravitysmtp' ),
+					strip_tags( $parent_theme->get( 'Author' ) ),
+					$parent_theme->get( 'Version' )
+				)
+			);
+
+			$themes[] = array(
+				'label'         => $parent_label,
+				'label_export'  => strip_tags( $parent_theme->get( 'Name' ) . ' (Parent)' ),
+				'label_as_html' => true,
+				'value'         => $parent_value,
+				'value_export'  => $parent_value_export,
+				'value_as_html' => true,
+			);
+		}
+
+		return $themes;
 	}
 
 	protected function get_active_plugins_data() {
@@ -1173,8 +1294,8 @@ class Tools_Config extends Config {
 								'customClasses' => array( 'gravitysmtp-tools-app__debug-log-table-action' ),
 								'data'          => array( 'id' => 1 ),
 								'disabled'      => false,
-								'icon'          => 'eye',
-								'iconPrefix'    => 'gravitysmtp-admin-icon',
+								'icon'          => 'information-circle',
+								'iconPrefix'    => 'gravity-component-icon',
 								'label'         => 'View',
 								'size'          => 'size-height-s',
 								'type'          => 'icon-white',
@@ -1228,8 +1349,8 @@ class Tools_Config extends Config {
 								'customClasses' => array( 'gravitysmtp-tools-app__debug-log-table-action' ),
 								'data'          => array( 'id' => 2 ),
 								'disabled'      => false,
-								'icon'          => 'eye',
-								'iconPrefix'    => 'gravitysmtp-admin-icon',
+								'icon'          => 'information-circle',
+								'iconPrefix'    => 'gravity-component-icon',
 								'label'         => 'View',
 								'size'          => 'size-height-s',
 								'type'          => 'icon-white',
@@ -1283,8 +1404,8 @@ class Tools_Config extends Config {
 								'customClasses' => array( 'gravitysmtp-tools-app__debug-log-table-action' ),
 								'data'          => array( 'id' => 3 ),
 								'disabled'      => false,
-								'icon'          => 'eye',
-								'iconPrefix'    => 'gravitysmtp-admin-icon',
+								'icon'          => 'information-circle',
+								'iconPrefix'    => 'gravity-component-icon',
 								'label'         => 'View',
 								'size'          => 'size-height-s',
 								'type'          => 'icon-white',
@@ -1338,8 +1459,8 @@ class Tools_Config extends Config {
 								'customClasses' => array( 'gravitysmtp-tools-app__debug-log-table-action' ),
 								'data'          => array( 'id' => 4 ),
 								'disabled'      => false,
-								'icon'          => 'eye',
-								'iconPrefix'    => 'gravitysmtp-admin-icon',
+								'icon'          => 'information-circle',
+								'iconPrefix'    => 'gravity-component-icon',
 								'label'         => 'View',
 								'size'          => 'size-height-s',
 								'type'          => 'icon-white',
@@ -1393,8 +1514,8 @@ class Tools_Config extends Config {
 								'customClasses' => array( 'gravitysmtp-tools-app__debug-log-table-action' ),
 								'data'          => array( 'id' => 5 ),
 								'disabled'      => false,
-								'icon'          => 'eye',
-								'iconPrefix'    => 'gravitysmtp-admin-icon',
+								'icon'          => 'information-circle',
+								'iconPrefix'    => 'gravity-component-icon',
 								'label'         => 'View',
 								'size'          => 'size-height-s',
 								'type'          => 'icon-white',

@@ -20,15 +20,17 @@ use Gravity_Forms\Gravity_SMTP\Utils\Recipient_Parser;
  */
 abstract class Connector_Base {
 
-	const SETTING_ENABLED          = 'enabled';
-	const SETTING_ACTIVATED        = 'activated';
-	const SETTING_CONFIGURED       = 'configured';
-	const SETTING_FROM_EMAIL       = 'from_email';
-	const SETTING_FROM_NAME        = 'from_name';
-	const SETTING_FORCE_FROM_EMAIL = 'force_from_email';
-	const SETTING_FORCE_FROM_NAME  = 'force_from_name';
-	const SETTING_IS_PRIMARY       = 'is_primary';
-	const SETTING_IS_BACKUP        = 'is_backup';
+	const SETTING_ENABLED              = 'enabled';
+	const SETTING_ACTIVATED            = 'activated';
+	const SETTING_CONFIGURED           = 'configured';
+	const SETTING_FROM_EMAIL           = 'from_email';
+	const SETTING_FROM_NAME            = 'from_name';
+	const SETTING_FORCE_FROM_EMAIL     = 'force_from_email';
+	const SETTING_FORCE_FROM_NAME      = 'force_from_name';
+	const SETTING_REPLY_TO_EMAIL       = 'reply_to_email';
+	const SETTING_FORCE_REPLY_TO_EMAIL = 'force_reply_to_email';
+	const SETTING_IS_PRIMARY           = 'is_primary';
+	const SETTING_IS_BACKUP            = 'is_backup';
 
 	const OBFUSCATED_STRING = '****************';
 
@@ -408,6 +410,38 @@ abstract class Connector_Base {
 	}
 
 	/**
+	 * Get the Reply-To email.
+	 *
+	 * @since 1.0
+	 *
+	 * @param bool $return_as_array Wether to return an array containing the individual parts of the reply-to address or just the Reply-To string.
+	 *
+	 * @return string | array
+	 */
+	public function get_reply_to( $return_as_array = false ) {
+		$force_reply_to_setting   = $this->get_setting( self::SETTING_FORCE_REPLY_TO_EMAIL, false );
+		$default_reply_to_setting = $this->get_setting( self::SETTING_REPLY_TO_EMAIL, '' );
+
+		$parsed_headers = $this->get_parsed_headers( $this->atts['headers'] );
+
+		$forcing_reply_to    = $force_reply_to_setting && ! empty( $default_reply_to_setting );
+		$defaulting_reply_to = ( ! isset( $parsed_headers['reply-to'] ) || empty( $parsed_headers['reply-to'] ) ) && ! empty( $default_reply_to_setting );
+
+		// If we're forcing the reply-to email or the reply-to header is empty, use the default reply-to email.
+		if ( $forcing_reply_to || $defaulting_reply_to ) {
+			return $return_as_array ? array( array( 'email' => $default_reply_to_setting ) ) : $default_reply_to_setting;
+		}
+		
+		if ( ! isset( $parsed_headers['reply-to'] ) || empty( $parsed_headers['reply-to'] ) ) {
+			return $return_as_array ? array() : '';
+		}
+
+		$email_data = $this->get_email_from_header( 'Reply-To', $parsed_headers['reply-to'] );
+
+		return $return_as_array ? $email_data->as_array() : $email_data->as_string();
+	}
+
+	/**
 	 * Get the sensitive fields array for this connector
 	 *
 	 * @since 1.9.0
@@ -504,16 +538,51 @@ abstract class Connector_Base {
 		);
 	}
 
-	public function get_reply_to( $return_as_array = false ) {
-		$parsed_headers = $this->get_parsed_headers( $this->atts['headers'] );
-
-		if ( ! isset( $parsed_headers['reply-to'] ) || empty( $parsed_headers['reply-to'] ) ) {
-			return $return_as_array ? array() : '';
-		}
-
-		$email_data = $this->get_email_from_header( 'Reply-To', $parsed_headers['reply-to'] );
-
-		return $return_as_array ? $email_data->as_array() : $email_data->as_string();
+	/**
+	 * Get the default Reply-To settings fields.
+	 *
+	 * @since 1.0
+	 *
+	 * @return array[] Returns an array of settings fields.
+	 */
+	protected function get_reply_to_settings_fields() {
+		return array(
+			array(
+				'component' => 'Input',
+				'props'     => array(
+					'labelAttributes' => array(
+						'label'  => esc_html__( 'Default Reply-To Email', 'gravitysmtp' ),
+						'size'   => 'text-sm',
+						'weight' => 'medium',
+					),
+					'name'            => self::SETTING_REPLY_TO_EMAIL,
+					'spacing'         => 6,
+					'size'            => 'size-l',
+					'value'           => $this->get_setting( self::SETTING_REPLY_TO_EMAIL, '' ),
+				),
+			),
+			array(
+				'component' => 'Toggle',
+				'props'     => array(
+					'initialChecked'     => (bool) $this->get_setting( self::SETTING_FORCE_REPLY_TO_EMAIL, false ),
+					'labelAttributes'    => array(
+						'label' => esc_html__( 'Force Reply-To Email', 'gravitysmtp' ),
+					),
+					'helpTextAttributes' => array(
+						'content' => esc_html__( 'If Force Reply-To Email is enabled, the Default Reply-To Email address will override other plugin settings for all outgoing emails.', 'gravitysmtp' ),
+						'size'    => 'text-xs',
+						'spacing' => array( 2, 0, 0, 0 ),
+						'weight'  => 'regular',
+					),
+					'helpTextWidth'      => 'full',
+					'labelPosition'      => 'left',
+					'name'               => self::SETTING_FORCE_REPLY_TO_EMAIL,
+					'size'               => 'size-m',
+					'spacing'            => 6,
+					'width'              => 'full',
+				),
+			),
+		);
 	}
 
 	/**

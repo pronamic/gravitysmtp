@@ -98,13 +98,15 @@ class Utils_Service_Provider extends Service_Provider {
 	}
 
 	public function init( \Gravity_Forms\Gravity_Tools\Service_Container $container ) {
-		add_filter( 'cron_schedules', function ( $schedules ) {
-			$schedules[ 'every-minute' ] = array(
-				'interval' => MINUTE_IN_SECONDS,
-				'display'  => esc_html__( 'Every Minute', 'gravitysmtp' ),
-			);
+		add_action( 'init', function () {
+			add_filter( 'cron_schedules', function ( $schedules ) {
+				$schedules[ 'every-minute' ] = array(
+					'interval' => MINUTE_IN_SECONDS,
+					'display'  => esc_html__( 'Every Minute', 'gravitysmtp' ),
+				);
 
-			return $schedules;
+				return $schedules;
+			} );
 		} );
 
 		add_action( 'gravitysmtp_after_mail_updated', function ( $email_id, $email_data ) use ( $container ) {

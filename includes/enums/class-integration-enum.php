@@ -24,11 +24,26 @@ class Integration_Enum {
 			case 'generic':
 				$title = 'Custom SMTP';
 				break;
+			case 'elastic_email':
+				$title = 'Elastic Email';
+				break;
+			case 'emailit':
+				$title = 'Emailit';
+				break;
 			case 'google':
 				$title = 'Google';
 				break;
+			case 'mailchimp':
+				$title = 'Mailchimp';
+				break;
+			case 'mailersend':
+				$title = 'MailerSend';
+				break;
 			case 'mailgun':
 				$title = 'Mailgun';
+				break;
+			case 'mailjet':
+				$title = 'Mailjet';
 				break;
 			case 'mandrill':
 				$title = 'Mandrill';
@@ -41,6 +56,9 @@ class Integration_Enum {
 				break;
 			case 'postmark':
 				$title = 'Postmark';
+				break;
+			case 'resend':
+				$title = 'Resend';
 				break;
 			case 'sendgrid':
 				$title = 'SendGrid';

@@ -255,13 +255,15 @@ class Connector_Amazon extends Connector_Base {
 	 */
 	public function connector_data() {
 		return array(
-			self::SETTING_CLIENT_ID        => $this->get_setting( self::SETTING_CLIENT_ID, '' ),
-			self::SETTING_CLIENT_SECRET    => $this->get_setting( self::SETTING_CLIENT_SECRET, '' ),
-			self::SETTING_REGION           => $this->get_setting( self::SETTING_REGION, self::REGION_US_EAST_N_VIRGINIA ),
-			self::SETTING_FROM_EMAIL       => $this->get_setting( self::SETTING_FROM_EMAIL, '' ),
-			self::SETTING_FORCE_FROM_EMAIL => $this->get_setting( self::SETTING_FORCE_FROM_EMAIL, false ),
-			self::SETTING_FROM_NAME        => $this->get_setting( self::SETTING_FROM_NAME, '' ),
-			self::SETTING_FORCE_FROM_NAME  => $this->get_setting( self::SETTING_FORCE_FROM_NAME, false ),
+			self::SETTING_CLIENT_ID             => $this->get_setting( self::SETTING_CLIENT_ID, '' ),
+			self::SETTING_CLIENT_SECRET         => $this->get_setting( self::SETTING_CLIENT_SECRET, '' ),
+			self::SETTING_REGION                => $this->get_setting( self::SETTING_REGION, self::REGION_US_EAST_N_VIRGINIA ),
+			self::SETTING_FROM_EMAIL            => $this->get_setting( self::SETTING_FROM_EMAIL, '' ),
+			self::SETTING_FORCE_FROM_EMAIL      => $this->get_setting( self::SETTING_FORCE_FROM_EMAIL, false ),
+			self::SETTING_FROM_NAME             => $this->get_setting( self::SETTING_FROM_NAME, '' ),
+			self::SETTING_FORCE_FROM_NAME       => $this->get_setting( self::SETTING_FORCE_FROM_NAME, false ),
+			self::SETTING_REPLY_TO_EMAIL        => $this->get_setting( self::SETTING_REPLY_TO_EMAIL, '' ),
+			self::SETTING_FORCE_REPLY_TO_EMAIL  => $this->get_setting( self::SETTING_FORCE_REPLY_TO_EMAIL, false ),
 		);
 	}
 
@@ -362,6 +364,7 @@ class Connector_Amazon extends Connector_Base {
 					),
 				),
 				$this->get_from_settings_fields(),
+				$this->get_reply_to_settings_fields(),
 			),
 		);
 	}

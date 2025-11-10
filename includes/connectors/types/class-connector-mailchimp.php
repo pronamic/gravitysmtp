@@ -260,12 +260,14 @@ class Connector_Mailchimp extends Connector_Base {
 	 */
 	public function connector_data() {
 		return array(
-			self::SETTING_API_KEY          => $this->get_setting( self::SETTING_API_KEY, '' ),
-			self::SETTING_FROM_EMAIL       => $this->get_setting( self::SETTING_FROM_EMAIL, '' ),
-			self::SETTING_FORCE_FROM_EMAIL => $this->get_setting( self::SETTING_FORCE_FROM_EMAIL, false ),
-			self::SETTING_FROM_NAME        => $this->get_setting( self::SETTING_FROM_NAME, '' ),
-			self::SETTING_FORCE_FROM_NAME  => $this->get_setting( self::SETTING_FORCE_FROM_NAME, false ),
-			self::SETTING_USE_RETURN_PATH  => (bool) $this->get_setting( self::SETTING_USE_RETURN_PATH, false ),
+			self::SETTING_API_KEY               => $this->get_setting( self::SETTING_API_KEY, '' ),
+			self::SETTING_FROM_EMAIL            => $this->get_setting( self::SETTING_FROM_EMAIL, '' ),
+			self::SETTING_FORCE_FROM_EMAIL      => $this->get_setting( self::SETTING_FORCE_FROM_EMAIL, false ),
+			self::SETTING_FROM_NAME             => $this->get_setting( self::SETTING_FROM_NAME, '' ),
+			self::SETTING_FORCE_FROM_NAME       => $this->get_setting( self::SETTING_FORCE_FROM_NAME, false ),
+			self::SETTING_REPLY_TO_EMAIL        => $this->get_setting( self::SETTING_REPLY_TO_EMAIL, '' ),
+			self::SETTING_FORCE_REPLY_TO_EMAIL  => $this->get_setting( self::SETTING_FORCE_REPLY_TO_EMAIL, false ),
+			self::SETTING_USE_RETURN_PATH       => (bool) $this->get_setting( self::SETTING_USE_RETURN_PATH, false ),
 		);
 	}
 
@@ -350,6 +352,7 @@ class Connector_Mailchimp extends Connector_Base {
 					)
 				),
 				$this->get_from_settings_fields(),
+				$this->get_reply_to_settings_fields(),
 			),
 		);
 	}

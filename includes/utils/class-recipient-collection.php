@@ -7,7 +7,6 @@ class Recipient_Collection {
 	public $recipients = array();
 
 	public function __construct( $recipients = array() ) {
-		$foo = 'bar';
 		if ( empty( $recipients ) ) {
 			return;
 		}

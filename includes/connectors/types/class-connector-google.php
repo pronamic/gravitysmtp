@@ -193,10 +193,7 @@ class Connector_Google extends Connector_Base {
 			$response_code = wp_remote_retrieve_response_code( $response );
 
 			if ( (int) $response_code !== 200 ) {
-				$this->events->update( array( 'status' => 'failed' ), $email );
-
-				$this->logger->log( $email, 'failed', $response_body );
-
+				$this->log_failure( $email, $response_body );
 				return $email;
 			}
 
@@ -206,12 +203,16 @@ class Connector_Google extends Connector_Base {
 
 			return true;
 		} catch ( \Exception $e ) {
-			$this->events->update( array( 'status' => 'failed' ), $email );
-
-			$this->logger->log( $email, 'failed', $e->getMessage() );
+			$this->log_failure( $email, $e->getMessage() );
+			$this->debug_logger->log_fatal( $this->wrap_debug_with_details( __FUNCTION__, $email, 'Failed to send: ' . $e->getMessage() ) );
 
 			return $email;
 		}
+	}
+
+	private function log_failure( $email, $message ) {
+		$this->events->update( array( 'status' => 'failed' ), $email );
+		$this->logger->log( $email, 'failed', $message );
 	}
 
 	private function get_raw_message() {
@@ -233,16 +234,18 @@ class Connector_Google extends Connector_Base {
 	 */
 	public function connector_data() {
 		return array(
-			self::SETTING_CLIENT_ID        => $this->get_setting( self::SETTING_CLIENT_ID, '' ),
-			self::SETTING_CLIENT_SECRET    => $this->get_setting( self::SETTING_CLIENT_SECRET, '' ),
-			self::SETTING_ACCESS_TOKEN     => $this->get_setting( self::SETTING_ACCESS_TOKEN, '' ),
-			self::SETTING_FROM_EMAIL       => $this->get_setting( self::SETTING_FROM_EMAIL, '' ),
-			self::SETTING_FORCE_FROM_EMAIL => $this->get_setting( self::SETTING_FORCE_FROM_EMAIL, false ),
-			self::SETTING_FROM_NAME        => $this->get_setting( self::SETTING_FROM_NAME, '' ),
-			self::SETTING_FORCE_FROM_NAME  => $this->get_setting( self::SETTING_FORCE_FROM_NAME, false ),
-			self::SETTING_USE_RETURN_PATH  => (bool) $this->get_setting( self::SETTING_USE_RETURN_PATH, false ),
-			'oauth_url'                    => 'https://accounts.google.com/o/oauth2/v2/auth',
-			'oauth_params'                 => '&' . $this->get_oauth_params(),
+			self::SETTING_CLIENT_ID             => $this->get_setting( self::SETTING_CLIENT_ID, '' ),
+			self::SETTING_CLIENT_SECRET         => $this->get_setting( self::SETTING_CLIENT_SECRET, '' ),
+			self::SETTING_ACCESS_TOKEN          => $this->get_setting( self::SETTING_ACCESS_TOKEN, '' ),
+			self::SETTING_FROM_EMAIL            => $this->get_setting( self::SETTING_FROM_EMAIL, '' ),
+			self::SETTING_FORCE_FROM_EMAIL      => $this->get_setting( self::SETTING_FORCE_FROM_EMAIL, false ),
+			self::SETTING_FROM_NAME             => $this->get_setting( self::SETTING_FROM_NAME, '' ),
+			self::SETTING_FORCE_FROM_NAME       => $this->get_setting( self::SETTING_FORCE_FROM_NAME, false ),
+			self::SETTING_REPLY_TO_EMAIL        => $this->get_setting( self::SETTING_REPLY_TO_EMAIL, '' ),
+			self::SETTING_FORCE_REPLY_TO_EMAIL  => $this->get_setting( self::SETTING_FORCE_REPLY_TO_EMAIL, false ),
+			self::SETTING_USE_RETURN_PATH       => (bool) $this->get_setting( self::SETTING_USE_RETURN_PATH, false ),
+			'oauth_url'                         => 'https://accounts.google.com/o/oauth2/v2/auth',
+			'oauth_params'                      => '&' . $this->get_oauth_params(),
 		);
 	}
 
@@ -599,7 +602,7 @@ class Connector_Google extends Connector_Base {
 				),
 			);
 
-			$settings['fields'] = array_merge( $settings['fields'], $this->get_from_settings_fields() );
+			$settings['fields'] = array_merge( $settings['fields'], $this->get_from_settings_fields(), $this->get_reply_to_settings_fields() );
 		}
 
 		return $settings;

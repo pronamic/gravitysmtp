@@ -3,9 +3,10 @@
 namespace Gravity_Forms\Gravity_SMTP\Models;
 
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Plugin_Settings_Endpoint;
-use Gravity_Forms\Gravity_SMTP\Data_Store\Plugin_Opts_Data_Store;
+use Gravity_Forms\Gravity_SMTP\Data_Store\Data_Store_Router;
 use Gravity_Forms\Gravity_SMTP\Models\Hydrators\Hydrator_Factory;
 use Gravity_Forms\Gravity_SMTP\Models\Traits\Can_Compare_Dynamically;
+use Gravity_Forms\Gravity_SMTP\Utils\Booliesh;
 use Gravity_Forms\Gravity_SMTP\Utils\Recipient_Parser;
 use Gravity_Forms\Gravity_SMTP\Utils\SQL_Filter_Parser;
 
@@ -23,7 +24,7 @@ class Event_Model {
 	protected $hydrator_factory;
 
 	/**
-	 * @var Plugin_Opts_Data_Store
+	 * @var Data_Store_Router
 	 */
 	protected $opts;
 
@@ -292,7 +293,7 @@ class Event_Model {
 				'date_updated' => current_time( 'mysql', true ),
 				'status'       => $status,
 				'service'      => $service,
-				'subject'      => $subject,
+				'subject'      => substr( $subject, 0, 95 ), // DB Column is varchar(100), trim with some buffer space for non-Latin chars.
 				'message'      => $message,
 				'extra'        => serialize( $extra ),
 			)
@@ -329,6 +330,10 @@ class Event_Model {
 			$extra                    = isset( $values['extra'] ) ? unserialize( $values['extra'] ) : array();
 			$extra['message_omitted'] = true;
 			$values['extra']          = serialize( $extra );
+		}
+
+		if ( isset( $values['subject'] ) ) {
+			$values['subject'] = substr( $values['subject'], 0, 95 ); // DB Column is varchar(100), trim with some buffer space for non-Latin chars
 		}
 
 		global $wpdb;
@@ -615,19 +620,13 @@ class Event_Model {
 	}
 
 	private function is_logging_enabled() {
-		$logging_enabled = $this->opts->get( Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_ENABLED, 'config', 'true' );
+		$logging_enabled = $this->opts->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_ENABLED, 'true' );
 
-		if ( empty( $logging_enabled ) ) {
-			$logging_enabled = true;
-		} else {
-			$logging_enabled = $logging_enabled !== 'false';
-		}
-
-		return $logging_enabled;
+		return Booliesh::get( $logging_enabled );
 	}
 
 	private function save_email_body() {
-		$save_email_body = $this->opts->get( Save_Plugin_Settings_Endpoint::PARAM_SAVE_EMAIL_BODY_ENABLED, 'config', 'true' );
+		$save_email_body = $this->opts->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_SAVE_EMAIL_BODY_ENABLED, 'true' );
 
 		return empty( $save_email_body ) ? true : $save_email_body !== 'false';
 	}

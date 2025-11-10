@@ -174,7 +174,7 @@ class Log_Details_Model {
 			$cc_values = $extra['headers']['cc'];
 
 			foreach( $cc_values->as_array() as $cc_value ) {
-				$cc[] = $cc_value['email']; 
+				$cc[] = $cc_value['email'];
 			}
 		}
 
@@ -250,7 +250,7 @@ class Log_Details_Model {
 		}
 		$uploads_dir = wp_upload_dir();
 		$attachments_arr = array();
-    
+
 		$base_dir = $uploads_dir['basedir'];
 		$base_url = $uploads_dir['baseurl'];
 		foreach ( $attachments as $custom_name => $attachment ) {

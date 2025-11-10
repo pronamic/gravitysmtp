@@ -173,7 +173,7 @@ class Connector_Service_Provider extends Config_Service_Provider {
 		} );
 
 		$this->container->add( self::EVENT_MODEL, function () use ( $container ) {
-			return new Event_Model( $container->get( self::HYDRATOR_FACTORY ), $container->get( self::DATA_STORE_PLUGIN_OPTS ), $container->get( Utils_Service_Provider::RECIPIENT_PARSER ), $container->get( Utils_Service_Provider::FILTER_PARSER ) );
+			return new Event_Model( $container->get( self::HYDRATOR_FACTORY ), $container->get( self::DATA_STORE_ROUTER ), $container->get( Utils_Service_Provider::RECIPIENT_PARSER ), $container->get( Utils_Service_Provider::FILTER_PARSER ) );
 		} );
 
 		$this->container->add( self::LOG_DETAILS_MODEL, function () use ( $container ) {

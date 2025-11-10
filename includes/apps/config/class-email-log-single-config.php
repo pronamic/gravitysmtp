@@ -5,10 +5,7 @@ namespace Gravity_Forms\Gravity_SMTP\Apps\Config;
 use Gravity_Forms\Gravity_SMTP\Apps\App_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
-use Gravity_Forms\Gravity_SMTP\Users\Roles;
-use Gravity_Forms\Gravity_SMTP\Utils\Recipient_Collection;
 use Gravity_Forms\Gravity_Tools\Config;
-use Gravity_Forms\Gravity_Tools\Providers\Config_Collection_Service_Provider;
 
 class Email_Log_Single_Config extends Config {
 
@@ -45,7 +42,7 @@ class Email_Log_Single_Config extends Config {
 			'log_detail'                  => array(
 				'top_heading'                       => esc_html__( 'Email Log Details', 'gravitysmtp' ),
 				// 'top_content'                    => esc_html__( '', 'gravitysmtp' ),
-										'top_error' => esc_html__( 'The email could not be found, go back and try again.', 'gravitysmtp' ),
+				'top_error'                         => esc_html__( 'The email could not be found, go back and try again.', 'gravitysmtp' ),
 				'action_button_view_email_label'    => esc_html__( 'View Email', 'gravitysmtp' ),
 				'action_button_resend_label'        => esc_html__( 'Resend', 'gravitysmtp' ),
 				'action_button_print_label'         => esc_html__( 'Print', 'gravitysmtp' ),
@@ -173,13 +170,6 @@ class Email_Log_Single_Config extends Config {
 		);
 	}
 
-	private function extract_email( $string ) {
-		$regex = '/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}/';
-		preg_match( $regex, $string, $matches );
-
-		return $matches ? $matches[0] : null;
-	}
-
 	private function get_log_details() {
 		$id = filter_input( INPUT_GET, 'event_id', FILTER_SANITIZE_NUMBER_INT );
 
@@ -191,32 +181,6 @@ class Email_Log_Single_Config extends Config {
 		$logs      = $container->get( Connector_Service_Provider::LOG_DETAILS_MODEL );
 
 		return $logs->full_details( $id );
-	}
-
-	private function convert_dates_to_timezone( $date ) {
-		$gmt_time   = new \DateTimeZone( 'UTC' );
-		$local_time = new \DateTimeZone( wp_timezone_string() );
-		$datetime   = new \DateTime( $date, $gmt_time );
-		$datetime->setTimezone( $local_time );
-
-		return $datetime->format( 'F d, Y \a\t h:ia' );
-	}
-
-	private function get_attachments( $attachments ) {
-		if ( ! is_array( $attachments ) ) {
-			return array();
-		}
-
-		$attachments_arr = array();
-		foreach ( $attachments as $attachment ) {
-			$attachments_arr[] = array(
-				'file_name'      => esc_html( basename( $attachment ) ),
-				'file_path'      => esc_html( $attachment ),
-				'file_extension' => esc_html( pathinfo( $attachment, PATHINFO_EXTENSION ) ),
-			);
-		}
-
-		return $attachments_arr;
 	}
 
 	public function data() {

@@ -21,7 +21,7 @@ class Connector_Emailit extends Connector_Base {
 	protected $disabled  = true;
 	protected $logo      = 'Emailit';
 	protected $full_logo = 'EmailitFull';
-	protected $url       = 'https://api.emailit.com/v1';
+	protected $url       = 'https://api.emailit.com/v2';
 
 	protected $sensitive_fields = array(
 		self::SETTING_API_KEY,
@@ -260,11 +260,13 @@ class Connector_Emailit extends Connector_Base {
 	 */
 	public function connector_data() {
 		return array(
-			self::SETTING_API_KEY          => $this->get_setting( self::SETTING_API_KEY, '' ),
-			self::SETTING_FROM_EMAIL       => $this->get_setting( self::SETTING_FROM_EMAIL, '' ),
-			self::SETTING_FORCE_FROM_EMAIL => $this->get_setting( self::SETTING_FORCE_FROM_EMAIL, false ),
-			self::SETTING_FROM_NAME        => $this->get_setting( self::SETTING_FROM_NAME, '' ),
-			self::SETTING_FORCE_FROM_NAME  => $this->get_setting( self::SETTING_FORCE_FROM_NAME, false ),
+			self::SETTING_API_KEY               => $this->get_setting( self::SETTING_API_KEY, '' ),
+			self::SETTING_FROM_EMAIL            => $this->get_setting( self::SETTING_FROM_EMAIL, '' ),
+			self::SETTING_FORCE_FROM_EMAIL      => $this->get_setting( self::SETTING_FORCE_FROM_EMAIL, false ),
+			self::SETTING_FROM_NAME             => $this->get_setting( self::SETTING_FROM_NAME, '' ),
+			self::SETTING_FORCE_FROM_NAME       => $this->get_setting( self::SETTING_FORCE_FROM_NAME, false ),
+			self::SETTING_REPLY_TO_EMAIL        => $this->get_setting( self::SETTING_REPLY_TO_EMAIL, '' ),
+			self::SETTING_FORCE_REPLY_TO_EMAIL  => $this->get_setting( self::SETTING_FORCE_REPLY_TO_EMAIL, false ),
 		);
 	}
 
@@ -326,6 +328,7 @@ class Connector_Emailit extends Connector_Base {
 					),
 				),
 				$this->get_from_settings_fields(),
+				$this->get_reply_to_settings_fields(),
 			),
 		);
 	}
@@ -359,12 +362,13 @@ class Connector_Emailit extends Connector_Base {
 	 * @return true|WP_Error
 	 */
 	private function verify_api_key() {
-		$api_key    = $this->get_setting( self::SETTING_API_KEY, '' );
-		$url        = $this->url . '/credentials';
+		$api_key = $this->get_setting( self::SETTING_API_KEY, '' );
 
 		if ( empty( $api_key ) ) {
 			return new WP_Error( 'missing_api_key', __( 'No API Key provided.', 'gravitysmtp' ) );
 		}
+
+		$url = $this->url . '/sending-domains';
 
 		$response = wp_remote_get(
 			$url,
@@ -373,7 +377,13 @@ class Connector_Emailit extends Connector_Base {
 			)
 		);
 
-		if ( wp_remote_retrieve_response_code( $response ) != '200' ) {
+		$response_code = wp_remote_retrieve_response_code( $response );
+
+		if ( $response_code == '403' ) {
+			$this->debug_logger->log_debug( __METHOD__ . '(): Request to Emailit returned a 403. Sending Only API Key provided.' );
+		}
+
+		if ( ! in_array( $response_code, array( 200, 403 ) ) ) {
 			return new WP_Error( 'invalid_api_key', __( 'Invalid API Key provided.', 'gravitysmtp' ) );
 		}
 

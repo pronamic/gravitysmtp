@@ -147,43 +147,56 @@ class Connector_Microsoft extends Connector_Base {
 			return true;
 		}
 
-		$raw   = $this->get_raw_message();
-		/**
-		 * @var Microsoft_Oauth_Handler $oauth_handler
-		 */
-		$oauth_handler = Gravity_SMTP::container()->get( Connector_Service_Provider::MICROSOFT_OAUTH_HANDLER );
-		$token         = $oauth_handler->get_access_token();
+		try {
+			$debug_atts = compact( 'to', 'from', 'subject', 'headers', 'source', 'attachments', 'reply_to' );
+			$this->debug_logger->log_debug( $this->wrap_debug_with_details( __FUNCTION__, $email, 'Attempting send with the following attributes: ' . json_encode( $debug_atts ) ) );
 
-		if ( is_wp_error( $token ) ) {
-			$this->events->update( array( 'status' => 'failed' ), $email );
-			$this->logger->log( $email, 'failed', $token->get_error_message() );
+			$raw = $this->get_raw_message();
+
+			/**
+			 * @var Microsoft_Oauth_Handler $oauth_handler
+			 */
+			$oauth_handler = Gravity_SMTP::container()->get( Connector_Service_Provider::MICROSOFT_OAUTH_HANDLER );
+			$token         = $oauth_handler->get_access_token();
+
+			if ( is_wp_error( $token ) ) {
+				$this->events->update( array( 'status' => 'failed' ), $email );
+				$this->logger->log( $email, 'failed', $token->get_error_message() );
+				return $email;
+			}
+
+			$args = array(
+				'body'    => $raw,
+				'headers' => array(
+					'content-type'  => 'text/plain',
+					'Authorization' => 'Bearer ' . $token,
+				),
+			);
+
+			$request = wp_remote_post( 'https://graph.microsoft.com/v1.0/me/sendMail', $args );
+			$code    = wp_remote_retrieve_response_code( $request );
+
+			if ( (int) $code === 202 ) {
+				$this->events->update( array( 'status' => 'sent' ), $email );
+				$this->logger->log( $email, 'sent', __( 'Email successfully sent.', 'gravitysmtp' ) );
+
+				return true;
+			}
+
+			$this->log_failure( $email, wp_remote_retrieve_body( $request ) );
+
+			return $email;
+		} catch ( \Exception $e ) {
+			$this->log_failure( $email, $e->getMessage() );
+			$this->debug_logger->log_fatal( $this->wrap_debug_with_details( __FUNCTION__, $email, 'Failed to send: ' . $e->getMessage() ) );
+
 			return $email;
 		}
+	}
 
-		$args = array(
-			'body'    => $raw,
-			'headers' => array(
-				'content-type'  => 'text/plain',
-				'Authorization' => 'Bearer ' . $token,
-			),
-		);
-
-		$request = wp_remote_post( 'https://graph.microsoft.com/v1.0/me/sendMail', $args );
-		$code    = wp_remote_retrieve_response_code( $request );
-
-		if ( (int) $code === 202 ) {
-			$this->events->update( array( 'status' => 'sent' ), $email );
-
-			$this->logger->log( $email, 'sent', __( 'Email successfully sent.', 'gravitysmtp' ) );
-
-			return true;
-		}
-
-		$body = wp_remote_retrieve_body( $request );
+	private function log_failure( $email, $message ) {
 		$this->events->update( array( 'status' => 'failed' ), $email );
-		$this->logger->log( $email, 'failed', $body );
-
-		return $email;
+		$this->logger->log( $email, 'failed', $message );
 	}
 
 	private function get_raw_message() {
@@ -202,16 +215,18 @@ class Connector_Microsoft extends Connector_Base {
 	 */
 	public function connector_data() {
 		return array(
-			self::SETTING_CLIENT_ID        => $this->get_setting( self::SETTING_CLIENT_ID, '' ),
-			self::SETTING_CLIENT_SECRET    => $this->get_setting( self::SETTING_CLIENT_SECRET, '' ),
-			self::SETTING_ACCESS_TOKEN     => $this->get_setting( self::SETTING_ACCESS_TOKEN, '' ),
-			self::SETTING_FROM_EMAIL       => $this->get_setting( self::SETTING_FROM_EMAIL, '' ),
-			self::SETTING_FORCE_FROM_EMAIL => $this->get_setting( self::SETTING_FORCE_FROM_EMAIL, false ),
-			self::SETTING_FROM_NAME        => $this->get_setting( self::SETTING_FROM_NAME, '' ),
-			self::SETTING_FORCE_FROM_NAME  => $this->get_setting( self::SETTING_FORCE_FROM_NAME, false ),
-			self::SETTING_USE_RETURN_PATH  => (bool) $this->get_setting( self::SETTING_USE_RETURN_PATH, false ),
-			'oauth_url'                    => 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
-			'oauth_params'                 => '&' . $this->get_oauth_params(),
+			self::SETTING_CLIENT_ID             => $this->get_setting( self::SETTING_CLIENT_ID, '' ),
+			self::SETTING_CLIENT_SECRET         => $this->get_setting( self::SETTING_CLIENT_SECRET, '' ),
+			self::SETTING_ACCESS_TOKEN          => $this->get_setting( self::SETTING_ACCESS_TOKEN, '' ),
+			self::SETTING_FROM_EMAIL            => $this->get_setting( self::SETTING_FROM_EMAIL, '' ),
+			self::SETTING_FORCE_FROM_EMAIL      => $this->get_setting( self::SETTING_FORCE_FROM_EMAIL, false ),
+			self::SETTING_FROM_NAME             => $this->get_setting( self::SETTING_FROM_NAME, '' ),
+			self::SETTING_FORCE_FROM_NAME       => $this->get_setting( self::SETTING_FORCE_FROM_NAME, false ),
+			self::SETTING_REPLY_TO_EMAIL        => $this->get_setting( self::SETTING_REPLY_TO_EMAIL, '' ),
+			self::SETTING_FORCE_REPLY_TO_EMAIL  => $this->get_setting( self::SETTING_FORCE_REPLY_TO_EMAIL, false ),
+			self::SETTING_USE_RETURN_PATH       => (bool) $this->get_setting( self::SETTING_USE_RETURN_PATH, false ),
+			'oauth_url'                         => 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
+			'oauth_params'                      => '&' . $this->get_oauth_params(),
 		);
 	}
 
@@ -381,7 +396,7 @@ class Connector_Microsoft extends Connector_Base {
 				),
 				'props'         => array(
 					'helpTextAttributes' => array(
-						'content' => esc_html__( 'To obtain a Client Secret password, log in to your {{link}}Microsoft Azure{{link}} dashboard and generate a new client secret. Then, copy the value into this field.', 'gravitysmtp' ),
+						'content' => esc_html__( 'To obtain a Client Secret password, log in to your {{link}}Microsoft Azure{{link}} dashboard and generate a new client secret. Then, copy the secret value (not the secret ID) into this field.', 'gravitysmtp' ),
 						'size'    => 'text-xs',
 						'weight'  => 'regular',
 					),
@@ -566,7 +581,7 @@ class Connector_Microsoft extends Connector_Base {
 				),
 			);
 
-			$settings['fields'] = array_merge( $settings['fields'], $this->get_from_settings_fields() );
+			$settings['fields'] = array_merge( $settings['fields'], $this->get_from_settings_fields(), $this->get_reply_to_settings_fields() );
 		}
 
 		return $settings;

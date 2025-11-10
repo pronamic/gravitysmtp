@@ -160,9 +160,10 @@ class Settings_Config extends Config {
 							),
 						'logging'                     =>
 							array(
-								'top_heading'                                    => esc_html__( 'Email Logging', 'gravitysmtp' ),
-								'top_content'                                    => esc_html__( 'Email logging keeps copies of all emails sent from your WordPress site, so you can review your sent emails and check their delivery status.', 'gravitysmtp' ),
+								'top_heading'                                    => esc_html__( 'Logging', 'gravitysmtp' ),
+								'top_content'                                    => '',
 								'logging_box_heading'                            => esc_html__( 'Email Logging', 'gravitysmtp' ),
+								'logging_box_content'                            => esc_html__( 'Email logging keeps copies of all emails sent from your WordPress site, so you can review your sent emails and check their delivery status.', 'gravitysmtp' ),
 								'enable_log_label'                               => esc_html__( 'Enable Log', 'gravitysmtp' ),
 								'enable_log_helper_text'                         => esc_html__( 'Keep copies of all emails sent from your site.', 'gravitysmtp' ),
 								'save_email_body_label'                          => esc_html__( 'Save Email Body', 'gravitysmtp' ),
@@ -174,12 +175,16 @@ class Settings_Config extends Config {
 								'email_log_retention_label'                      => esc_html__( 'Log Retention Period', 'gravitysmtp' ),
 								'email_log_retention_helper_text'                => esc_html__( 'Email logs older than the selected timeframe will be permanently deleted.', 'gravitysmtp' ),
 								'email_log_max_records_helper_text'              => sprintf( $max_records_message, $max_records_value ),
+								/* translators: {{docs_link}} tags are replaced by opening and closing tags for a link to our log file retention periods documentation */
+								'email_log_resources_alert'                      => __( 'Large log files can quickly consume server resources and may impact site performance, especially on shared hosting. We recommend reviewing our {{docs_link}}log file retention periods article{{docs_link}} before enabling extended logging.', 'gravitysmtp' ),
 								'error_saving_snackbar_message'                  => esc_html__( 'There was an error saving the settings', 'gravitysmtp' ),
 								'debug_logging_box_heading'                      => esc_html__( 'Debug Logging', 'gravitysmtp' ),
 								'enable_debug_log_label'                         => esc_html__( 'Enable Debug Log', 'gravitysmtp' ),
 								'enable_debug_log_helper_text'                   => esc_html__( 'When enabled email sending errors debugging events will be logged, allowing you to detect email sending issues.', 'gravitysmtp' ),
 								'debug_log_retention_label'                      => esc_html__( 'Debug Log Retention Period', 'gravitysmtp' ),
 								'debug_log_retention_helper_text'                => esc_html__( 'Debug events older than the selected period will be permanently deleted from the database.', 'gravitysmtp' ),
+								/* translators: {{docs_link}} tags are replaced by opening and closing tags for a link to our log file retention periods documentation */
+								'debug_log_resources_alert'                      => __( 'Debug logging should only be enabled temporarily when troubleshooting specific issues. Continuous logging can quickly consume server resources and may impact site performance, especially on shared hosting. We recommend reviewing our {{docs_link}}log file retention periods article{{docs_link}} before enabling debug logging.', 'gravitysmtp' ),
 								'view_activity_log_button_text'                  => esc_html__( 'View Email Log', 'gravitysmtp' ),
 								'delete_activity_log_button_text'                => esc_html__( 'Delete Email Log', 'gravitysmtp' ),
 								'view_debug_log_button_text'                     => esc_html__( 'View Debug Log', 'gravitysmtp' ),
@@ -214,7 +219,7 @@ class Settings_Config extends Config {
 							'max_records'                  => $max_records_value,
 							'max_records_set'              => Booliesh::get( $max_records_value ),
 							'open_tracking_enabled'        => $open_tracking_enabled,
-							'retention_options'            => $this->get_email_log_retention_options(),
+							'retention_options'            => $this->get_email_log_retention_options( $email_log_retention ),
 							'save_attachments_enabled'     => $save_attachments_enabled,
 							'save_email_body_enabled'      => $save_email_body_enabled,
 						),
@@ -222,7 +227,7 @@ class Settings_Config extends Config {
 							'debug_log_enabled'   => $debug_log_enabled,
 							'debug_log_retention' => $debug_log_retention,
 							'debug_log_url'       => admin_url( 'admin.php?page=gravitysmtp-tools&tab=debug-log' ),
-							'retention_options'   => $this->get_debug_log_retention_options(),
+							'retention_options'   => $this->get_debug_log_retention_options( $debug_log_retention ),
 						),
 						'notifications_settings'     => array(
 							'email_digest_enabled'           => $notifications_email_digest_enabled,
@@ -534,7 +539,7 @@ class Settings_Config extends Config {
 		);
 	}
 
-	public function get_email_log_retention_options() {
+	public function get_email_log_retention_options( $retention ) {
 		$options = array(
 			array(
 				'label' => esc_html__( '1 Day', 'gravitysmtp' ),
@@ -566,10 +571,24 @@ class Settings_Config extends Config {
 			),
 		);
 
-		return apply_filters( 'gravitysmtp_email_log_retention_options', $options );
+		$values = array_column( $options, 'value' );
+		if ( in_array( $retention, $values ) ) {
+			return apply_filters( 'gravitysmtp_email_log_retention_options', $options );
+		}
+
+
+		return apply_filters(
+			'gravitysmtp_email_log_retention_options',
+			array(
+				array(
+					'label' => esc_html( sprintf( _n( '%s Day', '%s Days', $retention, 'gravitysmtp' ), $retention ) ),
+					'value' => $retention,
+				),
+			)
+		);
 	}
 
-	public function get_debug_log_retention_options() {
+	public function get_debug_log_retention_options( $retention ) {
 		$options = array(
 			array(
 				'label' => esc_html__( '1 Week', 'gravitysmtp' ),
@@ -581,7 +600,20 @@ class Settings_Config extends Config {
 			),
 		);
 
-		return apply_filters( 'gravitysmtp_debug_log_retention_options', $options );
+		$values = array_column( $options, 'value' );
+		if ( in_array( $retention, $values ) ) {
+			return apply_filters( 'gravitysmtp_debug_log_retention_options', $options );
+		}
+
+		return apply_filters(
+			'gravitysmtp_debug_log_retention_options',
+			array(
+				array(
+					'label' => esc_html( sprintf( _n( '%s Day', '%s Days', $retention, 'gravitysmtp' ), $retention ) ),
+					'value' => $retention,
+				),
+			)
+		);
 	}
 
 	public function get_notifications_email_digest_frequency_options() {

@@ -74,9 +74,10 @@ class Email_Summary_Handler {
 				$data['frequency_plural']   = __( 'monthly', 'gravitysmtp' );
 				$data['frequency_singular'] = __( 'month', 'gravitysmtp' );
 				break;
+
 			default:
 				$data['frequency_plural']   = $data['frequency'];
-				$data['frequency_singular'] = $data['frequency'] . ' day(s)';
+				$data['frequency_singular'] = sprintf( __( '%s day(s)', 'gravitysmtp' ), $data['frequency'] );
 				break;
 		}
 
@@ -85,11 +86,12 @@ class Email_Summary_Handler {
 			'gsmtp_logo' => plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'assets/images/email-templates/gravitysmtp-email-logo.png',
 		);
 
-		$data['stats']               = $this->get_email_basic_stats();
-		$data['stats']['recipients'] = $this->get_recipients();
-		$data['stats']['sources']    = $this->get_sources();
+		$data['stats']                               = $this->get_email_basic_stats();
+		$data['stats']['recipients']                 = $this->get_recipients();
+		$data['stats']['sources']                    = $this->get_sources();
+		$data['stats']['has_recipients_and_sources'] = ! empty( $data['stats']['recipients'] ) && ! empty( $data['stats']['sources'] );
 
-		$data['stats']['source_ph'] = array();
+		$data['stats']['source_ph']    = array();
 		$data['stats']['recipient_ph'] = array();
 
 		if ( count( $data['stats']['recipients'] ) > count( $data['stats']['sources'] ) ) {
@@ -127,7 +129,7 @@ class Email_Summary_Handler {
 			),
 			'preheader'                  => sprintf(
 				/* translators: 1: frequency plural (e.g., "daily", "weekly", "monthly"), 2: frequency singular (e.g., "day", "week", "month") */
-				__( 'Your %s email activity digest is ready! See how your emails performed in the past %s.', 'gravitysmtp' ),
+				__( 'Your %s email activity digest is ready! See a rundown of your email activity for the past %s.', 'gravitysmtp' ),
 				$data['frequency_plural'],
 				$data['frequency_singular']
 			),
@@ -137,10 +139,10 @@ class Email_Summary_Handler {
 				$data['user']['name']
 			),
 			'intro_message'              => sprintf(
-				/* translators: 1: site name, 2: frequency singular (e.g., "day", "week", "month") */
-				__( 'Here is how your emails from %s performed in the past %s.', 'gravitysmtp' ),
-				$site_link,
-				$data['frequency_singular']
+				/* translators: 1: frequency singular (e.g., "day", "week", "month"), 2: site name */
+				__( 'Here is a rundown of your email activity for the past %s for %s.', 'gravitysmtp' ),
+				$data['frequency_singular'],
+				$site_link
 			),
 			'sent_label'                 => __( 'Sent', 'gravitysmtp' ),
 			'failed_label'               => __( 'Failed', 'gravitysmtp' ),
@@ -227,11 +229,14 @@ class Email_Summary_Handler {
 	protected function get_recipients() {
 		$recipients = $this->model->get_top_recipients( $this->start, $this->end );
 		array_walk( $recipients, function ( &$item ) {
-			$hash                    = hash( 'sha256', $item['recipients'] );
-			$item['img']             = sprintf( 'https://gravatar.com/avatar/%s', $hash );
-			$item['count']           = $item['total'];
-			$item['count_formatted'] = sprintf( __( '%d Emails', 'gravitysmtp' ), number_format_i18n( $item['total'] ) );
-			$item['email']           = strlen( $item['recipients'] ) > 15 ? substr( $item['recipients'], 0, 15 ) . '&hellip;' : $item['recipients'];
+			$hash                        = hash( 'sha256', $item['recipients'] );
+			$item['img']                 = sprintf( 'https://gravatar.com/avatar/%s', $hash );
+			$item['count']               = $item['total'];
+			$item['count_formatted'] = sprintf(
+				_n( '%d Email', '%d Emails', $item['total'], 'gravitysmtp' ),
+				number_format_i18n( $item['total'] )
+			);
+			$item['email']               = strlen( $item['recipients'] ) > 15 ? substr( $item['recipients'], 0, 15 ) . '&hellip;' : $item['recipients'];
 
 			unset( $item['recipients'] );
 			unset( $item['total'] );
@@ -252,7 +257,10 @@ class Email_Summary_Handler {
 		array_walk( $sources, function ( &$item ) use ( $base_source_image_url, $base_source_image_dir ) {
 			$new_item['name']            = strlen( $item['source'] ) > 15 ? substr( $item['source'], 0, 15 ) . '&hellip;' : $item['source'];
 			$new_item['count']           = $item['total'];
-			$new_item['count_formatted'] = sprintf( __( '%d Emails', 'gravitysmtp' ), number_format_i18n( $item['total'] ) );
+			$new_item['count_formatted'] = sprintf(
+				_n( '%d Email', '%d Emails', $item['total'], 'gravitysmtp' ),
+				number_format_i18n( $item['total'] )
+			);
 
 			$source     = $item['source'];
 			$source_img = $base_source_image_dir . sanitize_title( $source ) . '-92.png';

@@ -14,6 +14,7 @@ class Send_Test_Endpoint extends Endpoint {
 	const PARAM_EMAIL          = 'email';
 	const PARAM_CONNECTOR_TYPE = 'connector_type';
 	const PARAM_AS_HTML        = 'as_html';
+	const PARAM_FROM_EMAIL     = 'from_email';
 
 	const ACTION_NAME = 'send_test';
 
@@ -48,6 +49,7 @@ class Send_Test_Endpoint extends Endpoint {
 		self::PARAM_EMAIL,
 		self::PARAM_CONNECTOR_TYPE,
 		self::PARAM_AS_HTML,
+		self::PARAM_FROM_EMAIL,
 	);
 
 	public function __construct( $connector_factory, $plugin_data_store, $emails_model, $log_model, $email_endpoint ) {
@@ -169,18 +171,20 @@ class Send_Test_Endpoint extends Endpoint {
 			$self->last_email_id = $created_id;
 		}, 10, 1 );
 
-		$email     = filter_input( INPUT_POST, self::PARAM_EMAIL, FILTER_SANITIZE_EMAIL );
-		$connector = filter_input( INPUT_POST, self::PARAM_CONNECTOR_TYPE );
-		$as_html   = filter_input( INPUT_POST, self::PARAM_AS_HTML );
-		$connector = htmlspecialchars( $connector );
-		$as_html   = htmlspecialchars( $as_html ) !== 'false';
+		$email      = filter_input( INPUT_POST, self::PARAM_EMAIL, FILTER_SANITIZE_EMAIL );
+		$connector  = filter_input( INPUT_POST, self::PARAM_CONNECTOR_TYPE );
+		$as_html    = filter_input( INPUT_POST, self::PARAM_AS_HTML );
+		$from_email = filter_input( INPUT_POST, self::PARAM_FROM_EMAIL, FILTER_SANITIZE_EMAIL );
 
-		$admin_email  = get_option( 'admin_email' );
+		$connector  = htmlspecialchars( $connector );
+		$as_html    = htmlspecialchars( $as_html ) !== 'false';
+		$from_email = $from_email ? $from_email : get_option( 'admin_email' );
+
 		$content_type = $as_html ? 'text/html' : 'text/plain';
 
 		$headers = array(
 			'content-type' => 'Content-type: ' . $content_type,
-			'from'         => 'From: ' . $admin_email,
+			'from'         => 'From: ' . $from_email,
 		);
 
 		add_filter( 'gravitysmtp_connector_for_sending', function( $current_connector, $email_args ) use ( $connector ) {

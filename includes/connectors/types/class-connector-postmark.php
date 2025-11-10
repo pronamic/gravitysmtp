@@ -202,11 +202,13 @@ class Connector_Postmark extends Connector_Base {
 
 	public function connector_data() {
 		return array(
-			self::SETTING_SERVER_API_TOKEN => $this->get_setting( self::SETTING_SERVER_API_TOKEN, '' ),
-			self::SETTING_FROM_EMAIL       => $this->get_setting( self::SETTING_FROM_EMAIL, '' ),
-			self::SETTING_FORCE_FROM_EMAIL => $this->get_setting( self::SETTING_FORCE_FROM_EMAIL, false ),
-			self::SETTING_FROM_NAME        => $this->get_setting( self::SETTING_FROM_NAME, '' ),
-			self::SETTING_FORCE_FROM_NAME  => $this->get_setting( self::SETTING_FORCE_FROM_NAME, false ),
+			self::SETTING_SERVER_API_TOKEN      => $this->get_setting( self::SETTING_SERVER_API_TOKEN, '' ),
+			self::SETTING_FROM_EMAIL            => $this->get_setting( self::SETTING_FROM_EMAIL, '' ),
+			self::SETTING_FORCE_FROM_EMAIL      => $this->get_setting( self::SETTING_FORCE_FROM_EMAIL, false ),
+			self::SETTING_FROM_NAME             => $this->get_setting( self::SETTING_FROM_NAME, '' ),
+			self::SETTING_FORCE_FROM_NAME       => $this->get_setting( self::SETTING_FORCE_FROM_NAME, false ),
+			self::SETTING_REPLY_TO_EMAIL        => $this->get_setting( self::SETTING_REPLY_TO_EMAIL, '' ),
+			self::SETTING_FORCE_REPLY_TO_EMAIL  => $this->get_setting( self::SETTING_FORCE_REPLY_TO_EMAIL, false ),
 		);
 	}
 
@@ -275,6 +277,7 @@ class Connector_Postmark extends Connector_Base {
 					),
 				),
 				$this->get_from_settings_fields(),
+				$this->get_reply_to_settings_fields(),
 			),
 		);
 	}

@@ -251,7 +251,7 @@ class Suppressed_Emails_Model {
 						),
 						'customClasses'    => array( 'gravitysmtp-data-grid__action' ),
 						'icon'             => 'reactivate',
-						'iconPrefix'        => 'gravitysmtp-admin-icon',
+						'iconPrefix'       => 'gravitysmtp-admin-icon',
 						'size'             => 'size-height-s',
 						'type'             => 'icon-white',
 						'data'             => array(

@@ -5,7 +5,6 @@ namespace Gravity_Forms\Gravity_SMTP\Apps\Config;
 use Gravity_Forms\Gravity_SMTP\Apps\App_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Apps\Endpoints\Get_Dashboard_Data_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Service_Provider;
-use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Plugin_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Data_Store_Router;
 use Gravity_Forms\Gravity_SMTP\Feature_Flags\Feature_Flag_Manager;
 use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
@@ -14,7 +13,6 @@ use Gravity_Forms\Gravity_SMTP\Tracking\Tracking_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Utils\Booliesh;
 use Gravity_Forms\Gravity_Tools\Config;
 use Gravity_Forms\Gravity_Tools\Config_Data_Parser;
-use Relay\Event;
 
 
 class Dashboard_Config extends Config {
@@ -28,7 +26,6 @@ class Dashboard_Config extends Config {
 	private $start;
 	private $end;
 	private $period;
-	private $retention_period;
 
 	/**
 	 * @var Event_Model
@@ -41,7 +38,6 @@ class Dashboard_Config extends Config {
 		 * @var Data_Store_Router $settings
 		 */
 		$settings               = Gravity_SMTP::$container->get( Connector_Service_Provider::DATA_STORE_ROUTER );
-		$this->retention_period = $settings->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_RETENTION, 30 );
 		$this->model            = Gravity_SMTP::$container->get( Connector_Service_Provider::EVENT_MODEL );
 	}
 
