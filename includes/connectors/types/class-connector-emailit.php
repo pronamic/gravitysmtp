@@ -21,7 +21,7 @@ class Connector_Emailit extends Connector_Base {
 	protected $disabled  = true;
 	protected $logo      = 'Emailit';
 	protected $full_logo = 'EmailitFull';
-	protected $url       = 'https://api.emailit.com/v2';
+	protected $url       = 'https://api.emailit.com/v1';
 
 	protected $sensitive_fields = array(
 		self::SETTING_API_KEY,
@@ -362,13 +362,12 @@ class Connector_Emailit extends Connector_Base {
 	 * @return true|WP_Error
 	 */
 	private function verify_api_key() {
-		$api_key = $this->get_setting( self::SETTING_API_KEY, '' );
+		$api_key    = $this->get_setting( self::SETTING_API_KEY, '' );
+		$url        = $this->url . '/audiences';
 
 		if ( empty( $api_key ) ) {
 			return new WP_Error( 'missing_api_key', __( 'No API Key provided.', 'gravitysmtp' ) );
 		}
-
-		$url = $this->url . '/sending-domains';
 
 		$response = wp_remote_get(
 			$url,
@@ -377,13 +376,7 @@ class Connector_Emailit extends Connector_Base {
 			)
 		);
 
-		$response_code = wp_remote_retrieve_response_code( $response );
-
-		if ( $response_code == '403' ) {
-			$this->debug_logger->log_debug( __METHOD__ . '(): Request to Emailit returned a 403. Sending Only API Key provided.' );
-		}
-
-		if ( ! in_array( $response_code, array( 200, 403 ) ) ) {
+		if ( wp_remote_retrieve_response_code( $response ) != '200' ) {
 			return new WP_Error( 'invalid_api_key', __( 'Invalid API Key provided.', 'gravitysmtp' ) );
 		}
 

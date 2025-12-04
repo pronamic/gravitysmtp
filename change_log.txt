@@ -1,3 +1,6 @@
+### 2.1.1 | 2025-12-03
+- Updated Emailit endpoint to v1 as the v2 upgrade was reverted and extended on their end.
+
 ### 2.1.0 | 2025-11-06
 - Added settings of Default Reply-To Email and Force Reply-To Email to all integrations.
 - Added the ability to set from email address when using the Send a Test tool.
