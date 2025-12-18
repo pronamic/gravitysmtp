@@ -1,3 +1,6 @@
+### 2.1.2 | 2025-12-17
+- Fixed an issue causing the Brevo Integration to fail API key verification.
+
 ### 2.1.1 | 2025-12-03
 - Updated Emailit endpoint to v1 as the v2 upgrade was reverted and extended on their end.
 

@@ -340,7 +340,7 @@ class Connector_Brevo extends Connector_Base {
 	 */
 	private function verify_api_key() {
 		$api_key = $this->get_setting( self::SETTING_API_KEY );
-		$url     = 'https://api.brevo.com/v3/smtp/templates/?limit=1';
+		$url     = 'https://api.brevo.com/v3/smtp/templates?limit=1';
 
 		if ( empty( $api_key ) ) {
 			return new \WP_Error( 'missing_api_key', __( 'No API Key provided.', 'gravitysmtp' ) );
