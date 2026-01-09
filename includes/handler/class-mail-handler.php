@@ -119,6 +119,10 @@ class Mail_Handler {
 			$source = $this->source_parser->get_source_from_trace( $debug );
 		}
 
+		if ( ! empty( $attachments ) && ! is_array( $attachments ) ) {
+			$attachments = array( $attachments );
+		}
+
 		/**
 		 * Filters the wp_mail() arguments.
 		 *

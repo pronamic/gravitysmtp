@@ -336,6 +336,13 @@ class Event_Model {
 			$values['subject'] = substr( $values['subject'], 0, 95 ); // DB Column is varchar(100), trim with some buffer space for non-Latin chars
 		}
 
+		if ( isset( $values['message'] ) && strlen( $values['message'] ) > 64500 ) {
+			$values['message']          = substr( $values['message'], 0, 64500 ) . __( '...(original message truncated)', 'gravitysmtp' );
+			$extra                      = isset( $values['extra'] ) ? unserialize( $values['extra'] ) : array();
+			$extra['message_truncated'] = true;
+			$values['extra']            = serialize( $extra );
+		}
+
 		global $wpdb;
 
 		$self   = $this;
@@ -438,7 +445,7 @@ class Event_Model {
 
 			$row['source']       = isset( $extra['source'] ) ? $extra['source'] : __( 'N/A', 'gravitysmtp' );
 			$row['email_counts'] = $this->get_email_counts( $extra );
-			$row['can_resend']   = empty( $extra['message_omitted'] ) && ( empty( $extra['attachments'] ) || ( ! empty( $extra['attachments_saved'] ) ) );
+			$row['can_resend']   = empty( $extra['message_truncated'] ) && empty( $extra['message_omitted'] ) && ( empty( $extra['attachments'] ) || ( ! empty( $extra['attachments_saved'] ) ) );
 
 			if ( $hydrator ) {
 				$rows[ $idx ] = $hydrator->hydrate( $row );

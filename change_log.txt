@@ -1,3 +1,11 @@
+### 2.1.3 | 2026-01-08
+- Fixed an issue that can cause fatal errors when third-party plugins attempt sends early in the request lifecycle.
+- Fixed an issue which can cause empty Email Log entries for messages with very-long contents.
+- Fixed an issue which causes constant-defined values to be sent as masked values to the Microsoft Oauth endpoint.
+- Fixed an issue that can cause delayed responses from SMTP2GO to result in an error in the Email Log.
+- Fixed an issue which can cause WooCommerce attachments to fail to send.
+- Fixed an issue which can cause some combinations of special characters in From Names to break sending from SMTP2GO.
+
 ### 2.1.2 | 2025-12-17
 - Fixed an issue causing the Brevo Integration to fail API key verification.
 

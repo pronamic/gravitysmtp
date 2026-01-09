@@ -87,7 +87,7 @@ class Connector_Smtp2go extends Connector_Base {
 		$atts    = $this->get_send_atts();
 		$api_key = $this->get_setting( self::SETTING_API_KEY );
 
-		$from_value = isset( $atts['from']['name'] ) ? sprintf( '"%s" <%s>', $atts['from']['name'], $atts['from']['email'] ) : $atts['from']['email'];
+		$from_value = isset( $atts['from']['name'] ) ? sprintf( '"%s" <%s>', iconv_mime_encode( 'From', $atts['from']['name'] ), $atts['from']['email'] ) : $atts['from']['email'];
 		$body       = array(
 			'sender'  => $from_value,
 			'subject' => $atts['subject'],
@@ -150,6 +150,7 @@ class Connector_Smtp2go extends Connector_Base {
 		return array(
 			'body'    => json_encode( $body ),
 			'headers' => $this->get_request_headers( $api_key ),
+			'timeout' => 10
 		);
 	}
 

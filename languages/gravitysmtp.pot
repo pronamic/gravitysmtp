@@ -1,15 +1,15 @@
-# Copyright (C) 2025 Gravity Forms
+# Copyright (C) 2026 Gravity Forms
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Gravity SMTP 2.1.2\n"
+"Project-Id-Version: Gravity SMTP 2.1.3\n"
 "Report-Msgid-Bugs-To: https://gravityforms.com/support\n"
 "Last-Translator: Gravity Forms <support@gravityforms.com>\n"
 "Language-Team: Gravity Forms <support@gravityforms.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-12-17T17:22:02+00:00\n"
+"POT-Creation-Date: 2026-01-08T19:24:22+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: gravitysmtp\n"
@@ -1132,7 +1132,7 @@ msgstr ""
 #: includes/connectors/types/class-connector-postmark.php:270
 #: includes/connectors/types/class-connector-resend.php:321
 #: includes/connectors/types/class-connector-sendgrid.php:269
-#: includes/connectors/types/class-connector-smtp2go.php:308
+#: includes/connectors/types/class-connector-smtp2go.php:309
 #: includes/connectors/types/class-connector-sparkpost.php:364
 msgid "General Settings"
 msgstr ""
@@ -1849,8 +1849,8 @@ msgstr ""
 #: includes/apps/config/class-tools-config.php:596
 #: includes/apps/config/class-tools-config.php:860
 #: includes/apps/config/class-tools-config.php:866
-#: includes/models/class-event-model.php:417
-#: includes/models/class-event-model.php:423
+#: includes/models/class-event-model.php:424
+#: includes/models/class-event-model.php:430
 msgid "Yes"
 msgstr ""
 
@@ -1865,10 +1865,10 @@ msgstr ""
 #: includes/apps/config/class-tools-config.php:854
 #: includes/apps/config/class-tools-config.php:860
 #: includes/apps/config/class-tools-config.php:866
-#: includes/models/class-event-model.php:415
-#: includes/models/class-event-model.php:417
-#: includes/models/class-event-model.php:421
-#: includes/models/class-event-model.php:423
+#: includes/models/class-event-model.php:422
+#: includes/models/class-event-model.php:424
+#: includes/models/class-event-model.php:428
+#: includes/models/class-event-model.php:430
 #: includes/models/class-log-details-model.php:211
 #: includes/models/class-log-details-model.php:217
 msgid "No"
@@ -1907,7 +1907,7 @@ msgid "Registered Filters"
 msgstr ""
 
 #: includes/apps/config/class-tools-config.php:602
-#: includes/models/class-event-model.php:439
+#: includes/models/class-event-model.php:446
 #: includes/models/class-log-details-model.php:212
 #: includes/utils/class-source-parser.php:26
 #: includes/utils/class-source-parser.php:89
@@ -2273,7 +2273,7 @@ msgid "Default From Name"
 msgstr ""
 
 #: includes/connectors/class-connector-base.php:522
-#: includes/connectors/types/class-connector-microsoft.php:596
+#: includes/connectors/types/class-connector-microsoft.php:595
 msgid "Force From Name"
 msgstr ""
 
@@ -2417,7 +2417,7 @@ msgstr ""
 #: includes/connectors/types/class-connector-mailersend.php:52
 #: includes/connectors/types/class-connector-mailgun.php:60
 #: includes/connectors/types/class-connector-mailjet.php:56
-#: includes/connectors/types/class-connector-microsoft.php:145
+#: includes/connectors/types/class-connector-microsoft.php:144
 #: includes/connectors/types/class-connector-phpmail.php:123
 #: includes/connectors/types/class-connector-postmark.php:46
 #: includes/connectors/types/class-connector-resend.php:54
@@ -2438,7 +2438,7 @@ msgstr ""
 #: includes/connectors/types/class-connector-mailersend.php:67
 #: includes/connectors/types/class-connector-mailgun.php:86
 #: includes/connectors/types/class-connector-mailjet.php:72
-#: includes/connectors/types/class-connector-microsoft.php:181
+#: includes/connectors/types/class-connector-microsoft.php:180
 #: includes/connectors/types/class-connector-phpmail.php:166
 #: includes/connectors/types/class-connector-postmark.php:63
 #: includes/connectors/types/class-connector-resend.php:70
@@ -2465,12 +2465,12 @@ msgstr ""
 #: includes/connectors/types/class-connector-mailersend.php:284
 #: includes/connectors/types/class-connector-mailgun.php:339
 #: includes/connectors/types/class-connector-mailjet.php:308
-#: includes/connectors/types/class-connector-microsoft.php:341
-#: includes/connectors/types/class-connector-microsoft.php:553
+#: includes/connectors/types/class-connector-microsoft.php:340
+#: includes/connectors/types/class-connector-microsoft.php:552
 #: includes/connectors/types/class-connector-postmark.php:224
 #: includes/connectors/types/class-connector-resend.php:289
 #: includes/connectors/types/class-connector-sendgrid.php:223
-#: includes/connectors/types/class-connector-smtp2go.php:276
+#: includes/connectors/types/class-connector-smtp2go.php:277
 #: includes/connectors/types/class-connector-sparkpost.php:308
 #: includes/connectors/types/class-connector-zoho.php:364
 #: includes/connectors/types/class-connector-zoho.php:565
@@ -2601,7 +2601,7 @@ msgstr ""
 #: includes/connectors/types/class-connector-mailersend.php:296
 #: includes/connectors/types/class-connector-mailjet.php:320
 #: includes/connectors/types/class-connector-resend.php:301
-#: includes/connectors/types/class-connector-smtp2go.php:288
+#: includes/connectors/types/class-connector-smtp2go.php:289
 #: includes/connectors/types/class-connector-sparkpost.php:344
 msgid "API Key"
 msgstr ""
@@ -2619,7 +2619,7 @@ msgstr ""
 #: includes/connectors/types/class-connector-postmark.php:307
 #: includes/connectors/types/class-connector-resend.php:369
 #: includes/connectors/types/class-connector-sendgrid.php:306
-#: includes/connectors/types/class-connector-smtp2go.php:356
+#: includes/connectors/types/class-connector-smtp2go.php:357
 #: includes/connectors/types/class-connector-sparkpost.php:433
 msgid "No API Key provided."
 msgstr ""
@@ -2633,7 +2633,7 @@ msgstr ""
 #: includes/connectors/types/class-connector-postmark.php:318
 #: includes/connectors/types/class-connector-resend.php:388
 #: includes/connectors/types/class-connector-sendgrid.php:319
-#: includes/connectors/types/class-connector-smtp2go.php:367
+#: includes/connectors/types/class-connector-smtp2go.php:368
 #: includes/connectors/types/class-connector-sparkpost.php:444
 msgid "Invalid API Key provided."
 msgstr ""
@@ -2704,7 +2704,7 @@ msgstr ""
 #: includes/connectors/types/class-connector-google.php:587
 #: includes/connectors/types/class-connector-mailchimp.php:336
 #: includes/connectors/types/class-connector-mailgun.php:383
-#: includes/connectors/types/class-connector-microsoft.php:566
+#: includes/connectors/types/class-connector-microsoft.php:565
 #: includes/connectors/types/class-connector-phpmail.php:265
 #: includes/connectors/types/class-connector-sparkpost.php:376
 msgid "If Return Path is enabled this adds the return path to the email header which indicates where non-deliverable notifications should be sent. Bounce messages may be lost if not enabled."
@@ -2714,7 +2714,7 @@ msgstr ""
 #: includes/connectors/types/class-connector-google.php:595
 #: includes/connectors/types/class-connector-mailchimp.php:344
 #: includes/connectors/types/class-connector-mailgun.php:391
-#: includes/connectors/types/class-connector-microsoft.php:574
+#: includes/connectors/types/class-connector-microsoft.php:573
 #: includes/connectors/types/class-connector-phpmail.php:273
 #: includes/connectors/types/class-connector-sparkpost.php:384
 msgid "Return Path"
@@ -2818,14 +2818,14 @@ msgid "To obtain a Client Secret from Google / Gmail, log in to your {{link}}Goo
 msgstr ""
 
 #: includes/connectors/types/class-connector-google.php:461
-#: includes/connectors/types/class-connector-microsoft.php:404
+#: includes/connectors/types/class-connector-microsoft.php:403
 #: includes/connectors/types/class-connector-zoho.php:448
 msgid "Client Secret"
 msgstr ""
 
 #: includes/connectors/types/class-connector-google.php:482
-#: includes/connectors/types/class-connector-microsoft.php:425
-#: includes/connectors/types/class-connector-microsoft.php:457
+#: includes/connectors/types/class-connector-microsoft.php:424
+#: includes/connectors/types/class-connector-microsoft.php:456
 #: includes/connectors/types/class-connector-zoho.php:469
 msgid "Copy"
 msgstr ""
@@ -2839,7 +2839,7 @@ msgid "Copy this URL into the \"Authorized redirect URIs\" field of your Google 
 msgstr ""
 
 #: includes/connectors/types/class-connector-google.php:507
-#: includes/connectors/types/class-connector-microsoft.php:482
+#: includes/connectors/types/class-connector-microsoft.php:481
 #: includes/connectors/types/class-connector-zoho.php:494
 msgid "Authorization"
 msgstr ""
@@ -2849,7 +2849,7 @@ msgid "Sign in with Google"
 msgstr ""
 
 #: includes/connectors/types/class-connector-google.php:550
-#: includes/connectors/types/class-connector-microsoft.php:529
+#: includes/connectors/types/class-connector-microsoft.php:528
 msgid "Connected with email account:"
 msgstr ""
 
@@ -2975,63 +2975,63 @@ msgstr ""
 msgid "Deliver emails with confidence using Microsoft 365 / Outlook. Connect to Microsoft’s API to securely authenticate and send any emails or form notifications from your website."
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:70
+#: includes/connectors/types/class-connector-microsoft.php:69
 msgid "Starting email send for Microsoft connector."
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:269
+#: includes/connectors/types/class-connector-microsoft.php:268
 msgid "365 / Outlook Settings"
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:287
+#: includes/connectors/types/class-connector-microsoft.php:286
 msgid "Please click the button below to initiate a connection with your Microsoft account. Remember to fill out both the Client ID and Client Secret fields before proceeding."
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:297
+#: includes/connectors/types/class-connector-microsoft.php:296
 msgid "Read our Microsoft 365 / Outlook documentation"
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:327
+#: includes/connectors/types/class-connector-microsoft.php:326
 msgid "Error Connecting to Microsoft. Check your credentials and try again."
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:367
+#: includes/connectors/types/class-connector-microsoft.php:366
 msgid "To obtain an Application ID from 365 / Outlook, login to your {{link}}Microsoft Azure{{link}} dashboard and generate an Application ID."
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:372
+#: includes/connectors/types/class-connector-microsoft.php:371
 msgid "Application ID"
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:399
+#: includes/connectors/types/class-connector-microsoft.php:398
 msgid "To obtain a Client Secret password, log in to your {{link}}Microsoft Azure{{link}} dashboard and generate a new client secret. Then, copy the secret value (not the secret ID) into this field."
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:428
+#: includes/connectors/types/class-connector-microsoft.php:427
 msgid "Redirect URI (Personal Accounts)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:440
+#: includes/connectors/types/class-connector-microsoft.php:439
 msgid "If your app is set up to support Personal Accounts, copy this URL and enter it as a Redirect URI in your App Settings."
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:460
+#: includes/connectors/types/class-connector-microsoft.php:459
 msgid "Redirect URI (School or Work Accounts)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:472
+#: includes/connectors/types/class-connector-microsoft.php:471
 msgid "If your app is set up to support School and Work accounts, copy this URL and enter it as a Redirect URI in your App Settings."
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:495
+#: includes/connectors/types/class-connector-microsoft.php:494
 msgid "Sign in with Microsoft"
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:544
+#: includes/connectors/types/class-connector-microsoft.php:543
 msgid "Disconnect from Microsoft"
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:600
+#: includes/connectors/types/class-connector-microsoft.php:599
 msgid "Microsoft automatically forces the From Name associated with the From Email configured within their system."
 msgstr ""
 
@@ -3122,12 +3122,12 @@ msgstr ""
 msgid "Starting email send for SMTP2GO connector."
 msgstr ""
 
-#: includes/connectors/types/class-connector-smtp2go.php:269
+#: includes/connectors/types/class-connector-smtp2go.php:270
 msgid "SMTP2GO Settings"
 msgstr ""
 
 #. translators: 1: opening anchor tag, 2: closing anchor tag
-#: includes/connectors/types/class-connector-smtp2go.php:295
+#: includes/connectors/types/class-connector-smtp2go.php:296
 msgid "To generate an API key from SMTP2GO, log in to your SMTP2GO dashboard and navigate to the API section. %1$sCreate a new API key%2$s and ensure your %3$sverified senders%2$s are configured correctly."
 msgstr ""
 
@@ -3583,6 +3583,10 @@ msgstr ""
 
 #: includes/models/class-debug-log-model.php:170
 msgid "Info"
+msgstr ""
+
+#: includes/models/class-event-model.php:340
+msgid "...(original message truncated)"
 msgstr ""
 
 #: includes/models/class-suppressed-emails-model.php:250

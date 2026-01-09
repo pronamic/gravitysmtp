@@ -36,7 +36,6 @@ class Connector_Microsoft extends Connector_Base {
 
 	protected $sensitive_fields = array(
 		self::SETTING_ACCESS_TOKEN,
-		self::SETTING_CLIENT_ID,
 		self::SETTING_CLIENT_SECRET,
 	);
 
