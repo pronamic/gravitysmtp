@@ -1,3 +1,10 @@
+### 2.1.4 | 2026-02-26
+- Added capability grouping for the Members plugin.
+- Fixed an issue where duplicate mime type headers could pass through and cause issues with some integrations.
+- Fixed an issue that causes SMTP2GO to have a duplicate from prefix in the sent name.
+- Fixed an issue that causes alerts to not send for errors that occur in specific narrow durations.
+- Fixed an issue that causes long From names to be rejected by some integrations.
+
 ### 2.1.3 | 2026-01-08
 - Fixed an issue that can cause fatal errors when third-party plugins attempt sends early in the request lifecycle.
 - Fixed an issue which can cause empty Email Log entries for messages with very-long contents.

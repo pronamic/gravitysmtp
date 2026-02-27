@@ -386,6 +386,11 @@ abstract class Connector_Base {
 				: $this->get_att( 'from_name', '' );
 		}
 
+		// Some providers have limits on from name; truncate to 30 characters.
+		if ( ! empty( $from_name ) ) {
+			$from_name = substr( $from_name, 0, 30 );
+		}
+
 		// From was not passed; use admin email
 		if ( empty( $from ) ) {
 			$from = get_option( 'admin_email' );
@@ -431,7 +436,7 @@ abstract class Connector_Base {
 		if ( $forcing_reply_to || $defaulting_reply_to ) {
 			return $return_as_array ? array( array( 'email' => $default_reply_to_setting ) ) : $default_reply_to_setting;
 		}
-		
+
 		if ( ! isset( $parsed_headers['reply-to'] ) || empty( $parsed_headers['reply-to'] ) ) {
 			return $return_as_array ? array() : '';
 		}

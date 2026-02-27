@@ -10,6 +10,7 @@ class Header_Parser {
 		'cc',
 		'bcc',
 		'content-type',
+		'MIME-Version',
 	);
 
 	public function parse( $headers ) {

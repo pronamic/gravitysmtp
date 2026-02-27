@@ -166,6 +166,7 @@ class ComposerStaticInitf07447bb71a3faf88bd2cf120f9886cc
         'Gravity_Forms\\Gravity_SMTP\\Tracking\\Tracking_Service_Provider' => __DIR__ . '/../..' . '/includes/tracking/class-tracking-service-provider.php',
         'Gravity_Forms\\Gravity_SMTP\\Translations\\TranslationsPress' => __DIR__ . '/../..' . '/includes/translations/class-translationspress.php',
         'Gravity_Forms\\Gravity_SMTP\\Translations\\Translations_Service_Provider' => __DIR__ . '/../..' . '/includes/translations/class-translations-service-provider.php',
+        'Gravity_Forms\\Gravity_SMTP\\Users\\Members_Integration' => __DIR__ . '/../..' . '/includes/users/class-members-integration.php',
         'Gravity_Forms\\Gravity_SMTP\\Users\\Roles' => __DIR__ . '/../..' . '/includes/users/class-roles.php',
         'Gravity_Forms\\Gravity_SMTP\\Users\\Users_Service_Provider' => __DIR__ . '/../..' . '/includes/users/class-users-service-provider.php',
         'Gravity_Forms\\Gravity_SMTP\\Utils\\AWS_Signature_Handler' => __DIR__ . '/../..' . '/includes/utils/class-aws-signature-handler.php',

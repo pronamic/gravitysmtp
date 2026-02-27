@@ -102,7 +102,10 @@ class Roles {
 	public function register() {
 		$admin = get_role( 'administrator' );
 		foreach ( $this->caps as $cap ) {
-			$admin->add_cap( $cap );
+			// this ensures that capability is not re-granted after having been denied via Members plugin
+			if ( ! array_key_exists( $cap, $admin->capabilities ) ) {
+				$admin->add_cap( $cap );
+			}
 		}
 	}
 

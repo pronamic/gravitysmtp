@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Gravity SMTP 2.1.3\n"
+"Project-Id-Version: Gravity SMTP 2.1.4\n"
 "Report-Msgid-Bugs-To: https://gravityforms.com/support\n"
 "Last-Translator: Gravity Forms <support@gravityforms.com>\n"
 "Language-Team: Gravity Forms <support@gravityforms.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-01-08T19:24:22+00:00\n"
+"POT-Creation-Date: 2026-02-26T15:58:35+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: gravitysmtp\n"
@@ -17,6 +17,7 @@ msgstr ""
 #. Plugin Name of the plugin
 #: includes/apps/config/class-tools-config.php:245
 #: includes/notifications/class-email-summary-handler.php:124
+#: includes/users/class-members-integration.php:46
 msgid "Gravity SMTP"
 msgstr ""
 
@@ -1132,7 +1133,7 @@ msgstr ""
 #: includes/connectors/types/class-connector-postmark.php:270
 #: includes/connectors/types/class-connector-resend.php:321
 #: includes/connectors/types/class-connector-sendgrid.php:269
-#: includes/connectors/types/class-connector-smtp2go.php:309
+#: includes/connectors/types/class-connector-smtp2go.php:311
 #: includes/connectors/types/class-connector-sparkpost.php:364
 msgid "General Settings"
 msgstr ""
@@ -1318,14 +1319,17 @@ msgid "Debug logging should only be enabled temporarily when troubleshooting spe
 msgstr ""
 
 #: includes/apps/config/class-settings-config.php:188
+#: includes/users/class-members-integration.php:106
 msgid "View Email Log"
 msgstr ""
 
 #: includes/apps/config/class-settings-config.php:189
+#: includes/users/class-members-integration.php:82
 msgid "Delete Email Log"
 msgstr ""
 
 #: includes/apps/config/class-settings-config.php:190
+#: includes/users/class-members-integration.php:104
 msgid "View Debug Log"
 msgstr ""
 
@@ -1334,6 +1338,7 @@ msgid "Copy Debug Log Link"
 msgstr ""
 
 #: includes/apps/config/class-settings-config.php:192
+#: includes/users/class-members-integration.php:81
 msgid "Delete Debug Log"
 msgstr ""
 
@@ -2256,40 +2261,40 @@ msgstr ""
 msgid "Invalid license key."
 msgstr ""
 
-#: includes/connectors/class-connector-base.php:472
+#: includes/connectors/class-connector-base.php:477
 msgid "Default From Email"
 msgstr ""
 
-#: includes/connectors/class-connector-base.php:487
+#: includes/connectors/class-connector-base.php:492
 msgid "Force From Email"
 msgstr ""
 
-#: includes/connectors/class-connector-base.php:490
+#: includes/connectors/class-connector-base.php:495
 msgid "If Force Email is enabled, the Default From Email address will override other plugin settings for all outgoing emails."
 msgstr ""
 
-#: includes/connectors/class-connector-base.php:507
+#: includes/connectors/class-connector-base.php:512
 msgid "Default From Name"
 msgstr ""
 
-#: includes/connectors/class-connector-base.php:522
+#: includes/connectors/class-connector-base.php:527
 #: includes/connectors/types/class-connector-microsoft.php:595
 msgid "Force From Name"
 msgstr ""
 
-#: includes/connectors/class-connector-base.php:525
+#: includes/connectors/class-connector-base.php:530
 msgid "If Force Name is enabled, the Default From Name will override other plugin settings for all outgoing emails."
 msgstr ""
 
-#: includes/connectors/class-connector-base.php:554
+#: includes/connectors/class-connector-base.php:559
 msgid "Default Reply-To Email"
 msgstr ""
 
-#: includes/connectors/class-connector-base.php:569
+#: includes/connectors/class-connector-base.php:574
 msgid "Force Reply-To Email"
 msgstr ""
 
-#: includes/connectors/class-connector-base.php:572
+#: includes/connectors/class-connector-base.php:577
 msgid "If Force Reply-To Email is enabled, the Default Reply-To Email address will override other plugin settings for all outgoing emails."
 msgstr ""
 
@@ -2470,7 +2475,7 @@ msgstr ""
 #: includes/connectors/types/class-connector-postmark.php:224
 #: includes/connectors/types/class-connector-resend.php:289
 #: includes/connectors/types/class-connector-sendgrid.php:223
-#: includes/connectors/types/class-connector-smtp2go.php:277
+#: includes/connectors/types/class-connector-smtp2go.php:279
 #: includes/connectors/types/class-connector-sparkpost.php:308
 #: includes/connectors/types/class-connector-zoho.php:364
 #: includes/connectors/types/class-connector-zoho.php:565
@@ -2601,7 +2606,7 @@ msgstr ""
 #: includes/connectors/types/class-connector-mailersend.php:296
 #: includes/connectors/types/class-connector-mailjet.php:320
 #: includes/connectors/types/class-connector-resend.php:301
-#: includes/connectors/types/class-connector-smtp2go.php:289
+#: includes/connectors/types/class-connector-smtp2go.php:291
 #: includes/connectors/types/class-connector-sparkpost.php:344
 msgid "API Key"
 msgstr ""
@@ -2619,7 +2624,7 @@ msgstr ""
 #: includes/connectors/types/class-connector-postmark.php:307
 #: includes/connectors/types/class-connector-resend.php:369
 #: includes/connectors/types/class-connector-sendgrid.php:306
-#: includes/connectors/types/class-connector-smtp2go.php:357
+#: includes/connectors/types/class-connector-smtp2go.php:359
 #: includes/connectors/types/class-connector-sparkpost.php:433
 msgid "No API Key provided."
 msgstr ""
@@ -2633,7 +2638,7 @@ msgstr ""
 #: includes/connectors/types/class-connector-postmark.php:318
 #: includes/connectors/types/class-connector-resend.php:388
 #: includes/connectors/types/class-connector-sendgrid.php:319
-#: includes/connectors/types/class-connector-smtp2go.php:368
+#: includes/connectors/types/class-connector-smtp2go.php:370
 #: includes/connectors/types/class-connector-sparkpost.php:444
 msgid "Invalid API Key provided."
 msgstr ""
@@ -3122,12 +3127,12 @@ msgstr ""
 msgid "Starting email send for SMTP2GO connector."
 msgstr ""
 
-#: includes/connectors/types/class-connector-smtp2go.php:270
+#: includes/connectors/types/class-connector-smtp2go.php:272
 msgid "SMTP2GO Settings"
 msgstr ""
 
 #. translators: 1: opening anchor tag, 2: closing anchor tag
-#: includes/connectors/types/class-connector-smtp2go.php:296
+#: includes/connectors/types/class-connector-smtp2go.php:298
 msgid "To generate an API key from SMTP2GO, log in to your SMTP2GO dashboard and navigate to the API section. %1$sCreate a new API key%2$s and ensure your %3$sverified senders%2$s are configured correctly."
 msgstr ""
 
@@ -3849,6 +3854,166 @@ msgstr ""
 
 #: includes/suppression/config/class-suppression-settings-config.php:184
 msgid "Email"
+msgstr ""
+
+#: includes/users/class-members-integration.php:83
+msgid "Delete Email Log Details"
+msgstr ""
+
+#: includes/users/class-members-integration.php:84
+msgid "Edit Alerts"
+msgstr ""
+
+#: includes/users/class-members-integration.php:85
+msgid "Edit Alerts Slack Settings"
+msgstr ""
+
+#: includes/users/class-members-integration.php:86
+msgid "Edit Alerts Twilio Settings"
+msgstr ""
+
+#: includes/users/class-members-integration.php:87
+msgid "Edit Debug Log"
+msgstr ""
+
+#: includes/users/class-members-integration.php:88
+msgid "Edit Debug Log Settings"
+msgstr ""
+
+#: includes/users/class-members-integration.php:89
+msgid "Edit Email Log"
+msgstr ""
+
+#: includes/users/class-members-integration.php:90
+msgid "Edit Email Log Details"
+msgstr ""
+
+#: includes/users/class-members-integration.php:91
+msgid "Edit Email Log Settings"
+msgstr ""
+
+#: includes/users/class-members-integration.php:92
+msgid "Edit Email Management Settings"
+msgstr ""
+
+#: includes/users/class-members-integration.php:93
+msgid "Edit General Settings"
+msgstr ""
+
+#: includes/users/class-members-integration.php:94
+msgid "Edit Integrations"
+msgstr ""
+
+#: includes/users/class-members-integration.php:95
+msgid "Edit License Key"
+msgstr ""
+
+#: includes/users/class-members-integration.php:96
+msgid "Edit Notifications Settings"
+msgstr ""
+
+#: includes/users/class-members-integration.php:97
+msgid "Edit Test Mode"
+msgstr ""
+
+#: includes/users/class-members-integration.php:98
+msgid "Edit Uninstall"
+msgstr ""
+
+#: includes/users/class-members-integration.php:99
+msgid "Edit Usage Analytics"
+msgstr ""
+
+#: includes/users/class-members-integration.php:100
+msgid "View Alerts"
+msgstr ""
+
+#: includes/users/class-members-integration.php:101
+msgid "View Alerts Slack Settings"
+msgstr ""
+
+#: includes/users/class-members-integration.php:102
+msgid "View Alerts Twilio Settings"
+msgstr ""
+
+#: includes/users/class-members-integration.php:103
+msgid "View Dashboard"
+msgstr ""
+
+#: includes/users/class-members-integration.php:105
+msgid "View Debug Log Settings"
+msgstr ""
+
+#: includes/users/class-members-integration.php:107
+msgid "View Email Log Details"
+msgstr ""
+
+#: includes/users/class-members-integration.php:108
+msgid "View Email Log Preview"
+msgstr ""
+
+#: includes/users/class-members-integration.php:109
+msgid "View Email Log Settings"
+msgstr ""
+
+#: includes/users/class-members-integration.php:110
+msgid "View Email Management Settings"
+msgstr ""
+
+#: includes/users/class-members-integration.php:111
+msgid "View General Settings"
+msgstr ""
+
+#: includes/users/class-members-integration.php:112
+msgid "View Integrations"
+msgstr ""
+
+#: includes/users/class-members-integration.php:113
+msgid "View License Key"
+msgstr ""
+
+#: includes/users/class-members-integration.php:114
+msgid "View Notifications Settings"
+msgstr ""
+
+#: includes/users/class-members-integration.php:115
+msgid "View Test Mode"
+msgstr ""
+
+#: includes/users/class-members-integration.php:116
+msgid "View Tools"
+msgstr ""
+
+#: includes/users/class-members-integration.php:117
+msgid "View Tools Send a Test"
+msgstr ""
+
+#: includes/users/class-members-integration.php:118
+msgid "View Tools System Report"
+msgstr ""
+
+#: includes/users/class-members-integration.php:119
+msgid "View Uninstall"
+msgstr ""
+
+#: includes/users/class-members-integration.php:120
+msgid "View Usage Analytics"
+msgstr ""
+
+#: includes/users/class-members-integration.php:121
+msgid "View Email Suppression Settings"
+msgstr ""
+
+#: includes/users/class-members-integration.php:122
+msgid "Edit Email Suppression Settings"
+msgstr ""
+
+#: includes/users/class-members-integration.php:123
+msgid "View Experimental Features"
+msgstr ""
+
+#: includes/users/class-members-integration.php:124
+msgid "Edit Experimental Features"
 msgstr ""
 
 #. translators: %1$s: directory path

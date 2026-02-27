@@ -88,6 +88,8 @@ class Connector_Smtp2go extends Connector_Base {
 		$api_key = $this->get_setting( self::SETTING_API_KEY );
 
 		$from_value = isset( $atts['from']['name'] ) ? sprintf( '"%s" <%s>', iconv_mime_encode( 'From', $atts['from']['name'] ), $atts['from']['email'] ) : $atts['from']['email'];
+		$from_value = str_replace( 'From: ', '', $from_value );
+
 		$body       = array(
 			'sender'  => $from_value,
 			'subject' => $atts['subject'],

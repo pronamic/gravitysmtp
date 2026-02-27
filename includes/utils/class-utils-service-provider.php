@@ -107,7 +107,7 @@ class Utils_Service_Provider extends Service_Provider {
 
 				return $schedules;
 			} );
-		} );
+		}, 0 );
 
 		add_action( 'gravitysmtp_after_mail_updated', function ( $email_id, $email_data ) use ( $container ) {
 			if ( ! empty( $email_data['extra'] ) && is_string( $email_data['extra'] ) ) {
