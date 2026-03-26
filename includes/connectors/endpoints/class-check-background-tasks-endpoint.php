@@ -8,6 +8,8 @@ class Check_Background_Tasks_Endpoint extends Endpoint {
 
 	const ACTION_NAME = 'gravitysmtp_check_background_tasks';
 
+	protected $minimum_cap = 'manage_options';
+
 	protected function get_nonce_name() {
 		return self::ACTION_NAME;
 	}

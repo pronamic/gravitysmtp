@@ -3,7 +3,7 @@
 namespace Gravity_Forms\Gravity_SMTP\Alerts\Endpoints;
 
 use Gravity_Forms\Gravity_SMTP\Alerts\Connectors\Alert_Connector;
-use Gravity_Forms\Gravity_SMTP\Data_Store\Plugin_Opts_Data_Store;
+use Gravity_Forms\Gravity_SMTP\Users\Roles;
 use Gravity_Forms\Gravity_Tools\Endpoints\Endpoint;
 
 class Send_Test_Alert_Endpoint extends Endpoint {
@@ -13,6 +13,8 @@ class Send_Test_Alert_Endpoint extends Endpoint {
 	const PARAM_DATA_SETTINGS = 'settings';
 
 	const ACTION_NAME = 'send_test_alert';
+
+	protected $minimum_cap = Roles::VIEW_TOOLS_SENDATEST;
 
 	/**
 	 * @var Alert_Connector[]

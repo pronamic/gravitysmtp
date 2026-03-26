@@ -17,6 +17,8 @@ class Get_Paginated_Debug_Log_Items_Endpoint extends Endpoint {
 
 	const ACTION_NAME = 'get_paginated_debug_log_items';
 
+	protected $minimum_cap = Roles::VIEW_DEBUG_LOG;
+
 	/**
 	 * @var Debug_Log_Model
 	 */

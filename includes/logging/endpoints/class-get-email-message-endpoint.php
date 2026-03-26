@@ -3,6 +3,7 @@
 namespace Gravity_Forms\Gravity_SMTP\Logging\Endpoints;
 
 use Gravity_Forms\Gravity_SMTP\Models\Event_Model;
+use Gravity_Forms\Gravity_SMTP\Users\Roles;
 use Gravity_Forms\Gravity_Tools\Endpoints\Endpoint;
 
 class Get_Email_Message_Endpoint extends Endpoint {
@@ -10,6 +11,8 @@ class Get_Email_Message_Endpoint extends Endpoint {
 	const PARAM_EVENT_ID = 'event_id';
 
 	const ACTION_NAME = 'get_email_message';
+
+	protected $minimum_cap = Roles::VIEW_EMAIL_LOG_DETAILS;
 
 	/**
 	 * @var Event_Model
@@ -55,7 +58,9 @@ class Get_Email_Message_Endpoint extends Endpoint {
 	}
 
 	protected function validate() {
-		check_ajax_referer( $this->get_nonce_name(), 'security' );
+		if ( ! parent::validate() ) {
+			return false;
+		}
 
 		if ( empty( $_REQUEST[ self::PARAM_EVENT_ID ] ) ) {
 			return false;

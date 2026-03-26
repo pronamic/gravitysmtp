@@ -32,7 +32,7 @@ class Disconnect_Runner extends Runner {
 			$to_id   = $pair['to'];
 			$from_id = $pair['from'];
 
-			$this->run_single( $from_object, $to_object, $from_id, $to_id );
+			$this->run_single( $from_object, $to_object, $from_id, $to_id, $object_model );
 		}
 
 		$response = sprintf( '%s connections from %s to %s removed.', count( $pairs ), $from_object, $to_object );
@@ -44,13 +44,39 @@ class Disconnect_Runner extends Runner {
 		wp_send_json_success( $response );
 	}
 
-	public function run_single( $from_object, $to_object, $from_id, $to_id ) {
+	public function run_single( $from_object, $to_object, $from_id, $to_id, $object_model ) {
 		global $wpdb;
+
+		if ( ! $object_model->relationships()->has( $to_object ) ) {
+			$error_message = sprintf( 'Relationship from %s to %s does not exist.', $from_object, $to_object );
+			throw new \InvalidArgumentException( $error_message, 455 );
+		}
+
+		if ( ! $object_model->relationships()->get( $to_object )->has_access( 'edit' ) ) {
+			$error_message = sprintf( 'Attempting to access forbidden object type %s.', $to_object );
+			throw new \InvalidArgumentException( $error_message, 403 );
+		}
+
+		$relationship = $object_model->relationships()->get( $to_object );
+
+		if ( $relationship->is_one_to_many() ) {
+			$this->run_otm_single( $from_object, $to_object, $from_id, $to_id, $relationship );
+			return;
+		}
 
 		$table_name = sprintf( '%s%s_%s_%s', $wpdb->prefix, $this->db_namespace, $from_object, $to_object );
 
 		$disconnect_sql = sprintf( 'DELETE FROM %s WHERE %s_id = "%s" AND %s_id = "%s"', $table_name, $from_object, $from_id, $to_object, $to_id );
 
+		$wpdb->query( $disconnect_sql );
+	}
+
+	public function run_otm_single( $from_object, $to_object, $from_id, $to_id, $relationship ) {
+		global $wpdb;
+		$table_name = sprintf( '%s%s_%s', $wpdb->prefix, $this->db_namespace, $relationship->is_reverse() ? $from_object : $to_object );
+		$id_string = sprintf( '%sId', $to_object );
+
+		$disconnect_sql = sprintf( 'UPDATE %s SET %s = "0" WHERE id = "%s"', $table_name, $id_string, $relationship->is_reverse() ? $to_id : $from_id );
 		$wpdb->query( $disconnect_sql );
 	}
 }

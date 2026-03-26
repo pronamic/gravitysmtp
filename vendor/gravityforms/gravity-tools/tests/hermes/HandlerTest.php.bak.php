@@ -26,15 +26,23 @@ class HandlerTest extends TestCase {
 	protected $query_handler;
 	protected $mutation_handler;
 	protected $db_namespace;
+	protected $deal_model;
+	protected $stage_model;
+	protected $company_model;
 
-	public function setUp() {
+	public function setUp(): void {
 		$this->model_collection = new Model_Collection();
 		$this->contact_model    = new \FakeContactModel();
 		$this->group_model      = new \FakeGroupModel();
+		$this->company_model = new \FakeCompanyModel();
+		$this->deal_model = new \FakeDealModel();
+		$this->stage_model = new \FakeStageModel();
 
 		$this->model_collection->add( 'contact', $this->contact_model );
 		$this->model_collection->add( 'group', $this->group_model );
-
+		$this->model_collection->add( 'deal', $this->deal_model );
+		$this->model_collection->add( 'stage', $this->stage_model );
+		$this->model_collection->add( 'company', $this->company_model );
 		$this->db_namespace = 'gravitycrm';
 
 		$schema_runner       = new Schema_Runner( $this->model_collection );
@@ -301,22 +309,65 @@ class HandlerTest extends TestCase {
 //		$this->assertEquals( 0, count( $results ) );
 //	}
 
+	public function testOtmConnectMutation() {
+		global $wpdb;
+		\gravitytools_tests_reset_db();
+
+		$deal_table_name = sprintf( '%s%s_%s', $wpdb->prefix, $this->db_namespace, 'deal' );
+		$stage_table_name   = sprintf( '%s%s_%s', $wpdb->prefix, $this->db_namespace, 'stage' );
+
+		$insert_query = sprintf( 'INSERT INTO %s (label) VALUES ("Fun Test Deal")', $deal_table_name );
+		$wpdb->query( $insert_query );
+
+		$insert_query = sprintf( 'INSERT INTO %s (label) VALUES ("Test Stage")', $stage_table_name );
+		$wpdb->query( $insert_query );
+
+		$text = '{
+		connect_deal_stage( objects: [ {from: 1, to: 1} ]) {}
+		}';
+
+		$check_query = sprintf( 'SELECT * FROM %s WHERE stageId = "1" AND id = "1"', $deal_table_name );
+		$results     = $wpdb->get_results( $check_query, ARRAY_A );
+
+		$this->assertEquals( 0, count( $results ) );
+
+		$this->mutation_handler->handle_mutation( $text, true );
+
+		$results     = $wpdb->get_results( $check_query, ARRAY_A );
+
+		$this->assertEquals( 1, count( $results ) );
+		$this->assertEquals( 1, $results[0]['stageId'] );
+		$this->assertEquals( 1, $results[0]['id'] );
+
+		$text = '{
+		disconnect_deal_stage([{from:1, to: 1}]) {}
+		}';
+
+		$this->mutation_handler->handle_mutation( $text, true );
+
+
+		$check_query = sprintf( 'SELECT * FROM %s WHERE stageId = "1" AND id = "1"', $deal_table_name );
+		$results     = $wpdb->get_results( $check_query, ARRAY_A );
+
+		$this->assertEquals( 0, count( $results ) );
+	}
+
 	public function testConnectMutation() {
 		global $wpdb;
 		\gravitytools_tests_reset_db();
 
 		$contact_table_name = sprintf( '%s%s_%s', $wpdb->prefix, $this->db_namespace, 'contact' );
-		$group_table_name   = sprintf( '%s%s_%s', $wpdb->prefix, $this->db_namespace, 'group' );
-		$connect_table_name = sprintf( '%s%s_%s', $wpdb->prefix, $this->db_namespace, 'group_contact' );
+		$company_table_name   = sprintf( '%s%s_%s', $wpdb->prefix, $this->db_namespace, 'company' );
+		$connect_table_name = sprintf( '%s%s_%s', $wpdb->prefix, $this->db_namespace, 'company_contact' );
 
 		$insert_query = sprintf( 'INSERT INTO %s (firstName, lastName) VALUES ("Test", "User")', $contact_table_name );
 		$wpdb->query( $insert_query );
 
-		$insert_query = sprintf( 'INSERT INTO %s (label) VALUES ("Test Group")', $group_table_name );
+		$insert_query = sprintf( 'INSERT INTO %s (companyName) VALUES ("Test Company")', $company_table_name );
 		$wpdb->query( $insert_query );
 
 		$text = '{
-		connect_group_contact(from: 1, to: 1) {}
+		connect_company_contact(objects: [ {from: 1, to: 1} ]) {}
 		}';
 
 		$check_query = sprintf( 'SELECT * FROM %s', $connect_table_name );
@@ -324,20 +375,20 @@ class HandlerTest extends TestCase {
 
 		$this->assertEquals( 0, count( $results ) );
 
-		$this->mutation_handler->handle_mutation( $text );
+		$this->mutation_handler->handle_mutation( $text, true );
 
 		$check_query = sprintf( 'SELECT * FROM %s', $connect_table_name );
 		$results     = $wpdb->get_results( $check_query, ARRAY_A );
 
 		$this->assertEquals( 1, count( $results ) );
-		$this->assertEquals( 1, $results[0]['group_id'] );
+		$this->assertEquals( 1, $results[0]['company_id'] );
 		$this->assertEquals( 1, $results[0]['contact_id'] );
 
 		$text = '{
-		disconnect_group_contact([{from:1, to: 1}]) {}
+		disconnect_company_contact([{from:1, to: 1}]) {}
 		}';
 
-		$this->mutation_handler->handle_mutation( $text );
+		$this->mutation_handler->handle_mutation( $text, true );
 
 		$check_query = sprintf( 'SELECT * FROM %s', $connect_table_name );
 		$results     = $wpdb->get_results( $check_query, ARRAY_A );

@@ -3,6 +3,7 @@
 namespace Gravity_Forms\Gravity_SMTP\Suppression\Endpoints;
 
 use Gravity_Forms\Gravity_SMTP\Models\Suppressed_Emails_Model;
+use Gravity_Forms\Gravity_SMTP\Users\Roles;
 use Gravity_Forms\Gravity_Tools\Endpoints\Endpoint;
 
 class Reactivate_Suppressed_Emails_Endpoint extends Endpoint {
@@ -11,6 +12,8 @@ class Reactivate_Suppressed_Emails_Endpoint extends Endpoint {
 
 	const PARAM_EMAILS     = 'emails';
 	const PARAM_ALL_EMAILS = 'all_emails';
+
+	protected $minimum_cap = Roles::EDIT_EMAIL_SUPPRESSION_SETTINGS;
 
 	/**
 	 * @var Suppressed_Emails_Model

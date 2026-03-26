@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitf07447bb71a3faf88bd2cf120f9886cc
+class ComposerStaticInit51abcdc9aff1abf99ba4af149c42688d
 {
     public static $files = array (
         'de106312193d3b5d7e278f8e63c27774' => __DIR__ . '/../..' . '/includes/functions_include.php',
@@ -12,7 +12,7 @@ class ComposerStaticInitf07447bb71a3faf88bd2cf120f9886cc
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'Gravity_Forms\\Gravity_CRM\\Gravity_Tools\\Hermes\\Tokens\\Mutations\\Update\\Fields_To_Update_Token' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Tokens/Mutations/Update/class-fields-to-update-token.php',
+        'Environment_Details_Report_Details' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/System_Report/class-environment-details-report-group.php',
         'Gravity_Forms\\Gravity_SMTP\\Alerts\\Alerts_Handler' => __DIR__ . '/../..' . '/includes/alerts/class-alerts-handler.php',
         'Gravity_Forms\\Gravity_SMTP\\Alerts\\Alerts_Service_Provider' => __DIR__ . '/../..' . '/includes/alerts/class-alerts-service-provider.php',
         'Gravity_Forms\\Gravity_SMTP\\Alerts\\Config\\Alerts_Config' => __DIR__ . '/../..' . '/includes/alerts/config/class-alerts-config.php',
@@ -226,6 +226,7 @@ class ComposerStaticInitf07447bb71a3faf88bd2cf120f9886cc
         'Gravity_Forms\\Gravity_Tools\\Hermes\\Tokens\\Mutations\\Insert\\Insert_Mutation_Token' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Tokens/Mutations/Insert/class-insert-mutation-token.php',
         'Gravity_Forms\\Gravity_Tools\\Hermes\\Tokens\\Mutations\\Insert\\Insertion_Object_Token' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Tokens/Mutations/Insert/class-insertion-object-token.php',
         'Gravity_Forms\\Gravity_Tools\\Hermes\\Tokens\\Mutations\\Insert\\Insertion_Objects_Token' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Tokens/Mutations/Insert/class-insertion-objects-token.php',
+        'Gravity_Forms\\Gravity_Tools\\Hermes\\Tokens\\Mutations\\Update\\Fields_To_Update_Token' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Tokens/Mutations/Update/class-fields-to-update-token.php',
         'Gravity_Forms\\Gravity_Tools\\Hermes\\Tokens\\Mutations\\Update\\Update_Mutation_Token' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Tokens/Mutations/Update/class-update-mutation-token.php',
         'Gravity_Forms\\Gravity_Tools\\Hermes\\Tokens\\Query_Token' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Tokens/class-query-token.php',
         'Gravity_Forms\\Gravity_Tools\\Hermes\\Tokens\\Token' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Hermes/Tokens/class-token.php',
@@ -249,22 +250,27 @@ class ComposerStaticInitf07447bb71a3faf88bd2cf120f9886cc
         'Gravity_Forms\\Gravity_Tools\\Providers\\Config_Service_Provider' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Providers/class-config-service-provider.php',
         'Gravity_Forms\\Gravity_Tools\\Service_Container' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/class-service-container.php',
         'Gravity_Forms\\Gravity_Tools\\Service_Provider' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/class-service-provider.php',
+        'Gravity_Forms\\Gravity_Tools\\System_Report\\System_Report_Group' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/System_Report/class-system-report-group.php',
+        'Gravity_Forms\\Gravity_Tools\\System_Report\\System_Report_Item' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/System_Report/class-system-report-item.php',
+        'Gravity_Forms\\Gravity_Tools\\System_Report\\System_Report_Repository' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/System_Report/class-system-report-repository.php',
         'Gravity_Forms\\Gravity_Tools\\Telemetry\\Telemetry_Data' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Telemetry/class-telemetry-data.php',
         'Gravity_Forms\\Gravity_Tools\\Telemetry\\Telemetry_Processor' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Telemetry/class-telemetry-processor.php',
         'Gravity_Forms\\Gravity_Tools\\Updates\\Auto_Updater' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Updates/class-auto-updater.php',
         'Gravity_Forms\\Gravity_Tools\\Updates\\Updates_Service_Provider' => __DIR__ . '/../..' . '/includes/updates/class-updates-service-provider.php',
         'Gravity_Forms\\Gravity_Tools\\Upgrades\\Upgrade_Routines' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Upgrades/class-upgrade-routines.php',
+        'Gravity_Forms\\Gravity_Tools\\Utils\\Beltloop' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Utils/class-beltloop.php',
         'Gravity_Forms\\Gravity_Tools\\Utils\\Bettarray' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Utils/class-bettarray.php',
         'Gravity_Forms\\Gravity_Tools\\Utils\\Booliesh' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Utils/class-booliesh.php',
         'Gravity_Forms\\Gravity_Tools\\Utils\\Common' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Utils/class-common.php',
         'Gravity_Forms\\Gravity_Tools\\Utils\\GeoData' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Utils/class-geodata.php',
+        'Gravity_Forms\\Gravity_Tools\\Utils\\Moola' => __DIR__ . '/..' . '/gravityforms/gravity-tools/src/Utils/class-moola.php',
         'Gravity_Forms\\Gravity_Tools\\Utils\\Utils_Service_Provider' => __DIR__ . '/../..' . '/includes/utils/class-utils-service-provider.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->classMap = ComposerStaticInitf07447bb71a3faf88bd2cf120f9886cc::$classMap;
+            $loader->classMap = ComposerStaticInit51abcdc9aff1abf99ba4af149c42688d::$classMap;
 
         }, null, ClassLoader::class);
     }

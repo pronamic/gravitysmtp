@@ -3,6 +3,7 @@
 namespace Gravity_Forms\Gravity_SMTP\Logging\Endpoints;
 
 use Gravity_Forms\Gravity_SMTP\Models\Debug_Log_Model;
+use Gravity_Forms\Gravity_SMTP\Users\Roles;
 use Gravity_Forms\Gravity_Tools\Endpoints\Endpoint;
 
 class Delete_Debug_Logs_Endpoint extends Endpoint {
@@ -10,6 +11,8 @@ class Delete_Debug_Logs_Endpoint extends Endpoint {
 	const PARAM_ALL_LOGS = 'all_logs';
 
 	const ACTION_NAME = 'delete_debug_logs';
+
+	protected $minimum_cap = Roles::DELETE_DEBUG_LOG;
 
 	/**
 	 * @var Debug_Log_Model

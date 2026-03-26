@@ -2,13 +2,24 @@
 
 namespace Gravity_Forms\Gravity_SMTP\Environment\Endpoints;
 
+use Gravity_Forms\Gravity_SMTP\Users\Roles;
 use Gravity_Forms\Gravity_Tools\Endpoints\Endpoint;
 
 class Uninstall_Endpoint extends Endpoint {
 
 	const ACTION_NAME = 'gravitysmtp_uninstall_plugin';
 
+	protected $minimum_cap = Roles::EDIT_UNINSTALL;
+
 	public function handle() {
+		if ( ! current_user_can( Roles::EDIT_UNINSTALL ) ) {
+			wp_send_json_error( __( 'You do not have permission to perform this action.', 'gravitysmtp' ), 403 );
+		}
+
+		if ( ! $this->validate() ) {
+			wp_send_json_error( __( 'Missing required parameters.', 'gravitysmtp' ), 400 );
+		}
+
 		$this->delete_options();
 		$this->delete_tables();
 		$this->deactivate_plugin();

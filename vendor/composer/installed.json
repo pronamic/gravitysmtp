@@ -2,25 +2,26 @@
     "packages": [
         {
             "name": "gravityforms/gravity-tools",
-            "version": "0.3.7",
-            "version_normalized": "0.3.7.0",
+            "version": "0.4.14",
+            "version_normalized": "0.4.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gravityforms/gravity-tools.git",
-                "reference": "aab2f20d2eefe6e53e4c129d21972f4a5412874a"
+                "reference": "38c993edb6e296296265de4f1eae2b6e297dd224"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gravityforms/gravity-tools/zipball/aab2f20d2eefe6e53e4c129d21972f4a5412874a",
-                "reference": "aab2f20d2eefe6e53e4c129d21972f4a5412874a",
+                "url": "https://api.github.com/repos/gravityforms/gravity-tools/zipball/38c993edb6e296296265de4f1eae2b6e297dd224",
+                "reference": "38c993edb6e296296265de4f1eae2b6e297dd224",
                 "shasum": ""
             },
             "require-dev": {
-                "lucatume/function-mocker": "~1.0",
+                "lucatume/function-mocker": "~2.0",
                 "phpunit/phpunit": "^9.0",
+                "wordpress/wordpress": "dev-master",
                 "yoast/phpunit-polyfills": "4.0.0"
             },
-            "time": "2025-08-15T15:32:39+00:00",
+            "time": "2026-03-23T20:53:41+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -37,7 +38,7 @@
             ],
             "description": "PHP libraries to support Gravity Forms applications.",
             "support": {
-                "source": "https://github.com/gravityforms/gravity-tools/tree/0.3.7"
+                "source": "https://github.com/gravityforms/gravity-tools/tree/0.4.14"
             },
             "install-path": "../gravityforms/gravity-tools"
         }

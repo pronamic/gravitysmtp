@@ -210,6 +210,13 @@ class Event_Model {
 			$sort_order = 'DESC';
 		}
 
+		// Ensure sort column is one of the approved options.
+		$allowed_sort_columns = array( 'date_created', 'status', 'service', 'subject' );
+		$sort_by              = in_array( $sort_by, $allowed_sort_columns ) ? $sort_by : 'date_created';
+
+		$allowed_directions = array( 'ASC', 'DESC' );
+		$sort_order = in_array( $sort_order, $allowed_directions ) ? $sort_order : 'DESC';
+
 		$search_clause = null;
 
 		if ( ! empty( $search_term ) ) {

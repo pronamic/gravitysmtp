@@ -5,9 +5,8 @@ namespace Gravity_Forms\Gravity_SMTP\Connectors\Endpoints;
 use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Base;
 use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Factory;
 use Gravity_Forms\Gravity_SMTP\Logging\Debug\Debug_Logger;
-use Gravity_Forms\Gravity_SMTP\Data_Store\Data_Store;
-use Gravity_Forms\Gravity_SMTP\Data_Store\Opts_Data_Store;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Plugin_Opts_Data_Store;
+use Gravity_Forms\Gravity_SMTP\Users\Roles;
 use Gravity_Forms\Gravity_Tools\Endpoints\Endpoint;
 
 class Save_Connector_Settings_Endpoint extends Endpoint {
@@ -21,6 +20,8 @@ class Save_Connector_Settings_Endpoint extends Endpoint {
 	const SETTING_BACKUP_CONNECTOR  = 'backup_connector';
 
 	const ACTION_NAME = 'save_connector_settings';
+
+	protected $minimum_cap = Roles::EDIT_INTEGRATIONS;
 
 	/**
 	 * @var Connector_Factory $connector_factory

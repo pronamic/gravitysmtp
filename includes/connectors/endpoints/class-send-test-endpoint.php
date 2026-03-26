@@ -7,6 +7,7 @@ use Gravity_Forms\Gravity_SMTP\Data_Store\Plugin_Opts_Data_Store;
 use Gravity_Forms\Gravity_SMTP\Logging\Debug\Debug_Logger;
 use Gravity_Forms\Gravity_SMTP\Models\Event_Model;
 use Gravity_Forms\Gravity_SMTP\Models\Log_Details_Model;
+use Gravity_Forms\Gravity_SMTP\Users\Roles;
 use Gravity_Forms\Gravity_Tools\Endpoints\Endpoint;
 
 class Send_Test_Endpoint extends Endpoint {
@@ -17,6 +18,8 @@ class Send_Test_Endpoint extends Endpoint {
 	const PARAM_FROM_EMAIL     = 'from_email';
 
 	const ACTION_NAME = 'send_test';
+
+	protected $minimum_cap = Roles::VIEW_TOOLS_SENDATEST;
 
 	public $last_email_id = 0;
 

@@ -4,12 +4,10 @@ namespace Gravity_Forms\Gravity_SMTP\Logging\Endpoints;
 
 use Gravity_Forms\Gravity_SMTP\Enums\Integration_Enum;
 use Gravity_Forms\Gravity_SMTP\Enums\Status_Enum;
-use Gravity_Forms\Gravity_SMTP\Logging\Debug\Debug_Logger;
 use Gravity_Forms\Gravity_SMTP\Models\Event_Model;
 use Gravity_Forms\Gravity_SMTP\Users\Roles;
 use Gravity_Forms\Gravity_SMTP\Utils\Recipient_Parser;
 use Gravity_Forms\Gravity_Tools\Endpoints\Endpoint;
-use Gravity_Forms\Gravity_Tools\Logging\File_Logging_Provider;
 
 class Get_Paginated_Items_Endpoint extends Endpoint {
 
@@ -23,6 +21,8 @@ class Get_Paginated_Items_Endpoint extends Endpoint {
 	const PARAM_FILTERS        = 'filters';
 
 	const ACTION_NAME = 'get_paginated_items';
+
+	protected $minimum_cap = Roles::VIEW_EMAIL_LOG;
 
 	/**
 	 * @var Event_Model

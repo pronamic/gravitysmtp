@@ -3,6 +3,7 @@
 namespace Gravity_Forms\Gravity_SMTP\Apps\Setup_Wizard\Endpoints;
 
 use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
+use Gravity_Forms\Gravity_SMTP\Users\Roles;
 use Gravity_Forms\Gravity_Tools\Endpoints\Endpoint;
 use Gravity_Forms\Gravity_Tools\License\License_Statuses;
 use Gravity_Forms\Gravity_Tools\Updates\Updates_Service_Provider;
@@ -12,6 +13,8 @@ class License_Check_Endpoint extends Endpoint {
 	const PARAM_LICENSE_KEY = 'license_key';
 
 	const ACTION_NAME = 'check_license';
+
+	protected $minimum_cap = Roles::EDIT_LICENSE_KEY;
 
 	protected function get_nonce_name() {
 		return self::ACTION_NAME;
@@ -42,7 +45,9 @@ class License_Check_Endpoint extends Endpoint {
 	}
 
 	protected function validate() {
-		check_ajax_referer( $this->get_nonce_name(), 'security' );
+		if ( ! parent::validate() ) {
+			return false;
+		}
 
 		if ( empty( $_REQUEST[ self::PARAM_LICENSE_KEY ] ) ) {
 			return false;

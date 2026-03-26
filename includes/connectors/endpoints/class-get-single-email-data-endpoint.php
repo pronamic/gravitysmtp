@@ -2,14 +2,10 @@
 
 namespace Gravity_Forms\Gravity_SMTP\Connectors\Endpoints;
 
-use Gravity_Forms\Gravity_SMTP\Apps\Config\Email_Log_Single_Config;
-use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Factory;
-use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Service_Provider;
-use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
 use Gravity_Forms\Gravity_SMTP\Logging\Debug\Debug_Logger;
 use Gravity_Forms\Gravity_SMTP\Models\Event_Model;
 use Gravity_Forms\Gravity_SMTP\Models\Log_Details_Model;
-use Gravity_Forms\Gravity_SMTP\Utils\Recipient_Collection;
+use Gravity_Forms\Gravity_SMTP\Users\Roles;
 use Gravity_Forms\Gravity_Tools\Endpoints\Endpoint;
 
 class Get_Single_Email_Data_Endpoint extends Endpoint {
@@ -17,6 +13,8 @@ class Get_Single_Email_Data_Endpoint extends Endpoint {
 	const PARAM_EVENT_ID = 'event_id';
 
 	const ACTION_NAME = 'get_single_email';
+
+	protected $minimum_cap = Roles::VIEW_EMAIL_LOG_DETAILS;
 
 	/**
 	 * @var Log_Details_Model

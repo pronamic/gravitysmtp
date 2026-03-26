@@ -3,13 +3,15 @@
 namespace Gravity_Forms\Gravity_SMTP\Connectors\Endpoints;
 
 use Gravity_Forms\Gravity_Tools\Endpoints\Endpoint;
-use Gravity_Forms\Gravity_SMTP\Data_Store\Plugin_Opts_Data_Store;
+use Gravity_Forms\Gravity_SMTP\Users\Roles;
 
 class Cleanup_Data_Endpoint extends Endpoint {
 
 	const PARAM_TARGET = 'target';
 
 	const ACTION_NAME = 'cleanup_data';
+
+	protected $minimum_cap = Roles::EDIT_INTEGRATIONS;
 
 	/**
 	 * @var Plugin_Opts_Data_Store;
@@ -55,7 +57,9 @@ class Cleanup_Data_Endpoint extends Endpoint {
 	}
 
 	protected function validate() {
-		check_ajax_referer( $this->get_nonce_name(), 'security' );
+		if ( ! parent::validate() ) {
+			return false;
+		}
 
 		if ( empty( $_REQUEST[ self::PARAM_TARGET ] ) ) {
 			return false;

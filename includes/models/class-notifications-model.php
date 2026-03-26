@@ -35,7 +35,7 @@ class Notifications_Model {
 	public function by_service( $service_name ) {
 		global $wpdb;
 
-		$like = sprintf( '%%service":"%1$s%%', $service_name );
+		$like = sprintf( '%%service":"%1$s%%', esc_sql( $service_name ) );
 		$sql = 'SELECT * FROM %1$s WHERE %2$s LIKE \'%3$s\' ORDER BY %4$s ASC;';
 
 		$results = $wpdb->get_results( $wpdb->prepare( $sql, $this->get_table_name(), 'notifications', $like, 'form_id' ), ARRAY_A );

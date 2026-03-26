@@ -4,6 +4,7 @@ namespace Gravity_Forms\Gravity_SMTP\Handler\Endpoints;
 
 use Gravity_Forms\Gravity_SMTP\Logging\Debug\Debug_Logger;
 use Gravity_Forms\Gravity_SMTP\Models\Event_Model;
+use Gravity_Forms\Gravity_SMTP\Users\Roles;
 use Gravity_Forms\Gravity_SMTP\Utils\Attachments_Saver;
 use Gravity_Forms\Gravity_SMTP\Utils\Recipient_Collection;
 use Gravity_Forms\Gravity_Tools\Endpoints\Endpoint;
@@ -13,6 +14,8 @@ class Resend_Email_Endpoint extends Endpoint {
 	const ACTION_NAME = 'gravitysmtp_resend_email';
 
 	const PARAM_EMAIL_ID = 'email_id';
+
+	protected $minimum_cap = Roles::EDIT_EMAIL_LOG_DETAILS;
 
 	/**
 	 * @var Event_Model

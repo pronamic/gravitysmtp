@@ -48,7 +48,7 @@ class Slack_Alert_Connector implements Alert_Connector {
 	}
 
 	public function make_request( $url, $request_args ) {
-		$request = wp_remote_post( $url, $request_args );
+		$request = wp_safe_remote_post( $url, $request_args );
 		$code    = wp_remote_retrieve_response_code( $request );
 
 		if ( (int) $code !== 200 ) {

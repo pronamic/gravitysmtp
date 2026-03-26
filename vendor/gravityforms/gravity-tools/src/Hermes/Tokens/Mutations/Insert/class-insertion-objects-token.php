@@ -52,19 +52,40 @@ class Insertion_Objects_Token extends Token {
 		$data              = array();
 		$current_field_key = false;
 		$is_child          = false;
+		$is_array_value = false;
 
 		while ( ! empty( $matches ) ) {
 			$value     = array_shift( $matches );
 			$mark_type = array_shift( $marks );
 
 			switch ( $mark_type ) {
+				case 'closingArray':
+					if ( $is_array_value ) {
+						$is_array_value = false;
+					}
+					break;
 				case 'key':
+					if ( $is_array_value ) {
+						$data[ $current_field_key ][] = $value;
+						break;
+					}
+
 					if ( $marks[0] === 'openingArray' ) {
-						$parent_object_type = isset( $object_type ) ? $object_type : false;
-						$object_type        = $value;
+						$object_type = $value;
+
+						if ( $marks[1] !== 'openingObject' ) {
+							$is_array_value    = true;
+							$current_field_key = $value;
+						}
+
 						if ( ! isset( $data[ $value ] ) ) {
 							$data[ $value ] = array();
-							$is_child       = true;
+
+							if ( $marks[1] === 'openingObject' && $object_type !== 'objects' ) {
+								$data[ $value ]['isChild'] = true;
+							}
+
+							$is_child = ( $marks[1] === 'openingObject' );
 						}
 						break;
 					}
@@ -99,14 +120,19 @@ class Insertion_Objects_Token extends Token {
 		$matches = array();
 
 		foreach ( $data as $object_idx => $object_data ) {
+			// Avoid bad data.
+			if ( ! is_array( $object_data ) || empty( $object_data ) ) {
+				continue;
+			}
 			foreach ( $object_data as $key => $value ) {
-				if ( is_array( $value ) ) {
+				if ( is_array( $value ) && isset( $value['isChild'] ) ) {
+					unset( $value['isChild'] );
 					$this->recursively_convert_tokens_to_objects( $organized_objects, $value, $key, $current_object_type, true );
 					continue;
 				}
 
 				$field_key            = $key;
-				$fields[ $field_key ] = trim( $value, ': "' );
+				$fields[ $field_key ] = is_string( $value ) ? trim( $value, ': "' ) : $value;
 			}
 
 			$organized_objects[] = new Insertion_Object_Token(

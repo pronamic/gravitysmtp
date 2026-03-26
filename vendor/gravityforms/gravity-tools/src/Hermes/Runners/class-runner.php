@@ -153,6 +153,12 @@ abstract class Runner {
 		);
 
 		foreach ( $fields_to_process as $field_name => $value ) {
+
+			// Sometimes parsed empty arrays get misidentified as columnar fields. We need to disregard them.
+			if ( is_array( $value ) && empty( $value ) ) {
+				continue;
+			}
+
 			if ( ! $object_model->supports_ad_hoc_fields() && ! array_key_exists( $field_name, $object_model->fields() ) && ! array_key_exists( $field_name, $object_model->meta_fields() ) ) {
 				$error_string = sprintf( 'Attempting to access invalid field %s on object type %s', $field_name, $object_model->type() );
 				throw new \InvalidArgumentException( $error_string, 450 );

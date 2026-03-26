@@ -16,9 +16,9 @@ class Update_Mutation_Token extends Mutation_Token {
 	/**
 	 * The fields to return after the Update has been performed.
 	 *
-	 * @var array
+	 * @var string
 	 */
-	protected $return_fields = array();
+	protected $return_fields = '';
 
 	/**
 	 * The fields to update during the mutation.
@@ -30,7 +30,7 @@ class Update_Mutation_Token extends Mutation_Token {
 	/**
 	 * Public accessor for $return_fields
 	 *
-	 * @return array
+	 * @return string
 	 */
 	public function return_fields() {
 		return $this->return_fields;
@@ -79,7 +79,7 @@ class Update_Mutation_Token extends Mutation_Token {
 		$matches = $parts[0];
 		$marks   = $parts['MARK'];
 		$data    = array(
-			'return_fields' => array(),
+			'return_fields' => '',
 		);
 
 		$next_is_return = false;
@@ -90,7 +90,10 @@ class Update_Mutation_Token extends Mutation_Token {
 
 			switch ( $mark_type ) {
 				case 'returning_def':
-					$next_is_return = true;
+					$cleaned_return_def = preg_replace( "/\r|\n|\t/", '', $value );
+					$cleaned_return_def = str_replace( 'returning {', '', $cleaned_return_def );
+					$cleaned_return_def = substr( $cleaned_return_def, 0, -3 );
+					$data['return_fields'] = $cleaned_return_def;
 					break;
 				case 'operation_alias':
 					$data['object_type'] = str_replace( 'update_', '', $value );
@@ -147,9 +150,9 @@ class Update_Mutation_Token extends Mutation_Token {
 	 */
 	protected function regex_types() {
 		return array(
-			'returning_def'   => 'returning',
+			'returning_def'   => 'returning {[^\%]+',
 			'operation_alias' => 'update_[^\(]*',
-			'arg_group'       => '\([^\)]+\)',
+			'arg_group'       => '\([^\)]+\)\s?{',
 			'alias'           => '[_A-Za-z][_0-9A-Za-z]*:',
 			'identifier'      => '[_A-Za-z][_0-9A-Za-z]*',
 			'open_bracket'    => '{',

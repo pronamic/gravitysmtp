@@ -6,8 +6,8 @@ use Gravity_Forms\Gravity_SMTP\Apps\Config\Tools_Config;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Data_Store_Router;
 use Gravity_Forms\Gravity_SMTP\Logging\Debug\Debug_Logger;
 use Gravity_Forms\Gravity_SMTP\Models\Debug_Log_Model;
+use Gravity_Forms\Gravity_SMTP\Users\Roles;
 use Gravity_Forms\Gravity_Tools\Endpoints\Endpoint;
-use Gravity_Forms\Gravity_Tools\Logging\File_Logging_Provider;
 
 class View_Log_Endpoint extends Endpoint {
 
@@ -16,6 +16,8 @@ class View_Log_Endpoint extends Endpoint {
 	const OPTION_VERIFICATION_KEY = 'gravitysmtp_log_verification_key';
 
 	const ACTION_NAME = 'view_debug_log';
+
+	protected $minimum_cap = Roles::VIEW_DEBUG_LOG;
 
 	/**
 	 * @var Data_Store_Router
@@ -51,7 +53,7 @@ class View_Log_Endpoint extends Endpoint {
 		$lines = $this->debug_logger->get_log_items();
 		echo '<pre style="white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word;">';
 		foreach ( $lines as $index => $item ) {
-			printf( "%s %s - %s -->    %s", str_pad( '[' . $item->id() . ']', 8, ' ' ), $item->timestamp(), strtoupper( str_pad( $item->priority(), 7, ' ' ) ), $item->line() );
+			printf( "%s %s - %s -->    %s", str_pad( '[' . $item->id() . ']', 8, ' ' ), $item->timestamp(), strtoupper( str_pad( $item->priority(), 7, ' ' ) ), esc_html( $item->line() ) );
 			if ( $index < count( $lines ) - 1 ) {
 				echo '</pre><hr><pre style="white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word;">';
 			}
@@ -66,6 +68,10 @@ class View_Log_Endpoint extends Endpoint {
 
 		if ( ! $enabled ) {
 			return false;
+		}
+
+		if ( is_user_logged_in() ) {
+			return current_user_can( Roles::VIEW_DEBUG_LOG );
 		}
 
 		// Get the passed verficiation key; bail if empty.

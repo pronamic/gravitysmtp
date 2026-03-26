@@ -10,11 +10,14 @@ use Gravity_Forms\Gravity_Tools\Endpoints\Endpoint;
 use Gravity_Forms\Gravity_Tools\License\License_Statuses;
 use Gravity_Forms\Gravity_Tools\Updates\Updates_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Migration\Data;
+use Gravity_Forms\Gravity_SMTP\Users\Roles;
 
 class Migrate_Settings_Endpoint extends Endpoint {
 
 	const PARAM_PLUGIN_TO_MIGRATE = 'plugin_to_migrate';
 	const ACTION_NAME             = 'migrate_settings';
+
+	protected $minimum_cap = Roles::EDIT_INTEGRATIONS;
 
 	/**
 	 * @var Connector_Factory $connector_factory
@@ -57,9 +60,10 @@ class Migrate_Settings_Endpoint extends Endpoint {
 		}
 
 		$plugin_to_migrate = filter_input( INPUT_POST, self::PARAM_PLUGIN_TO_MIGRATE, FILTER_DEFAULT );
+		$allowed           = array( 'Gravityforms', 'Wpmailsmtp' );
 		$handler_classname = $this->base_namespace . '\\Data\\Migration_Data_' . ucfirst( strtolower( $plugin_to_migrate ) );
 
-		if ( ! class_exists( $handler_classname ) ) {
+		if ( ! in_array( ucfirst( strtolower( $plugin_to_migrate ) ), $allowed ) || ! class_exists( $handler_classname ) ) {
 			/* translators: %1$s: plugin name */
 			wp_send_json_error( sprintf( __( 'Could not find handler for migration type: %1$s', 'gravitysmtp' ), $plugin_to_migrate ), 400 );
 		}

@@ -53,6 +53,7 @@ class Insert_Mutation_Token extends Mutation_Token {
 	 * @return void
 	 */
 	public function parse( $contents, $args = array() ) {
+		$contents = preg_replace( "/\r|\n|\t/", '', $contents );
 		preg_match_all( $this->get_parsing_regex(), $contents, $results );
 		$this->tokenize( $results );
 
@@ -136,7 +137,7 @@ class Insert_Mutation_Token extends Mutation_Token {
 		return array(
 			'returning_def'   => 'returning {[^\%]+',
 			'operation_alias' => 'insert_[^\(]*',
-			'arg_group'       => '\([^\)]+\)',
+			'arg_group'       => '\(\s*objects:.*\)\s*\{',
 			'alias'           => '[_A-Za-z][_0-9A-Za-z]*:',
 			'identifier'      => '[_A-Za-z][_0-9A-Za-z]*',
 			'open_bracket'    => '{',

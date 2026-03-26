@@ -62,7 +62,8 @@ class SQL_Filter_Parser {
 				continue;
 			}
 
-			$sql_array[] = sprintf( '`extra` RLIKE \'"%s"[^"]+"%s"\'', $key, $value );
+			$like_sql = sprintf( '"%s"[^"]+"%s"', preg_quote( $key ), preg_quote( $value ) );
+			$sql_array[] = $wpdb->prepare( '`extra` RLIKE %s', $like_sql );
 		}
 
 		$sql = implode( ' ' . $union . ' ', $sql_array );

@@ -81,16 +81,6 @@ class Config_Collection_Service_Provider extends Service_Provider {
 		add_action( 'gform_preview_init', function () use ( $container ) {
 			$container->get( self::CONFIG_COLLECTION )->handle();
 		}, 0 );
-
-		add_action( 'rest_api_init', function () use ( $container, $self ) {
-			register_rest_route( $this->rest_namespace, '/tests/mock-data', array(
-				'methods'             => 'GET',
-				'callback'            => array( $self, 'config_mocks_endpoint' ),
-				'permission_callback' => function () {
-					return true;
-				},
-			) );
-		} );
 	}
 
 	/**

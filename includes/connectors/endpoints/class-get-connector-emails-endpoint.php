@@ -4,6 +4,7 @@ namespace Gravity_Forms\Gravity_SMTP\Connectors\Endpoints;
 
 use Gravity_Forms\Gravity_Tools\Endpoints\Endpoint;
 use Gravity_Forms\Gravity_SMTP\Models\Notifications_Model;
+use Gravity_Forms\Gravity_SMTP\Users\Roles;
 
 class Get_Connector_Emails extends Endpoint {
 
@@ -16,6 +17,7 @@ class Get_Connector_Emails extends Endpoint {
 	 */
 	protected $notifications;
 
+	protected $minimum_cap = Roles::VIEW_NOTIFICATIONS_SETTINGS;
 
 	protected $required_params = array(
 		self::PARAM_CONNECTOR_NAME,

@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Gravity SMTP 2.1.4\n"
+"Project-Id-Version: Gravity SMTP 2.1.5\n"
 "Report-Msgid-Bugs-To: https://gravityforms.com/support\n"
 "Last-Translator: Gravity Forms <support@gravityforms.com>\n"
 "Language-Team: Gravity Forms <support@gravityforms.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-02-26T15:58:35+00:00\n"
+"POT-Creation-Date: 2026-03-25T18:58:15+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: gravitysmtp\n"
@@ -106,12 +106,12 @@ msgid "Sending a test alert from the alerts settings page."
 msgstr ""
 
 #: includes/alerts/config/class-alerts-config.php:84
-#: includes/alerts/endpoints/class-send-test-alert-endpoint.php:89
+#: includes/alerts/endpoints/class-send-test-alert-endpoint.php:91
 msgid "Alert successfully configured!"
 msgstr ""
 
 #: includes/alerts/config/class-alerts-config.php:85
-#: includes/alerts/endpoints/class-send-test-alert-endpoint.php:86
+#: includes/alerts/endpoints/class-send-test-alert-endpoint.php:88
 msgid "Could not send alert. Check Debug Log for details."
 msgstr ""
 
@@ -196,48 +196,49 @@ msgstr ""
 msgid "Test Connection"
 msgstr ""
 
-#: includes/alerts/endpoints/class-save-alerts-settings-endpoint.php:44
-#: includes/alerts/endpoints/class-send-test-alert-endpoint.php:36
-#: includes/apps/endpoints/class-get-dashboard-data-endpoint.php:32
-#: includes/apps/setup-wizard/endpoints/class-license-check-endpoint.php:22
-#: includes/connectors/endpoints/class-cleanup-data-endpoint.php:40
-#: includes/connectors/endpoints/class-get-connector-emails-endpoint.php:34
-#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:46
-#: includes/connectors/endpoints/class-save-connector-settings-endpoint.php:57
-#: includes/connectors/endpoints/class-send-test-endpoint.php:163
-#: includes/handler/endpoints/class-resend-email-endpoint.php:48
-#: includes/logging/endpoints/class-delete-debug-logs-endpoint.php:33
-#: includes/logging/endpoints/class-delete-email-endpoint.php:29
-#: includes/logging/endpoints/class-delete-events-endpoint.php:36
-#: includes/logging/endpoints/class-get-email-message-endpoint.php:29
-#: includes/logging/endpoints/class-get-paginated-debug-log-items-endpoint.php:35
+#: includes/alerts/endpoints/class-save-alerts-settings-endpoint.php:47
+#: includes/alerts/endpoints/class-send-test-alert-endpoint.php:38
+#: includes/apps/endpoints/class-get-dashboard-data-endpoint.php:35
+#: includes/apps/setup-wizard/endpoints/class-license-check-endpoint.php:25
+#: includes/connectors/endpoints/class-cleanup-data-endpoint.php:42
+#: includes/connectors/endpoints/class-get-connector-emails-endpoint.php:36
+#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:44
+#: includes/connectors/endpoints/class-save-connector-settings-endpoint.php:58
+#: includes/connectors/endpoints/class-send-test-endpoint.php:166
+#: includes/environment/endpoints/class-uninstall-endpoint.php:20
+#: includes/handler/endpoints/class-resend-email-endpoint.php:51
+#: includes/logging/endpoints/class-delete-debug-logs-endpoint.php:36
+#: includes/logging/endpoints/class-delete-email-endpoint.php:32
+#: includes/logging/endpoints/class-delete-events-endpoint.php:39
+#: includes/logging/endpoints/class-get-email-message-endpoint.php:32
+#: includes/logging/endpoints/class-get-paginated-debug-log-items-endpoint.php:37
 #: includes/logging/endpoints/class-get-paginated-items-endpoint.php:48
-#: includes/logging/endpoints/class-log-item-endpoint.php:31
+#: includes/logging/endpoints/class-log-item-endpoint.php:33
 #: includes/suppression/endpoints/class-get-paginated-items.php:34
 msgid "Missing required parameters."
 msgstr ""
 
-#: includes/alerts/endpoints/class-send-test-alert-endpoint.php:42
+#: includes/alerts/endpoints/class-send-test-alert-endpoint.php:44
 msgid "Data array parameter must contain a type key."
 msgstr ""
 
-#: includes/alerts/endpoints/class-send-test-alert-endpoint.php:48
+#: includes/alerts/endpoints/class-send-test-alert-endpoint.php:50
 msgid "Invalid connector type of "
 msgstr ""
 
-#: includes/alerts/endpoints/class-send-test-alert-endpoint.php:62
+#: includes/alerts/endpoints/class-send-test-alert-endpoint.php:64
 msgid "Slack connector requires a webhook_url."
 msgstr ""
 
-#: includes/alerts/endpoints/class-send-test-alert-endpoint.php:66
+#: includes/alerts/endpoints/class-send-test-alert-endpoint.php:68
 msgid "Gravity SMTP Test: Webhook is working!"
 msgstr ""
 
-#: includes/alerts/endpoints/class-send-test-alert-endpoint.php:71
+#: includes/alerts/endpoints/class-send-test-alert-endpoint.php:73
 msgid "Twilio connector requires a twilio_account_id, twilio_auth_token, twilio_to_phone_number, and twilio_from_phone_number."
 msgstr ""
 
-#: includes/alerts/endpoints/class-send-test-alert-endpoint.php:78
+#: includes/alerts/endpoints/class-send-test-alert-endpoint.php:80
 msgid "Gravity SMTP Test: Twilio is set up!"
 msgstr ""
 
@@ -543,13 +544,13 @@ msgid "Open Support Ticket"
 msgstr ""
 
 #: includes/apps/config/class-email-log-config.php:57
-#: includes/logging/endpoints/class-get-paginated-debug-log-items-endpoint.php:97
+#: includes/logging/endpoints/class-get-paginated-debug-log-items-endpoint.php:99
 #: includes/logging/endpoints/class-get-paginated-items-endpoint.php:239
 msgid "View email log"
 msgstr ""
 
 #: includes/apps/config/class-email-log-config.php:76
-#: includes/logging/endpoints/class-get-paginated-debug-log-items-endpoint.php:116
+#: includes/logging/endpoints/class-get-paginated-debug-log-items-endpoint.php:118
 #: includes/logging/endpoints/class-get-paginated-items-endpoint.php:258
 msgid "View email"
 msgstr ""
@@ -560,7 +561,7 @@ msgid "Resend email"
 msgstr ""
 
 #: includes/apps/config/class-email-log-config.php:114
-#: includes/logging/endpoints/class-get-paginated-debug-log-items-endpoint.php:135
+#: includes/logging/endpoints/class-get-paginated-debug-log-items-endpoint.php:137
 #: includes/logging/endpoints/class-get-paginated-items-endpoint.php:297
 msgid "Delete email log"
 msgstr ""
@@ -572,7 +573,7 @@ msgstr ""
 
 #: includes/apps/config/class-email-log-config.php:2298
 #: includes/apps/config/class-email-log-single-config.php:58
-#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:90
+#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:88
 msgid "Subject"
 msgstr ""
 
@@ -584,8 +585,8 @@ msgstr ""
 #: includes/apps/config/class-email-log-config.php:2594
 #: includes/apps/config/class-email-log-config.php:2607
 #: includes/apps/config/class-tools-config.php:1161
-#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:92
-#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:93
+#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:90
+#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:91
 msgid "Status"
 msgstr ""
 
@@ -620,13 +621,13 @@ msgstr ""
 #: includes/apps/config/class-email-log-single-config.php:39
 #: includes/apps/config/class-settings-config.php:80
 #: includes/apps/config/class-tools-config.php:144
-#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:75
+#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:73
 msgid "Error Saving"
 msgstr ""
 
 #: includes/apps/config/class-email-log-config.php:2431
 #: includes/apps/config/class-email-log-single-config.php:40
-#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:76
+#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:74
 msgid "Could not save; please check your logs."
 msgstr ""
 
@@ -635,12 +636,12 @@ msgstr ""
 #: includes/apps/config/class-settings-config.php:82
 #: includes/apps/config/class-tools-config.php:146
 #: includes/apps/setup-wizard/config/class-setup-wizard-config.php:98
-#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:77
+#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:75
 msgid "Close"
 msgstr ""
 
 #: includes/apps/config/class-email-log-config.php:2434
-#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:86
+#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:84
 #: includes/pages/class-admin-page.php:16
 msgid "Email Log"
 msgstr ""
@@ -837,7 +838,7 @@ msgstr ""
 #: includes/apps/config/class-email-log-config.php:2497
 #: includes/apps/config/class-email-log-config.php:2504
 #: includes/apps/config/class-email-log-single-config.php:47
-#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:82
+#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:80
 msgid "Resend"
 msgstr ""
 
@@ -883,23 +884,23 @@ msgid "The email could not be found, go back and try again."
 msgstr ""
 
 #: includes/apps/config/class-email-log-single-config.php:46
+#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:77
 #: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:79
-#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:81
 msgid "View Email"
 msgstr ""
 
 #: includes/apps/config/class-email-log-single-config.php:48
-#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:83
+#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:81
 msgid "Print"
 msgstr ""
 
 #: includes/apps/config/class-email-log-single-config.php:49
-#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:84
+#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:82
 msgid "Export"
 msgstr ""
 
 #: includes/apps/config/class-email-log-single-config.php:50
-#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:85
+#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:83
 msgid "Delete Log Entry"
 msgstr ""
 
@@ -920,12 +921,12 @@ msgid "CC"
 msgstr ""
 
 #: includes/apps/config/class-email-log-single-config.php:56
-#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:88
+#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:86
 msgid "From"
 msgstr ""
 
 #: includes/apps/config/class-email-log-single-config.php:57
-#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:89
+#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:87
 msgid "To"
 msgstr ""
 
@@ -938,7 +939,7 @@ msgid "Navigate to the previous log detail"
 msgstr ""
 
 #: includes/apps/config/class-email-log-single-config.php:61
-#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:91
+#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:89
 msgid "Technical Information"
 msgstr ""
 
@@ -965,27 +966,27 @@ msgid "Opened:"
 msgstr ""
 
 #: includes/apps/config/class-email-log-single-config.php:67
-#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:94
+#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:92
 msgid "Service:"
 msgstr ""
 
 #: includes/apps/config/class-email-log-single-config.php:68
-#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:95
+#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:93
 msgid "Has attachment:"
 msgstr ""
 
 #: includes/apps/config/class-email-log-single-config.php:69
-#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:96
+#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:94
 msgid "Log ID:"
 msgstr ""
 
 #: includes/apps/config/class-email-log-single-config.php:70
-#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:97
+#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:95
 msgid "Source:"
 msgstr ""
 
 #: includes/apps/config/class-email-log-single-config.php:71
-#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:98
+#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:96
 msgid "Attachments"
 msgstr ""
 
@@ -1854,8 +1855,8 @@ msgstr ""
 #: includes/apps/config/class-tools-config.php:596
 #: includes/apps/config/class-tools-config.php:860
 #: includes/apps/config/class-tools-config.php:866
-#: includes/models/class-event-model.php:424
-#: includes/models/class-event-model.php:430
+#: includes/models/class-event-model.php:431
+#: includes/models/class-event-model.php:437
 msgid "Yes"
 msgstr ""
 
@@ -1870,10 +1871,10 @@ msgstr ""
 #: includes/apps/config/class-tools-config.php:854
 #: includes/apps/config/class-tools-config.php:860
 #: includes/apps/config/class-tools-config.php:866
-#: includes/models/class-event-model.php:422
-#: includes/models/class-event-model.php:424
-#: includes/models/class-event-model.php:428
-#: includes/models/class-event-model.php:430
+#: includes/models/class-event-model.php:429
+#: includes/models/class-event-model.php:431
+#: includes/models/class-event-model.php:435
+#: includes/models/class-event-model.php:437
 #: includes/models/class-log-details-model.php:211
 #: includes/models/class-log-details-model.php:217
 msgid "No"
@@ -1912,7 +1913,7 @@ msgid "Registered Filters"
 msgstr ""
 
 #: includes/apps/config/class-tools-config.php:602
-#: includes/models/class-event-model.php:446
+#: includes/models/class-event-model.php:453
 #: includes/models/class-log-details-model.php:212
 #: includes/utils/class-source-parser.php:26
 #: includes/utils/class-source-parser.php:89
@@ -2082,11 +2083,11 @@ msgstr ""
 msgid "Date & Time"
 msgstr ""
 
-#: includes/apps/endpoints/class-get-dashboard-data-endpoint.php:40
+#: includes/apps/endpoints/class-get-dashboard-data-endpoint.php:43
 msgid "Send either a date range value or start/end dates; do not send both."
 msgstr ""
 
-#: includes/apps/endpoints/class-get-dashboard-data-endpoint.php:49
+#: includes/apps/endpoints/class-get-dashboard-data-endpoint.php:52
 msgid "Must provide both start and end dates."
 msgstr ""
 
@@ -2257,7 +2258,7 @@ msgstr ""
 msgid "Activate %s Integration"
 msgstr ""
 
-#: includes/apps/setup-wizard/endpoints/class-license-check-endpoint.php:38
+#: includes/apps/setup-wizard/endpoints/class-license-check-endpoint.php:41
 msgid "Invalid license key."
 msgstr ""
 
@@ -2298,93 +2299,93 @@ msgstr ""
 msgid "If Force Reply-To Email is enabled, the Default Reply-To Email address will override other plugin settings for all outgoing emails."
 msgstr ""
 
-#: includes/connectors/endpoints/class-cleanup-data-endpoint.php:35
+#: includes/connectors/endpoints/class-cleanup-data-endpoint.php:37
 msgid "Setup wizard data reset."
 msgstr ""
 
 #. translators: %d: event ID
-#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:60
+#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:58
 msgid "Error retrieving data for event ID: %d."
 msgstr ""
 
 #. translators: %d: email ID
-#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:68
+#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:66
 msgid "Could not send get data for event ID: %d."
 msgstr ""
 
-#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:80
+#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:78
 msgid "Detailed log information for this email."
 msgstr ""
 
-#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:87
+#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:85
 msgid "Created"
 msgstr ""
 
 #. translators: %1$s is the connector, eg: SendGrid, %2$s is the error message
-#: includes/connectors/endpoints/class-save-connector-settings-endpoint.php:100
+#: includes/connectors/endpoints/class-save-connector-settings-endpoint.php:101
 msgid "Error saving settings for %1$s: %2$s"
 msgstr ""
 
-#: includes/connectors/endpoints/class-save-plugin-settings-endpoint.php:64
+#: includes/connectors/endpoints/class-save-plugin-settings-endpoint.php:62
 msgid "Request must contain either an array of values to update, or a key and value to update individually."
 msgstr ""
 
-#: includes/connectors/endpoints/class-send-test-endpoint.php:69
-#: includes/connectors/endpoints/class-send-test-endpoint.php:145
+#: includes/connectors/endpoints/class-send-test-endpoint.php:72
+#: includes/connectors/endpoints/class-send-test-endpoint.php:148
 msgid "Test Successful"
 msgstr ""
 
-#: includes/connectors/endpoints/class-send-test-endpoint.php:70
-#: includes/connectors/endpoints/class-send-test-endpoint.php:148
+#: includes/connectors/endpoints/class-send-test-endpoint.php:73
+#: includes/connectors/endpoints/class-send-test-endpoint.php:151
 msgid "Congratulations! Gravity SMTP is sending emails correctly!"
 msgstr ""
 
-#: includes/connectors/endpoints/class-send-test-endpoint.php:71
-#: includes/connectors/endpoints/class-send-test-endpoint.php:149
+#: includes/connectors/endpoints/class-send-test-endpoint.php:74
+#: includes/connectors/endpoints/class-send-test-endpoint.php:152
 msgid "Gravity SMTP is taking care of sending your emails, so now you can focus on the content of your emails and leave the technical details to us."
 msgstr ""
 
-#: includes/connectors/endpoints/class-send-test-endpoint.php:136
+#: includes/connectors/endpoints/class-send-test-endpoint.php:139
 msgid "Logo"
 msgstr ""
 
-#: includes/connectors/endpoints/class-send-test-endpoint.php:143
+#: includes/connectors/endpoints/class-send-test-endpoint.php:146
 msgid "Mail Icon"
 msgstr ""
 
-#: includes/connectors/endpoints/class-send-test-endpoint.php:194
+#: includes/connectors/endpoints/class-send-test-endpoint.php:197
 msgid "Test Email from Gravity SMTP"
 msgstr ""
 
-#: includes/connectors/endpoints/class-send-test-endpoint.php:214
+#: includes/connectors/endpoints/class-send-test-endpoint.php:217
 msgid "Incorrect plugin settings, such as invalid SMTP credentials or expired API key."
 msgstr ""
 
-#: includes/connectors/endpoints/class-send-test-endpoint.php:215
+#: includes/connectors/endpoints/class-send-test-endpoint.php:218
 msgid "The SMTP server blocking the incoming connection."
 msgstr ""
 
-#: includes/connectors/endpoints/class-send-test-endpoint.php:216
+#: includes/connectors/endpoints/class-send-test-endpoint.php:219
 msgid "Your web host rejecting the connection."
 msgstr ""
 
-#: includes/connectors/endpoints/class-send-test-endpoint.php:220
+#: includes/connectors/endpoints/class-send-test-endpoint.php:223
 msgid "Triple check the plugin settings and ensure they are accurate, especially if you copy-pasted the values."
 msgstr ""
 
-#: includes/connectors/endpoints/class-send-test-endpoint.php:221
+#: includes/connectors/endpoints/class-send-test-endpoint.php:224
 msgid "Contact your web hosting provider to verify if your server allows outside connections and if any firewall or security policies are in place that could interfere."
 msgstr ""
 
-#: includes/connectors/endpoints/class-send-test-endpoint.php:222
+#: includes/connectors/endpoints/class-send-test-endpoint.php:225
 msgid "Consider using one of the other available integration types."
 msgstr ""
 
-#: includes/connectors/endpoints/class-send-test-endpoint.php:227
+#: includes/connectors/endpoints/class-send-test-endpoint.php:230
 msgid "There was a problem sending the test email."
 msgstr ""
 
-#: includes/connectors/endpoints/class-send-test-endpoint.php:237
+#: includes/connectors/endpoints/class-send-test-endpoint.php:240
 msgid "Send a test error: %1$s"
 msgstr ""
 
@@ -3513,6 +3514,10 @@ msgid "Saudi Arabia"
 msgstr ""
 
 #: includes/environment/endpoints/class-uninstall-endpoint.php:16
+msgid "You do not have permission to perform this action."
+msgstr ""
+
+#: includes/environment/endpoints/class-uninstall-endpoint.php:27
 msgid "Gravity SMTP successfully uninstalled."
 msgstr ""
 
@@ -3520,15 +3525,15 @@ msgstr ""
 msgid "A fatal error occured when sending"
 msgstr ""
 
-#: includes/handler/endpoints/class-resend-email-endpoint.php:59
+#: includes/handler/endpoints/class-resend-email-endpoint.php:62
 msgid "Attempted to resend email %s, but could not due to either the message body not being stored, or attachments not being saved."
 msgstr ""
 
-#: includes/handler/endpoints/class-resend-email-endpoint.php:61
+#: includes/handler/endpoints/class-resend-email-endpoint.php:64
 msgid "Email could not be resent as it was not stored with all required values."
 msgstr ""
 
-#: includes/handler/endpoints/class-resend-email-endpoint.php:89
+#: includes/handler/endpoints/class-resend-email-endpoint.php:92
 msgid "Email could not be resent; check your logs for more details."
 msgstr ""
 
@@ -3536,37 +3541,37 @@ msgstr ""
 msgid " Email sent via Gravity SMTP. %sView Email%s"
 msgstr ""
 
-#: includes/logging/endpoints/class-delete-debug-logs-endpoint.php:41
+#: includes/logging/endpoints/class-delete-debug-logs-endpoint.php:44
 msgid "All logs deleted successfully"
 msgstr ""
 
-#: includes/logging/endpoints/class-delete-email-endpoint.php:36
+#: includes/logging/endpoints/class-delete-email-endpoint.php:39
 msgid "Event deleted successfully"
 msgstr ""
 
-#: includes/logging/endpoints/class-delete-events-endpoint.php:49
+#: includes/logging/endpoints/class-delete-events-endpoint.php:52
 msgid "Events deleted successfully"
 msgstr ""
 
-#: includes/logging/endpoints/class-delete-events-endpoint.php:54
+#: includes/logging/endpoints/class-delete-events-endpoint.php:57
 msgid "All events deleted successfully"
 msgstr ""
 
 #. translators: %d: email ID
-#: includes/logging/endpoints/class-get-email-message-endpoint.php:38
+#: includes/logging/endpoints/class-get-email-message-endpoint.php:41
 msgid "Could not get content for email ID: %d."
 msgstr ""
 
-#: includes/logging/endpoints/class-log-item-endpoint.php:43
+#: includes/logging/endpoints/class-log-item-endpoint.php:45
 msgid "Message logged"
 msgstr ""
 
-#: includes/logging/endpoints/class-view-log-endpoint.php:47
+#: includes/logging/endpoints/class-view-log-endpoint.php:49
 msgid "Unauthorized"
 msgstr ""
 
 #. translators: %1$s: plugin name
-#: includes/migration/endpoints/class-migrate-settings-endpoint.php:64
+#: includes/migration/endpoints/class-migrate-settings-endpoint.php:68
 msgid "Could not find handler for migration type: %1$s"
 msgstr ""
 
@@ -3590,7 +3595,7 @@ msgstr ""
 msgid "Info"
 msgstr ""
 
-#: includes/models/class-event-model.php:340
+#: includes/models/class-event-model.php:347
 msgid "...(original message truncated)"
 msgstr ""
 

@@ -24,11 +24,22 @@ abstract class Model {
 
 	/**
 	 * The minimum capability required for a given user to be able to access
-	 * this object's data.
+	 * this object's data. If defined, will override individual permissions.
 	 *
 	 * @var string
 	 */
 	protected $access_cap = '';
+
+	/**
+	 * The minimum capability required for a given user to perform specific CRUD
+	 * tasks against this model.
+	 *
+	 * @var string
+	 */
+	protected $access_cap_view   = '';
+	protected $access_cap_edit   = '';
+	protected $access_cap_create = '';
+	protected $access_cap_delete = '';
 
 	/**
 	 * If a model needs to support ad-hoc defined meta fields (i.e., fields that
@@ -135,10 +146,28 @@ abstract class Model {
 	 * not be overwritten in the concrete Model, except for cases in which custom
 	 * access functionality is required.
 	 *
+	 * @param string $action - The specific CRUD action being checked.
+	 *
 	 * @return bool
 	 */
-	public function has_access() {
-		return current_user_can( $this->access_cap );
+	public function has_access( $action = 'view' ) {
+		if ( ! empty( $this->access_cap ) ) {
+			return current_user_can( $this->access_cap );
+		}
+
+		switch ( $action ) {
+			case 'view':
+				return current_user_can( $this->access_cap_view );
+
+			case 'edit':
+				return current_user_can( $this->access_cap_edit );
+
+			case 'create':
+				return current_user_can( $this->access_cap_create );
+
+			case 'delete':
+				return current_user_can( $this->access_cap_delete );
+		}
 	}
 
 	/**
@@ -171,6 +200,14 @@ abstract class Model {
 
 		$transformation = $this->transformations()[ $transformation_name ];
 
-		return call_user_func( $transformation, $transformation_arg, $value );
+		if ( empty( $transformation_arg ) ) {
+			return call_user_func( $transformation, $value );
+		}
+
+		if ( is_array( $transformation_arg ) ) {
+			return call_user_func( $transformation, $value, ...$transformation_arg );
+		}
+
+		return call_user_func( $transformation, $value, $transformation_arg );
 	}
 }

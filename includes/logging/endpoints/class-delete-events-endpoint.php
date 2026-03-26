@@ -3,6 +3,7 @@
 namespace Gravity_Forms\Gravity_SMTP\Logging\Endpoints;
 
 use Gravity_Forms\Gravity_SMTP\Models\Event_Model;
+use Gravity_Forms\Gravity_SMTP\Users\Roles;
 use Gravity_Forms\Gravity_Tools\Endpoints\Endpoint;
 
 class Delete_Events_Endpoint extends Endpoint {
@@ -12,6 +13,8 @@ class Delete_Events_Endpoint extends Endpoint {
 	const PARAM_MAX_DATE   = 'max_date';
 
 	const ACTION_NAME = 'delete_events';
+
+	protected $minimum_cap = Roles::DELETE_EMAIL_LOG;
 
 	/**
 	 * @var Event_Model

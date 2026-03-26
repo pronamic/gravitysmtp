@@ -132,8 +132,29 @@ class Mutation_Handler {
 
 		$object_model = $this->models->get( $mutation->object_type() );
 
+		switch( $mutation->operation() ) {
+			case 'insert':
+				$action_check = 'create';
+				break;
+			case 'update':
+				$action_check = 'edit';
+				break;
+			case 'delete':
+				$action_check = 'delete';
+				break;
+			case 'connect':
+				$action_check = 'edit';
+				break;
+			case 'disconnect':
+				$action_check = 'edit';
+				break;
+			default:
+				$action_check = 'view';
+				break;
+		}
+
 		// Ensure the querying user has the appropriate permissions to access data for this object.
-		if ( ! $object_model->has_access() ) {
+		if ( ! $object_model->has_access( $action_check ) ) {
 			$error_message = sprintf( 'Access not allowed for object type %s', $mutation->object_type() );
 			throw new \InvalidArgumentException( $error_message, 403 );
 		}
@@ -141,23 +162,23 @@ class Mutation_Handler {
 		// Handle the actual mutation based on the identified mutation type by calling its appropriate Runner.
 		switch ( $mutation->operation() ) {
 			case 'insert':
-				$this->insert_runner->run( $mutation, $object_model, $return );
+				return $this->insert_runner->run( $mutation, $object_model, $return );
 				break;
 			case 'update':
-				$this->update_runner->run( $mutation, $object_model, $return );
+				return $this->update_runner->run( $mutation, $object_model, $return );
 				break;
 			case 'delete':
-				$this->delete_runner->run( $mutation, $object_model, $return );
+				return $this->delete_runner->run( $mutation, $object_model, $return );
 				break;
 			case 'connect':
-				$this->connect_runner->run( $mutation, $object_model, $return );
+				return $this->connect_runner->run( $mutation, $object_model, $return );
 				break;
 			case 'disconnect':
-				$this->disconnect_runner->run( $mutation, $object_model, $return );
+				return $this->disconnect_runner->run( $mutation, $object_model, $return );
 				break;
 			default:
 				if ( array_key_exists( $mutation->operation(), $this->all_runners ) ) {
-					$this->all_runners[ $mutation->operation() ]->run( $mutation, $object_model, $return );
+					return $this->all_runners[ $mutation->operation() ]->run( $mutation, $object_model, $return );
 					break;
 				}
 				break;

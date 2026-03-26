@@ -65,13 +65,17 @@ class Bettarray implements ArrayAccess {
 		return new self( $sliced );
 	}
 
-	public function pluck( $search_key ) {
+	public function pluck( $search_key, $raw = false ) {
 		$results = array();
 
 		foreach( $this->array as $row ) {
 			if ( isset( $row[ $search_key ]) ) {
 				$results[] = $row[ $search_key ];
 			}
+		}
+
+		if ( $raw ) {
+			return $results;
 		}
 
 		return new self( $results );

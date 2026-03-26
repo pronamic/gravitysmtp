@@ -182,10 +182,6 @@ class Logging_Service_Provider extends Config_Service_Provider {
 			$container->get( self::LOG_ITEM_ENDPOINT )->handle();
 		} );
 
-		add_action( 'wp_ajax_nopriv_' . Log_Item_Endpoint::ACTION_NAME, function () use ( $container ) {
-			$container->get( self::LOG_ITEM_ENDPOINT )->handle();
-		} );
-
 		add_action( 'wp_ajax_' . View_Log_Endpoint::ACTION_NAME, function () use ( $container ) {
 			$container->get( self::VIEW_DEBUG_LOG_ENDPOINT )->handle();
 		} );

@@ -3,6 +3,7 @@
 namespace Gravity_Forms\Gravity_SMTP\Alerts\Endpoints;
 
 use Gravity_Forms\Gravity_SMTP\Data_Store\Plugin_Opts_Data_Store;
+use Gravity_Forms\Gravity_SMTP\Users\Roles;
 use Gravity_Forms\Gravity_Tools\Endpoints\Endpoint;
 
 class Save_Alerts_Settings_Endpoint extends Endpoint {
@@ -21,6 +22,8 @@ class Save_Alerts_Settings_Endpoint extends Endpoint {
 	const PARAM_TWILIO_ALERTS         = 'twilio_alerts';
 
 	const ACTION_NAME = 'save_alerts_settings';
+
+	protected $minimum_cap = Roles::EDIT_ALERTS;
 
 	/**
 	 * @var Plugin_Opts_Data_Store

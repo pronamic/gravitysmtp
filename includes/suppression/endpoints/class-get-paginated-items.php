@@ -2,10 +2,8 @@
 
 namespace Gravity_Forms\Gravity_SMTP\Suppression\Endpoints;
 
-use Gravity_Forms\Gravity_SMTP\Logging\Debug\Debug_Logger;
-use Gravity_Forms\Gravity_SMTP\Models\Event_Model;
 use Gravity_Forms\Gravity_SMTP\Models\Suppressed_Emails_Model;
-use Gravity_Forms\Gravity_SMTP\Utils\Attachments_Saver;
+use Gravity_Forms\Gravity_SMTP\Users\Roles;
 use Gravity_Forms\Gravity_Tools\Endpoints\Endpoint;
 
 class Get_Paginated_Items extends Endpoint {
@@ -15,6 +13,8 @@ class Get_Paginated_Items extends Endpoint {
 	const PARAM_PER_PAGE       = 'per_page';
 	const PARAM_REQUESTED_PAGE = 'requested_page';
 	const PARAM_SEARCH_TERM    = 'search_term';
+
+	protected $minimum_cap = Roles::VIEW_EMAIL_SUPPRESSION_SETTINGS;
 
 	/**
 	 * @var Suppressed_Emails_Model

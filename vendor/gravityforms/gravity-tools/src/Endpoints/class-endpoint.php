@@ -6,6 +6,8 @@ abstract class Endpoint {
 
 	protected $required_params = array();
 
+	protected $minimum_cap = 'manage_options';
+
 	abstract public function handle();
 
 	/**
@@ -28,6 +30,10 @@ abstract class Endpoint {
 	 */
 	protected function validate() {
 		check_ajax_referer( $this->get_nonce_name(), 'security' );
+
+		if ( ! current_user_can( $this->minimum_cap ) ) {
+			return false;
+		}
 
 		foreach( $this->required_params as $param ) {
 			if ( ! isset( $_REQUEST[ $param ] ) ) {

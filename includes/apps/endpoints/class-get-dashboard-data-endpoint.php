@@ -5,6 +5,7 @@ namespace Gravity_Forms\Gravity_SMTP\Apps\Endpoints;
 use Gravity_Forms\Gravity_SMTP\Apps\Config\Dashboard_Config;
 use Gravity_Forms\Gravity_Tools\Endpoints\Endpoint;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Plugin_Opts_Data_Store;
+use Gravity_Forms\Gravity_SMTP\Users\Roles;
 
 class Get_Dashboard_Data_Endpoint extends Endpoint {
 
@@ -18,6 +19,8 @@ class Get_Dashboard_Data_Endpoint extends Endpoint {
 	 * @var Dashboard_Config;
 	 */
 	protected $dasbhoard_config;
+
+	protected $minimum_cap = Roles::VIEW_DASHBOARD;
 
 	public function __construct( $dashboard_config ) {
 		$this->dasbhoard_config = $dashboard_config;

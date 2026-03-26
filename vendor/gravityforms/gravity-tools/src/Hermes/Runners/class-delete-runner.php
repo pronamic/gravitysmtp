@@ -31,6 +31,8 @@ class Delete_Runner extends Runner {
 
 		$table_name   = sprintf( '%s%s_%s', $wpdb->prefix, $this->db_namespace, $object_model->type() );
 
+		do_action( 'gt_hermes_before_delete', $ids_to_delete, $table_name, $object_model->type() );
+
 		if ( in_array( 'all', $ids_to_delete ) ) {
 			$delete_sql = sprintf( 'DELETE FROM %s', $table_name );
 			$ids_to_delete = array( 'all' );
@@ -40,6 +42,7 @@ class Delete_Runner extends Runner {
 		}
 
 		$wpdb->query( $delete_sql );
+
 
 		if( $return ) {
 			return $ids_to_delete;

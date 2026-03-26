@@ -2,12 +2,8 @@
 
 namespace Gravity_Forms\Gravity_SMTP\Connectors\Endpoints;
 
-use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Factory;
-use Gravity_Forms\Gravity_SMTP\Data_Store\Data_Store;
-use Gravity_Forms\Gravity_SMTP\Data_Store\Opts_Data_Store;
-use Gravity_Forms\Gravity_SMTP\Data_Store\Plugin_Opts_Data_Store;
+use Gravity_Forms\Gravity_SMTP\Users\Roles;
 use Gravity_Forms\Gravity_Tools\Endpoints\Endpoint;
-use Gravity_Forms\Gravity_Tools\License\License_API_Connector;
 use Gravity_Forms\Gravity_Tools\License\License_Statuses;
 
 class Save_Plugin_Settings_Endpoint extends Endpoint {
@@ -37,6 +33,8 @@ class Save_Plugin_Settings_Endpoint extends Endpoint {
 	const PARAM_SETUP_WIZARD_SHOULD_DISPLAY = 'setup_wizard_should_display';
 
 	const ACTION_NAME = 'save_plugin_settings';
+
+	protected $minimum_cap = Roles::EDIT_GENERAL_SETTINGS;
 
 	/**
 	 * @var Plugin_Opts_Data_Store;
@@ -129,7 +127,9 @@ class Save_Plugin_Settings_Endpoint extends Endpoint {
 	}
 
 	protected function validate() {
-		check_ajax_referer( $this->get_nonce_name(), 'security' );
+		if ( ! parent::validate() ) {
+			return false;
+		}
 
 		if (
 			! isset( $_REQUEST[ self::PARAM_SETTINGS ] ) &&

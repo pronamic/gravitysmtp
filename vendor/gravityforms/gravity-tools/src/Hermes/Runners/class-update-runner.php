@@ -42,9 +42,9 @@ class Update_Runner extends Runner {
 
 		$this->handle_single_update( $object_model, $categorized_fields, $object_id );
 
-		$objects_gql = sprintf( '{ %s: %s(id: %s){ %s }', $object_model->type(), $object_model->type(), $object_id, implode( ', ', $mutation->return_fields() ) );
+		$objects_gql = sprintf( '{ %s: %s(id: %s){ %s }', $object_model->type(), $object_model->type(), $object_id,  $mutation->return_fields() );
 
-		$data = $this->query_handler->handle_query( $objects_gql );
+		$data = $this->query_handler->handle_query( $objects_gql, $return );
 
 		if ( $return ) {
 			return $data;

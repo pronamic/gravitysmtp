@@ -56,6 +56,11 @@ class Relationship {
 	protected $is_reverse;
 
 	/**
+	 * @var string Indicates the type of relationship - default is many_to_many, but can be one_to_many instead.
+	 */
+	protected $relationship_type;
+
+	/**
 	 * Constructor
 	 *
 	 * @param $from
@@ -63,11 +68,12 @@ class Relationship {
 	 * @param $cap
 	 * @param $is_reverse
 	 */
-	public function __construct( $from, $to, $cap, $is_reverse = false ) {
-		$this->from       = $from;
-		$this->to         = $to;
-		$this->cap        = $cap;
-		$this->is_reverse = $is_reverse;
+	public function __construct( $from, $to, $cap, $is_reverse = false, $relationship_type = 'many_to_many' ) {
+		$this->from              = $from;
+		$this->to                = $to;
+		$this->cap               = $cap;
+		$this->is_reverse        = $is_reverse;
+		$this->relationship_type = $relationship_type;
 	}
 
 	/**
@@ -117,6 +123,24 @@ class Relationship {
 	}
 
 	/**
+	 * The type of relationship this is (many_to_many or one_to_many)
+	 *
+	 * return string
+	 */
+	public function relationship_type() {
+		return $this->relationship_type;
+	}
+
+	/**
+	 * Determine if this relationship is one-to-many
+	 *
+	 * @return bool
+	 */
+	public function is_one_to_many() {
+		return $this->relationship_type === 'one_to_many';
+	}
+
+	/**
 	 * Determines the correct table suffix when querying lookup tables.
 	 *
 	 * When $is_reverse is `true`, the suffix has the object type slugs swapped.
@@ -124,6 +148,10 @@ class Relationship {
 	 * @return string
 	 */
 	public function get_table_suffix() {
+		if ( $this->relationship_type() === 'one_to_many' ) {
+			return $this->is_reverse ? $this->to : $this->from;
+		}
+
 		if ( $this->is_reverse ) {
 			return sprintf( '%s_%s', $this->to, $this->from );
 		}

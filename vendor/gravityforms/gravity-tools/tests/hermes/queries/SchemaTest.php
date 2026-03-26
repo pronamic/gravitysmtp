@@ -20,7 +20,7 @@ class SchemaTest extends TestCase {
 	protected $phone_model;
 	protected $db_namespace;
 
-	public function setUp() {
+	public function setUp(): void {
 		$this->model_collection = new Model_Collection();
 		$this->contact_model    = new \FakeContactModel();
 		$this->company_model    = new \FakeCompanyModel();
@@ -41,8 +41,10 @@ class SchemaTest extends TestCase {
 	}
 
 	public function testSchemaQueries() {
-		$text = '{ __schema(){ name, fields( type: "INT" ) { name, type }, metaFields { name, type }, relationships { to, accessCap } } }';
+		$text = '{ __schema(){ name, fields { name, type }, metaFields { name, type }, relationships { to, accessCap } } }';
 
-		$this->query_handler->handle_query( $text );
+		$results = $this->query_handler->handle_query( $text, true );
+
+		$this->assertEquals( 5, count( $results['__schema'] ) );
 	}
 }

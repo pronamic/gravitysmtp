@@ -113,6 +113,31 @@ class ArgumentsTokenTest extends TestCase {
 				)
 			),
 
+			// Multiple arguments with text contents
+			array(
+				'pipelineID: 1, id: "hey", transformFormatDate: "Y-m-d, H:i:s|1"',
+				array(
+					array(
+						'key' => 'pipelineID',
+						'comparator' => '=',
+						'value' => '1',
+					),
+					array(
+						'key' => 'id',
+						'comparator' => '=',
+						'value' => 'hey',
+					),
+					array(
+						'key' => 'transformFormatDate',
+						'comparator' => '=',
+						'value' => array(
+							'Y-m-d, H:i:s',
+							'1',
+						),
+					),
+				)
+			),
+
 			// Multiple arguments with mixed operators
 			array(
 				'id: 5, foo_lt: 10, bar_gt: 20, bash_lte: 30, bing_gte: 40, bazinga_ne: 50',

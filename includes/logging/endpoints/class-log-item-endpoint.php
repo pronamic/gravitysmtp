@@ -3,8 +3,8 @@
 namespace Gravity_Forms\Gravity_SMTP\Logging\Endpoints;
 
 use Gravity_Forms\Gravity_SMTP\Logging\Debug\Debug_Logger;
+use Gravity_Forms\Gravity_SMTP\Users\Roles;
 use Gravity_Forms\Gravity_Tools\Endpoints\Endpoint;
-use Gravity_Forms\Gravity_Tools\Logging\File_Logging_Provider;
 
 class Log_Item_Endpoint extends Endpoint {
 
@@ -12,6 +12,8 @@ class Log_Item_Endpoint extends Endpoint {
 	const PARAM_PRIORITY    = 'priority';
 
 	const ACTION_NAME = 'log_debug_item';
+
+	protected $minimum_cap = Roles::EDIT_EMAIL_LOG;
 
 	/**
 	 * @var Debug_Logger
@@ -44,7 +46,9 @@ class Log_Item_Endpoint extends Endpoint {
 	}
 
 	protected function validate() {
-		check_ajax_referer( $this->get_nonce_name(), 'security' );
+		if ( ! parent::validate() ) {
+			return false;
+		}
 
 		if ( empty( $_REQUEST[ self::PARAM_LOG_MESSAGE ] ) ) {
 			return false;

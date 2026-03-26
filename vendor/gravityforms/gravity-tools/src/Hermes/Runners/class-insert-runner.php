@@ -77,7 +77,10 @@ class Insert_Runner extends Runner {
 
 				$child_ids[ $object->object_type() ] = array();
 			}
-			$inserted_ids[] = $inserted_id;
+
+			if ( ! $object->is_child() ) {
+				$inserted_ids[] = $inserted_id;
+			}
 		}
 
 		$objects_gql = sprintf( '{ %s: %s(id_in: %s){ %s }', $object_model->type(), $object_model->type(), implode( '|', $inserted_ids ), $mutation->return_fields() );

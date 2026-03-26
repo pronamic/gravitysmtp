@@ -5,17 +5,17 @@ namespace hermes\tokens\mutations;
 use Gravity_Forms\Gravity_Tools\Hermes\Tokens\Mutations\Insert\Insert_Mutation_Token;
 use PHPUnit\Framework\TestCase;
 
-class QueryTokenTest extends TestCase {
+class InsertMutationTokenTest extends TestCase {
 
 	public function testMutationParsesToArray() {
 		$text  = '{
   insert_todos(objects: [{title: "New Todo", status: "active"}, {title: "Second Todo", status: "pending"}]) {
     returning {
-      id
-      title
-      is_completed
-      is_public
-      created_at
+      id,
+      title,
+      is_completed,
+      is_public,
+      created_at,
     }
   }
 }';
@@ -29,7 +29,11 @@ class QueryTokenTest extends TestCase {
 			"created_at",
 		);
 
-        $this->assertEquals( $expected_fields, $token->return_fields() );
+		$return_fields = $token->return_fields();
+
+		foreach( $expected_fields as $field ) {
+			$this->assertNotEquals( false, strpos( $return_fields, $field ) );
+		}
 	}
 
 	public function testInsertObjectsParseCorrectly(){
@@ -56,7 +60,11 @@ class QueryTokenTest extends TestCase {
 			"created_at",
 		);
 
-		$this->assertEquals( $expected_fields, $token->return_fields() );
+		$return_fields = $token->return_fields();
+
+		foreach( $expected_fields as $field ) {
+			$this->assertNotEquals( false, strpos( $return_fields, $field ) );
+		}
 	}
 
 	public function testInsertedObjectsWithComplexFields(){
@@ -87,7 +95,11 @@ class QueryTokenTest extends TestCase {
 			"created_at",
 		);
 
-		$this->assertEquals( $expected_fields, $token->return_fields() );
+		$return_fields = $token->return_fields();
+
+		foreach( $expected_fields as $field ) {
+			$this->assertNotEquals( false, strpos( $return_fields, $field ) );
+		}
 	}
 
 	public function testInsertedObjectsWithRelationships() {
@@ -108,7 +120,7 @@ class QueryTokenTest extends TestCase {
 						firstName: "Jane",
 						lastName: "Doe",
 					}
-				]	
+				]
 			},
 			{
 				companyName: "Acme2, INC",
@@ -134,7 +146,7 @@ class QueryTokenTest extends TestCase {
 					email {
 						id,
 						address,
-					}	
+					}
 				}
 			}
 		}
