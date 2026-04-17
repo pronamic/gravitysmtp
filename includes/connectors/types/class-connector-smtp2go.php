@@ -87,7 +87,10 @@ class Connector_Smtp2go extends Connector_Base {
 		$atts    = $this->get_send_atts();
 		$api_key = $this->get_setting( self::SETTING_API_KEY );
 
-		$from_value = isset( $atts['from']['name'] ) ? sprintf( '"%s" <%s>', iconv_mime_encode( 'From', $atts['from']['name'] ), $atts['from']['email'] ) : $atts['from']['email'];
+
+		$from_value = isset( $atts['from']['name'] )
+			? sprintf( '"%s" <%s>', iconv_mime_encode( 'From', $atts['from']['name'], array( 'line-length' => apply_filters( 'gravitysmtp_smtp2go_from_name_line_length', 400 ) ) ), $atts['from']['email'] )
+			: $atts['from']['email'];
 		$from_value = str_replace( 'From: ', '', $from_value );
 
 		$body       = array(

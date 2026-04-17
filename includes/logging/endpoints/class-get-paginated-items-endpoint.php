@@ -181,13 +181,6 @@ class Get_Paginated_Items_Endpoint extends Endpoint {
 						),
 					),
 				),
-				'opened'      => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => $row['opened'],
-						'size'    => 'text-sm',
-					),
-				),
 				'source'      => array(
 					'component' => 'Text',
 					'props'     => array(

@@ -27,7 +27,6 @@ use Gravity_Forms\Gravity_SMTP\Pages\Page_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Routing\Routing_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Suppression\Suppression_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Telemetry\Telemetry_Service_Provider;
-use Gravity_Forms\Gravity_SMTP\Tracking\Tracking_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Translations\Translations_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Users\Users_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Utils\Booliesh;
@@ -84,17 +83,9 @@ class Gravity_SMTP {
 		// Ensure a primary connection exists
 		$routines->add( 'primary_connection', array( self::class, 'set_primary_connection' ) );
 
-		// Ensure rewrite rules are flushed for tracking.
-		$routines->add( 'flush_rewrite_rules', array( self::class, 'flush_rewrite_rules' ) );
-
-		// Ensure tracking table is set up properly
-		$routines->add( 'tracking_tables', array( self::class, 'create_tracking_tables' ) );
-
 		// Ensure suppression table is set up properly
 		$routines->add( 'suppression_tables', array( self::class, 'create_suppression_table' ) );
 
-		// Ensure users who had tracking enabled previously have that feature migrated on update.
-		$routines->add( 'enabled_tracking_experimental_migration', array( self::class, 'migrate_enabled_tracking_to_experimental' ) );
 		add_action( 'plugins_loaded', function() use ( $routines ) {
 			$routines->handle();
 		}, 10 );
@@ -197,30 +188,6 @@ class Gravity_SMTP {
 		dbDelta( $sql );
 	}
 
-	public static function create_tracking_tables() {
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-
-		global $wpdb;
-
-		$table_name        = $wpdb->prefix . 'gravitysmtp_event_tracking';
-		$charset_collate   = $wpdb->get_charset_collate();
-		$events_table_name = $wpdb->prefix . 'gravitysmtp_events';
-
-		$sql = "
-			CREATE TABLE $table_name (
-				id mediumint(9) NOT NULL AUTO_INCREMENT,
-				event_id mediumint(9) NOT NULL,
-			    email varchar(100) NOT NULL,
-			    opened tinyint(1) NOT NULL,
-			    clicked tinyint(1) NOT NULL,
-			    PRIMARY KEY (id),
-			    FOREIGN KEY (event_id) REFERENCES $events_table_name(id)
-		    ) $charset_collate;
-		";
-
-		dbDelta( $sql );
-	}
-
 	public static function create_suppression_table() {
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
@@ -256,35 +223,8 @@ class Gravity_SMTP {
 			'gravitysmtp_events',
 			'gravitysmtp_event_logs',
 			'gravitysmtp_debug_log',
-			'gravitysmtp_event_tracking',
 			'gravitysmtp_suppressed_emails',
 		);
-	}
-
-	/**
-	 * If a user previously had open tracking enabled before it was experimental, update
-	 * the experimental setting to be enabled on migration.
-	 *
-	 * @since 1.7.0
-	 *
-	 * @return void
-	 */
-	public static function migrate_enabled_tracking_to_experimental() {
-		$settings = get_option( 'gravitysmtp_config' );
-		$settings = json_decode( $settings, true );
-
-		$open_tracking = isset( $settings['open_tracking'] ) ? $settings['open_tracking'] : false;
-		$open_tracking = Booliesh::get( $open_tracking );
-
-		if ( ! $open_tracking ) {
-			return;
-		}
-
-		$experiments = isset( $settings['enabled_experimental_features'] ) ? $settings['enabled_experimental_features']  : array();
-		$experiments['email_open_tracking'] = true;
-		$settings['enabled_experimental_features'] = $experiments;
-
-		update_option( 'gravitysmtp_config', json_encode( $settings ) );
 	}
 
 	public static function container() {
@@ -317,9 +257,6 @@ class Gravity_SMTP {
 
 			Feature_Flag_Manager::add( 'mailchimp_integration', 'Mailchimp Integration' );
 			Feature_Flag_Manager::enable_flag( 'mailchimp_integration' );
-
-			Feature_Flag_Manager::add( 'email_open_tracking', 'Email Open Tracking' );
-//			Feature_Flag_Manager::enable_flag( 'email_open_tracking' );
 
 			Feature_Flag_Manager::add( 'email_suppression', 'Email Suppression' );
 			Feature_Flag_Manager::enable_flag( 'email_suppression' );
@@ -407,10 +344,6 @@ class Gravity_SMTP {
 
 		if ( Feature_Flag_Manager::is_enabled( 'alerts_management' ) ) {
 			self::$container->add_provider( new Alerts_Service_Provider() );
-		}
-
-		if ( Feature_Flag_Manager::is_enabled( 'email_open_tracking' ) ) {
-			self::$container->add_provider( new Tracking_Service_Provider() );
 		}
 	}
 

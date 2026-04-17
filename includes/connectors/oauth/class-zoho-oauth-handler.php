@@ -39,16 +39,19 @@ class Zoho_Oauth_Handler extends Oauth_Handler_Base {
 		$code = FILTER_INPUT( INPUT_GET, 'code', FILTER_DEFAULT );
 
 		$args = array(
+			'grant_type'    => 'authorization_code',
+			'redirect_uri'  => $this->get_return_url( 'settings', true ),
+		);
+
+		$body = array(
 			'client_id'     => $this->data->get( Connector_Zoho::SETTING_CLIENT_ID, $this->namespace ),
 			'client_secret' => $this->data->get( Connector_Zoho::SETTING_CLIENT_SECRET, $this->namespace ),
-			'grant_type'    => 'authorization_code',
 			'code'          => $code,
-			'redirect_uri'  => $this->get_return_url( 'settings', true ),
 		);
 
 		$url = add_query_arg( $args, $url );
 
-		$request = wp_remote_post( $url, array( 'body' => array() ) );
+		$request = wp_remote_post( $url, array( 'body' => $body ) );
 
 		if ( (int) wp_remote_retrieve_response_code( $request ) !== 200  ) { //phpcs:ignore
 			return;

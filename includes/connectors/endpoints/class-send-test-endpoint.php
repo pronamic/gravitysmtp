@@ -194,7 +194,7 @@ class Send_Test_Endpoint extends Endpoint {
 			return array( 'force' => true, 'connector' => $connector );
 		}, 8, 2 );
 
-		$success = wp_mail( array( 'email' => $email ), __( 'Test Email from Gravity SMTP', 'gravitysmtp' ), $this->get_test_email_markup( $as_html ), $headers, array(), 'GravitySMTP Test' );
+		$success = wp_mail( array( 'email' => $email ), __( 'Test Email from Gravity SMTP', 'gravitysmtp' ), $this->get_test_email_markup( $as_html ), $headers, array() );
 
 		if ( $success === true ) {
 			wp_send_json_success( array( 'email' => $email ) );

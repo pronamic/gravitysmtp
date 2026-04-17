@@ -45,6 +45,7 @@ use Gravity_Forms\Gravity_SMTP\Models\Event_Model;
 use Gravity_Forms\Gravity_SMTP\Models\Hydrators\Hydrator_Factory;
 use Gravity_Forms\Gravity_SMTP\Models\Log_Details_Model;
 use Gravity_Forms\Gravity_SMTP\Models\Notifications_Model;
+use Gravity_Forms\Gravity_SMTP\Users\Roles;
 use Gravity_Forms\Gravity_SMTP\Utils\Booliesh;
 use Gravity_Forms\Gravity_Tools\Logging\DB_Logging_Provider;
 use Gravity_Forms\Gravity_Tools\Providers\Config_Collection_Service_Provider;
@@ -288,6 +289,12 @@ class Connector_Service_Provider extends Config_Service_Provider {
 
 		// @todo - replace this with some AJAX action via JS
 		add_action( 'admin_post_smtp_disconnect_google', function () use ( $container ) {
+			check_admin_referer( 'gsmtp_disconnect_google' );
+			// Bail if current user does not have the permissions to be here.
+			if ( ! current_user_can( Roles::EDIT_INTEGRATIONS ) ) {
+				return;
+			}
+
 			$configured_key = sprintf( 'gsmtp_connector_configured_%s', 'google' );
 
 			delete_transient( $configured_key );
@@ -346,6 +353,13 @@ class Connector_Service_Provider extends Config_Service_Provider {
 		} );
 
 		add_action( 'admin_post_smtp_disconnect_microsoft', function () use ( $container ) {
+			check_admin_referer( 'gsmtp_disconnect_microsoft' );
+
+			// Bail if current user does not have the permissions to be here.
+			if ( ! current_user_can( Roles::EDIT_INTEGRATIONS ) ) {
+				return;
+			}
+
 			$configured_key = sprintf( 'gsmtp_connector_configured_%s', 'microsoft' );
 
 			delete_transient( $configured_key );
@@ -404,6 +418,13 @@ class Connector_Service_Provider extends Config_Service_Provider {
 		} );
 
 		add_action( 'admin_post_smtp_disconnect_zoho', function () use ( $container ) {
+			check_admin_referer( 'gsmtp_disconnect_zoho' );
+
+			// Bail if current user does not have the permissions to be here.
+			if ( ! current_user_can( Roles::EDIT_INTEGRATIONS ) ) {
+				return;
+			}
+
 			$configured_key = sprintf( 'gsmtp_connector_configured_%s', 'zoho' );
 
 			delete_transient( $configured_key );

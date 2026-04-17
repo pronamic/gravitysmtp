@@ -557,7 +557,7 @@ class Connector_Google extends Connector_Base {
 				),
 			);
 
-			$disconnect_url = admin_url( 'admin-post.php?action=smtp_disconnect_google' );
+			$disconnect_url = add_query_arg( '_wpnonce', wp_create_nonce( 'gsmtp_disconnect_google' ), admin_url( 'admin-post.php?action=smtp_disconnect_google' ) );
 
 			$settings['fields'][] = array(
 				'component' => 'Text',

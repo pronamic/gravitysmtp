@@ -162,8 +162,6 @@ class ComposerStaticInit51abcdc9aff1abf99ba4af149c42688d
         'Gravity_Forms\\Gravity_SMTP\\Telemetry\\Telemetry_Handler' => __DIR__ . '/../..' . '/includes/telemetry/class-telemetry-handler.php',
         'Gravity_Forms\\Gravity_SMTP\\Telemetry\\Telemetry_Service_Provider' => __DIR__ . '/../..' . '/includes/telemetry/class-telemetry-service-provider.php',
         'Gravity_Forms\\Gravity_SMTP\\Telemetry\\Telemetry_Snapshot_Data' => __DIR__ . '/../..' . '/includes/telemetry/class-telemetry-snapshot-data.php',
-        'Gravity_Forms\\Gravity_SMTP\\Tracking\\Open_Pixel_Handler' => __DIR__ . '/../..' . '/includes/tracking/class-open-pixel-handler.php',
-        'Gravity_Forms\\Gravity_SMTP\\Tracking\\Tracking_Service_Provider' => __DIR__ . '/../..' . '/includes/tracking/class-tracking-service-provider.php',
         'Gravity_Forms\\Gravity_SMTP\\Translations\\TranslationsPress' => __DIR__ . '/../..' . '/includes/translations/class-translationspress.php',
         'Gravity_Forms\\Gravity_SMTP\\Translations\\Translations_Service_Provider' => __DIR__ . '/../..' . '/includes/translations/class-translations-service-provider.php',
         'Gravity_Forms\\Gravity_SMTP\\Users\\Members_Integration' => __DIR__ . '/../..' . '/includes/users/class-members-integration.php',

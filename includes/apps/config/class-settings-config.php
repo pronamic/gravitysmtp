@@ -5,12 +5,10 @@ namespace Gravity_Forms\Gravity_SMTP\Apps\Config;
 use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
 use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Plugin_Settings_Endpoint;
-use Gravity_Forms\Gravity_SMTP\Tracking\Tracking_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Users\Roles;
 use Gravity_Forms\Gravity_SMTP\Utils\Booliesh;
 use Gravity_Forms\Gravity_Tools\Config;
 use Gravity_Forms\Gravity_Tools\License\License_Statuses;
-use Gravity_Forms\Gravity_SMTP\Experimental_Features\Experiment_Features_Handler;
 use Gravity_Forms\Gravity_Tools\Updates\Updates_Service_Provider;
 
 class Settings_Config extends Config {
@@ -57,7 +55,6 @@ class Settings_Config extends Config {
 		$save_attachments_enabled = Booliesh::get( $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_SAVE_ATTACHMENTS_ENABLED, 'false' ) );
 		$email_log_retention      = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_RETENTION, 7 );
 		$max_records_value        = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_MAX_EVENT_RECORDS, 0 );
-		$open_tracking_enabled    = Booliesh::get( $plugin_data_store->get_plugin_setting( Tracking_Service_Provider::SETTING_OPEN_TRACKING, 'false' ) );
 
 		$debug_log_enabled   = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_DEBUG_LOG_ENABLED, 'false' );
 		$debug_log_enabled   = ! empty( $debug_log_enabled ) ? $debug_log_enabled !== 'false' : false;
@@ -104,8 +101,6 @@ class Settings_Config extends Config {
 								'experiments_box_content'                                       => esc_html__( 'These features are works-in-progress, so you may find some bugs along the way.', 'gravitysmtp' ),
 								'experiments_box_toggle_label'                                  => esc_html__( 'Alerts', 'gravitysmtp' ),
 								'experiments_box_toggle_help_text'                              => esc_html__( 'Get notified via webhook or SMS (Twilio) when emails fail to send.', 'gravitysmtp' ),
-								'experiments_box_toggle_label_opens'                            => esc_html__( 'Open Tracking', 'gravitysmtp' ),
-								'experiments_box_toggle_help_text_opens'                        => esc_html__( 'Track when recipients open emails sent by the system.', 'gravitysmtp' ),
 								'test_mode_box_heading'                                         => esc_html__( 'Test Mode', 'gravitysmtp' ),
 								/* translators: %s: opening and closing anchor tags */
 								'test_mode_box_content_1'                                       => esc_html__( 'When test mode is on, your site will not send out any emails. If you turn on %semail logging%s, all emails will be stored in the Email Logs.', 'gravitysmtp' ),
@@ -170,8 +165,6 @@ class Settings_Config extends Config {
 								'save_email_body_helper_text'                    => esc_html__( 'Store the email body for all emails sent from your site.', 'gravitysmtp' ),
 								'save_attachments_label'                         => esc_html__( 'Save Attachments', 'gravitysmtp' ),
 								'save_attachments_helper_text'                   => esc_html__( 'Store attachments on the server in the uploads folder.', 'gravitysmtp' ),
-								'track_open_label'                               => esc_html__( 'Open Email Tracking', 'gravitysmtp' ),
-								'track_open_helper_text'                         => esc_html__( 'Track viewed emails by recipients.', 'gravitysmtp' ),
 								'email_log_retention_label'                      => esc_html__( 'Log Retention Period', 'gravitysmtp' ),
 								'email_log_retention_helper_text'                => esc_html__( 'Email logs older than the selected timeframe will be permanently deleted.', 'gravitysmtp' ),
 								'email_log_max_records_helper_text'              => sprintf( $max_records_message, $max_records_value ),
@@ -218,7 +211,6 @@ class Settings_Config extends Config {
 							'log_retention_period_enabled' => ! Booliesh::get( $max_records_value ),
 							'max_records'                  => $max_records_value,
 							'max_records_set'              => Booliesh::get( $max_records_value ),
-							'open_tracking_enabled'        => $open_tracking_enabled,
 							'retention_options'            => $this->get_email_log_retention_options( $email_log_retention ),
 							'save_attachments_enabled'     => $save_attachments_enabled,
 							'save_email_body_enabled'      => $save_email_body_enabled,

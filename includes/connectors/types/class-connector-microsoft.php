@@ -535,7 +535,7 @@ class Connector_Microsoft extends Connector_Base {
 				),
 			);
 
-			$disconnect_url = admin_url( 'admin-post.php?action=smtp_disconnect_microsoft' );
+			$disconnect_url = add_query_arg( '_wpnonce', wp_create_nonce( 'gsmtp_disconnect_microsoft' ), admin_url( 'admin-post.php?action=smtp_disconnect_microsoft' ) );
 
 			$settings['fields'][] = array(
 				'component' => 'Text',

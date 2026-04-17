@@ -11,7 +11,6 @@ class Experiment_Features_Handler {
 
 	protected $experiments = array(
 		'alerts_management',
-		'email_open_tracking',
 	);
 
 	/**

@@ -16,8 +16,6 @@ class Event_Model {
 
 	protected $table_name = 'gravitysmtp_events';
 
-	protected $tracking_table_name = 'gravitysmtp_event_tracking';
-
 	/**
 	 * @var Hydrator_Factory $hydrator_factory
 	 */
@@ -78,12 +76,6 @@ class Event_Model {
 		return $wpdb->prefix . $this->table_name;
 	}
 
-	protected function get_tracking_table_name() {
-		global $wpdb;
-
-		return $wpdb->prefix . $this->tracking_table_name;
-	}
-
 	public function get_latest_id() {
 		return $this->latest_id;
 	}
@@ -103,9 +95,8 @@ class Event_Model {
 
 		$post_hydrate_filters = array();
 		$table_name           = $this->get_table_name();
-		$tracking_table_name  = $wpdb->prefix . 'gravitysmtp_event_tracking';
 		$values               = array();
-		$sql                  = "SELECT mt.*, et.opened, et.clicked FROM $table_name AS mt LEFT JOIN $tracking_table_name AS et ON et.event_id = mt.id WHERE ";
+		$sql                  = "SELECT mt.* FROM $table_name AS mt WHERE ";
 
 		foreach ( $where as $condition ) {
 
@@ -197,7 +188,6 @@ class Event_Model {
 	public function paginate( $page, $per_page, $max_date = false, $search_term = null, $search_type = null, $sort_by = null, $sort_order = null, $filters = array() ) {
 		global $wpdb;
 		$table_name          = $this->get_table_name();
-		$tracking_table_name = $wpdb->prefix . 'gravitysmtp_event_tracking';
 		$offset              = ( $page - 1 ) * $per_page;
 
 		if ( ! $max_date ) {
@@ -230,7 +220,7 @@ class Event_Model {
 		}
 
 		$prepared_sql = $wpdb->prepare(
-			"SELECT mt.*, et.opened, et.clicked FROM $table_name AS mt LEFT JOIN $tracking_table_name AS et ON et.event_id = mt.id WHERE $search_clause $filter_clause `date_created` <= %s ORDER BY `$sort_by` $sort_order LIMIT %d, %d",
+			"SELECT mt.* FROM $table_name AS mt WHERE $search_clause $filter_clause `date_created` <= %s ORDER BY `$sort_by` $sort_order LIMIT %d, %d",
 			$max_date,
 			$offset,
 			$per_page
@@ -425,18 +415,6 @@ class Event_Model {
 				$row['service'] = 'php';
 			}
 
-			if ( ! isset( $row['opened'] ) || is_null( $row['opened'] ) ) {
-				$row['opened'] = __( 'No', 'gravitysmtp' );
-			} else {
-				$row['opened'] = $row['opened'] ? __( 'Yes', 'gravitysmtp' ) : __( 'No', 'gravitysmtp' );
-			}
-
-			if ( ! isset( $row['clicked'] ) || is_null( $row['clicked'] ) ) {
-				$row['clicked'] = __( 'No', 'gravitysmtp' );
-			} else {
-				$row['clicked'] = $row['clicked'] ? __( 'Yes', 'gravitysmtp' ) : __( 'No', 'gravitysmtp' );
-			}
-
 			$extra = strpos( $row['extra'], '{' ) === 0 ? json_decode( $row['extra'], true ) : unserialize( $row['extra'] );
 
 			try {
@@ -586,22 +564,6 @@ class Event_Model {
 		return $return;
 	}
 
-	public function get_opens_for_period( $start, $end ) {
-		global $wpdb;
-
-		$table_name          = $this->get_table_name();
-		$tracking_table_name = $wpdb->prefix . 'gravitysmtp_event_tracking';
-
-		$sql = $wpdb->prepare( "SELECT count( * ) AS total FROM ( SELECT * FROM $table_name WHERE date_created >= %s AND date_created <= %s ORDER BY date_created DESC ) AS timeboxed LEFT JOIN $tracking_table_name AS tt ON tt.event_id = timeboxed.id WHERE tt.opened = 1", get_gmt_from_date( $start ), get_gmt_from_date( $end ) );
-
-		$results = $wpdb->get_results( $sql, ARRAY_A );
-
-		if ( empty( $results ) ) {
-			return 0;
-		}
-
-		return (int) $results[0]['total'];
-	}
 
 	public function get_chart_data( $start, $end ) {
 //		switch ( $period ) {
@@ -643,60 +605,6 @@ class Event_Model {
 		$save_email_body = $this->opts->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_SAVE_EMAIL_BODY_ENABLED, 'true' );
 
 		return empty( $save_email_body ) ? true : $save_email_body !== 'false';
-	}
-
-	public function set_clicked( $email_id, $email_address, $is = 1 ) {
-		global $wpdb;
-
-		$table_name = $this->get_tracking_table_name();
-
-		$record            = $this->get_existing_tracking_entry( $email_id, $email_address );
-		$record['clicked'] = $is;
-
-		$this->insert_tracking_record( $record );
-	}
-
-	public function set_opened( $email_id, $email_address, $is = 1 ) {
-		global $wpdb;
-
-		$table_name = $this->get_tracking_table_name();
-
-		$record           = $this->get_existing_tracking_entry( $email_id, $email_address );
-		$record['opened'] = $is;
-
-		$this->insert_tracking_record( $record );
-	}
-
-	private function insert_tracking_record( $record ) {
-		global $wpdb;
-
-		$table_name = $this->get_tracking_table_name();
-
-		$wpdb->replace(
-			$table_name,
-			$record
-		);
-	}
-
-	private function get_existing_tracking_entry( $email_id, $email_address ) {
-		global $wpdb;
-
-		$table_name = $this->get_tracking_table_name();
-
-		$sql = $wpdb->prepare( "SELECT * FROM $table_name WHERE event_id = %s AND email = %s", $email_id, $email_address );
-
-		$results = $wpdb->get_results( $sql, ARRAY_A );
-
-		if ( empty( $results ) ) {
-			return array(
-				'event_id' => $email_id,
-				'email'    => $email_address,
-				'opened'   => 0,
-				'clicked'  => 0,
-			);
-		}
-
-		return $results[0];
 	}
 
 }

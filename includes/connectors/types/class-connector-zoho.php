@@ -548,7 +548,7 @@ class Connector_Zoho extends Connector_Base {
 				),
 			);
 
-			$disconnect_url = admin_url( 'admin-post.php?action=smtp_disconnect_zoho' );
+			$disconnect_url = add_query_arg( '_wpnonce', wp_create_nonce( 'gsmtp_disconnect_zoho' ), admin_url( 'admin-post.php?action=smtp_disconnect_zoho' ) );
 
 			$settings['fields'][] = array(
 				'component' => 'Text',

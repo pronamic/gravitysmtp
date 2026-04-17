@@ -157,8 +157,6 @@ return array(
     'Gravity_Forms\\Gravity_SMTP\\Telemetry\\Telemetry_Handler' => $baseDir . '/includes/telemetry/class-telemetry-handler.php',
     'Gravity_Forms\\Gravity_SMTP\\Telemetry\\Telemetry_Service_Provider' => $baseDir . '/includes/telemetry/class-telemetry-service-provider.php',
     'Gravity_Forms\\Gravity_SMTP\\Telemetry\\Telemetry_Snapshot_Data' => $baseDir . '/includes/telemetry/class-telemetry-snapshot-data.php',
-    'Gravity_Forms\\Gravity_SMTP\\Tracking\\Open_Pixel_Handler' => $baseDir . '/includes/tracking/class-open-pixel-handler.php',
-    'Gravity_Forms\\Gravity_SMTP\\Tracking\\Tracking_Service_Provider' => $baseDir . '/includes/tracking/class-tracking-service-provider.php',
     'Gravity_Forms\\Gravity_SMTP\\Translations\\TranslationsPress' => $baseDir . '/includes/translations/class-translationspress.php',
     'Gravity_Forms\\Gravity_SMTP\\Translations\\Translations_Service_Provider' => $baseDir . '/includes/translations/class-translations-service-provider.php',
     'Gravity_Forms\\Gravity_SMTP\\Users\\Members_Integration' => $baseDir . '/includes/users/class-members-integration.php',

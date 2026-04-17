@@ -298,6 +298,7 @@ abstract class Connector_Base {
 
 	protected function set_email_log_data( $subject, $message, $to, $from, $headers, $attachments, $source, $params = array() ) {
 		unset( $params['body'] );
+		unset( $params['headers']['Authorization'] );
 
 		$this->events->update(
 			array(
@@ -384,11 +385,6 @@ abstract class Connector_Base {
 			$from_name = ! empty( $force_from_name )
 				? $this->get_setting( self::SETTING_FROM_NAME, '' )
 				: $this->get_att( 'from_name', '' );
-		}
-
-		// Some providers have limits on from name; truncate to 30 characters.
-		if ( ! empty( $from_name ) ) {
-			$from_name = substr( $from_name, 0, 30 );
 		}
 
 		// From was not passed; use admin email
@@ -690,12 +686,6 @@ abstract class Connector_Base {
 			return false;
 		}
 
-		$locked = $this->get_locked_settings();
-
-		if ( ! in_array( sprintf( '%s_%s', $this->name, $setting_name ), $locked ) ) {
-			return false;
-		}
-
 		return true;
 	}
 
@@ -747,12 +737,20 @@ abstract class Connector_Base {
 					continue;
 				}
 
+				if ( empty( $fields['fields'][ $idx ]['props']['value'] ) ) {
+					continue;
+				}
+
 				$fields['fields'][$idx]['props']['value'] = self::OBFUSCATED_STRING;
 			}
 		}
 
 		foreach( $data as $key => $value ) {
 			if ( ! $this->setting_should_be_obfuscated( $key ) ) {
+				continue;
+			}
+
+			if ( empty( $value ) ) {
 				continue;
 			}
 

@@ -9,7 +9,6 @@ use Gravity_Forms\Gravity_SMTP\Data_Store\Data_Store_Router;
 use Gravity_Forms\Gravity_SMTP\Feature_Flags\Feature_Flag_Manager;
 use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
 use Gravity_Forms\Gravity_SMTP\Models\Event_Model;
-use Gravity_Forms\Gravity_SMTP\Tracking\Tracking_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Utils\Booliesh;
 use Gravity_Forms\Gravity_Tools\Config;
 use Gravity_Forms\Gravity_Tools\Config_Data_Parser;
@@ -149,10 +148,9 @@ class Dashboard_Config extends Config {
 		return array(
 			'totals'   => array(
 				'headings' => array(
-					'emails'      => __( 'Processed', 'gravitysmtp' ),
-					'sent'        => __( 'Sent', 'gravitysmtp' ),
-					'percentOpen' => __( 'Opened', 'gravitysmtp' ),
-					'failed'      => __( 'Failed', 'gravitysmtp' ),
+					'emails' => __( 'Processed', 'gravitysmtp' ),
+					'sent'   => __( 'Sent', 'gravitysmtp' ),
+					'failed' => __( 'Failed', 'gravitysmtp' ),
 				),
 			),
 			'stats' => array(
@@ -187,26 +185,20 @@ class Dashboard_Config extends Config {
 	}
 
 	protected function data_values() {
-		$container         = Gravity_SMTP::container();
-		$plugin_data_store = $container->get( Connector_Service_Provider::DATA_STORE_ROUTER );
-
-		$totals                = $this->get_email_totals();
-		$open_tracking_enabled = $plugin_data_store->get_plugin_setting( Tracking_Service_Provider::SETTING_OPEN_TRACKING, 'false' );
-		$open_tracking_enabled = Booliesh::get( $open_tracking_enabled );
+		$totals = $this->get_email_totals();
 
 		return array(
-			'totals'                => $totals,
-			'chart'                 => $this->get_chart_data(),
-			'open_tracking_enabled' => Feature_Flag_Manager::is_enabled( 'email_open_tracking' ) && $open_tracking_enabled,
-			'date_ranges'           => array(
+			'totals'           => $totals,
+			'chart'            => $this->get_chart_data(),
+			'date_ranges'      => array(
 				'options'       => $this->get_date_options(),
 				'initial_value' => $this->get_initial_range_value_from_data( true ),
 				'min_start'     => $this->model->get_earliest_event_date(),
 				'max_end'       => get_date_from_gmt( $this->end ),
 			),
-			'integrations_url'      => admin_url( 'admin.php?page=gravitysmtp-settings&tab=integrations&integration=%1$s' ),
-			'source_icons_url'      => trailingslashit( GF_GRAVITY_SMTP_PLUGIN_URL ) . 'assets/images/plugin-icons/',
-			'rankings'              => array(
+			'integrations_url' => admin_url( 'admin.php?page=gravitysmtp-settings&tab=integrations&integration=%1$s' ),
+			'source_icons_url' => trailingslashit( GF_GRAVITY_SMTP_PLUGIN_URL ) . 'assets/images/plugin-icons/',
+			'rankings'         => array(
 				'your_integrations' => $this->get_your_integrations_info(),
 				'sources'           => $this->get_top_sending_sources(),
 				'recipients'        => $this->get_top_email_recipients(),
@@ -432,16 +424,13 @@ class Dashboard_Config extends Config {
 	}
 
 	protected function get_email_totals() {
-		$stats        = $this->model->get_event_stats( $this->start, $this->end );
-		$opens        = $this->model->get_opens_for_period( $this->start, $this->end );
-		$total        = array_sum( $stats );
-		$open_decimal = $total > 0 ? round( $opens / $total, 2 ) : 0;
+		$stats = $this->model->get_event_stats( $this->start, $this->end );
+		$total = array_sum( $stats );
 
 		return array(
-			'emails'      => $total,
-			'sent'        => isset( $stats['sent'] ) ? $stats['sent'] : 0,
-			'percentOpen' => (int) ( $open_decimal * 100 ),
-			'failed'      => isset( $stats['failed'] ) ? $stats['failed'] : 0,
+			'emails' => $total,
+			'sent'   => isset( $stats['sent'] ) ? $stats['sent'] : 0,
+			'failed' => isset( $stats['failed'] ) ? $stats['failed'] : 0,
 		);
 	}
 

@@ -6,7 +6,6 @@ use Gravity_Forms\Gravity_SMTP\Alerts\Endpoints\Save_Alerts_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Plugin_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Experimental_Features\Experiment_Features_Handler;
-use Gravity_Forms\Gravity_SMTP\Tracking\Tracking_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
 use Gravity_Forms\Gravity_SMTP\Users\Roles;
 use Gravity_Forms\Gravity_SMTP\Utils\Booliesh;
@@ -148,7 +147,6 @@ class Apps_Config extends Config {
 						'notifications_email_digest_enabled'      => Save_Plugin_Settings_Endpoint::PARAM_NOTIFICATIONS_EMAIL_DIGEST_ENABLED,
 						'notifications_email_digest_frequency'    => Save_Plugin_Settings_Endpoint::PARAM_NOTIFICATIONS_EMAIL_DIGEST_FREQUENCY,
 						'notify_when_email_sending_fails_enabled' => Save_Plugin_Settings_Endpoint::PARAM_NOTIFY_WHEN_EMAIL_SENDING_FAILS_ENABLED,
-						'open_tracking'                           => Tracking_Service_Provider::SETTING_OPEN_TRACKING,
 						'save_attachments_enabled'                => Save_Plugin_Settings_Endpoint::PARAM_SAVE_ATTACHMENTS_ENABLED,
 						'save_email_body_enabled'                 => Save_Plugin_Settings_Endpoint::PARAM_SAVE_EMAIL_BODY_ENABLED,
 						'slack_alerts'                            => Save_Alerts_Settings_Endpoint::PARAM_SLACK_ALERTS,

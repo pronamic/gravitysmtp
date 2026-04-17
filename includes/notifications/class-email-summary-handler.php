@@ -50,10 +50,14 @@ class Email_Summary_Handler {
 		$markup = file_get_contents( trailingslashit( __DIR__ ) . '../../email-templates/email-digest-template.html' );
 		$data   = array();
 
-		$user         = wp_get_current_user();
+		$user        = wp_get_current_user();
+		$admin_email = get_option( 'admin_email' );
+		if ( ! $user->exists() ) {
+			$user = get_user_by( 'email', $admin_email );
+		}
 		$data['user'] = array(
-			'name'   => $user->display_name ? $user->display_name : $user->user_login,
-			'avatar' => get_avatar_url( $user->ID, array( 'size' => 108 ) ),
+			'name'   => $user ? ( $user->display_name ? $user->display_name : $user->user_login ) : __( 'Admin', 'gravitysmtp' ),
+			'avatar' => get_avatar_url( $user ? $user->ID : $admin_email, array( 'size' => 108 ) ),
 		);
 
 		$data['year']      = date( 'Y' );
@@ -167,10 +171,11 @@ class Email_Summary_Handler {
 			),
 		);
 
+		$to_email = $user ? $user->user_email : $admin_email;
+
 		$template     = new Email_Templatizer( $markup );
 		$email_markup = $template->render( $data );
 
-		$admin_email  = get_option( 'admin_email' );
 		$content_type = 'text/html';
 
 		$headers = array(
@@ -178,7 +183,7 @@ class Email_Summary_Handler {
 			'from'         => 'From: ' . $admin_email,
 		);
 
-		wp_mail( array( 'email' => $admin_email ), __( 'Your Gravity SMTP Email Digest', 'gravitysmtp' ), $email_markup, $headers, array(), 'Gravity SMTP Email Digest' );
+		wp_mail( array( 'email' => $to_email ), __( 'Your Gravity SMTP Email Digest', 'gravitysmtp' ), $email_markup, $headers, array() );
 	}
 
 	protected function get_email_basic_stats() {

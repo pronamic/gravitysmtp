@@ -10,7 +10,6 @@ use Gravity_Forms\Gravity_SMTP\Enums\Integration_Enum;
 use Gravity_Forms\Gravity_SMTP\Enums\Status_Enum;
 use Gravity_Forms\Gravity_SMTP\Feature_Flags\Feature_Flag_Manager;
 use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
-use Gravity_Forms\Gravity_SMTP\Tracking\Tracking_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Users\Roles;
 use Gravity_Forms\Gravity_Tools\Config;
 use Gravity_Forms\Gravity_SMTP\Utils\Booliesh;
@@ -163,13 +162,6 @@ class Email_Log_Config extends Config {
 						'size'    => 'text-sm',
 					),
 				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
 				'date'    => array(
 					'component' => 'Text',
 					'props'     => array(
@@ -181,13 +173,6 @@ class Email_Log_Config extends Config {
 					'component' => 'Text',
 					'props'     => array(
 						'content' => 'WooCommerce',
-						'size'    => 'text-sm',
-					),
-				),
-				'opened'  => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'yes',
 						'size'    => 'text-sm',
 					),
 				),
@@ -223,13 +208,6 @@ class Email_Log_Config extends Config {
 						'size'    => 'text-sm',
 					),
 				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
 				'date'    => array(
 					'component' => 'Text',
 					'props'     => array(
@@ -241,13 +219,6 @@ class Email_Log_Config extends Config {
 					'component' => 'Text',
 					'props'     => array(
 						'content' => 'WooCommerce',
-						'size'    => 'text-sm',
-					),
-				),
-				'opened'  => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'yes',
 						'size'    => 'text-sm',
 					),
 				),
@@ -282,20 +253,6 @@ class Email_Log_Config extends Config {
 						'size'    => 'text-sm',
 					),
 				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
 				'date'    => array(
 					'component' => 'Text',
 					'props'     => array(
@@ -341,20 +298,6 @@ class Email_Log_Config extends Config {
 						'size'    => 'text-sm',
 					),
 				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
 				'date'    => array(
 					'component' => 'Text',
 					'props'     => array(
@@ -400,20 +343,6 @@ class Email_Log_Config extends Config {
 						'size'    => 'text-sm',
 					),
 				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
 				'date'    => array(
 					'component' => 'Text',
 					'props'     => array(
@@ -460,20 +389,6 @@ class Email_Log_Config extends Config {
 						'size'    => 'text-sm',
 					),
 				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
 				'date'    => array(
 					'component' => 'Text',
 					'props'     => array(
@@ -519,20 +434,6 @@ class Email_Log_Config extends Config {
 						'size'    => 'text-sm',
 					),
 				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
 				'date'    => array(
 					'component' => 'Text',
 					'props'     => array(
@@ -578,20 +479,6 @@ class Email_Log_Config extends Config {
 						'size'    => 'text-sm',
 					),
 				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
 				'date'    => array(
 					'component' => 'Text',
 					'props'     => array(
@@ -637,20 +524,6 @@ class Email_Log_Config extends Config {
 						'size'    => 'text-sm',
 					),
 				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
 				'date'    => array(
 					'component' => 'Text',
 					'props'     => array(
@@ -697,20 +570,6 @@ class Email_Log_Config extends Config {
 						'size'    => 'text-sm',
 					),
 				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
 				'date'    => array(
 					'component' => 'Text',
 					'props'     => array(
@@ -756,79 +615,6 @@ class Email_Log_Config extends Config {
 						'size'    => 'text-sm',
 					),
 				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
-				'date'    => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'May 23, 2023 at 1:50pm',
-						'size'    => 'text-sm',
-					),
-				),
-				'source'  => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'WooCommerce',
-						'size'    => 'text-sm',
-					),
-				),
-				'actions' => $grid_actions,
-			),
-			array(
-				'subject' => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'Thanks for contacting us',
-						'size'    => 'text-sm',
-						'weight'  => 'medium',
-					),
-				),
-				'status'  => array(
-					'component' => 'StatusIndicator',
-					'props'     => array(
-						'label' => 'Sent',
-					),
-				),
-				'from'    => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'aaron@rocketgenius.com',
-						'size'    => 'text-sm',
-					),
-				),
-				'to'      => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'someone@elseoutthere.com',
-						'size'    => 'text-sm',
-					),
-				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
 				'date'    => array(
 					'component' => 'Text',
 					'props'     => array(
@@ -874,20 +660,6 @@ class Email_Log_Config extends Config {
 						'size'    => 'text-sm',
 					),
 				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
 				'date'    => array(
 					'component' => 'Text',
 					'props'     => array(
@@ -934,20 +706,6 @@ class Email_Log_Config extends Config {
 						'size'    => 'text-sm',
 					),
 				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
 				'date'    => array(
 					'component' => 'Text',
 					'props'     => array(
@@ -993,20 +751,6 @@ class Email_Log_Config extends Config {
 						'size'    => 'text-sm',
 					),
 				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
 				'date'    => array(
 					'component' => 'Text',
 					'props'     => array(
@@ -1052,20 +796,6 @@ class Email_Log_Config extends Config {
 						'size'    => 'text-sm',
 					),
 				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
 				'date'    => array(
 					'component' => 'Text',
 					'props'     => array(
@@ -1111,20 +841,6 @@ class Email_Log_Config extends Config {
 						'size'    => 'text-sm',
 					),
 				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
 				'date'    => array(
 					'component' => 'Text',
 					'props'     => array(
@@ -1171,20 +887,6 @@ class Email_Log_Config extends Config {
 						'size'    => 'text-sm',
 					),
 				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
 				'date'    => array(
 					'component' => 'Text',
 					'props'     => array(
@@ -1230,20 +932,6 @@ class Email_Log_Config extends Config {
 						'size'    => 'text-sm',
 					),
 				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
 				'date'    => array(
 					'component' => 'Text',
 					'props'     => array(
@@ -1289,20 +977,6 @@ class Email_Log_Config extends Config {
 						'size'    => 'text-sm',
 					),
 				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
 				'date'    => array(
 					'component' => 'Text',
 					'props'     => array(
@@ -1348,20 +1022,6 @@ class Email_Log_Config extends Config {
 						'size'    => 'text-sm',
 					),
 				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
 				'date'    => array(
 					'component' => 'Text',
 					'props'     => array(
@@ -1408,20 +1068,6 @@ class Email_Log_Config extends Config {
 						'size'    => 'text-sm',
 					),
 				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
 				'date'    => array(
 					'component' => 'Text',
 					'props'     => array(
@@ -1467,20 +1113,6 @@ class Email_Log_Config extends Config {
 						'size'    => 'text-sm',
 					),
 				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
 				'date'    => array(
 					'component' => 'Text',
 					'props'     => array(
@@ -1526,731 +1158,6 @@ class Email_Log_Config extends Config {
 						'size'    => 'text-sm',
 					),
 				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
-				'date'    => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'August 13, 2023 at 3:50am',
-						'size'    => 'text-sm',
-					),
-				),
-				'source'  => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'WordPress',
-						'size'    => 'text-sm',
-					),
-				),
-				'actions' => $grid_actions,
-			),
-			array(
-				'subject' => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'New WordPress User Registration',
-						'size'    => 'text-sm',
-						'weight'  => 'medium',
-					),
-				),
-				'status'  => array(
-					'component' => 'StatusIndicator',
-					'props'     => array(
-						'label' => 'Sent',
-					),
-				),
-				'from'    => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'email@rocketgenius.com',
-						'size'    => 'text-sm',
-					),
-				),
-				'to'      => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'someone@outthere.com',
-						'size'    => 'text-sm',
-					),
-				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
-				'date'    => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'February 23, 2023 at 1:50pm',
-						'size'    => 'text-sm',
-					),
-				),
-				'source'  => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'WooCommerce',
-						'size'    => 'text-sm',
-					),
-				),
-				'actions' => $grid_actions,
-			),
-			array(
-				'subject' => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'Thanks for contacting us',
-						'size'    => 'text-sm',
-						'weight'  => 'medium',
-					),
-				),
-				'status'  => array(
-					'component' => 'StatusIndicator',
-					'props'     => array(
-						'label'  => 'Pending',
-						'status' => 'inactive',
-					),
-				),
-				'from'    => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'sam@rocketgenius.com',
-						'size'    => 'text-sm',
-					),
-				),
-				'to'      => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'someone@elseoutthere.com',
-						'size'    => 'text-sm',
-					),
-				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
-				'date'    => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'February 23, 2023 at 1:50pm',
-						'size'    => 'text-sm',
-					),
-				),
-				'source'  => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'WooCommerce',
-						'size'    => 'text-sm',
-					),
-				),
-				'actions' => $grid_actions,
-			),
-			array(
-				'subject' => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'Thanks for contacting us',
-						'size'    => 'text-sm',
-						'weight'  => 'medium',
-					),
-				),
-				'status'  => array(
-					'component' => 'StatusIndicator',
-					'props'     => array(
-						'label' => 'Sent',
-					),
-				),
-				'from'    => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'aaron@rocketgenius.com',
-						'size'    => 'text-sm',
-					),
-				),
-				'to'      => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'someone@elseoutthere.com',
-						'size'    => 'text-sm',
-					),
-				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
-				'date'    => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'May 23, 2023 at 1:50pm',
-						'size'    => 'text-sm',
-					),
-				),
-				'source'  => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'WooCommerce',
-						'size'    => 'text-sm',
-					),
-				),
-				'actions' => $grid_actions,
-			),
-			array(
-				'subject' => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'Thanks for contacting us',
-						'size'    => 'text-sm',
-						'weight'  => 'medium',
-					),
-				),
-				'status'  => array(
-					'component' => 'StatusIndicator',
-					'props'     => array(
-						'label' => 'Sent',
-					),
-				),
-				'from'    => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'aaron@rocketgenius.com',
-						'size'    => 'text-sm',
-					),
-				),
-				'to'      => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'someone@elseoutthere.com',
-						'size'    => 'text-sm',
-					),
-				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
-				'date'    => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'August 13, 2023 at 3:50am',
-						'size'    => 'text-sm',
-					),
-				),
-				'source'  => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'WordPress',
-						'size'    => 'text-sm',
-					),
-				),
-				'actions' => $grid_actions,
-			),
-			array(
-				'subject' => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'New WordPress User Registration',
-						'size'    => 'text-sm',
-						'weight'  => 'medium',
-					),
-				),
-				'status'  => array(
-					'component' => 'StatusIndicator',
-					'props'     => array(
-						'label' => 'Sent',
-					),
-				),
-				'from'    => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'email@rocketgenius.com',
-						'size'    => 'text-sm',
-					),
-				),
-				'to'      => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'someone@outthere.com',
-						'size'    => 'text-sm',
-					),
-				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
-				'date'    => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'February 23, 2023 at 1:50pm',
-						'size'    => 'text-sm',
-					),
-				),
-				'source'  => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'WooCommerce',
-						'size'    => 'text-sm',
-					),
-				),
-				'actions' => $grid_actions,
-			),
-			array(
-				'subject' => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'Thanks for contacting us',
-						'size'    => 'text-sm',
-						'weight'  => 'medium',
-					),
-				),
-				'status'  => array(
-					'component' => 'StatusIndicator',
-					'props'     => array(
-						'label'  => 'Pending',
-						'status' => 'inactive',
-					),
-				),
-				'from'    => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'sam@rocketgenius.com',
-						'size'    => 'text-sm',
-					),
-				),
-				'to'      => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'someone@elseoutthere.com',
-						'size'    => 'text-sm',
-					),
-				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
-				'date'    => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'February 23, 2023 at 1:50pm',
-						'size'    => 'text-sm',
-					),
-				),
-				'source'  => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'WooCommerce',
-						'size'    => 'text-sm',
-					),
-				),
-				'actions' => $grid_actions,
-			),
-			array(
-				'subject' => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'Thanks for contacting us',
-						'size'    => 'text-sm',
-						'weight'  => 'medium',
-					),
-				),
-				'status'  => array(
-					'component' => 'StatusIndicator',
-					'props'     => array(
-						'label' => 'Sent',
-					),
-				),
-				'from'    => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'aaron@rocketgenius.com',
-						'size'    => 'text-sm',
-					),
-				),
-				'to'      => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'someone@elseoutthere.com',
-						'size'    => 'text-sm',
-					),
-				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
-				'date'    => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'May 23, 2023 at 1:50pm',
-						'size'    => 'text-sm',
-					),
-				),
-				'source'  => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'WooCommerce',
-						'size'    => 'text-sm',
-					),
-				),
-				'actions' => $grid_actions,
-			),
-			array(
-				'subject' => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'Thanks for contacting us',
-						'size'    => 'text-sm',
-						'weight'  => 'medium',
-					),
-				),
-				'status'  => array(
-					'component' => 'StatusIndicator',
-					'props'     => array(
-						'label' => 'Sent',
-					),
-				),
-				'from'    => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'aaron@rocketgenius.com',
-						'size'    => 'text-sm',
-					),
-				),
-				'to'      => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'someone@elseoutthere.com',
-						'size'    => 'text-sm',
-					),
-				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
-				'date'    => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'August 13, 2023 at 3:50am',
-						'size'    => 'text-sm',
-					),
-				),
-				'source'  => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'WordPress',
-						'size'    => 'text-sm',
-					),
-				),
-				'actions' => $grid_actions,
-			),
-			array(
-				'subject' => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'New WordPress User Registration',
-						'size'    => 'text-sm',
-						'weight'  => 'medium',
-					),
-				),
-				'status'  => array(
-					'component' => 'StatusIndicator',
-					'props'     => array(
-						'label' => 'Sent',
-					),
-				),
-				'from'    => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'email@rocketgenius.com',
-						'size'    => 'text-sm',
-					),
-				),
-				'to'      => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'someone@outthere.com',
-						'size'    => 'text-sm',
-					),
-				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
-				'date'    => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'February 23, 2023 at 1:50pm',
-						'size'    => 'text-sm',
-					),
-				),
-				'source'  => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'WooCommerce',
-						'size'    => 'text-sm',
-					),
-				),
-				'actions' => $grid_actions,
-			),
-			array(
-				'subject' => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'Thanks for contacting us',
-						'size'    => 'text-sm',
-						'weight'  => 'medium',
-					),
-				),
-				'status'  => array(
-					'component' => 'StatusIndicator',
-					'props'     => array(
-						'label'  => 'Pending',
-						'status' => 'inactive',
-					),
-				),
-				'from'    => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'sam@rocketgenius.com',
-						'size'    => 'text-sm',
-					),
-				),
-				'to'      => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'someone@elseoutthere.com',
-						'size'    => 'text-sm',
-					),
-				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
-				'date'    => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'February 23, 2023 at 1:50pm',
-						'size'    => 'text-sm',
-					),
-				),
-				'source'  => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'WooCommerce',
-						'size'    => 'text-sm',
-					),
-				),
-				'actions' => $grid_actions,
-			),
-			array(
-				'subject' => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'Thanks for contacting us',
-						'size'    => 'text-sm',
-						'weight'  => 'medium',
-					),
-				),
-				'status'  => array(
-					'component' => 'StatusIndicator',
-					'props'     => array(
-						'label' => 'Sent',
-					),
-				),
-				'from'    => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'aaron@rocketgenius.com',
-						'size'    => 'text-sm',
-					),
-				),
-				'to'      => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'someone@elseoutthere.com',
-						'size'    => 'text-sm',
-					),
-				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
-				'date'    => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'May 23, 2023 at 1:50pm',
-						'size'    => 'text-sm',
-					),
-				),
-				'source'  => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'WooCommerce',
-						'size'    => 'text-sm',
-					),
-				),
-				'actions' => $grid_actions,
-			),
-			array(
-				'subject' => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'Thanks for contacting us',
-						'size'    => 'text-sm',
-						'weight'  => 'medium',
-					),
-				),
-				'status'  => array(
-					'component' => 'StatusIndicator',
-					'props'     => array(
-						'label' => 'Sent',
-					),
-				),
-				'from'    => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'aaron@rocketgenius.com',
-						'size'    => 'text-sm',
-					),
-				),
-				'to'      => array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => 'someone@elseoutthere.com',
-						'size'    => 'text-sm',
-					),
-				),
-//				'opened'  => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'yes',
-//						'size'    => 'text-sm',
-//					),
-//				),
-//				'clicked' => array(
-//					'component' => 'Text',
-//					'props'     => array(
-//						'content' => 'no',
-//						'size'    => 'text-sm',
-//					),
-//				),
 				'date'    => array(
 					'component' => 'Text',
 					'props'     => array(
@@ -2285,9 +1192,6 @@ class Email_Log_Config extends Config {
 
 	public function get_columns() {
 		$plugin_data_store = Gravity_SMTP::container()->get( Connector_Service_Provider::DATA_STORE_ROUTER );
-
-		$open_tracking_enabled = $plugin_data_store->get_plugin_setting( Tracking_Service_Provider::SETTING_OPEN_TRACKING, 'false' );
-		$open_tracking_enabled = Booliesh::get( $open_tracking_enabled );
 
 		$columns = array(
 			array(
@@ -2326,21 +1230,6 @@ class Email_Log_Config extends Config {
 				'sortable'        => true,
 			),
 		);
-
-		if ( Feature_Flag_Manager::is_enabled( 'email_open_tracking' ) && $open_tracking_enabled ) {
-			$columns[] = array(
-				'component'       => 'Text',
-				'hideAt'          => 640,
-				'hideWhenLoading' => false,
-				'key'             => 'opened',
-				'props'           => array(
-					'content' => esc_html__( 'Opened', 'gravitysmtp' ),
-					'size'    => 'text-sm',
-					'weight'  => 'medium',
-				),
-				'sortable'        => true,
-			);
-		}
 
 		$columns[] = array(
 			'component'       => 'Text',
@@ -2400,19 +1289,12 @@ class Email_Log_Config extends Config {
 	public function get_column_style_props() {
 		$plugin_data_store = Gravity_SMTP::container()->get( Connector_Service_Provider::DATA_STORE_ROUTER );
 
-		$open_tracking_enabled = $plugin_data_store->get_plugin_setting( Tracking_Service_Provider::SETTING_OPEN_TRACKING, 'false' );
-		$open_tracking_enabled = Booliesh::get( $open_tracking_enabled );
-
 		$props = array(
 			'subject'     => array( 'flexBasis' => '292px' ),
 			'status'      => array( 'flex' => '0 0 122px' ),
 			'from'        => array( 'flexBasis' => '160px' ),
 			'to'          => array( 'flexBasis' => '160px' ),
 		);
-
-		if ( Feature_Flag_Manager::is_enabled( 'email_open_tracking' ) && $open_tracking_enabled ) {
-			$props['opened'] = array( 'flex' => '0 0 90px' );
-		}
 
 		// Continue adding the remaining entries, starting with 'source'
 		$props['source']      = array( 'flexBasis' => '104px' );
@@ -2670,11 +1552,6 @@ class Email_Log_Config extends Config {
 		$search_type = filter_input( INPUT_GET, 'search_type' );
 		$filters     = filter_input( INPUT_GET, 'filters' );
 
-		$plugin_data_store = Gravity_SMTP::container()->get( Connector_Service_Provider::DATA_STORE_ROUTER );
-
-		$open_tracking_enabled = $plugin_data_store->get_plugin_setting( Tracking_Service_Provider::SETTING_OPEN_TRACKING, 'false' );
-		$open_tracking_enabled = Booliesh::get( $open_tracking_enabled );
-
 		if ( ! empty( $search_term ) ) {
 			$search_term = htmlspecialchars( $search_term );
 		}
@@ -2702,7 +1579,6 @@ class Email_Log_Config extends Config {
 			'ajax_grid_pagination_url' => trailingslashit( GF_GRAVITY_SMTP_PLUGIN_URL ) . 'includes/logging/endpoints/get-paginated-items.php',
 			'base_url'                 => admin_url( 'admin.php?page=gravitysmtp-activity-log' ),
 			'nav_item_param_key'       => 'tab',
-			'open_tracking_enabled'    => Feature_Flag_Manager::is_enabled( 'email_open_tracking' ) && $open_tracking_enabled,
 			'initial_row_count'        => $count,
 			'initial_load_timestamp'   => current_time( 'mysql', true ),
 			'rows_per_page'            => $per_page,
@@ -2730,9 +1606,6 @@ class Email_Log_Config extends Config {
 		$emails            = Gravity_SMTP::container()->get( Connector_Service_Provider::EVENT_MODEL );
 		$recipient_parser  = Gravity_SMTP::container()->get( Utils_Service_Provider::RECIPIENT_PARSER );
 		$plugin_data_store = Gravity_SMTP::container()->get( Connector_Service_Provider::DATA_STORE_ROUTER );
-
-		$open_tracking_enabled = $plugin_data_store->get_plugin_setting( Tracking_Service_Provider::SETTING_OPEN_TRACKING, 'false' );
-		$open_tracking_enabled = Booliesh::get( $open_tracking_enabled );
 
 		/**
 		 * @var Data_Store_Router $opts
@@ -2843,16 +1716,6 @@ class Email_Log_Config extends Config {
 					),
 				),
 			);
-
-			if ( Feature_Flag_Manager::is_enabled( 'email_open_tracking' ) && $open_tracking_enabled ) {
-				$row_data['opened'] = array(
-					'component' => 'Text',
-					'props'     => array(
-						'content' => $row['opened'],
-						'size'    => 'text-sm',
-					),
-				);
-			}
 
 			$row_data['source'] = array(
 				'component' => 'Text',
