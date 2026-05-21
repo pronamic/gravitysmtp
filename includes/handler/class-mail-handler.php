@@ -207,6 +207,17 @@ class Mail_Handler {
 			return false;
 		}
 
+		/**
+		 * Allows third-parties to act when the primary connector has failed.
+		 *
+		 * @param int The ID of the failed email send.
+		 *
+		 * @since 2.2
+		 *
+		 * @return void
+		 */
+		do_action( 'gravitysmtp_on_primary_failure', $send );
+
 		return $this->mail( $to, $subject, $message, $headers, $attachments );
 	}
 

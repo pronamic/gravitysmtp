@@ -277,7 +277,7 @@ class App_Service_Provider extends Config_Service_Provider {
 	}
 
 	protected function get_root_markup( $root ) {
-		return '<div class="gravitysmtp-app" data-js="' . $root . '"><div class="gform-loader__mask gform-loader__mask--theme-light"><svg class="gform-loader gform-loader--ring"  height="64" width="64" viewBox="25 25 50 50" style="animation: 2s linear 0s infinite normal none running gformLoaderRotate; height: 64px; width: 64px;"><circle cx="50" cy="50" r="20" stroke-width="3.125" style="stroke: rgb(144, 146, 178);"></circle></svg></div></div>';
+		return '<div class="gravity-app gravity-app--smtp gravitysmtp-app" data-js="' . $root . '"><div class="gform-loader__mask gform-loader__mask--theme-light"><svg class="gform-loader gform-loader--ring"  height="64" width="64" viewBox="25 25 50 50" style="animation: 2s linear 0s infinite normal none running gformLoaderRotate; height: 64px; width: 64px;"><circle cx="50" cy="50" r="20" stroke-width="3.125" style="stroke: rgb(144, 146, 178);"></circle></svg></div></div>';
 	}
 
 	/**

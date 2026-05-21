@@ -289,6 +289,15 @@ class Gravity_SMTP {
 
 			Feature_Flag_Manager::add( 'emailit_integration', 'Emailit Integration' );
 			Feature_Flag_Manager::enable_flag( 'emailit_integration' );
+
+			Feature_Flag_Manager::add( 'smtpcom_integration', 'SMTP.com Integration' );
+			Feature_Flag_Manager::enable_flag( 'smtpcom_integration' );
+
+			Feature_Flag_Manager::add( 'mailtrap_integration', 'Mailtrap Integration' );
+			Feature_Flag_Manager::enable_flag( 'mailtrap_integration' );
+
+			Feature_Flag_Manager::add( 'cloudflare_integration', 'Cloudflare Integration' );
+			Feature_Flag_Manager::enable_flag( 'cloudflare_integration' );
 		} );
 	}
 

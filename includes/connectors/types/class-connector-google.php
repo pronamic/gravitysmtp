@@ -297,7 +297,7 @@ class Connector_Google extends Connector_Base {
 				'component' => 'Alert',
 				'props'     => array(
 					'id'               => 'google-connection-notice',
-					'customIconPrefix' => 'gravitysmtp-admin-icon',
+					'customIconPrefix' => 'gravity-admin-icon',
 					'theme'            => 'cosmos',
 					'type'             => 'notice',
 					'spacing'          => 3,
@@ -336,7 +336,7 @@ class Connector_Google extends Connector_Base {
 				'component' => 'Alert',
 				'props'     => array(
 					'id'               => 'google-alias-notice',
-					'customIconPrefix' => 'gravitysmtp-admin-icon',
+					'customIconPrefix' => 'gravity-admin-icon',
 					'theme'            => 'cosmos',
 					'type'             => 'info',
 					'spacing'          => 3,
@@ -372,7 +372,7 @@ class Connector_Google extends Connector_Base {
 				'component' => 'Alert',
 				'props'     => array(
 					'id'               => 'google-connection-error',
-					'customIconPrefix' => 'gravitysmtp-admin-icon',
+					'customIconPrefix' => 'gravity-admin-icon',
 					'theme'            => 'cosmos',
 					'type'             => 'error',
 					'spacing'          => 3,
@@ -478,7 +478,7 @@ class Connector_Google extends Connector_Base {
 							'type' => 'button',
 						),
 						'icon'       => 'copy',
-						'iconPrefix' => 'gravitysmtp-admin-icon',
+						'iconPrefix' => 'gravity-admin-icon',
 						'label'      => esc_html__( 'Copy', 'gravitysmtp' ),
 					),
 					'labelAttributes'      => array(
@@ -538,7 +538,7 @@ class Connector_Google extends Connector_Base {
 						'props' => array(
 							'customClasses' => array( 'gravitysmtp-google-integration__checkmark', 'gform-icon--preset-active', 'gform-icon-preset--status-correct', 'gform-alert__icon' ),
 							'icon'          => 'checkmark-simple',
-							'iconPrefix'    => 'gravitysmtp-admin-icon',
+							'iconPrefix'    => 'gravity-admin-icon',
 						),
 					),
 					array(
@@ -562,7 +562,7 @@ class Connector_Google extends Connector_Base {
 			$settings['fields'][] = array(
 				'component' => 'Text',
 				'props'     => array(
-					'content' => sprintf( '<a href="%s" class="%s"><span class="gravitysmtp-admin-icon gravitysmtp-admin-icon--x-circle gform-button__icon"></span>%s</a>', $disconnect_url, 'gform-link gform-link--theme-cosmos gform-button gform-button--size-height-m gform-button--white gform-button--width-auto gform-button--active-type-loader gform-button--loader-after gform-button--icon-leading',  __( 'Disconnect from Google', 'gravitysmtp' ) ),
+					'content' => sprintf( '<a href="%s" class="%s"><span class="gravity-admin-icon gravity-admin-icon--x-circle gform-button__icon"></span>%s</a>', $disconnect_url, 'gform-link gform-link--theme-cosmos gform-button gform-button--size-height-m gform-button--white gform-button--width-auto gform-button--active-type-loader gform-button--loader-after gform-button--icon-leading',  __( 'Disconnect from Google', 'gravitysmtp' ) ),
 					'asHtml' => true,
 					'spacing' => 6,
 				),

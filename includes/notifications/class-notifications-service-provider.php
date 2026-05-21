@@ -4,6 +4,7 @@ namespace Gravity_Forms\Gravity_SMTP\Notifications;
 
 use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Notifications\Config\Notifications_Endpoints_Config;
+use Gravity_Forms\Gravity_SMTP\Users\Roles;
 use Gravity_Forms\Gravity_Tools\Providers\Config_Service_Provider;
 use Gravity_Forms\Gravity_Tools\Service_Container;
 
@@ -30,7 +31,12 @@ class Notifications_Service_Provider extends Config_Service_Provider {
 		} );
 
 		add_action( 'wp_ajax_' . Email_Summary_Handler::ACTION_NAME, function () use ( $container ) {
-			wp_verify_nonce( 'security', Email_Summary_Handler::ACTION_NAME );
+			check_ajax_referer( Email_Summary_Handler::ACTION_NAME, 'security' );
+
+			if ( ! current_user_can( Roles::EDIT_NOTIFICATIONS_SETTINGS ) ) {
+				wp_send_json_error( 'Unauthorized' );
+			}
+
 			try {
 				$container->get( self::EMAIL_SUMMARY_HANDLER )->handle( false );
 			} catch( \Exception $e ) {

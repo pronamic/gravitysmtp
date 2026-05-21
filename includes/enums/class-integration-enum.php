@@ -21,6 +21,9 @@ class Integration_Enum {
 			case 'brevo':
 				$title = 'Brevo';
 				break;
+			case 'cloudflare':
+				$title = 'Cloudflare';
+				break;
 			case 'generic':
 				$title = 'Custom SMTP';
 				break;

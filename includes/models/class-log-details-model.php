@@ -154,7 +154,13 @@ class Log_Details_Model {
 		$parser = $container->get( Utils_Service_Provider::RECIPIENT_PARSER );
 
 		$params = isset( $extra['params'] ) ? $extra['params'] : array();
-		$to     = $parser->parse( $extra['to'] );
+		$to     = isset( $extra['to'] ) ? $extra['to'] : '';
+
+		if ( empty( $to ) && ! empty( $extra['headers']['to'] ) ) {
+			$to = $extra['headers']['to'];
+		}
+
+		$to     = $parser->parse( $to );
 		$to     = $to->as_string( true );
 
 		$clean_from_email = $this->extract_email( $extra['from'] );
@@ -178,6 +184,8 @@ class Log_Details_Model {
 				$bcc[] = $bcc_value['email'];
 			}
 		}
+
+		unset ( $params['headers'] );
 
 		$details = array(
 			'date'                  => $this->convert_dates_to_timezone( $row['date_updated'] ),

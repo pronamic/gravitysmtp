@@ -307,7 +307,7 @@ class Connector_Amazon extends Connector_Base {
 						),
 						'props'         => array(
 							'helpTextAttributes' => array(
-								'content' => esc_html__( 'Log in to your {{link}}AWS Console{{link}}, go to the IAM dashboard, and create a new access key for an IAM user with AmazonSESFullAccess and AmazonSNSFullAccess permissions.', 'gravitysmtp' ),
+								'content' => esc_html__( 'Log in to your {{link}}AWS Console{{link}}, go to the IAM dashboard, and create a new access key for an IAM user with ses:SendEmail and ses:SendRawEmail permissions.', 'gravitysmtp' ),
 								'size'    => 'text-xs',
 								'weight'  => 'regular',
 							),

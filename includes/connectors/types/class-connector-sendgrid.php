@@ -6,14 +6,21 @@ use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Base;
 
 class Connector_Sendgrid extends Connector_Base {
 
-	const SETTING_API_KEY = 'api_key';
+	const SETTING_API_KEY      = 'api_key';
+	const SETTING_REGION       = 'region';
+	const SETTING_IP_POOL_NAME = 'ip_pool_name';
+
+	const OPTION_REGION_GLOBAL = 'global';
+	const OPTION_REGION_EU     = 'eu';
+
+	const API_URL_GLOBAL = 'https://api.sendgrid.com/v3/mail/send';
+	const API_URL_EU     = 'https://api.eu.sendgrid.com/v3/mail/send';
 
 	protected $name        = 'sendgrid';
 	protected $title       = 'SendGrid';
 	protected $description = '';
 	protected $logo        = 'SendGrid';
 	protected $full_logo   = 'SendGridFull';
-	protected $url         = 'https://api.sendgrid.com/v3/mail/send';
 
 	public function get_description() {
 		return esc_html__( 'Send at scale with Twilio SendGrid, boasting an industry-leading 99% deliverability rate. SendGrid offers both a free-forever plan of 100 emails a day, and, if you need to exceed that limit, a selection of preset pricing plans, starting at $19.95 per month for up to 50,000 emails. For more information on how to get started with SendGrid, read our documentation.', 'gravitysmtp' );
@@ -22,6 +29,18 @@ class Connector_Sendgrid extends Connector_Base {
 	protected $sensitive_fields = array(
 		self::SETTING_API_KEY,
 	);
+
+	/**
+	 * Get the API URL based on the configured region.
+	 *
+	 * @since 2.2.0
+	 *
+	 * @return string
+	 */
+	protected function get_api_url() {
+		$region = $this->get_setting( self::SETTING_REGION, self::OPTION_REGION_GLOBAL );
+		return $region === self::OPTION_REGION_EU ? self::API_URL_EU : self::API_URL_GLOBAL;
+	}
 
 	public function send() {
 		try {
@@ -41,7 +60,7 @@ class Connector_Sendgrid extends Connector_Base {
 				return true;
 			}
 
-			$response = wp_safe_remote_post( $this->url, $params );
+			$response = wp_safe_remote_post( $this->get_api_url(), $params );
 
 			if ( (int) wp_remote_retrieve_response_code( $response ) > 299 ) {
 				$this->events->update( array( 'status' => 'failed' ), $email );
@@ -107,6 +126,11 @@ class Connector_Sendgrid extends Connector_Base {
 
 		if ( ! empty( $additional_headers ) ) {
 			$body['headers'] = $additional_headers;
+		}
+
+		$ip_pool_name = trim( $this->get_setting( self::SETTING_IP_POOL_NAME, '' ) );
+		if ( ! empty( $ip_pool_name ) ) {
+			$body['ip_pool_name'] = $ip_pool_name;
 		}
 
 		return array(
@@ -201,13 +225,15 @@ class Connector_Sendgrid extends Connector_Base {
 
 	public function connector_data() {
 		return array(
-			self::SETTING_API_KEY               => $this->get_setting( self::SETTING_API_KEY, '' ),
-			self::SETTING_FROM_EMAIL            => $this->get_setting( self::SETTING_FROM_EMAIL, '' ),
-			self::SETTING_FORCE_FROM_EMAIL      => $this->get_setting( self::SETTING_FORCE_FROM_EMAIL, false ),
-			self::SETTING_FROM_NAME             => $this->get_setting( self::SETTING_FROM_NAME, '' ),
-			self::SETTING_FORCE_FROM_NAME       => $this->get_setting( self::SETTING_FORCE_FROM_NAME, false ),
-			self::SETTING_REPLY_TO_EMAIL        => $this->get_setting( self::SETTING_REPLY_TO_EMAIL, '' ),
-			self::SETTING_FORCE_REPLY_TO_EMAIL  => $this->get_setting( self::SETTING_FORCE_REPLY_TO_EMAIL, false ),
+			self::SETTING_API_KEY              => $this->get_setting( self::SETTING_API_KEY, '' ),
+			self::SETTING_REGION               => $this->get_setting( self::SETTING_REGION, self::OPTION_REGION_GLOBAL ),
+			self::SETTING_IP_POOL_NAME         => $this->get_setting( self::SETTING_IP_POOL_NAME, '' ),
+			self::SETTING_FROM_EMAIL           => $this->get_setting( self::SETTING_FROM_EMAIL, '' ),
+			self::SETTING_FORCE_FROM_EMAIL     => $this->get_setting( self::SETTING_FORCE_FROM_EMAIL, false ),
+			self::SETTING_FROM_NAME            => $this->get_setting( self::SETTING_FROM_NAME, '' ),
+			self::SETTING_FORCE_FROM_NAME      => $this->get_setting( self::SETTING_FORCE_FROM_NAME, false ),
+			self::SETTING_REPLY_TO_EMAIL       => $this->get_setting( self::SETTING_REPLY_TO_EMAIL, '' ),
+			self::SETTING_FORCE_REPLY_TO_EMAIL => $this->get_setting( self::SETTING_FORCE_REPLY_TO_EMAIL, false ),
 		);
 	}
 
@@ -228,20 +254,6 @@ class Connector_Sendgrid extends Connector_Base {
 							'weight'  => 'medium',
 						),
 					),
-//					array(
-//						'component' => 'Toggle',
-//						'props'     => array(
-//							'initialChecked'  => (bool) $this->get_plugin_setting( 'primary' ) === $this->name,
-//							'labelAttributes' => array(
-//								'label' => esc_html__( 'If enabled, SendGrid will be the default SMTP mailer.', 'gravitysmtp' ),
-//							),
-//							'labelPosition'   => 'left',
-//							'name'            => 'default-mailer',
-//							'size'            => 'size-m',
-//							'spacing'         => 5,
-//							'width'           => 'full',
-//						),
-//					),
 					array(
 						'component' => 'Input',
 						'props'     => array(
@@ -261,6 +273,95 @@ class Connector_Sendgrid extends Connector_Base {
 							'size'               => 'size-l',
 							'spacing'            => 6,
 							'value'              => $this->get_setting( self::SETTING_API_KEY, '' ),
+						),
+					),
+				array(
+					'component' => 'Box',
+					'props'     => array(
+						'display' => 'block',
+						'spacing' => 6,
+					),
+					'fields'    => array(
+						array(
+							'component' => 'Label',
+							'props'     => array(
+								'label'   => __( 'Region', 'gravitysmtp' ),
+								'weight'  => 'medium',
+								'size'    => 'text-sm',
+								'spacing' => 2,
+							),
+						),
+						array(
+							'component' => 'InputGroup',
+							'props'     => array(
+								'customAttributes' => array(
+									'style' => array(
+										'display' => 'flex',
+									),
+								),
+								'id'               => self::SETTING_REGION . '_group',
+								'initialValue'     => $this->get_setting( self::SETTING_REGION, self::OPTION_REGION_GLOBAL ),
+								'inputType'        => 'radio',
+								'spacing'          => 2,
+								'data'             => array(
+									array(
+										'id'              => self::SETTING_REGION . '_' . self::OPTION_REGION_GLOBAL,
+										'name'            => self::SETTING_REGION,
+										'value'           => self::OPTION_REGION_GLOBAL,
+										'size'            => 'size-md',
+										'spacing'         => array( 0, 4, 0, 0 ),
+										'labelAttributes' => array(
+											'label'  => __( 'Global', 'gravitysmtp' ),
+											'size'   => 'text-sm',
+											'weight' => 'regular',
+										),
+									),
+									array(
+										'id'              => self::SETTING_REGION . '_' . self::OPTION_REGION_EU,
+										'name'            => self::SETTING_REGION,
+										'value'           => self::OPTION_REGION_EU,
+										'size'            => 'size-md',
+										'spacing'         => array( 0, 4, 0, 0 ),
+										'labelAttributes' => array(
+											'label'  => __( 'EU', 'gravitysmtp' ),
+											'size'   => 'text-sm',
+											'weight' => 'regular',
+										),
+									),
+								),
+							),
+						),
+						array(
+							'component' => 'Text',
+							'props'     => array(
+								'asHtml'  => true,
+								/* translators: 1: opening anchor tag, 2: closing anchor tag */
+								'content' => sprintf( __( 'Choose your SendGrid API region. Select EU for European data residency. Important: the EU region requires an API key created under an EU subuser. For more information, visit %1$sSendGrid Data Residency%2$s.', 'gravitysmtp' ), '<a class="gform-link gform-typography--size-text-xs" href="https://www.twilio.com/docs/sendgrid/data-residency" target="_blank" rel="noopener noreferrer">', '</a>' ),
+								'size'    => 'text-xs',
+								'weight'  => 'regular',
+							),
+						),
+					),
+				),
+					array(
+						'component' => 'Input',
+						'props'     => array(
+							'labelAttributes'    => array(
+								'label'  => esc_html__( 'IP Pool Name', 'gravitysmtp' ),
+								'size'   => 'text-sm',
+								'weight' => 'medium',
+							),
+							'helpTextAttributes' => array(
+								'asHtml'  => true,
+								/* translators: 1: opening anchor tag, 2: closing anchor tag */
+								'content' => sprintf( __( 'Optional. Enter the name of a SendGrid IP pool to route emails through specific IPs (e.g. for EU/GDPR compliance). The pool must already exist in your SendGrid account. For more information, see %1$sSendGrid IP Pools%2$s.', 'gravitysmtp' ), '<a class="gform-link gform-typography--size-text-xs" href="https://docs.sendgrid.com/ui/account-and-settings/ip-pools" target="_blank" rel="noopener noreferrer">', '</a>' ),
+								'size'    => 'text-xs',
+								'weight'  => 'regular',
+							),
+							'name'               => self::SETTING_IP_POOL_NAME,
+							'size'               => 'size-l',
+							'spacing'            => 6,
+							'value'              => $this->get_setting( self::SETTING_IP_POOL_NAME, '' ),
 						),
 					),
 					array(
@@ -300,7 +401,7 @@ class Connector_Sendgrid extends Connector_Base {
 	 */
 	private function verify_api_key() {
 		$api_key = $this->get_setting( self::SETTING_API_KEY );
-		$url     = str_replace( 'mail/send', 'scopes', $this->url );
+		$url     = str_replace( 'mail/send', 'scopes', $this->get_api_url() );
 
 		if ( empty( $api_key ) ) {
 			return new \WP_Error( 'missing_api_key', __( 'No API Key provided.', 'gravitysmtp' ) );

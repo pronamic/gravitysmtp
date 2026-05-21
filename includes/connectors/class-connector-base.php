@@ -297,8 +297,7 @@ abstract class Connector_Base {
 	}
 
 	protected function set_email_log_data( $subject, $message, $to, $from, $headers, $attachments, $source, $params = array() ) {
-		unset( $params['body'] );
-		unset( $params['headers']['Authorization'] );
+		$params = $this->strip_sensitive_log_data( $params );
 
 		$this->events->update(
 			array(
@@ -308,7 +307,7 @@ abstract class Connector_Base {
 					array(
 						'to'          => $to,
 						'from'        => $from,
-						'headers'     => $headers,
+						'headers'     => array(),
 						'attachments' => $attachments,
 						'source'      => $source,
 						'params'      => $params,
@@ -317,6 +316,13 @@ abstract class Connector_Base {
 			),
 			$this->email
 		);
+	}
+
+	private function strip_sensitive_log_data( $params ) {
+		unset( $params['body'] );
+		unset( $params['headers'] );
+
+		return $params;
 	}
 
 	/**
@@ -392,7 +398,15 @@ abstract class Connector_Base {
 			$from = get_option( 'admin_email' );
 		}
 
-		$from_str = ! empty( $from_name ) ? $from_name . ' <' . $from . '>' : $from;
+		// RFC 5322: quote display names that contain specials so parsers
+		// don't misinterpret them (e.g. parentheses treated as comments).
+		if ( ! empty( $from_name ) && preg_match( '/[()<>\[\]:;@\\\\",.]/', $from_name ) ) {
+			$from_name_quoted = '"' . str_replace( array( '\\', '"' ), array( '\\\\', '\\"' ), $from_name ) . '"';
+		} else {
+			$from_name_quoted = $from_name;
+		}
+
+		$from_str = ! empty( $from_name ) ? $from_name_quoted . ' <' . $from . '>' : $from;
 
 		if ( $return_array ) {
 			$return = array(

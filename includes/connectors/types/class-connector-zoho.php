@@ -295,7 +295,7 @@ class Connector_Zoho extends Connector_Base {
 			$settings['fields'][] = array(
 				'component' => 'Alert',
 				'props'     => array(
-					'customIconPrefix' => 'gravitysmtp-admin-icon',
+					'customIconPrefix' => 'gravity-admin-icon',
 					'theme'            => 'cosmos',
 					'type'             => 'notice',
 					'spacing'          => 3,
@@ -338,7 +338,7 @@ class Connector_Zoho extends Connector_Base {
 			$settings['fields'][] = array(
 				'component' => 'Alert',
 				'props'     => array(
-					'customIconPrefix' => 'gravitysmtp-admin-icon',
+					'customIconPrefix' => 'gravity-admin-icon',
 					'theme'            => 'cosmos',
 					'type'             => 'error',
 					'spacing'          => 3,
@@ -465,7 +465,7 @@ class Connector_Zoho extends Connector_Base {
 							'type' => 'button',
 						),
 						'icon'             => 'copy',
-						'iconPrefix'       => 'gravitysmtp-admin-icon',
+						'iconPrefix'       => 'gravity-admin-icon',
 						'label'            => esc_html__( 'Copy', 'gravitysmtp' ),
 					),
 					'labelAttributes'        => array(
@@ -529,7 +529,7 @@ class Connector_Zoho extends Connector_Base {
 								'gform-alert__icon'
 							),
 							'icon'          => 'checkmark-simple',
-							'iconPrefix'    => 'gravitysmtp-admin-icon',
+							'iconPrefix'    => 'gravity-admin-icon',
 						),
 					),
 					array(
@@ -553,7 +553,7 @@ class Connector_Zoho extends Connector_Base {
 			$settings['fields'][] = array(
 				'component' => 'Text',
 				'props'     => array(
-					'content' => sprintf( '<a href="%s" class="%s"><span class="gravitysmtp-admin-icon gravitysmtp-admin-icon--x-circle gform-button__icon"></span>%s</a>', $disconnect_url, 'gform-link gform-link--theme-cosmos gform-button gform-button--size-height-m gform-button--white gform-button--width-auto gform-button--active-type-loader gform-button--loader-after gform-button--icon-leading', __( 'Disconnect from Zoho Mail', 'gravitysmtp' ) ),
+					'content' => sprintf( '<a href="%s" class="%s"><span class="gravity-admin-icon gravity-admin-icon--x-circle gform-button__icon"></span>%s</a>', $disconnect_url, 'gform-link gform-link--theme-cosmos gform-button gform-button--size-height-m gform-button--white gform-button--width-auto gform-button--active-type-loader gform-button--loader-after gform-button--icon-leading', __( 'Disconnect from Zoho Mail', 'gravitysmtp' ) ),
 					'asHtml'  => true,
 					'spacing' => 6,
 				),

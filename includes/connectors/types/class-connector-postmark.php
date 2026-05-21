@@ -48,19 +48,32 @@ class Connector_Postmark extends Connector_Base {
 				return true;
 			}
 
-			$response = wp_safe_remote_post( $this->url, $params );
+			$response      = wp_safe_remote_post( $this->url, $params );
+			$response_code = (int) wp_remote_retrieve_response_code( $response );
+			$response_body = wp_remote_retrieve_body( $response );
 
-			if ( (int) wp_remote_retrieve_response_code( $response ) !== 200 ) {
+			if ( $response_code !== 200 ) {
 				$this->events->update( array( 'status' => 'failed' ), $email );
 
-				$this->logger->log( $email, 'failed', wp_remote_retrieve_body( $response ) );
+				$this->logger->log( $email, 'failed', $response_body );
 
 				return $email;
 			}
 
 			$this->events->update( array( 'status' => 'sent' ), $email );
 
-			$this->logger->log( $email, 'sent', __( 'Email successfully sent.', 'gravitysmtp' ) );
+			$decoded     = json_decode( $response_body, true );
+			$api_message = isset( $decoded['Message'] ) ? trim( $decoded['Message'] ) : '';
+
+			if ( ! empty( $api_message ) && strcasecmp( $api_message, 'OK' ) !== 0 ) {
+				$sent_message = $api_message;
+			} elseif ( empty( $api_message ) && ! empty( $response_body ) && ! is_array( $decoded ) ) {
+				$sent_message = substr( $response_body, 0, 500 );
+			} else {
+				$sent_message = __( 'Email successfully sent.', 'gravitysmtp' );
+			}
+
+			$this->logger->log( $email, 'sent', $sent_message );
 
 			return true;
 

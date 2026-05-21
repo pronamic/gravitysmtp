@@ -18,15 +18,21 @@ class Connector_Emailit extends Connector_Base {
 
 	protected $name      = 'emailit';
 	protected $title     = 'Emailit';
-	protected $disabled  = true;
 	protected $logo      = 'Emailit';
 	protected $full_logo = 'EmailitFull';
-	protected $url       = 'https://api.emailit.com/v1';
+	protected $url       = 'https://api.emailit.com/v2';
 
 	protected $sensitive_fields = array(
 		self::SETTING_API_KEY,
 	);
 
+	/**
+	 * Get the connector description.
+	 *
+	 * @since 1.0
+	 *
+	 * @return string The connector description.
+	 */
 	public function get_description() {
 		return esc_html__( 'Simple and no-subscription based API for sending transactional and marketing emails.', 'gravitysmtp' );
 	}
@@ -36,7 +42,7 @@ class Connector_Emailit extends Connector_Base {
 	 *
 	 * @since 1.0
 	 *
-	 * @return int returns the email ID
+	 * @return true|int True on success, int (email ID) on failure to trigger retry.
 	 */
 	public function send() {
 		try {
@@ -89,10 +95,9 @@ class Connector_Emailit extends Connector_Base {
 		$api_key    = $this->get_setting( self::SETTING_API_KEY );
 
 		$message = array(
-			'to'      => '',
+			'to'      => array(),
 			'from'    => ! empty( $atts['from']['name'] ) ? sprintf( '%s <%s>', $atts['from']['name'], $atts['from']['email'] ) : $atts['from']['email'],
 			'subject' => $atts['subject'],
-			'headers' => array(),
 		);
 
 		$to_value = array();
@@ -105,7 +110,7 @@ class Connector_Emailit extends Connector_Base {
 			}
 		}
 
-		$message['to'] = implode( ', ', $to_value );
+		$message['to'] = $to_value;
 
 		// Setting content
 		$is_html = ! empty( $atts['headers']['content-type'] ) && strpos( $atts['headers']['content-type'], 'text/html' ) !== false;
@@ -131,7 +136,7 @@ class Connector_Emailit extends Connector_Base {
 				$cc_headers[] = ! empty( $cc_value['name'] ) ? sprintf( '%s <%s>', $cc_value['name'], $cc_value['email'] ) : $cc_value['email'];
 			}
 
-			$message['headers']['cc'] = implode( ', ', $cc_headers );
+			$message['cc'] = $cc_headers;
 		}
 
 		// Setting Bcc
@@ -142,7 +147,7 @@ class Connector_Emailit extends Connector_Base {
 				$bcc_headers[] = ! empty( $bcc_value['name'] ) ? sprintf( '%s <%s>', $bcc_value['name'], $bcc_value['email'] ) : $bcc_value['email'];
 			}
 
-			$message['headers']['bcc'] = implode( ', ', $bcc_headers );
+			$message['bcc'] = $bcc_headers;
 		}
 
 		// Setting reply to
@@ -153,7 +158,7 @@ class Connector_Emailit extends Connector_Base {
 				$reply_to = $atts['reply_to'][0];
 			}
 
-			$message['headers']['reply-to'] = $reply_to['email'];
+			$message['reply_to'] = $reply_to['email'];
 		}
 
 		// Setting attachments
@@ -229,6 +234,8 @@ class Connector_Emailit extends Connector_Base {
 	 *
 	 * @since 1.0
 	 *
+	 * @param string $api_key The API key for authorization.
+	 *
 	 * @return array returns the header array to be passed to Emailit's API
 	 */
 	protected function get_request_headers( $api_key ) {
@@ -245,6 +252,8 @@ class Connector_Emailit extends Connector_Base {
 	 *
 	 * @param string $email         the email that failed
 	 * @param string $error_message the error message
+	 *
+	 * @return void
 	 */
 	private function log_failure( $email, $error_message ) {
 		$this->events->update( array( 'status' => 'failed' ), $email );
@@ -363,7 +372,7 @@ class Connector_Emailit extends Connector_Base {
 	 */
 	private function verify_api_key() {
 		$api_key    = $this->get_setting( self::SETTING_API_KEY, '' );
-		$url        = $this->url . '/audiences';
+		$url        = $this->url . '/domains';
 
 		if ( empty( $api_key ) ) {
 			return new WP_Error( 'missing_api_key', __( 'No API Key provided.', 'gravitysmtp' ) );

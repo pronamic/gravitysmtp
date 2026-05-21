@@ -39,6 +39,10 @@ class Connector_Factory {
 			$type = 'smtp2go';
 		}
 
+		if ( $type === 'smtpcom' ) {
+			$type = 'SMTPCom';
+		}
+
 		$classname = sprintf( '%s\Types\Connector_%s', __NAMESPACE__, ucfirst( $type ) );
 
 		if ( ! class_exists( $classname ) ) {

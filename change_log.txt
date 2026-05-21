@@ -1,3 +1,15 @@
+### 2.2.0 | 2026-05-21
+- Added an action which fires as soon as the Primary connector type fails.
+- Added Cloudflare Email Service connector with API-based domain validation.
+- Added Mailtrap email connector with sandbox mode support.
+- Added Region (Global/EU) and IP Pool Name settings to SendGrid connector for EU data residency and GDPR compliance.
+- Added SMTP.com email connector.
+- Added the ability to edit recipient, CC, and BCC email addresses before resending an email from the activity log.
+- Fixed an issue where Postmark emails sent to a mix of active and suppressed recipients would log a generic success message instead of surfacing the suppression details from Postmark.
+- Security enhancements.
+- Updated Amazon SES setup instructions to recommend least-privilege IAM permissions instead of full access policies.
+- Updated Emailit connector to use API v2.
+
 ### 2.1.6 | 2026-04-16
 - Fixed an issue that causes the From Name to be truncated to 30 characters.
 - Fixed an issue that causes links in email previews to open within the preview iframe.

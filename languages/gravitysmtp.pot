@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Gravity SMTP 2.1.6\n"
+"Project-Id-Version: Gravity SMTP 2.2.0\n"
 "Report-Msgid-Bugs-To: https://gravityforms.com/support\n"
 "Last-Translator: Gravity Forms <support@gravityforms.com>\n"
 "Language-Team: Gravity Forms <support@gravityforms.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-04-16T17:13:34+00:00\n"
+"POT-Creation-Date: 2026-05-21T16:02:10+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: gravitysmtp\n"
@@ -94,8 +94,8 @@ msgstr ""
 
 #: includes/alerts/config/class-alerts-config.php:81
 #: includes/alerts/config/class-alerts-config.php:90
-#: includes/apps/config/class-email-log-config.php:1187
-#: includes/apps/config/class-email-log-config.php:1375
+#: includes/apps/config/class-email-log-config.php:1189
+#: includes/apps/config/class-email-log-config.php:1377
 #: includes/apps/config/class-settings-config.php:115
 #: includes/apps/config/class-settings-config.php:189
 msgid "Delete"
@@ -206,7 +206,7 @@ msgstr ""
 #: includes/connectors/endpoints/class-save-connector-settings-endpoint.php:58
 #: includes/connectors/endpoints/class-send-test-endpoint.php:166
 #: includes/environment/endpoints/class-uninstall-endpoint.php:20
-#: includes/handler/endpoints/class-resend-email-endpoint.php:51
+#: includes/handler/endpoints/class-resend-email-endpoint.php:57
 #: includes/logging/endpoints/class-delete-debug-logs-endpoint.php:36
 #: includes/logging/endpoints/class-delete-email-endpoint.php:32
 #: includes/logging/endpoints/class-delete-events-endpoint.php:39
@@ -251,9 +251,8 @@ msgid "Collapse"
 msgstr ""
 
 #: includes/apps/config/class-apps-config.php:48
-#: includes/apps/config/class-email-log-config.php:1376
-#: includes/apps/config/class-email-log-config.php:1380
-#: includes/apps/config/class-email-log-config.php:1387
+#: includes/apps/config/class-email-log-config.php:1378
+#: includes/apps/config/class-email-log-config.php:1384
 #: includes/suppression/config/class-suppression-settings-config.php:103
 msgid "Cancel"
 msgstr ""
@@ -278,14 +277,14 @@ msgstr ""
 #. translators: %1$s is the body of the ajax request.
 #. translators: %1$s is the body of the ajax request.
 #: includes/apps/config/class-apps-config.php:55
-#: includes/apps/config/class-email-log-config.php:1357
+#: includes/apps/config/class-email-log-config.php:1359
 msgid "Deleting activity log rows: %1$s"
 msgstr ""
 
 #. translators: %1$s is the error.
 #. translators: %1$s is the error.
 #: includes/apps/config/class-apps-config.php:57
-#: includes/apps/config/class-email-log-config.php:1359
+#: includes/apps/config/class-email-log-config.php:1361
 msgid "Error deleting activity log rows: %1$s"
 msgstr ""
 
@@ -399,8 +398,8 @@ msgstr ""
 #: includes/apps/config/class-dashboard-config.php:152
 #: includes/apps/config/class-dashboard-config.php:161
 #: includes/apps/config/class-dashboard-config.php:360
-#: includes/apps/config/class-email-log-config.php:1437
-#: includes/apps/config/class-email-log-config.php:1441
+#: includes/apps/config/class-email-log-config.php:1451
+#: includes/apps/config/class-email-log-config.php:1455
 #: includes/enums/class-status-enum.php:54
 #: includes/notifications/class-email-summary-handler.php:151
 msgid "Sent"
@@ -409,8 +408,8 @@ msgstr ""
 #: includes/apps/config/class-dashboard-config.php:153
 #: includes/apps/config/class-dashboard-config.php:162
 #: includes/apps/config/class-dashboard-config.php:366
-#: includes/apps/config/class-email-log-config.php:1450
-#: includes/apps/config/class-email-log-config.php:1454
+#: includes/apps/config/class-email-log-config.php:1464
+#: includes/apps/config/class-email-log-config.php:1468
 #: includes/enums/class-status-enum.php:55
 #: includes/notifications/class-email-summary-handler.php:152
 msgid "Failed"
@@ -555,64 +554,67 @@ msgstr ""
 msgid "Resend email"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:113
+#: includes/apps/config/class-email-log-config.php:115
 #: includes/logging/endpoints/class-get-paginated-debug-log-items-endpoint.php:137
 #: includes/logging/endpoints/class-get-paginated-items-endpoint.php:290
 msgid "Delete email log"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1183
+#: includes/apps/config/class-email-log-config.php:1185
 #: includes/suppression/config/class-suppression-settings-config.php:167
 msgid "Bulk Actions"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1202
+#: includes/apps/config/class-email-log-config.php:1204
+#: includes/apps/config/class-email-log-config.php:1393
 #: includes/apps/config/class-email-log-single-config.php:58
 #: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:88
 msgid "Subject"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1214
-#: includes/apps/config/class-email-log-config.php:1428
-#: includes/apps/config/class-email-log-config.php:1437
-#: includes/apps/config/class-email-log-config.php:1450
-#: includes/apps/config/class-email-log-config.php:1463
-#: includes/apps/config/class-email-log-config.php:1476
-#: includes/apps/config/class-email-log-config.php:1489
+#: includes/apps/config/class-email-log-config.php:1216
+#: includes/apps/config/class-email-log-config.php:1442
+#: includes/apps/config/class-email-log-config.php:1451
+#: includes/apps/config/class-email-log-config.php:1464
+#: includes/apps/config/class-email-log-config.php:1477
+#: includes/apps/config/class-email-log-config.php:1490
+#: includes/apps/config/class-email-log-config.php:1503
 #: includes/apps/config/class-tools-config.php:1161
 #: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:90
 #: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:91
 msgid "Status"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1226
+#: includes/apps/config/class-email-log-config.php:1228
+#: includes/apps/config/class-email-log-config.php:1385
 msgid "Recipient"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1240
-#: includes/apps/config/class-email-log-config.php:1510
-#: includes/apps/config/class-email-log-config.php:1535
+#: includes/apps/config/class-email-log-config.php:1242
+#: includes/apps/config/class-email-log-config.php:1524
+#: includes/apps/config/class-email-log-config.php:1549
 msgid "Source"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1255
-#: includes/apps/config/class-email-log-config.php:1407
-#: includes/apps/config/class-email-log-config.php:1502
+#: includes/apps/config/class-email-log-config.php:1257
+#: includes/apps/config/class-email-log-config.php:1421
+#: includes/apps/config/class-email-log-config.php:1516
 msgid "Service"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1268
+#: includes/apps/config/class-email-log-config.php:1270
+#: includes/apps/config/class-email-log-config.php:1396
 #: includes/apps/config/class-email-log-single-config.php:55
 msgid "Date Sent"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1280
+#: includes/apps/config/class-email-log-config.php:1282
 #: includes/apps/config/class-tools-config.php:1197
 #: includes/suppression/config/class-suppression-settings-config.php:219
 msgid "Actions"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1311
+#: includes/apps/config/class-email-log-config.php:1313
 #: includes/apps/config/class-email-log-single-config.php:39
 #: includes/apps/config/class-settings-config.php:77
 #: includes/apps/config/class-tools-config.php:144
@@ -620,13 +622,13 @@ msgstr ""
 msgid "Error Saving"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1313
+#: includes/apps/config/class-email-log-config.php:1315
 #: includes/apps/config/class-email-log-single-config.php:40
 #: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:74
 msgid "Could not save; please check your logs."
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1314
+#: includes/apps/config/class-email-log-config.php:1316
 #: includes/apps/config/class-email-log-single-config.php:41
 #: includes/apps/config/class-settings-config.php:79
 #: includes/apps/config/class-tools-config.php:146
@@ -635,74 +637,74 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1316
+#: includes/apps/config/class-email-log-config.php:1318
 #: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:84
 #: includes/pages/class-admin-page.php:16
 msgid "Email Log"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1318
+#: includes/apps/config/class-email-log-config.php:1320
 msgid "Activity"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1319
+#: includes/apps/config/class-email-log-config.php:1321
 msgid "Filters:"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1320
+#: includes/apps/config/class-email-log-config.php:1322
 msgid "Reset Filters"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1321
+#: includes/apps/config/class-email-log-config.php:1323
 #: includes/suppression/config/class-suppression-settings-config.php:78
 msgid "Select all rows"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1322
+#: includes/apps/config/class-email-log-config.php:1324
 #: includes/apps/config/class-tools-config.php:151
 #: includes/suppression/config/class-suppression-settings-config.php:80
 msgid "Clear search"
 msgstr ""
 
 #. translators: %s: date range
-#: includes/apps/config/class-email-log-config.php:1324
+#: includes/apps/config/class-email-log-config.php:1326
 msgid "Date: %s"
 msgstr ""
 
 #. translators: 1: from date, 2: to date
-#: includes/apps/config/class-email-log-config.php:1326
+#: includes/apps/config/class-email-log-config.php:1328
 msgid "Date filters: %1$s to %2$s"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1327
-#: includes/apps/config/class-email-log-config.php:1342
+#: includes/apps/config/class-email-log-config.php:1329
+#: includes/apps/config/class-email-log-config.php:1344
 msgid "Reset"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1328
+#: includes/apps/config/class-email-log-config.php:1330
 msgid "Today"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1329
+#: includes/apps/config/class-email-log-config.php:1331
 msgid "No emails yet"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1330
+#: includes/apps/config/class-email-log-config.php:1332
 msgid "As soon as your site sends some emails, you will see them here!"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1331
+#: includes/apps/config/class-email-log-config.php:1333
 #: includes/suppression/config/class-suppression-settings-config.php:85
 msgid "Select bulk actions"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1332
+#: includes/apps/config/class-email-log-config.php:1334
 #: includes/suppression/config/class-suppression-settings-config.php:86
 msgid "Apply"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1333
-#: includes/apps/config/class-email-log-config.php:1334
+#: includes/apps/config/class-email-log-config.php:1335
+#: includes/apps/config/class-email-log-config.php:1336
 #: includes/apps/config/class-tools-config.php:154
 #: includes/apps/config/class-tools-config.php:155
 #: includes/suppression/config/class-suppression-settings-config.php:83
@@ -711,31 +713,31 @@ msgid "Search"
 msgstr ""
 
 #. translators: 1: number of selected entries.
-#: includes/apps/config/class-email-log-config.php:1336
+#: includes/apps/config/class-email-log-config.php:1338
 msgid "All %1$s emails on this page are selected"
 msgstr ""
 
 #. translators: 1: number of selected entries.
-#: includes/apps/config/class-email-log-config.php:1338
+#: includes/apps/config/class-email-log-config.php:1340
 msgid "All %1$s emails in the email log are selected"
 msgstr ""
 
 #. translators: 1: number of entries to be selected.
-#: includes/apps/config/class-email-log-config.php:1340
+#: includes/apps/config/class-email-log-config.php:1342
 msgid "Select All %1$s Emails"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1341
+#: includes/apps/config/class-email-log-config.php:1343
 #: includes/suppression/config/class-suppression-settings-config.php:93
 msgid "Clear Selection"
 msgstr ""
 
 #. translators: %s: number of filters active.
-#: includes/apps/config/class-email-log-config.php:1344
+#: includes/apps/config/class-email-log-config.php:1346
 msgid "Filters: %s filters active."
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1345
+#: includes/apps/config/class-email-log-config.php:1347
 #: includes/apps/config/class-tools-config.php:156
 #: includes/apps/setup-wizard/config/class-setup-wizard-config.php:88
 #: includes/apps/setup-wizard/config/class-setup-wizard-config.php:101
@@ -743,129 +745,182 @@ msgstr ""
 msgid "Next"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1346
+#: includes/apps/config/class-email-log-config.php:1348
 #: includes/apps/config/class-tools-config.php:157
 #: includes/suppression/config/class-suppression-settings-config.php:95
 msgid "Previous"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1347
+#: includes/apps/config/class-email-log-config.php:1349
 #: includes/apps/config/class-tools-config.php:158
 #: includes/suppression/config/class-suppression-settings-config.php:96
 msgid "Next Page"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1348
+#: includes/apps/config/class-email-log-config.php:1350
 #: includes/apps/config/class-tools-config.php:159
 #: includes/suppression/config/class-suppression-settings-config.php:97
 msgid "Previous Page"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1349
+#: includes/apps/config/class-email-log-config.php:1351
 #: includes/apps/config/class-tools-config.php:160
 #: includes/suppression/config/class-suppression-settings-config.php:98
 msgid "No results found"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1350
+#: includes/apps/config/class-email-log-config.php:1352
 #: includes/apps/config/class-tools-config.php:161
 #: includes/suppression/config/class-suppression-settings-config.php:99
 msgid "No results found for your search"
 msgstr ""
 
 #. translators: %s: search term
-#: includes/apps/config/class-email-log-config.php:1352
+#: includes/apps/config/class-email-log-config.php:1354
 msgid "Search: %s"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1353
+#: includes/apps/config/class-email-log-config.php:1355
 msgid "Select row"
 msgstr ""
 
 #. translators: %1$s is the body of the ajax request.
-#: includes/apps/config/class-email-log-config.php:1361
+#: includes/apps/config/class-email-log-config.php:1363
 msgid "Deleting activity log: %1$s"
 msgstr ""
 
 #. translators: %1$s is the error.
-#: includes/apps/config/class-email-log-config.php:1363
+#: includes/apps/config/class-email-log-config.php:1365
 msgid "Error deleting activity log: %1$s"
 msgstr ""
 
 #. translators: %1$s is the body of the ajax request.
-#: includes/apps/config/class-email-log-config.php:1365
+#: includes/apps/config/class-email-log-config.php:1367
 msgid "Fetching activity log page: %1$s"
 msgstr ""
 
 #. translators: %1$s is the error.
-#: includes/apps/config/class-email-log-config.php:1367
+#: includes/apps/config/class-email-log-config.php:1369
 msgid "Error fetching activity log page: %1$s"
 msgstr ""
 
 #. translators: %1$s is the body of the ajax request.
-#: includes/apps/config/class-email-log-config.php:1369
+#: includes/apps/config/class-email-log-config.php:1371
 msgid "Fetching activity log details: %1$s"
 msgstr ""
 
 #. translators: %1$s is the error.
-#: includes/apps/config/class-email-log-config.php:1371
+#: includes/apps/config/class-email-log-config.php:1373
 msgid "Error fetching activity log details: %1$s"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1373
+#: includes/apps/config/class-email-log-config.php:1375
 msgid "Delete Email"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1374
+#: includes/apps/config/class-email-log-config.php:1376
 msgid "Are you sure you want to delete this email log?"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1377
-#: includes/apps/config/class-email-log-config.php:1384
+#: includes/apps/config/class-email-log-config.php:1379
 msgid "Resend Email"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1378
-#: includes/apps/config/class-email-log-config.php:1385
+#: includes/apps/config/class-email-log-config.php:1380
 msgid "Are you sure you want to resend this email?"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1379
-#: includes/apps/config/class-email-log-config.php:1386
+#: includes/apps/config/class-email-log-config.php:1381
+msgid "This action will send a new copy of the original message."
+msgstr ""
+
+#: includes/apps/config/class-email-log-config.php:1382
+msgid "Are you sure you want to resend this email? This action will send a new copy of the original message."
+msgstr ""
+
+#: includes/apps/config/class-email-log-config.php:1383
 #: includes/apps/config/class-email-log-single-config.php:47
 #: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:80
 msgid "Resend"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1381
+#: includes/apps/config/class-email-log-config.php:1386
+msgid "Enter recipient email address"
+msgstr ""
+
+#: includes/apps/config/class-email-log-config.php:1387
+msgid "Edit the recipient email address or enter a new one. Separate multiple addresses with commas."
+msgstr ""
+
+#: includes/apps/config/class-email-log-config.php:1388
+#: includes/apps/config/class-email-log-single-config.php:54
+msgid "CC"
+msgstr ""
+
+#: includes/apps/config/class-email-log-config.php:1389
+msgid "Comma-separated CC recipient addresses."
+msgstr ""
+
+#: includes/apps/config/class-email-log-config.php:1390
+#: includes/apps/config/class-email-log-single-config.php:53
+msgid "BCC"
+msgstr ""
+
+#: includes/apps/config/class-email-log-config.php:1391
+msgid "Comma-separated BCC recipient addresses."
+msgstr ""
+
+#: includes/apps/config/class-email-log-config.php:1392
+msgid "Email Summary"
+msgstr ""
+
+#: includes/apps/config/class-email-log-config.php:1394
+#: includes/apps/config/class-email-log-single-config.php:56
+#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:86
+msgid "From"
+msgstr ""
+
+#: includes/apps/config/class-email-log-config.php:1395
+msgid "Original To"
+msgstr ""
+
+#: includes/apps/config/class-email-log-config.php:1397
+msgid "Recipient Details"
+msgstr ""
+
+#: includes/apps/config/class-email-log-config.php:1398
+msgid "One or more recipient email addresses are invalid."
+msgstr ""
+
+#: includes/apps/config/class-email-log-config.php:1399
 msgid "Confirm Deletion"
 msgstr ""
 
 #. translators: 1: number of selected entries.
-#: includes/apps/config/class-email-log-config.php:1383
+#: includes/apps/config/class-email-log-config.php:1401
 msgid "Are you sure you want to delete %1$s entries? This action is irreversible, and all records will be permanently removed from the database."
 msgstr ""
 
 #. translators: 1: label of filter key, 2: label of filter value.
-#: includes/apps/config/class-email-log-config.php:1393
-#: includes/apps/config/class-email-log-config.php:1421
+#: includes/apps/config/class-email-log-config.php:1407
+#: includes/apps/config/class-email-log-config.php:1435
 msgid "%1$s: %2$s"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1463
-#: includes/apps/config/class-email-log-config.php:1467
+#: includes/apps/config/class-email-log-config.php:1477
+#: includes/apps/config/class-email-log-config.php:1481
 #: includes/enums/class-status-enum.php:56
 msgid "Sandboxed"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1476
-#: includes/apps/config/class-email-log-config.php:1480
+#: includes/apps/config/class-email-log-config.php:1490
+#: includes/apps/config/class-email-log-config.php:1494
 #: includes/enums/class-status-enum.php:57
 msgid "Suppressed"
 msgstr ""
 
-#: includes/apps/config/class-email-log-config.php:1489
-#: includes/apps/config/class-email-log-config.php:1493
+#: includes/apps/config/class-email-log-config.php:1503
+#: includes/apps/config/class-email-log-config.php:1507
 #: includes/enums/class-status-enum.php:53
 msgid "Pending"
 msgstr ""
@@ -905,19 +960,6 @@ msgstr ""
 
 #: includes/apps/config/class-email-log-single-config.php:52
 msgid "Email Details"
-msgstr ""
-
-#: includes/apps/config/class-email-log-single-config.php:53
-msgid "BCC"
-msgstr ""
-
-#: includes/apps/config/class-email-log-single-config.php:54
-msgid "CC"
-msgstr ""
-
-#: includes/apps/config/class-email-log-single-config.php:56
-#: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:86
-msgid "From"
 msgstr ""
 
 #: includes/apps/config/class-email-log-single-config.php:57
@@ -1106,18 +1148,21 @@ msgstr ""
 #: includes/apps/config/class-settings-config.php:109
 #: includes/connectors/types/class-connector-amazon.php:357
 #: includes/connectors/types/class-connector-brevo.php:298
+#: includes/connectors/types/class-connector-cloudflare.php:619
 #: includes/connectors/types/class-connector-elasticemail.php:305
-#: includes/connectors/types/class-connector-emailit.php:321
+#: includes/connectors/types/class-connector-emailit.php:330
 #: includes/connectors/types/class-connector-generic.php:324
 #: includes/connectors/types/class-connector-mailchimp.php:324
 #: includes/connectors/types/class-connector-mailersend.php:316
 #: includes/connectors/types/class-connector-mailgun.php:371
 #: includes/connectors/types/class-connector-mailjet.php:355
+#: includes/connectors/types/class-connector-mailtrap.php:450
 #: includes/connectors/types/class-connector-phpmail.php:253
-#: includes/connectors/types/class-connector-postmark.php:270
+#: includes/connectors/types/class-connector-postmark.php:283
 #: includes/connectors/types/class-connector-resend.php:321
-#: includes/connectors/types/class-connector-sendgrid.php:269
+#: includes/connectors/types/class-connector-sendgrid.php:370
 #: includes/connectors/types/class-connector-smtp2go.php:314
+#: includes/connectors/types/class-connector-smtpcom.php:460
 #: includes/connectors/types/class-connector-sparkpost.php:364
 msgid "General Settings"
 msgstr ""
@@ -1881,7 +1926,7 @@ msgstr ""
 
 #: includes/apps/config/class-tools-config.php:602
 #: includes/models/class-event-model.php:431
-#: includes/models/class-log-details-model.php:204
+#: includes/models/class-log-details-model.php:212
 #: includes/utils/class-source-parser.php:26
 #: includes/utils/class-source-parser.php:89
 msgid "N/A"
@@ -2229,40 +2274,40 @@ msgstr ""
 msgid "Invalid license key."
 msgstr ""
 
-#: includes/connectors/class-connector-base.php:473
+#: includes/connectors/class-connector-base.php:487
 msgid "Default From Email"
 msgstr ""
 
-#: includes/connectors/class-connector-base.php:488
+#: includes/connectors/class-connector-base.php:502
 msgid "Force From Email"
 msgstr ""
 
-#: includes/connectors/class-connector-base.php:491
+#: includes/connectors/class-connector-base.php:505
 msgid "If Force Email is enabled, the Default From Email address will override other plugin settings for all outgoing emails."
 msgstr ""
 
-#: includes/connectors/class-connector-base.php:508
+#: includes/connectors/class-connector-base.php:522
 msgid "Default From Name"
 msgstr ""
 
-#: includes/connectors/class-connector-base.php:523
+#: includes/connectors/class-connector-base.php:537
 #: includes/connectors/types/class-connector-microsoft.php:595
 msgid "Force From Name"
 msgstr ""
 
-#: includes/connectors/class-connector-base.php:526
+#: includes/connectors/class-connector-base.php:540
 msgid "If Force Name is enabled, the Default From Name will override other plugin settings for all outgoing emails."
 msgstr ""
 
-#: includes/connectors/class-connector-base.php:555
+#: includes/connectors/class-connector-base.php:569
 msgid "Default Reply-To Email"
 msgstr ""
 
-#: includes/connectors/class-connector-base.php:570
+#: includes/connectors/class-connector-base.php:584
 msgid "Force Reply-To Email"
 msgstr ""
 
-#: includes/connectors/class-connector-base.php:573
+#: includes/connectors/class-connector-base.php:587
 msgid "If Force Reply-To Email is enabled, the Default Reply-To Email address will override other plugin settings for all outgoing emails."
 msgstr ""
 
@@ -2383,19 +2428,22 @@ msgstr ""
 
 #: includes/connectors/types/class-connector-amazon.php:163
 #: includes/connectors/types/class-connector-brevo.php:51
+#: includes/connectors/types/class-connector-cloudflare.php:83
 #: includes/connectors/types/class-connector-elasticemail.php:51
-#: includes/connectors/types/class-connector-emailit.php:54
+#: includes/connectors/types/class-connector-emailit.php:60
 #: includes/connectors/types/class-connector-google.php:155
 #: includes/connectors/types/class-connector-mailchimp.php:64
 #: includes/connectors/types/class-connector-mailersend.php:52
 #: includes/connectors/types/class-connector-mailgun.php:60
 #: includes/connectors/types/class-connector-mailjet.php:56
+#: includes/connectors/types/class-connector-mailtrap.php:62
 #: includes/connectors/types/class-connector-microsoft.php:144
 #: includes/connectors/types/class-connector-phpmail.php:123
 #: includes/connectors/types/class-connector-postmark.php:46
 #: includes/connectors/types/class-connector-resend.php:54
-#: includes/connectors/types/class-connector-sendgrid.php:39
+#: includes/connectors/types/class-connector-sendgrid.php:58
 #: includes/connectors/types/class-connector-smtp2go.php:53
+#: includes/connectors/types/class-connector-smtpcom.php:55
 #: includes/connectors/types/class-connector-sparkpost.php:57
 #: includes/connectors/types/class-connector-zoho.php:68
 #: includes/logging/log/class-wp-mail-logger.php:76
@@ -2404,19 +2452,22 @@ msgstr ""
 
 #: includes/connectors/types/class-connector-amazon.php:201
 #: includes/connectors/types/class-connector-brevo.php:66
+#: includes/connectors/types/class-connector-cloudflare.php:112
 #: includes/connectors/types/class-connector-elasticemail.php:66
-#: includes/connectors/types/class-connector-emailit.php:70
+#: includes/connectors/types/class-connector-emailit.php:76
 #: includes/connectors/types/class-connector-google.php:202
 #: includes/connectors/types/class-connector-mailchimp.php:87
 #: includes/connectors/types/class-connector-mailersend.php:67
 #: includes/connectors/types/class-connector-mailgun.php:86
 #: includes/connectors/types/class-connector-mailjet.php:72
+#: includes/connectors/types/class-connector-mailtrap.php:82
 #: includes/connectors/types/class-connector-microsoft.php:180
 #: includes/connectors/types/class-connector-phpmail.php:166
-#: includes/connectors/types/class-connector-postmark.php:63
+#: includes/connectors/types/class-connector-postmark.php:73
 #: includes/connectors/types/class-connector-resend.php:70
-#: includes/connectors/types/class-connector-sendgrid.php:56
+#: includes/connectors/types/class-connector-sendgrid.php:75
 #: includes/connectors/types/class-connector-smtp2go.php:69
+#: includes/connectors/types/class-connector-smtpcom.php:110
 #: includes/connectors/types/class-connector-sparkpost.php:73
 #: includes/connectors/types/class-connector-zoho.php:90
 #: includes/logging/log/class-wp-mail-logger.php:79
@@ -2429,8 +2480,9 @@ msgstr ""
 
 #: includes/connectors/types/class-connector-amazon.php:286
 #: includes/connectors/types/class-connector-brevo.php:266
+#: includes/connectors/types/class-connector-cloudflare.php:566
 #: includes/connectors/types/class-connector-elasticemail.php:273
-#: includes/connectors/types/class-connector-emailit.php:289
+#: includes/connectors/types/class-connector-emailit.php:298
 #: includes/connectors/types/class-connector-generic.php:267
 #: includes/connectors/types/class-connector-google.php:398
 #: includes/connectors/types/class-connector-google.php:574
@@ -2438,12 +2490,14 @@ msgstr ""
 #: includes/connectors/types/class-connector-mailersend.php:284
 #: includes/connectors/types/class-connector-mailgun.php:339
 #: includes/connectors/types/class-connector-mailjet.php:308
+#: includes/connectors/types/class-connector-mailtrap.php:376
 #: includes/connectors/types/class-connector-microsoft.php:340
 #: includes/connectors/types/class-connector-microsoft.php:552
-#: includes/connectors/types/class-connector-postmark.php:224
+#: includes/connectors/types/class-connector-postmark.php:237
 #: includes/connectors/types/class-connector-resend.php:289
-#: includes/connectors/types/class-connector-sendgrid.php:223
+#: includes/connectors/types/class-connector-sendgrid.php:249
 #: includes/connectors/types/class-connector-smtp2go.php:282
+#: includes/connectors/types/class-connector-smtpcom.php:409
 #: includes/connectors/types/class-connector-sparkpost.php:308
 #: includes/connectors/types/class-connector-zoho.php:364
 #: includes/connectors/types/class-connector-zoho.php:565
@@ -2451,7 +2505,7 @@ msgid "Configuration"
 msgstr ""
 
 #: includes/connectors/types/class-connector-amazon.php:310
-msgid "Log in to your {{link}}AWS Console{{link}}, go to the IAM dashboard, and create a new access key for an IAM user with AmazonSESFullAccess and AmazonSNSFullAccess permissions."
+msgid "Log in to your {{link}}AWS Console{{link}}, go to the IAM dashboard, and create a new access key for an IAM user with ses:SendEmail and ses:SendRawEmail permissions."
 msgstr ""
 
 #: includes/connectors/types/class-connector-amazon.php:315
@@ -2464,6 +2518,7 @@ msgstr ""
 
 #: includes/connectors/types/class-connector-amazon.php:343
 #: includes/connectors/types/class-connector-mailgun.php:410
+#: includes/connectors/types/class-connector-sendgrid.php:288
 msgid "Region"
 msgstr ""
 
@@ -2569,12 +2624,13 @@ msgstr ""
 
 #: includes/connectors/types/class-connector-brevo.php:278
 #: includes/connectors/types/class-connector-elasticemail.php:285
-#: includes/connectors/types/class-connector-emailit.php:301
+#: includes/connectors/types/class-connector-emailit.php:310
 #: includes/connectors/types/class-connector-mailchimp.php:302
 #: includes/connectors/types/class-connector-mailersend.php:296
 #: includes/connectors/types/class-connector-mailjet.php:320
 #: includes/connectors/types/class-connector-resend.php:301
 #: includes/connectors/types/class-connector-smtp2go.php:294
+#: includes/connectors/types/class-connector-smtpcom.php:421
 #: includes/connectors/types/class-connector-sparkpost.php:344
 msgid "API Key"
 msgstr ""
@@ -2586,12 +2642,12 @@ msgstr ""
 
 #: includes/connectors/types/class-connector-brevo.php:346
 #: includes/connectors/types/class-connector-elasticemail.php:353
-#: includes/connectors/types/class-connector-emailit.php:369
+#: includes/connectors/types/class-connector-emailit.php:378
 #: includes/connectors/types/class-connector-mailersend.php:364
 #: includes/connectors/types/class-connector-mailgun.php:526
-#: includes/connectors/types/class-connector-postmark.php:307
+#: includes/connectors/types/class-connector-postmark.php:320
 #: includes/connectors/types/class-connector-resend.php:369
-#: includes/connectors/types/class-connector-sendgrid.php:306
+#: includes/connectors/types/class-connector-sendgrid.php:407
 #: includes/connectors/types/class-connector-smtp2go.php:362
 #: includes/connectors/types/class-connector-sparkpost.php:433
 msgid "No API Key provided."
@@ -2599,16 +2655,116 @@ msgstr ""
 
 #: includes/connectors/types/class-connector-brevo.php:357
 #: includes/connectors/types/class-connector-elasticemail.php:366
-#: includes/connectors/types/class-connector-emailit.php:380
+#: includes/connectors/types/class-connector-emailit.php:389
 #: includes/connectors/types/class-connector-mailersend.php:375
 #: includes/connectors/types/class-connector-mailgun.php:544
 #: includes/connectors/types/class-connector-mailjet.php:415
-#: includes/connectors/types/class-connector-postmark.php:318
+#: includes/connectors/types/class-connector-postmark.php:331
 #: includes/connectors/types/class-connector-resend.php:388
-#: includes/connectors/types/class-connector-sendgrid.php:319
+#: includes/connectors/types/class-connector-sendgrid.php:420
 #: includes/connectors/types/class-connector-smtp2go.php:373
 #: includes/connectors/types/class-connector-sparkpost.php:444
 msgid "Invalid API Key provided."
+msgstr ""
+
+#: includes/connectors/types/class-connector-cloudflare.php:40
+msgid "Send transactional email through Cloudflare Email Service using a domain managed on Cloudflare DNS. Requires a paid Cloudflare plan."
+msgstr ""
+
+#: includes/connectors/types/class-connector-cloudflare.php:68
+msgid "Starting email send for Cloudflare connector."
+msgstr ""
+
+#: includes/connectors/types/class-connector-cloudflare.php:193
+#: includes/connectors/types/class-connector-cloudflare.php:660
+msgid "No Account ID provided."
+msgstr ""
+
+#: includes/connectors/types/class-connector-cloudflare.php:197
+#: includes/connectors/types/class-connector-cloudflare.php:664
+#: includes/connectors/types/class-connector-mailtrap.php:513
+msgid "No API Token provided."
+msgstr ""
+
+#: includes/connectors/types/class-connector-cloudflare.php:216
+msgid "Cloudflare requires either an HTML or plain text email body."
+msgstr ""
+
+#: includes/connectors/types/class-connector-cloudflare.php:393
+msgid "Cloudflare rate limit exceeded."
+msgstr ""
+
+#. translators: %d: HTTP response code.
+#: includes/connectors/types/class-connector-cloudflare.php:397
+msgid "Cloudflare API request failed with status code %d."
+msgstr ""
+
+#: includes/connectors/types/class-connector-cloudflare.php:401
+msgid "Cloudflare API reported an unsuccessful response."
+msgstr ""
+
+#: includes/connectors/types/class-connector-cloudflare.php:559
+msgid "Cloudflare Settings"
+msgstr ""
+
+#: includes/connectors/types/class-connector-cloudflare.php:578
+msgid "Account ID"
+msgstr ""
+
+#. translators: 1: opening anchor tag, 2: closing anchor tag
+#: includes/connectors/types/class-connector-cloudflare.php:585
+msgid "Copy the Account ID from your Cloudflare dashboard. Your Default From Email must use a domain managed on Cloudflare DNS and onboarded in Cloudflare Email Service for Email Sending. Cloudflare adds the required sending records on the cf-bounce subdomain plus your domain DMARC record. See Cloudflare's %1$sdomain configuration docs%2$s for setup details."
+msgstr ""
+
+#: includes/connectors/types/class-connector-cloudflare.php:599
+#: includes/connectors/types/class-connector-mailtrap.php:388
+msgid "API Token"
+msgstr ""
+
+#. translators: 1: opening anchor tag, 2: closing anchor tag
+#: includes/connectors/types/class-connector-cloudflare.php:606
+msgid "Create a Cloudflare API token with access to Cloudflare Email Service for the target account. For full setup verification, also grant Zone Read and Email Sending Read permissions. Cloudflare Email Service currently requires a paid Cloudflare plan. See Cloudflare's %1$semail sending docs%2$s for setup guidance."
+msgstr ""
+
+#: includes/connectors/types/class-connector-cloudflare.php:630
+msgid "Set your Default From Email to a mailbox on a domain managed on Cloudflare DNS and onboarded in Cloudflare Email Service for Email Sending."
+msgstr ""
+
+#: includes/connectors/types/class-connector-cloudflare.php:668
+msgid "No Default From Email provided. Cloudflare requires a From Email on a domain managed in your Cloudflare account."
+msgstr ""
+
+#: includes/connectors/types/class-connector-cloudflare.php:672
+msgid "The Default From Email is not a valid email address."
+msgstr ""
+
+#: includes/connectors/types/class-connector-cloudflare.php:678
+msgid "Could not determine a domain from the Default From Email."
+msgstr ""
+
+#. translators: %s: sending domain.
+#: includes/connectors/types/class-connector-cloudflare.php:694
+msgid "Could not verify Email Sending status for %s. Make sure your API token has Email Sending read permissions."
+msgstr ""
+
+#. translators: %s: sending domain.
+#: includes/connectors/types/class-connector-cloudflare.php:705
+msgid "No sending subdomains are configured for %s. Onboard your domain in Cloudflare Email Service for Email Sending."
+msgstr ""
+
+#. translators: %s: sending domain.
+#: includes/connectors/types/class-connector-cloudflare.php:725
+msgid "Email Sending is not yet enabled for %s. Complete the domain onboarding in Cloudflare Email Service so that the required DNS records are verified."
+msgstr ""
+
+#: includes/connectors/types/class-connector-cloudflare.php:780
+#: includes/connectors/types/class-connector-cloudflare.php:786
+msgid "No matching zone found on this Cloudflare account."
+msgstr ""
+
+#. translators: %s: zone status.
+#: includes/connectors/types/class-connector-cloudflare.php:794
+msgid "Zone exists but is not active (status: %s)."
 msgstr ""
 
 #: includes/connectors/types/class-connector-elasticemail.php:28
@@ -2628,20 +2784,20 @@ msgstr ""
 msgid "To generate an API key from Elastic Email, log in to your Elastic Email dashboard and navigate to the API section. %1$sCreate a new API key%2$s and ensure your %3$sdomain settings%2$s are configured correctly."
 msgstr ""
 
-#: includes/connectors/types/class-connector-emailit.php:31
+#: includes/connectors/types/class-connector-emailit.php:37
 msgid "Simple and no-subscription based API for sending transactional and marketing emails."
 msgstr ""
 
-#: includes/connectors/types/class-connector-emailit.php:50
+#: includes/connectors/types/class-connector-emailit.php:56
 msgid "Starting email send for Emailit connector."
 msgstr ""
 
-#: includes/connectors/types/class-connector-emailit.php:282
+#: includes/connectors/types/class-connector-emailit.php:291
 msgid "Emailit Settings"
 msgstr ""
 
 #. translators: 1: opening anchor tag, 2: closing anchor tag
-#: includes/connectors/types/class-connector-emailit.php:308
+#: includes/connectors/types/class-connector-emailit.php:317
 msgid "To generate an API key from Emailit, log in to your Emailit dashboard and navigate to the Credentials section and then generate your API key."
 msgstr ""
 
@@ -2898,6 +3054,7 @@ msgid "US"
 msgstr ""
 
 #: includes/connectors/types/class-connector-mailgun.php:449
+#: includes/connectors/types/class-connector-sendgrid.php:326
 msgid "EU"
 msgstr ""
 
@@ -2942,6 +3099,52 @@ msgstr ""
 
 #: includes/connectors/types/class-connector-mailjet.php:404
 msgid "No API Key or Secret provided."
+msgstr ""
+
+#: includes/connectors/types/class-connector-mailtrap.php:39
+msgid "Mailtrap is an email delivery platform for businesses and individuals to test, send, and control email infrastructure in one place."
+msgstr ""
+
+#: includes/connectors/types/class-connector-mailtrap.php:58
+msgid "Starting email send for Mailtrap connector."
+msgstr ""
+
+#: includes/connectors/types/class-connector-mailtrap.php:325
+msgid "Mailtrap rate limit exceeded. Please wait before sending again."
+msgstr ""
+
+#: includes/connectors/types/class-connector-mailtrap.php:369
+msgid "Mailtrap Settings"
+msgstr ""
+
+#. translators: 1: opening anchor tag, 2: closing anchor tag
+#: includes/connectors/types/class-connector-mailtrap.php:395
+msgid "To obtain an API token from Mailtrap, log in to your %1$sMailtrap dashboard%2$s and navigate to API Tokens under your account settings."
+msgstr ""
+
+#: includes/connectors/types/class-connector-mailtrap.php:409
+msgid "When enabled, emails are sent to your Mailtrap sandbox inbox instead of real recipients. Requires a Sandbox Inbox ID."
+msgstr ""
+
+#: includes/connectors/types/class-connector-mailtrap.php:415
+msgid "Enable Sandbox Mode"
+msgstr ""
+
+#: includes/connectors/types/class-connector-mailtrap.php:430
+msgid "Sandbox Inbox ID"
+msgstr ""
+
+#. translators: 1: opening anchor tag, 2: closing anchor tag
+#: includes/connectors/types/class-connector-mailtrap.php:437
+msgid "Enter the numeric Inbox ID from your %1$sMailtrap sandbox%2$s. Required when Sandbox Mode is enabled."
+msgstr ""
+
+#: includes/connectors/types/class-connector-mailtrap.php:482
+msgid "Sandbox Inbox ID is required when Sandbox Mode is enabled."
+msgstr ""
+
+#: includes/connectors/types/class-connector-mailtrap.php:524
+msgid "Invalid API Token provided."
 msgstr ""
 
 #: includes/connectors/types/class-connector-microsoft.php:34
@@ -3032,16 +3235,16 @@ msgstr ""
 msgid "Starting email send for Postmark connector."
 msgstr ""
 
-#: includes/connectors/types/class-connector-postmark.php:217
+#: includes/connectors/types/class-connector-postmark.php:230
 msgid "Postmark Settings"
 msgstr ""
 
-#: includes/connectors/types/class-connector-postmark.php:250
+#: includes/connectors/types/class-connector-postmark.php:263
 msgid "Server API Token"
 msgstr ""
 
 #. translators: 1: opening anchor tag, 2: closing anchor tag
-#: includes/connectors/types/class-connector-postmark.php:257
+#: includes/connectors/types/class-connector-postmark.php:270
 msgid "To get a Server API Token, go to the %1$sAPI Token%2$s tab on your Postmark account page."
 msgstr ""
 
@@ -3062,28 +3265,46 @@ msgstr ""
 msgid "To generate an API key from Resend, log in to your Resend dashboard and navigate to the Credentials section and then generate your API key."
 msgstr ""
 
-#: includes/connectors/types/class-connector-sendgrid.php:19
+#: includes/connectors/types/class-connector-sendgrid.php:26
 msgid "Send at scale with Twilio SendGrid, boasting an industry-leading 99% deliverability rate. SendGrid offers both a free-forever plan of 100 emails a day, and, if you need to exceed that limit, a selection of preset pricing plans, starting at $19.95 per month for up to 50,000 emails. For more information on how to get started with SendGrid, read our documentation."
 msgstr ""
 
-#: includes/connectors/types/class-connector-sendgrid.php:35
+#: includes/connectors/types/class-connector-sendgrid.php:54
 msgid "Starting email send for SendGrid connector."
 msgstr ""
 
-#: includes/connectors/types/class-connector-sendgrid.php:216
+#: includes/connectors/types/class-connector-sendgrid.php:242
 msgid "SendGrid Settings"
 msgstr ""
 
-#: includes/connectors/types/class-connector-sendgrid.php:249
+#: includes/connectors/types/class-connector-sendgrid.php:261
 msgid "SendGrid API Key"
 msgstr ""
 
 #. translators: 1: opening anchor tag, 2: closing anchor tag
-#: includes/connectors/types/class-connector-sendgrid.php:256
+#: includes/connectors/types/class-connector-sendgrid.php:268
 msgid "To obtain an API key from SendGrid you will need to %1$sgenerate an API key%2$s. To send emails, the API key only requires 'Mail Send' access."
 msgstr ""
 
-#: includes/connectors/types/class-connector-sendgrid.php:325
+#: includes/connectors/types/class-connector-sendgrid.php:314
+msgid "Global"
+msgstr ""
+
+#. translators: 1: opening anchor tag, 2: closing anchor tag
+#: includes/connectors/types/class-connector-sendgrid.php:339
+msgid "Choose your SendGrid API region. Select EU for European data residency. Important: the EU region requires an API key created under an EU subuser. For more information, visit %1$sSendGrid Data Residency%2$s."
+msgstr ""
+
+#: includes/connectors/types/class-connector-sendgrid.php:350
+msgid "IP Pool Name"
+msgstr ""
+
+#. translators: 1: opening anchor tag, 2: closing anchor tag
+#: includes/connectors/types/class-connector-sendgrid.php:357
+msgid "Optional. Enter the name of a SendGrid IP pool to route emails through specific IPs (e.g. for EU/GDPR compliance). The pool must already exist in your SendGrid account. For more information, see %1$sSendGrid IP Pools%2$s."
+msgstr ""
+
+#: includes/connectors/types/class-connector-sendgrid.php:426
 msgid "API Key does not have permission to send mail."
 msgstr ""
 
@@ -3102,6 +3323,75 @@ msgstr ""
 #. translators: 1: opening anchor tag, 2: closing anchor tag
 #: includes/connectors/types/class-connector-smtp2go.php:301
 msgid "To generate an API key from SMTP2GO, log in to your SMTP2GO dashboard and navigate to the API section. %1$sCreate a new API key%2$s and ensure your %3$sverified senders%2$s are configured correctly."
+msgstr ""
+
+#: includes/connectors/types/class-connector-smtpcom.php:32
+msgid "Premium email delivery service with a powerful REST API for sending transactional and marketing emails at scale."
+msgstr ""
+
+#: includes/connectors/types/class-connector-smtpcom.php:51
+msgid "Starting email send for SMTP.com connector."
+msgstr ""
+
+#: includes/connectors/types/class-connector-smtpcom.php:75
+msgid "Unexpected response from SMTP.com."
+msgstr ""
+
+#: includes/connectors/types/class-connector-smtpcom.php:83
+#: includes/connectors/types/class-connector-smtpcom.php:518
+msgid "Invalid API key."
+msgstr ""
+
+#: includes/connectors/types/class-connector-smtpcom.php:89
+msgid "Forbidden — check channel permissions."
+msgstr ""
+
+#: includes/connectors/types/class-connector-smtpcom.php:95
+msgid "Rate limit exceeded."
+msgstr ""
+
+#: includes/connectors/types/class-connector-smtpcom.php:101
+msgid "SMTP.com server error."
+msgstr ""
+
+#: includes/connectors/types/class-connector-smtpcom.php:116
+msgid "Unknown error from SMTP.com."
+msgstr ""
+
+#: includes/connectors/types/class-connector-smtpcom.php:123
+msgid "Validation failed."
+msgstr ""
+
+#: includes/connectors/types/class-connector-smtpcom.php:133
+msgid "Email accepted (HTTP 2xx) but response did not include a JSend status field."
+msgstr ""
+
+#: includes/connectors/types/class-connector-smtpcom.php:402
+msgid "SMTP.com Settings"
+msgstr ""
+
+#: includes/connectors/types/class-connector-smtpcom.php:427
+msgid "Enter your SMTP.com API key. You can find this in your SMTP.com dashboard under API Settings."
+msgstr ""
+
+#: includes/connectors/types/class-connector-smtpcom.php:441
+msgid "Channel Name"
+msgstr ""
+
+#: includes/connectors/types/class-connector-smtpcom.php:447
+msgid "Enter your SMTP.com channel name. You can find your channels in the SMTP.com dashboard under Channels."
+msgstr ""
+
+#: includes/connectors/types/class-connector-smtpcom.php:486
+msgid "API key is required."
+msgstr ""
+
+#: includes/connectors/types/class-connector-smtpcom.php:495
+msgid "Channel name is required."
+msgstr ""
+
+#: includes/connectors/types/class-connector-smtpcom.php:525
+msgid "Unable to connect to SMTP.com. Please check your credentials."
 msgstr ""
 
 #: includes/connectors/types/class-connector-sparkpost.php:34
@@ -3448,12 +3738,12 @@ msgid "Sent to new Site Admin email address when user activates a new site, or a
 msgstr ""
 
 #. translators: 1: the name of the integration (only used if $service does not equal 'wp_mail').
-#: includes/enums/class-integration-enum.php:91
+#: includes/enums/class-integration-enum.php:94
 msgid "The default WordPress mailer was used to send this email"
 msgstr ""
 
 #. translators: 1: the name of the integration (only used if $service does not equal 'wp_mail').
-#: includes/enums/class-integration-enum.php:91
+#: includes/enums/class-integration-enum.php:94
 msgid "The %1$s integration was used to send this email"
 msgstr ""
 
@@ -3493,16 +3783,29 @@ msgstr ""
 msgid "A fatal error occured when sending"
 msgstr ""
 
-#: includes/handler/endpoints/class-resend-email-endpoint.php:62
+#: includes/handler/endpoints/class-resend-email-endpoint.php:65
+msgid "Could not read stored email data."
+msgstr ""
+
+#: includes/handler/endpoints/class-resend-email-endpoint.php:86
 msgid "Attempted to resend email %s, but could not due to either the message body not being stored, or attachments not being saved."
 msgstr ""
 
-#: includes/handler/endpoints/class-resend-email-endpoint.php:64
+#: includes/handler/endpoints/class-resend-email-endpoint.php:88
 msgid "Email could not be resent as it was not stored with all required values."
 msgstr ""
 
-#: includes/handler/endpoints/class-resend-email-endpoint.php:92
+#: includes/handler/endpoints/class-resend-email-endpoint.php:138
 msgid "Email could not be resent; check your logs for more details."
+msgstr ""
+
+#: includes/handler/endpoints/class-resend-email-endpoint.php:158
+msgid "Email address list is empty."
+msgstr ""
+
+#. translators: %s is the invalid email address.
+#: includes/handler/endpoints/class-resend-email-endpoint.php:167
+msgid "Invalid email address: %s"
 msgstr ""
 
 #: includes/handler/external/class-gravity-forms-note-handler.php:27

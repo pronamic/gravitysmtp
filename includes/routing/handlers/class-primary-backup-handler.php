@@ -40,7 +40,7 @@ class Primary_Backup_Handler implements Routing_Handler {
 
 		// A backup was already attempted; no more connections to check, return false.
 		if ( self::$backup_attempted ) {
-			$this->logger->log_warning( $this->error_prefix() .  __( 'Primary and Backup integrations failed to send. Aborting email send.', 'gravitysmtp' ) );
+			$this->logger->log_warning( $this->error_prefix() . __( 'Primary and Backup integrations failed to send. Aborting email send.', 'gravitysmtp' ) );
 			return false;
 		}
 
@@ -73,18 +73,18 @@ class Primary_Backup_Handler implements Routing_Handler {
 		$type                    = $this->data_router->get_connector_status_of_type( Connector_Status_Enum::PRIMARY );
 
 		if ( ! $type ) {
-			$this->logger->log_warning( $this->error_prefix() .  __( 'Primary integration not set, checking for Backup integration.', 'gravitysmtp' ) );
+			$this->logger->log_warning( $this->error_prefix() . __( 'Primary integration not set, checking for Backup integration.', 'gravitysmtp' ) );
 			return $this->handle( $type, $email_data );
 		}
 
 		$enabled = $this->data_router->get_setting( $type, Connector_Base::SETTING_ENABLED, false );
 
 		/* translators: %1$s: integration type */
-		$this->logger->log_debug( $this->error_prefix() .  sprintf( __( 'Primary integration identified: %1$s', 'gravitysmtp' ), $type ) );
+		$this->logger->log_debug( $this->error_prefix() . sprintf( __( 'Primary integration identified: %1$s', 'gravitysmtp' ), $type ) );
 
 		// Primary connection not enabled; immediately try backup connection.
 		if ( ! $enabled ) {
-			$this->logger->log_warning( $this->error_prefix() .  __( 'Primary integration not enabled, moving on to Backup integration.', 'gravitysmtp' ) );
+			$this->logger->log_warning( $this->error_prefix() . __( 'Primary integration not enabled, moving on to Backup integration.', 'gravitysmtp' ) );
 			return $this->handle( $type, $email_data );
 		}
 

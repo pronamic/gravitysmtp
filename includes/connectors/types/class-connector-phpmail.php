@@ -231,7 +231,7 @@ class Connector_Phpmail extends Connector_Base {
 					array(
 						'component' => 'Alert',
 						'props'     => array(
-							'customIconPrefix' => 'gravitysmtp-admin-icon',
+							'customIconPrefix' => 'gravity-admin-icon',
 							'theme'            => 'cosmos',
 							'type'             => 'info',
 							'spacing'          => 5,

@@ -119,7 +119,7 @@ class Get_Paginated_Debug_Log_Items_Endpoint extends Endpoint {
 						),
 						'customClasses'    => array( 'gravitysmtp-data-grid__action' ),
 						'icon'             => 'eye',
-						'iconPrefix'       => 'gravitysmtp-admin-icon',
+						'iconPrefix'       => 'gravity-admin-icon',
 						'spacing'          => [ 0, 2, 0, 0 ],
 						'size'             => 'size-height-s',
 						'type'             => 'icon-white',
@@ -138,7 +138,7 @@ class Get_Paginated_Debug_Log_Items_Endpoint extends Endpoint {
 						),
 						'customClasses'    => array( 'gravitysmtp-data-grid__action' ),
 						'icon'             => 'trash',
-						'iconPrefix'       => 'gravitysmtp-admin-icon',
+						'iconPrefix'       => 'gravity-admin-icon',
 						'size'             => 'size-height-s',
 						'type'             => 'icon-white',
 						'data'             => array(

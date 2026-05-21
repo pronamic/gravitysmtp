@@ -44,7 +44,7 @@ class Members_Integration {
 			'gravitysmtp',
 			array(
 				'label' => esc_html__( 'Gravity SMTP', 'gravitysmtp' ),
-				'icon'  => 'gravitysmtp-admin-icon gravitysmtp-admin-icon--dashboard-icon',
+				'icon'  => 'gravity-admin-icon gravity-admin-icon--gravitysmtp-logo',
 				'caps'  => array(),
 			)
 		);

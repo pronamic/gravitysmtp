@@ -44,83 +44,85 @@ class Email_Log_Config extends Config {
 		return true;
 	}
 
-	public function get_grid_actions( $row ) {
+	public function get_grid_actions( $row, $log_detail = array() ) {
 		$actions = array(
 			'component'  => 'Box',
 			'components' => array(
 				array(
 					'component' => 'Button',
 					'props'     => array(
-						'action'        => 'view',
+						'action'           => 'view',
 						'customAttributes' => array(
 							'title' => esc_html__( 'View email log', 'gravitysmtp' ),
 						),
-						'customClasses' => array( 'gravitysmtp-data-grid__action' ),
-						'icon'          => 'information-circle',
-						'iconPrefix'    => 'gravity-component-icon',
-						'spacing'       => [ 0, 2, 0, 0 ],
-						'size'          => 'size-height-s',
-						'type'          => 'icon-white',
-						'data'          => array(
+						'customClasses'    => array( 'gravitysmtp-data-grid__action' ),
+						'icon'             => 'information-circle',
+						'iconPrefix'       => 'gravity-component-icon',
+						'spacing'          => array( 0, 2, 0, 0 ),
+						'size'             => 'size-height-s',
+						'type'             => 'icon-white',
+						'data'             => array(
 							'event_id' => $row['id'],
 						),
-						'disabled' => ! current_user_can( Roles::VIEW_EMAIL_LOG_DETAILS ),
+						'disabled'         => ! current_user_can( Roles::VIEW_EMAIL_LOG_DETAILS ),
 					),
 				),
 				array(
 					'component' => 'Button',
 					'props'     => array(
-						'action'        => 'preview',
+						'action'           => 'preview',
 						'customAttributes' => array(
 							'title' => esc_html__( 'View email', 'gravitysmtp' ),
 						),
-						'customClasses' => array( 'gravitysmtp-data-grid__action' ),
-						'icon'          => 'eye',
-						'iconPrefix'    => 'gravitysmtp-admin-icon',
-						'spacing'       => [ 0, 2, 0, 0 ],
-						'size'          => 'size-height-s',
-						'type'          => 'icon-white',
-						'data'          => array(
+						'customClasses'    => array( 'gravitysmtp-data-grid__action' ),
+						'icon'             => 'eye',
+						'iconPrefix'       => 'gravity-admin-icon',
+						'spacing'          => array( 0, 2, 0, 0 ),
+						'size'             => 'size-height-s',
+						'type'             => 'icon-white',
+						'data'             => array(
 							'event_id' => $row['id'],
 						),
-						'disabled' => ! current_user_can( Roles::VIEW_EMAIL_LOG_PREVIEW ),
+						'disabled'         => ! current_user_can( Roles::VIEW_EMAIL_LOG_PREVIEW ),
 					),
 				),
 				array(
 					'component' => 'Button',
 					'props'     => array(
-						'action'        => 'resend',
+						'action'           => 'resend',
 						'customAttributes' => array(
 							'title' => esc_html__( 'Resend email', 'gravitysmtp' ),
 						),
-						'customClasses' => array( 'gravitysmtp-data-grid__action' ),
-						'icon'          => 'paper-plane',
-						'iconPrefix'    => 'gravitysmtp-admin-icon',
-						'spacing'       => [ 0, 2, 0, 0 ],
-						'size'          => 'size-height-s',
-						'type'          => 'icon-white',
-						'data'          => array(
-							'event_id' => $row['id'],
+						'customClasses'    => array( 'gravitysmtp-data-grid__action' ),
+						'icon'             => 'paper-plane',
+						'iconPrefix'       => 'gravity-admin-icon',
+						'spacing'          => array( 0, 2, 0, 0 ),
+						'size'             => 'size-height-s',
+						'type'             => 'icon-white',
+						'data'             => array(
+							'event_id'   => $row['id'],
+							'log_detail' => $log_detail,
+							'to'         => isset( $log_detail['to'] ) ? $log_detail['to'] : '',
 						),
-						'disabled' => ! current_user_can( Roles::VIEW_EMAIL_LOG_PREVIEW ) || ! $row['can_resend'], // @todo: Add resend permission?
+						'disabled'         => ! current_user_can( Roles::VIEW_EMAIL_LOG_PREVIEW ) || ! $row['can_resend'], // @todo: Add resend permission?
 					),
 				),
 				array(
 					'component' => 'Button',
 					'props'     => array(
-						'action'        => 'delete',
+						'action'           => 'delete',
 						'customAttributes' => array(
 							'title' => esc_html__( 'Delete email log', 'gravitysmtp' ),
 						),
-						'customClasses' => array( 'gravitysmtp-data-grid__action' ),
-						'icon'          => 'trash',
-						'iconPrefix'    => 'gravitysmtp-admin-icon',
-						'size'          => 'size-height-s',
-						'type'          => 'icon-white',
-						'data'          => array(
+						'customClasses'    => array( 'gravitysmtp-data-grid__action' ),
+						'icon'             => 'trash',
+						'iconPrefix'       => 'gravity-admin-icon',
+						'size'             => 'size-height-s',
+						'type'             => 'icon-white',
+						'data'             => array(
 							'event_id' => $row['id'],
 						),
-						'disabled' => ! current_user_can( Roles::DELETE_EMAIL_LOG ),
+						'disabled'         => ! current_user_can( Roles::DELETE_EMAIL_LOG ),
 					),
 				),
 			),
@@ -1290,10 +1292,10 @@ class Email_Log_Config extends Config {
 		$plugin_data_store = Gravity_SMTP::container()->get( Connector_Service_Provider::DATA_STORE_ROUTER );
 
 		$props = array(
-			'subject'     => array( 'flexBasis' => '292px' ),
-			'status'      => array( 'flex' => '0 0 122px' ),
-			'from'        => array( 'flexBasis' => '160px' ),
-			'to'          => array( 'flexBasis' => '160px' ),
+			'subject' => array( 'flexBasis' => '292px' ),
+			'status'  => array( 'flex' => '0 0 122px' ),
+			'from'    => array( 'flexBasis' => '160px' ),
+			'to'      => array( 'flexBasis' => '160px' ),
 		);
 
 		// Continue adding the remaining entries, starting with 'source'
@@ -1308,51 +1310,51 @@ class Email_Log_Config extends Config {
 
 	public function get_i18n() {
 		return array(
-			'error_alert_title'            => esc_html__( 'Error Saving', 'gravitysmtp' ),
+			'error_alert_title'                 => esc_html__( 'Error Saving', 'gravitysmtp' ),
 			// todo generic i18n for whole app
-			'error_alert_generic_message'  => esc_html__( 'Could not save; please check your logs.', 'gravitysmtp' ),
-			'error_alert_close_text'       => esc_html__( 'Close', 'gravitysmtp' ),
-			'data_grid' => array(
-				'top_heading'                               => esc_html__( 'Email Log', 'gravitysmtp' ),
+			'error_alert_generic_message'       => esc_html__( 'Could not save; please check your logs.', 'gravitysmtp' ),
+			'error_alert_close_text'            => esc_html__( 'Close', 'gravitysmtp' ),
+			'data_grid'                         => array(
+				'top_heading'                             => esc_html__( 'Email Log', 'gravitysmtp' ),
 				// 'top_content'                            => __( '', 'gravitysmtp' ), // removing text for now as it is redundant.
-				'grid_heading'                              => esc_html__( 'Activity', 'gravitysmtp' ),
-				'active_filters_label'                      => esc_html__( 'Filters:', 'gravitysmtp' ),
-				'active_filters_reset'                      => esc_html__( 'Reset Filters', 'gravitysmtp' ),
-				'bulk_select'                               => esc_html__( 'Select all rows', 'gravitysmtp' ),
-				'clear_search_aria_label'                   => esc_html__( 'Clear search', 'gravitysmtp' ),
+				'grid_heading'                            => esc_html__( 'Activity', 'gravitysmtp' ),
+				'active_filters_label'                    => esc_html__( 'Filters:', 'gravitysmtp' ),
+				'active_filters_reset'                    => esc_html__( 'Reset Filters', 'gravitysmtp' ),
+				'bulk_select'                             => esc_html__( 'Select all rows', 'gravitysmtp' ),
+				'clear_search_aria_label'                 => esc_html__( 'Clear search', 'gravitysmtp' ),
 				/* translators: %s: date range */
-				'date_filters_pill_label'                   => esc_html__( 'Date: %s', 'gravitysmtp' ),
+				'date_filters_pill_label'                 => esc_html__( 'Date: %s', 'gravitysmtp' ),
 				/* translators: 1: from date, 2: to date */
-				'date_filters_trigger_aria_text'            => esc_html__( 'Date filters: %1$s to %2$s', 'gravitysmtp' ),
-				'date_filters_reset'                        => esc_html__( 'Reset', 'gravitysmtp' ),
-				'date_filters_today'                        => esc_html__( 'Today', 'gravitysmtp' ),
-				'empty_title'                               => esc_html__( 'No emails yet', 'gravitysmtp' ),
-				'empty_message'                             => esc_html__( 'As soon as your site sends some emails, you will see them here!', 'gravitysmtp' ),
-				'grid_controls_bulk_actions_select_label'   => esc_html__( 'Select bulk actions', 'gravitysmtp' ),
-				'grid_controls_bulk_actions_button_label'   => esc_html__( 'Apply', 'gravitysmtp' ),
-				'grid_controls_search_placeholder'          => esc_html__( 'Search', 'gravitysmtp' ),
-				'grid_controls_search_button_label'         => esc_html__( 'Search', 'gravitysmtp' ),
+				'date_filters_trigger_aria_text'          => esc_html__( 'Date filters: %1$s to %2$s', 'gravitysmtp' ),
+				'date_filters_reset'                      => esc_html__( 'Reset', 'gravitysmtp' ),
+				'date_filters_today'                      => esc_html__( 'Today', 'gravitysmtp' ),
+				'empty_title'                             => esc_html__( 'No emails yet', 'gravitysmtp' ),
+				'empty_message'                           => esc_html__( 'As soon as your site sends some emails, you will see them here!', 'gravitysmtp' ),
+				'grid_controls_bulk_actions_select_label' => esc_html__( 'Select bulk actions', 'gravitysmtp' ),
+				'grid_controls_bulk_actions_button_label' => esc_html__( 'Apply', 'gravitysmtp' ),
+				'grid_controls_search_placeholder'        => esc_html__( 'Search', 'gravitysmtp' ),
+				'grid_controls_search_button_label'       => esc_html__( 'Search', 'gravitysmtp' ),
 				/* translators: 1: number of selected entries. */
-				'select_notice_selected_number_entries'     => esc_html__( 'All %1$s emails on this page are selected', 'gravitysmtp' ),
+				'select_notice_selected_number_entries'   => esc_html__( 'All %1$s emails on this page are selected', 'gravitysmtp' ),
 				/* translators: 1: number of selected entries. */
 				'select_notice_selected_all_number_entries' => esc_html__( 'All %1$s emails in the email log are selected', 'gravitysmtp' ),
 				/* translators: 1: number of entries to be selected. */
-				'select_notice_select_all_number_entries'   => esc_html__( 'Select All %1$s Emails', 'gravitysmtp' ),
-				'select_notice_clear_selection'             => esc_html__( 'Clear Selection', 'gravitysmtp' ),
-				'simple_filters_droplist_reset'             => esc_html__( 'Reset', 'gravitysmtp' ),
+				'select_notice_select_all_number_entries' => esc_html__( 'Select All %1$s Emails', 'gravitysmtp' ),
+				'select_notice_clear_selection'           => esc_html__( 'Clear Selection', 'gravitysmtp' ),
+				'simple_filters_droplist_reset'           => esc_html__( 'Reset', 'gravitysmtp' ),
 				/* translators: %s: number of filters active. */
-				'simple_filters_trigger_aria_text'          => esc_html__( 'Filters: %s filters active.', 'gravitysmtp' ),
-				'pagination_next'                           => esc_html__( 'Next', 'gravitysmtp' ),
-				'pagination_prev'                           => esc_html__( 'Previous', 'gravitysmtp' ),
-				'pagination_next_aria_label'                => esc_html__( 'Next Page', 'gravitysmtp' ),
-				'pagination_prev_aria_label'                => esc_html__( 'Previous Page', 'gravitysmtp' ),
-				'search_no_results_title'                   => esc_html__( 'No results found', 'gravitysmtp' ),
-				'search_no_results_message'                 => esc_html__( 'No results found for your search', 'gravitysmtp' ),
+				'simple_filters_trigger_aria_text'        => esc_html__( 'Filters: %s filters active.', 'gravitysmtp' ),
+				'pagination_next'                         => esc_html__( 'Next', 'gravitysmtp' ),
+				'pagination_prev'                         => esc_html__( 'Previous', 'gravitysmtp' ),
+				'pagination_next_aria_label'              => esc_html__( 'Next Page', 'gravitysmtp' ),
+				'pagination_prev_aria_label'              => esc_html__( 'Previous Page', 'gravitysmtp' ),
+				'search_no_results_title'                 => esc_html__( 'No results found', 'gravitysmtp' ),
+				'search_no_results_message'               => esc_html__( 'No results found for your search', 'gravitysmtp' ),
 				/* translators: %s: search term */
-				'search_pill_label'                         => esc_html__( 'Search: %s', 'gravitysmtp' ),
-				'select_row'                                => esc_html__( 'Select row', 'gravitysmtp' ),
+				'search_pill_label'                       => esc_html__( 'Search: %s', 'gravitysmtp' ),
+				'select_row'                              => esc_html__( 'Select row', 'gravitysmtp' ),
 			),
-			'debug_messages'               => array(
+			'debug_messages'                    => array(
 				/* translators: %1$s is the body of the ajax request. */
 				'deleting_activity_log_rows'         => esc_html__( 'Deleting activity log rows: %1$s', 'gravitysmtp' ),
 				/* translators: %1$s is the error. */
@@ -1370,21 +1372,33 @@ class Email_Log_Config extends Config {
 				/* translators: %1$s is the error. */
 				'fetching_single_activity_log_error' => esc_html__( 'Error fetching activity log details: %1$s', 'gravitysmtp' ),
 			),
-			'confirm_delete_email_heading' => esc_html__( 'Delete Email', 'gravitysmtp' ),
-			'confirm_delete_email_content' => esc_html__( 'Are you sure you want to delete this email log?', 'gravitysmtp' ),
-			'confirm_delete_email_delete'  => esc_html__( 'Delete', 'gravitysmtp' ),
-			'confirm_delete_email_cancel'  => esc_html__( 'Cancel', 'gravitysmtp' ),
-			'confirm_resend_email_heading' => esc_html__( 'Resend Email', 'gravitysmtp' ),
-			'confirm_resend_email_content' => esc_html__( 'Are you sure you want to resend this email?', 'gravitysmtp' ),
-			'confirm_resend_email_resend'  => esc_html__( 'Resend', 'gravitysmtp' ),
-			'confirm_resend_email_cancel'  => esc_html__( 'Cancel', 'gravitysmtp' ),
-			'confirm_bulk_delete_heading'  => esc_html__( 'Confirm Deletion', 'gravitysmtp' ),
+			'confirm_delete_email_heading'      => esc_html__( 'Delete Email', 'gravitysmtp' ),
+			'confirm_delete_email_content'      => esc_html__( 'Are you sure you want to delete this email log?', 'gravitysmtp' ),
+			'confirm_delete_email_delete'       => esc_html__( 'Delete', 'gravitysmtp' ),
+			'confirm_delete_email_cancel'       => esc_html__( 'Cancel', 'gravitysmtp' ),
+			'confirm_resend_email_heading'      => esc_html__( 'Resend Email', 'gravitysmtp' ),
+			'confirm_resend_email_content'      => esc_html__( 'Are you sure you want to resend this email?', 'gravitysmtp' ),
+			'confirm_resend_email_description'  => esc_html__( 'This action will send a new copy of the original message.', 'gravitysmtp' ),
+			'confirm_resend_email_alert'        => esc_html__( 'Are you sure you want to resend this email? This action will send a new copy of the original message.', 'gravitysmtp' ),
+			'confirm_resend_email_resend'       => esc_html__( 'Resend', 'gravitysmtp' ),
+			'confirm_resend_email_cancel'       => esc_html__( 'Cancel', 'gravitysmtp' ),
+			'resend_recipient_label'            => esc_html__( 'Recipient', 'gravitysmtp' ),
+			'resend_recipient_placeholder'      => esc_html__( 'Enter recipient email address', 'gravitysmtp' ),
+			'resend_recipient_description'      => esc_html__( 'Edit the recipient email address or enter a new one. Separate multiple addresses with commas.', 'gravitysmtp' ),
+			'resend_include_cc_label'           => esc_html__( 'CC', 'gravitysmtp' ),
+			'resend_include_cc_description'     => esc_html__( 'Comma-separated CC recipient addresses.', 'gravitysmtp' ),
+			'resend_include_bcc_label'          => esc_html__( 'BCC', 'gravitysmtp' ),
+			'resend_include_bcc_description'    => esc_html__( 'Comma-separated BCC recipient addresses.', 'gravitysmtp' ),
+			'resend_summary_heading'            => esc_html__( 'Email Summary', 'gravitysmtp' ),
+			'resend_summary_subject'            => esc_html__( 'Subject', 'gravitysmtp' ),
+			'resend_summary_from'               => esc_html__( 'From', 'gravitysmtp' ),
+			'resend_summary_original_to'        => esc_html__( 'Original To', 'gravitysmtp' ),
+			'resend_summary_date_sent'          => esc_html__( 'Date Sent', 'gravitysmtp' ),
+			'resend_recipient_details_heading'  => esc_html__( 'Recipient Details', 'gravitysmtp' ),
+			'snackbar_resend_invalid_recipient' => esc_html__( 'One or more recipient email addresses are invalid.', 'gravitysmtp' ),
+			'confirm_bulk_delete_heading'       => esc_html__( 'Confirm Deletion', 'gravitysmtp' ),
 			/* translators: 1: number of selected entries. */
-			'confirm_bulk_delete_content'  => esc_html__( 'Are you sure you want to delete %1$s entries? This action is irreversible, and all records will be permanently removed from the database.', 'gravitysmtp' ),
-			'confirm_resend_email_heading' => esc_html__( 'Resend Email', 'gravitysmtp' ),
-			'confirm_resend_email_content' => esc_html__( 'Are you sure you want to resend this email?', 'gravitysmtp' ),
-			'confirm_resend_email_resend'  => esc_html__( 'Resend', 'gravitysmtp' ),
-			'confirm_resend_email_cancel'  => esc_html__( 'Cancel', 'gravitysmtp' ),
+			'confirm_bulk_delete_content'       => esc_html__( 'Are you sure you want to delete %1$s entries? This action is irreversible, and all records will be permanently removed from the database.', 'gravitysmtp' ),
 		);
 	}
 
@@ -1509,7 +1523,7 @@ class Email_Log_Config extends Config {
 					'id'    => 'source',
 					'label' => esc_html__( 'Source', 'gravitysmtp' ),
 				),
-				'listItems' => $this->get_source_list_items( $pill_label ),
+				'listItems'         => $this->get_source_list_items( $pill_label ),
 			),
 		);
 	}
@@ -1583,16 +1597,16 @@ class Email_Log_Config extends Config {
 			'initial_load_timestamp'   => current_time( 'mysql', true ),
 			'rows_per_page'            => $per_page,
 			'data_grid'                => array(
-				'bulk_actions_options' => $this->get_bulk_actions(),
-				'columns'              => $this->get_columns(),
-				'column_style_props'   => $this->get_column_style_props(),
-				'data'                 => array(
+				'bulk_actions_options'  => $this->get_bulk_actions(),
+				'columns'               => $this->get_columns(),
+				'column_style_props'    => $this->get_column_style_props(),
+				'data'                  => array(
 					'value'   => $this->get_data_rows(),
 					'default' => $this->get_demo_data_rows(),
 				),
 				'simple_filter_options' => $this->get_simple_filter_options(),
 			),
-			'caps' => array(
+			'caps'                     => array(
 				Roles::VIEW_EMAIL_LOG           => current_user_can( Roles::VIEW_EMAIL_LOG ),
 				Roles::VIEW_EMAIL_LOG_DETAILS   => current_user_can( Roles::VIEW_EMAIL_LOG_DETAILS ),
 				Roles::DELETE_EMAIL_LOG         => current_user_can( Roles::DELETE_EMAIL_LOG ),
@@ -1641,11 +1655,20 @@ class Email_Log_Config extends Config {
 		$rows = array();
 
 		foreach ( $data as $row ) {
-			$grid_actions = $this->get_grid_actions( $row );
-			$extra        = strpos( $row['extra'], '{' ) === 0 ? json_decode( $row['extra'], true ) : unserialize( $row['extra'] );
-			$to           = isset( $extra['to'] ) ? $extra['to'] : '';
-			$to_address   = $recipient_parser->parse( $to )->first()->email();
-			$more_count   = max( 0, $row['email_counts'] - 1 );
+			$extra             = strpos( $row['extra'], '{' ) === 0 ? json_decode( $row['extra'], true ) : unserialize( $row['extra'] );
+			$to                = isset( $extra['to'] ) ? $extra['to'] : '';
+			$to_collection     = $recipient_parser->parse( $to );
+			$to_address        = $to_collection->first()->email();
+			$formatted_date    = $this->convert_dates_to_timezone( $row['date_updated'] );
+			$resend_log_detail = array(
+				'date'    => $formatted_date,
+				'from'    => isset( $extra['from'] ) ? $extra['from'] : '',
+				'log_id'  => $row['id'],
+				'subject' => $row['subject'],
+				'to'      => $to_collection->as_string( true ),
+			);
+			$grid_actions      = $this->get_grid_actions( $row, $resend_log_detail );
+			$more_count        = max( 0, $row['email_counts'] - 1 );
 
 			$row_data = array(
 				'id'      => $row['id'],
@@ -1659,7 +1682,7 @@ class Email_Log_Config extends Config {
 						'data'          => array(
 							'event_id' => $row['id'],
 						),
-						'disabled' => ! current_user_can( Roles::VIEW_EMAIL_LOG_DETAILS ),
+						'disabled'      => ! current_user_can( Roles::VIEW_EMAIL_LOG_DETAILS ),
 					),
 				),
 				'status'  => array(
@@ -1730,7 +1753,7 @@ class Email_Log_Config extends Config {
 				'key'      => $row['service'] . '_logo',
 				'props'    => array(
 					'height' => 24,
-					'title' => Integration_Enum::svg_title( $row['service'] ),
+					'title'  => Integration_Enum::svg_title( $row['service'] ),
 					'width'  => 24,
 				),
 			);
@@ -1738,7 +1761,7 @@ class Email_Log_Config extends Config {
 			$row_data['date'] = array(
 				'component' => 'Text',
 				'props'     => array(
-					'content' => $this->convert_dates_to_timezone( $row['date_updated'] ),
+					'content' => $formatted_date,
 					'size'    => 'text-sm',
 				),
 			);

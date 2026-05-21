@@ -335,7 +335,7 @@ class Settings_Config extends Config {
 									'props' => array(
 										'element'    => 'button',
 										'iconBefore' => 'api',
-										'iconPrefix' => 'gravitysmtp-admin-icon',
+										'iconPrefix' => 'gravity-admin-icon',
 										'label'      => esc_html__( 'API Settings', 'gravitysmtp' ),
 									),
 								),
@@ -349,7 +349,7 @@ class Settings_Config extends Config {
 										),
 										'element'          => 'link',
 										'iconBefore'       => 'paper-plane',
-										'iconPrefix'       => 'gravitysmtp-admin-icon',
+										'iconPrefix'       => 'gravity-admin-icon',
 										'label'            => esc_html__( 'Send A Test', 'gravitysmtp' ),
 									),
 								),
@@ -359,7 +359,7 @@ class Settings_Config extends Config {
 									'props' => array(
 										'element'    => 'button',
 										'iconBefore' => 'primary',
-										'iconPrefix' => 'gravitysmtp-admin-icon',
+										'iconPrefix' => 'gravity-admin-icon',
 										'label'      => esc_html__( 'Set As Primary', 'gravitysmtp' ),
 									),
 								),
@@ -369,7 +369,7 @@ class Settings_Config extends Config {
 									'props' => array(
 										'element'    => 'button',
 										'iconBefore' => 'circle-lightning-bolt',
-										'iconPrefix' => 'gravitysmtp-admin-icon',
+										'iconPrefix' => 'gravity-admin-icon',
 										'label'      => esc_html__( 'Set As Backup', 'gravitysmtp' ),
 									),
 								),
@@ -379,7 +379,7 @@ class Settings_Config extends Config {
 									'props' => array(
 										'element'    => 'button',
 										'iconBefore' => 'trash',
-										'iconPrefix' => 'gravitysmtp-admin-icon',
+										'iconPrefix' => 'gravity-admin-icon',
 										'label'      => esc_html__( 'Remove Integration', 'gravitysmtp' ),
 										'style'      => 'error',
 									),

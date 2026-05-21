@@ -25,7 +25,7 @@ class Admin_Page {
 
 	public function app_page() {
 		?>
-		<div class="gravitysmtp-admin">
+		<div class="gravity-admin gravity-admin--smtp">
 			<?php do_action( 'gravitysmtp_app_body' ); ?>
 		</div>
 		<?php

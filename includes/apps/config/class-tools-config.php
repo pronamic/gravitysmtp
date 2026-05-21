@@ -105,7 +105,7 @@ class Tools_Config extends Config {
 							array(
 								'param' => 'system-report',
 								'label' => esc_html__( 'System Report', 'gravitysmtp' ),
-								'icon'  => 'clipboard-check',
+								'icon'  => 'report',
 							),
 							array(
 								'param' => 'permissions',
