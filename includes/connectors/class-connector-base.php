@@ -229,6 +229,136 @@ abstract class Connector_Base {
 	}
 
 	/**
+	 * Filter suppressed recipients from to, cc, and bcc fields.
+	 *
+	 * Removes any recipient whose email exists in the suppression list. Updates
+	 * internal attributes so subsequent send() uses filtered recipient lists.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param \Gravity_Forms\Gravity_SMTP\Models\Suppressed_Emails_Model $suppressed_model
+	 *
+	 * @return array Array of removed entries: [ ['email' => string, 'field' => 'to'|'cc'|'bcc'], ... ]
+	 */
+	public function filter_suppressed_recipients( $suppressed_model ) {
+		$filtered = array();
+
+		// Collect all suppressed emails from the TO collection.
+		$to_collection = $this->get_att( 'to' );
+
+		if ( $to_collection && $to_collection->count() > 0 ) {
+			$suppressed_emails = array();
+
+			foreach ( $to_collection->recipients() as $recipient ) {
+				if ( $suppressed_model->is_email_suppressed( $recipient->email() ) ) {
+					$suppressed_emails[] = strtolower( $recipient->email() );
+				}
+			}
+
+			if ( ! empty( $suppressed_emails ) ) {
+				$removed = $to_collection->filter( $suppressed_emails );
+
+				foreach ( $removed as $recipient ) {
+					$filtered[] = array( 'email' => $recipient->email(), 'field' => 'to' );
+				}
+
+				$this->set_att( 'to', $to_collection );
+			}
+		}
+
+		// Parse headers to check CC and BCC collections.
+		$parsed_headers = $this->get_parsed_headers( $this->get_att( 'headers', array() ) );
+
+		// Filter CC recipients.
+		if ( ! empty( $parsed_headers['cc'] ) && $parsed_headers['cc']->count() > 0 ) {
+			$suppressed_emails = array();
+
+			foreach ( $parsed_headers['cc']->recipients() as $recipient ) {
+				if ( $suppressed_model->is_email_suppressed( $recipient->email() ) ) {
+					$suppressed_emails[] = strtolower( $recipient->email() );
+				}
+			}
+
+			if ( ! empty( $suppressed_emails ) ) {
+				$removed = $parsed_headers['cc']->filter( $suppressed_emails );
+
+				foreach ( $removed as $recipient ) {
+					$filtered[] = array( 'email' => $recipient->email(), 'field' => 'cc' );
+				}
+
+				// Remove empty CC from headers.
+				if ( $parsed_headers['cc']->count() === 0 ) {
+					unset( $parsed_headers['cc'] );
+				}
+			}
+		}
+
+		// Filter BCC recipients.
+		if ( ! empty( $parsed_headers['bcc'] ) && $parsed_headers['bcc']->count() > 0 ) {
+			$suppressed_emails = array();
+
+			foreach ( $parsed_headers['bcc']->recipients() as $recipient ) {
+				if ( $suppressed_model->is_email_suppressed( $recipient->email() ) ) {
+					$suppressed_emails[] = strtolower( $recipient->email() );
+				}
+			}
+
+			if ( ! empty( $suppressed_emails ) ) {
+				$removed = $parsed_headers['bcc']->filter( $suppressed_emails );
+
+				foreach ( $removed as $recipient ) {
+					$filtered[] = array( 'email' => $recipient->email(), 'field' => 'bcc' );
+				}
+
+				// Remove empty BCC from headers.
+				if ( $parsed_headers['bcc']->count() === 0 ) {
+					unset( $parsed_headers['bcc'] );
+				}
+			}
+		}
+
+		// If any filtering occurred, store the parsed headers back so send() uses them.
+		$cc_bcc_filtered = array_filter( $filtered, function( $suppressed_item ) {
+			return $suppressed_item['field'] !== 'to';
+		} );
+
+		if ( ! empty( $cc_bcc_filtered ) ) {
+			$this->set_att( 'headers', $parsed_headers );
+		}
+
+		return $filtered;
+	}
+
+	/**
+	 * Handle a successfully sent email that had recipients filtered due to suppression.
+	 *
+	 * Updates the event status to 'partially-sent' and logs the removed addresses with reasons.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param array $filtered_recipients Array of removed entries from filter_suppressed_recipients().
+	 *
+	 * @return void
+	 */
+	public function handle_filtered_email( $filtered_recipients ) {
+		$this->events->update( array( 'status' => 'partially-sent' ), $this->email );
+
+		// Build descriptive log message.
+		$messages = array();
+		foreach ( $filtered_recipients as $entry ) {
+			$messages[] = sprintf( '%s (removed from %s)', $entry['email'], $entry['field'] );
+		}
+
+		$log_message = sprintf(
+			'Email sent with filtered recipients. Suppressed addresses removed: %s',
+			implode( ', ', $messages )
+		);
+
+		$this->logger->log( $this->email, 'partially-sent', $log_message );
+		$this->debug_logger->log_info( $this->wrap_debug_with_details( __FUNCTION__, $this->email, $log_message ) );
+	}
+
+	/**
 	 * Initialize the connector and map attributes as necessary.
 	 *
 	 * @since 1.0
@@ -298,6 +428,7 @@ abstract class Connector_Base {
 
 	protected function set_email_log_data( $subject, $message, $to, $from, $headers, $attachments, $source, $params = array() ) {
 		$params = $this->strip_sensitive_log_data( $params );
+		$headers = $this->strip_sensitive_log_data( $headers, true );
 
 		$this->events->update(
 			array(
@@ -307,7 +438,7 @@ abstract class Connector_Base {
 					array(
 						'to'          => $to,
 						'from'        => $from,
-						'headers'     => array(),
+						'headers'     => $headers,
 						'attachments' => $attachments,
 						'source'      => $source,
 						'params'      => $params,
@@ -318,9 +449,27 @@ abstract class Connector_Base {
 		);
 	}
 
-	private function strip_sensitive_log_data( $params ) {
+	private function strip_sensitive_log_data( $params, $parse_headers = false ) {
+		$header_whitelist = array(
+			'to',
+			'from',
+			'bcc',
+			'cc',
+			'content-type',
+		);
+
 		unset( $params['body'] );
 		unset( $params['headers'] );
+
+		if ( ! $parse_headers ) {
+			return $params;
+		}
+
+		foreach( $params as $key => $value ) {
+			if ( ! in_array( strtolower( $key ), $header_whitelist  ) ) {
+				unset( $params[ $key ] );
+			}
+		}
 
 		return $params;
 	}
@@ -813,6 +962,28 @@ abstract class Connector_Base {
 		);
 
 		return array_merge( $this->connector_data(), $defaults );
+	}
+
+	/**
+	 * Whether a CONNECTOR_DATA_MAP entry represents a connector that is configured and enabled.
+	 *
+	 * Single source of truth for connector availability checks (routing UI options,
+	 * send-time routing guards) so the rule cannot drift between callers.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param mixed $map_entry Entry from Connector_Service_Provider::CONNECTOR_DATA_MAP.
+	 *
+	 * @return bool
+	 */
+	public static function is_data_map_entry_active( $map_entry ) {
+		if ( empty( $map_entry ) || ! is_array( $map_entry ) ) {
+			return false;
+		}
+
+		$data = isset( $map_entry['data'] ) && is_array( $map_entry['data'] ) ? $map_entry['data'] : array();
+
+		return ! empty( $data[ self::SETTING_CONFIGURED ] ) && ! empty( $data[ self::SETTING_ENABLED ] );
 	}
 
 	/**

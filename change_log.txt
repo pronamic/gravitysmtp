@@ -1,3 +1,16 @@
+### 2.3.0 | 2026-07-08
+- Added a Filtered status for emails that had suppressed addresses removed from the to, cc, or bcc fields.
+- Added a Message Stream setting to the Postmark connector.
+- Added an Email Routing settings screen for sending emails through different connectors based on conditions.
+- Added support for custom file names in attachments for Custom SMTP, PHP Mail, Amazon SES, Google, Microsoft, and Zoho connectors.
+- Fixed an issue that can cause PHP warnings if a service fails to send an email.
+- Fixed an issue that can cause the settings pages to fail to load when notification settings are missing.
+- Fixed an issue that causes important headers to be ignored in the Event Log.
+- Fixed an issue where email suppression only checked the first recipient.
+- Fixed an issue where the connector settings modal could fail to open after an error occurs while changing the primary or backup connector on the Integrations screen.
+- Fixed an issue where the email activity digest would send even when the setting was disabled.
+- Updated the `gravitysmtp_connector_for_sending` filter to pass the email source as a third parameter.
+
 ### 2.2.0 | 2026-05-21
 - Added an action which fires as soon as the Primary connector type fails.
 - Added Cloudflare Email Service connector with API-based domain validation.

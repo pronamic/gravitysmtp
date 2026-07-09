@@ -199,7 +199,7 @@ class Log_Details_Model {
 				'headers' => $params,
 			),
 			'status'                => array(
-				'label'  => ucfirst( $row['status'] ),
+				'label'  => Status_Enum::label( $row['status'] ),
 				'status' => Status_Enum::indicator( $row['status'] ),
 				'hasDot' => false,
 			),

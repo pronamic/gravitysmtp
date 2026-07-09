@@ -164,13 +164,21 @@ class Mail_Handler {
 		 * Used primarily by the Backup Connection and Conditional Routing mechanisms.
 		 *
 		 * @since 1.2
+		 * @since 2.2.1 Added the `$source` parameter.
 		 *
-		 * @param $current_type The current type being returned.
-		 * @param $email_data   An array of all the email data being used for this call.
+		 * @param string|bool|array $current_type The connector type currently selected for sending. Defaults to `false`
+		 *                                        when no connector has been chosen. May also be returned as an array in
+		 *                                        the form `array( 'force' => true, 'connector' => '<type>' )` to force a
+		 *                                        specific connector and skip the retry/backup logic.
+		 * @param array             $email_data   An array of all the email data being used for this call, containing the
+		 *                                        keys `to`, `subject`, `message`, `headers`, and `attachments`.
+		 * @param string            $source       The source of the email (e.g. the plugin, theme, or WordPress core that
+		 *                                        initiated the send).
 		 *
-		 * @return string $type The connector type to use for sending.
+		 * @return string|bool|array The connector type to use for sending, `false` to abort the send, or the force array
+		 *                           described above.
 		 */
-		$type = apply_filters( 'gravitysmtp_connector_for_sending', false, array( 'to' => $to, 'subject' => $subject, 'message' => $message, 'headers' => $headers, 'attachments' => $attachments ) );
+		$type = apply_filters( 'gravitysmtp_connector_for_sending', false, array( 'to' => $to, 'subject' => $subject, 'message' => $message, 'headers' => $headers, 'attachments' => $attachments ), $source );
 		$skip_retry = false;
 
 		if ( is_array( $type ) && isset( $type['force'] ) ) {
@@ -188,16 +196,27 @@ class Mail_Handler {
 
 		$connector->init( $to, $subject, $message, $headers, $attachments, $source );
 
-		$to_email = $connector->get_att( 'to' )->first()->email();
+		$filtered_recipients = array();
 
-		if ( Feature_Flag_Manager::is_enabled( 'email_suppression' ) && $this->suppressed_model->is_email_suppressed( $to_email ) ) {
-			$connector->handle_suppressed_email( $to_email, $source );
-			return false;
+		if ( Feature_Flag_Manager::is_enabled( 'email_suppression' ) ) {
+			$filtered_recipients = $connector->filter_suppressed_recipients( $this->suppressed_model );
+
+			// All TO recipients suppressed — fully suppress the email.
+			if ( $connector->get_att( 'to' )->count() === 0 ) {
+				$suppressed_emails = array_column( $filtered_recipients, 'email' );
+				$connector->handle_suppressed_email( implode( ', ', $suppressed_emails ), $source );
+				return false;
+			}
 		}
 
 		$send = $connector->send();
 
 		if ( $send === true ) {
+			// If any addresses were filtered, update status and log the reason.
+			if ( ! empty( $filtered_recipients ) ) {
+				$connector->handle_filtered_email( $filtered_recipients );
+			}
+
 			return true;
 		}
 

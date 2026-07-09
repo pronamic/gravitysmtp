@@ -28,6 +28,7 @@ class Connector_Mailgun extends Connector_Base {
 	protected $description = '';
 	protected $logo        = 'Mailgun';
 	protected $full_logo   = 'MailgunFull';
+	protected $attributes  = array();
 
 	public function get_description() {
 		return esc_html__( 'Mailgun is a transactional email service that provides industry-leading reliability, compliance, and speed. Offering a 30-day trial, Mailgun’s premium service starts at $35 a month, which allows you to send up to 50,000 emails. For more information on how to get started with Mailgun, read our documentation.', 'gravitysmtp' );

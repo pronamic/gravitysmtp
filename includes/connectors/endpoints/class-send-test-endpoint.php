@@ -190,9 +190,9 @@ class Send_Test_Endpoint extends Endpoint {
 			'from'         => 'From: ' . $from_email,
 		);
 
-		add_filter( 'gravitysmtp_connector_for_sending', function( $current_connector, $email_args ) use ( $connector ) {
+		add_filter( 'gravitysmtp_connector_for_sending', function( $current_connector, $email_args, $source = '' ) use ( $connector ) {
 			return array( 'force' => true, 'connector' => $connector );
-		}, 8, 2 );
+		}, 8, 3 );
 
 		$success = wp_mail( array( 'email' => $email ), __( 'Test Email from Gravity SMTP', 'gravitysmtp' ), $this->get_test_email_markup( $as_html ), $headers, array() );
 

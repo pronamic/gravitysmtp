@@ -10,6 +10,12 @@ namespace Gravity_Forms\Gravity_SMTP\Utils;
  */
 class Source_Parser {
 
+	protected $subtype;
+
+	public function get_subtype() {
+		return $this->subtype;
+	}
+
 	/**
 	 * Get the source of a wp_mail call from a given trace.
 	 *
@@ -19,16 +25,27 @@ class Source_Parser {
 	 *
 	 * @return string
 	 */
-	public function get_source_from_trace( $trace ) {
+	public function get_source_from_trace( $trace, $field = 'name' ) {
 		$relevant_trace = $this->get_relevant_trace_data( $trace );
+		$non_result     = $field === 'all' ? array( 'slug' => 'na', 'name' => __( 'N/A', 'gravitysmtp' ), 'subtype' => 'na' ) : __( 'N/A', 'gravitysmtp' );
 
 		if ( ! $relevant_trace ) {
-			return __( 'N/A', 'gravitysmtp' );
+			return $non_result;
 		}
 
 		$file_path = $relevant_trace['file'];
 
-		return $this->get_source_from_file_path( $file_path );
+		$data = $this->get_source_from_file_path( $file_path );
+
+		if ( $data === false ) {
+			return $non_result;
+		}
+
+		if ( $field === 'all' ) {
+			return $data;
+		}
+
+		return isset( $data[ $field ] ) ? $data[ $field ] : $non_result;
 	}
 
 	/**
@@ -38,7 +55,7 @@ class Source_Parser {
 	 *
 	 * @param array $trace
 	 *
-	 * @return boolean|array
+	 * @return bool|array
 	 */
 	protected function get_relevant_trace_data( $trace ) {
 		$filtered = array_filter( $trace, function ( $item ) {
@@ -65,28 +82,42 @@ class Source_Parser {
 		$core = $this->get_core_source( $path );
 
 		if ( $core ) {
+			$this->subtype = 'core';
+
 			return $core;
 		}
 
 		$theme = $this->get_theme_source( $path );
 
 		if ( $theme ) {
+			$this->subtype = 'theme';
+
 			return $theme;
 		}
 
 		$plugin = $this->get_plugin_source( $path );
 
 		if ( $plugin ) {
+			$this->subtype = 'plugin';
+
 			return $plugin;
 		}
 
 		$mu_plugin = $this->get_mu_plugin_source( $path );
 
 		if ( $mu_plugin ) {
+			$this->subtype = 'mu_plugin';
+
 			return $mu_plugin;
 		}
 
-		return __( 'N/A', 'gravitysmtp' );
+		$this->subtype = '';
+
+		return array(
+			'name'    => __( 'N/A', 'gravitysmtp' ),
+			'slug'    => '',
+			'subtype' => '',
+		);
 	}
 
 	/**
@@ -96,14 +127,18 @@ class Source_Parser {
 	 *
 	 * @param string $path
 	 *
-	 * @return string|boolean
+	 * @return string|bool
 	 */
 	protected function get_core_source( $path ) {
 		if (
 			strpos( $path, 'wp-admin' ) !== false ||
 			strpos( $path, 'wp-includes' ) !== false
 		) {
-			return __( 'WordPress', 'gravitysmtp' );
+			return array(
+				'name'    => __( 'WordPress', 'gravitysmtp' ),
+				'slug'    => 'wordpress',
+				'subtype' => 'core',
+			);
 		}
 
 		return false;
@@ -116,7 +151,7 @@ class Source_Parser {
 	 *
 	 * @param string $path
 	 *
-	 * @return string|boolean
+	 * @return string|bool
 	 */
 	protected function get_plugin_source( $path ) {
 		if ( ! defined( 'WP_PLUGIN_DIR' ) ) {
@@ -139,10 +174,18 @@ class Source_Parser {
 			if ( ! empty( $filtered ) ) {
 				$found = reset( $filtered );
 
-				return $found['Name'];
+				return array(
+					'slug'    => $result[1],
+					'name'    => $found['Name'],
+					'subtype' => 'plugin',
+				);
 			}
 
-			return $result[1];
+			return array(
+				'slug'    => $result[1],
+				'name'    => $result[1],
+				'subtype' => 'plugin',
+			);
 		}
 
 		return false;
@@ -155,7 +198,7 @@ class Source_Parser {
 	 *
 	 * @param string $path
 	 *
-	 * @return string|boolean
+	 * @return string|bool
 	 */
 	protected function get_mu_plugin_source( $path ) {
 		if ( ! defined( 'WPMU_PLUGIN_DIR' ) ) {
@@ -168,7 +211,11 @@ class Source_Parser {
 		preg_match( "/$separator$root$separator(.[^$separator]+)($separator|\.php)/", $path, $result );
 
 		if ( ! empty( $result[1] ) ) {
-			return __( 'MU Plugin' );
+			return array(
+				'name'    => __( 'MU Plugin', 'gravitysmtp' ),
+				'slug'    => $result[1],
+				'subtype' => 'mu_plugin',
+			);
 		}
 
 		return false;
@@ -181,7 +228,7 @@ class Source_Parser {
 	 *
 	 * @param string $path
 	 *
-	 * @return string|boolean
+	 * @return string|bool
 	 */
 	protected function get_theme_source( $path ) {
 		if ( ! defined( 'WP_CONTENT_DIR' ) ) {
@@ -196,10 +243,21 @@ class Source_Parser {
 		if ( ! empty( $result[1] ) ) {
 			$theme = \wp_get_theme( $result[1] );
 
-			return method_exists( $theme, 'get' ) ? $theme->get( 'Name' ) : $result[1];
+			if ( ! method_exists( $theme, 'get' ) ) {
+				return array(
+					'name'    => $result[1],
+					'slug'    => $result[1],
+					'subtype' => 'theme',
+				);
+			}
+
+			return array(
+				'name'    => $theme->get( 'Name' ),
+				'slug'    => $result[1],
+				'subtype' => 'theme',
+			);
 		}
 
 		return false;
 	}
-
 }

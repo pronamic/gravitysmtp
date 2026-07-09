@@ -5,6 +5,7 @@ namespace Gravity_Forms\Gravity_SMTP\Notifications;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Plugin_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Data_Store_Router;
 use Gravity_Forms\Gravity_SMTP\Models\Event_Model;
+use Gravity_Forms\Gravity_SMTP\Utils\Booliesh;
 use Gravity_Forms\Gravity_Tools\Emails\Email_Templatizer;
 
 class Email_Summary_Handler {
@@ -27,7 +28,7 @@ class Email_Summary_Handler {
 	}
 
 	public function handle( $respect_cron = true ) {
-		$enabled = $this->plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_NOTIFICATIONS_EMAIL_DIGEST_ENABLED, false );
+		$enabled = Booliesh::get( $this->plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_NOTIFICATIONS_EMAIL_DIGEST_ENABLED, 'false' ) );
 
 		// Don't process if the setting isn't enabled.
 		if ( ! $enabled ) {

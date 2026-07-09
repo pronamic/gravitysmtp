@@ -3,7 +3,7 @@
         'name' => 'gravityforms/gravitysmtp',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '1c19348314dc74e8e49fc4ce70f4a5dea2c5254d',
+        'reference' => '4d41582ac7ec4a7b30b797e7a28d8f5ad268d7dd',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -22,7 +22,7 @@
         'gravityforms/gravitysmtp' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '1c19348314dc74e8e49fc4ce70f4a5dea2c5254d',
+            'reference' => '4d41582ac7ec4a7b30b797e7a28d8f5ad268d7dd',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

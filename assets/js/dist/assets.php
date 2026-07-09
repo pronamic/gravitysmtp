@@ -1,1 +1,1 @@
-<?php return array('hash_map' => array('scripts-admin.min.js' => array('version' => 'dca1cb88fbb62ed4df2ba6b07fedcd64', 'file' => 'scripts-admin.min.js'), 'vendor-admin.min.js' => array('version' => '69f04a4b7933b4660f8af7e879f48a7c', 'file' => 'vendor-admin.min.js')));
+<?php return array('hash_map' => array('scripts-admin.min.js' => array('version' => '70e8aa8a1366a2d6d98b3368981005e7', 'file' => 'scripts-admin.min.js'), 'vendor-admin.min.js' => array('version' => '6e55961b7329a80599b2ebb691c513bd', 'file' => 'vendor-admin.min.js')));

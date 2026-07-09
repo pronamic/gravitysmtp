@@ -404,6 +404,10 @@ class Event_Model {
 		static $hydrators = array();
 
 		foreach ( $rows as $idx => $row ) {
+			if ( ! isset( $row['service'] ) ) {
+				$row['service'] = 'err';
+			}
+
 			$service = $row['service'];
 
 			if ( $service === 'amazon-ses' ) {
@@ -413,6 +417,11 @@ class Event_Model {
 			// Cleanup bad old data.
 			if ( $row['service'] === 'phpmail' ) {
 				$row['service'] = 'php';
+			}
+
+			// Default to empty object in extra
+			if ( ! isset( $row['extra'] ) ) {
+				$row['extra'] = '{}';
 			}
 
 			$extra = strpos( $row['extra'], '{' ) === 0 ? json_decode( $row['extra'], true ) : unserialize( $row['extra'] );
@@ -587,6 +596,13 @@ class Event_Model {
 		$sql = $wpdb->prepare( "SELECT date_created, status FROM $table_name WHERE date_created >= %s AND date_created <= %s AND status != 'pending'", get_gmt_from_date( $start ), get_gmt_from_date( $end ) );
 
 		$results = $wpdb->get_results( $sql, ARRAY_A );
+
+		// Merge partially-sent with sent for chart display — partially-sent emails were successfully delivered.
+		foreach ( $results as &$row ) {
+			if ( $row['status'] === 'partially-sent' ) {
+				$row['status'] = 'sent';
+			}
+		}
 
 		return $results;
 	}

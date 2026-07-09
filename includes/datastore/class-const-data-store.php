@@ -5,6 +5,7 @@ namespace Gravity_Forms\Gravity_SMTP\Data_Store;
 class Const_Data_Store implements Data_Store {
 
 	public function get( $setting_name, $connector ) {
+		$connector = is_null( $connector ) ? '' : $connector;
 		$const_name = sprintf( 'GRAVITYSMTP_%s_%s', strtoupper( $connector ), strtoupper( $setting_name ) );
 
 		if ( defined( $const_name ) ) {

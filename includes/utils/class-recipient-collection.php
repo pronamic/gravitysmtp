@@ -81,6 +81,29 @@ class Recipient_Collection {
 		return implode( ',', $items );
 	}
 
+	/**
+	 * Remove recipients whose email matches any in the given array.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param array $emails_to_remove Lowercase email addresses to remove.
+	 *
+	 * @return Recipient[] Array of removed Recipient objects.
+	 */
+	public function filter( array $emails_to_remove ) {
+		$removed = array();
 
+		$this->recipients = array_filter( $this->recipients, function( $recipient ) use ( $emails_to_remove, &$removed ) {
+			if ( in_array( strtolower( $recipient->email ), $emails_to_remove, true ) ) {
+				$removed[] = $recipient;
+				return false;
+			}
+			return true;
+		} );
+
+		$this->recipients = array_values( $this->recipients );
+
+		return $removed;
+	}
 
 }

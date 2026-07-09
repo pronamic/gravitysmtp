@@ -45,6 +45,7 @@ class Status_Enum {
 			'failed'     => 'error',
 			'sandboxed'  => 'warning',
 			'suppressed' => 'warning',
+			'partially-sent'   => 'blue',
 		);
 	}
 
@@ -55,6 +56,7 @@ class Status_Enum {
 			'failed'     => __( 'Failed', 'gravitysmtp' ),
 			'sandboxed'  => __( 'Sandboxed', 'gravitysmtp' ),
 			'suppressed' => __( 'Suppressed', 'gravitysmtp' ),
+			'partially-sent'   => __( 'Partially Sent', 'gravitysmtp' ),
 		);
 	}
 

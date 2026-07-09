@@ -1495,6 +1495,19 @@ class Email_Log_Config extends Config {
 						),
 					),
 					array(
+						'key'   => 'status-partially-sent',
+						'props' => array(
+							'customAttributes' => array(
+								'data-key'        => 'status',
+								'data-value'      => 'partially-sent',
+								'data-pill-label' => sprintf( $pill_label, esc_html__( 'Status', 'gravitysmtp' ), esc_html__( 'Partially Sent', 'gravitysmtp' ) ),
+								'id'              => 'status-partially-sent',
+							),
+							'element'          => 'button',
+							'label'            => esc_html__( 'Partially Sent', 'gravitysmtp' ),
+						),
+					),
+					array(
 						'key'   => 'status-pending',
 						'props' => array(
 							'customAttributes' => array(

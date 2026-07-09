@@ -269,6 +269,9 @@ class Gravity_SMTP {
 
 			Feature_Flag_Manager::add( 'alerts_management', 'Alerts Management' );
 
+			Feature_Flag_Manager::add( 'smart_routing', 'Email Routing' );
+			Feature_Flag_Manager::enable_flag( 'smart_routing' );
+
 			Feature_Flag_Manager::add( 'mailersend_integration', 'MailerSend Integration' );
 			Feature_Flag_Manager::enable_flag( 'mailersend_integration' );
 

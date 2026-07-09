@@ -7,6 +7,7 @@ use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Plugin_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Experimental_Features\Experiment_Features_Handler;
 use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
+use Gravity_Forms\Gravity_SMTP\Routing\Endpoints\Save_Routing_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Users\Roles;
 use Gravity_Forms\Gravity_SMTP\Utils\Booliesh;
 use Gravity_Forms\Gravity_Tools\Config;
@@ -107,6 +108,7 @@ class Apps_Config extends Config {
 						'CAPS_EDIT_LICENSE_KEY'               => Roles::EDIT_LICENSE_KEY,
 						'CAPS_EDIT_EXPERIMENTAL_FEATURES'     => Roles::EDIT_EXPERIMENTAL_FEATURES,
 						'CAPS_EDIT_NOTIFICATIONS_SETTINGS'    => Roles::EDIT_NOTIFICATIONS_SETTINGS,
+						'CAPS_EDIT_ROUTING'                   => Roles::EDIT_ROUTING,
 						'CAPS_EDIT_TEST_MODE'                 => Roles::EDIT_TEST_MODE,
 						'CAPS_EDIT_UNINSTALL'                 => Roles::EDIT_UNINSTALL,
 						'CAPS_EDIT_USAGE_ANALYTICS'           => Roles::EDIT_USAGE_ANALYTICS,
@@ -125,6 +127,7 @@ class Apps_Config extends Config {
 						'CAPS_VIEW_LICENSE_KEY'               => Roles::VIEW_LICENSE_KEY,
 						'CAPS_VIEW_EXPERIMENTAL_FEATURES'     => Roles::VIEW_EXPERIMENTAL_FEATURES,
 						'CAPS_VIEW_NOTIFICATIONS_SETTINGS'    => Roles::VIEW_NOTIFICATIONS_SETTINGS,
+						'CAPS_VIEW_ROUTING'                   => Roles::VIEW_ROUTING,
 						'CAPS_VIEW_TEST_MODE'                 => Roles::VIEW_TEST_MODE,
 						'CAPS_VIEW_TOOLS'                     => Roles::VIEW_TOOLS,
 						'CAPS_VIEW_TOOLS_SENDATEST'           => Roles::VIEW_TOOLS_SENDATEST,
@@ -147,6 +150,7 @@ class Apps_Config extends Config {
 						'notifications_email_digest_enabled'      => Save_Plugin_Settings_Endpoint::PARAM_NOTIFICATIONS_EMAIL_DIGEST_ENABLED,
 						'notifications_email_digest_frequency'    => Save_Plugin_Settings_Endpoint::PARAM_NOTIFICATIONS_EMAIL_DIGEST_FREQUENCY,
 						'notify_when_email_sending_fails_enabled' => Save_Plugin_Settings_Endpoint::PARAM_NOTIFY_WHEN_EMAIL_SENDING_FAILS_ENABLED,
+						'routing_settings'                        => Save_Routing_Settings_Endpoint::PARAM_SETTINGS,
 						'save_attachments_enabled'                => Save_Plugin_Settings_Endpoint::PARAM_SAVE_ATTACHMENTS_ENABLED,
 						'save_email_body_enabled'                 => Save_Plugin_Settings_Endpoint::PARAM_SAVE_EMAIL_BODY_ENABLED,
 						'slack_alerts'                            => Save_Alerts_Settings_Endpoint::PARAM_SLACK_ALERTS,

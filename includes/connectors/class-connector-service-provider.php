@@ -582,7 +582,9 @@ class Connector_Service_Provider extends Config_Service_Provider {
 
 		$page = filter_input( INPUT_GET, 'page' );
 
-		if ( ! $is_ajax && ! is_string( $page ) ) {
+		$gf_page = filter_input( INPUT_GET, 'gf_page' );
+
+		if ( ! $is_ajax && ! is_string( $page ) && $gf_page !== 'preview' ) {
 			return;
 		}
 
@@ -594,6 +596,10 @@ class Connector_Service_Provider extends Config_Service_Provider {
 			$page = '';
 		}
 
+		if ( ! is_null( $gf_page ) ) {
+			$page = 'gravitysmtp-gform-preview';
+		}
+
 		$plugin_data_store = $this->container->get( self::DATA_STORE_PLUGIN_OPTS );
 		$should_display    = Booliesh::get( $plugin_data_store->get( Save_Plugin_Settings_Endpoint::PARAM_SETUP_WIZARD_SHOULD_DISPLAY, 'config', 'true' ) );
 
@@ -603,12 +609,13 @@ class Connector_Service_Provider extends Config_Service_Provider {
 			'gravitysmtp-settings',
 			'gravitysmtp-suppression',
 			'gravitysmtp-tools',
+			'gravitysmtp-gform-preview',
 		) );
 
 		if ( $is_ajax ) {
 			$action = filter_input( INPUT_POST, 'action' );
 
-			if ( $action === 'migrate_settings' || $action === 'get_dashboard_data' ) {
+			if ( $action === 'migrate_settings' || $action === 'get_dashboard_data' || $action === 'gravitysmtp_preview_conditional_routing' ) {
 				$should_register = true;
 			}
 		}

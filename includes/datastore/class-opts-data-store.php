@@ -42,6 +42,7 @@ class Opts_Data_Store implements Data_Store {
 	}
 
 	public function get_opts( $connector ) {
+		$connector = is_null( $connector ) ? '' : $connector;
 		$opts_name = sprintf( 'gravitysmtp_%s', strtolower( $connector ) );
 		$opts      = get_option( $opts_name, '{}' );
 		$opts      = json_decode( $opts, true );

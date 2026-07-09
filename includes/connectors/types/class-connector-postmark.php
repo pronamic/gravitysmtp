@@ -7,6 +7,7 @@ use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Base;
 class Connector_Postmark extends Connector_Base {
 
 	const SETTING_SERVER_API_TOKEN = 'server_api_token';
+	const SETTING_MESSAGE_STREAM   = 'message_stream';
 
 	protected $name        = 'postmark';
 	protected $title       = 'Postmark';
@@ -142,6 +143,12 @@ class Connector_Postmark extends Connector_Base {
 			}
 		}
 
+		$message_stream = trim( $this->get_setting( self::SETTING_MESSAGE_STREAM, 'outbound' ) );
+
+		if ( ! empty( $message_stream ) ) {
+			$body['MessageStream'] = $message_stream;
+		}
+
 		return array(
 			'body'    => json_encode( $body ),
 			'headers' => $this->get_request_headers( $api_key ),
@@ -216,6 +223,7 @@ class Connector_Postmark extends Connector_Base {
 	public function connector_data() {
 		return array(
 			self::SETTING_SERVER_API_TOKEN      => $this->get_setting( self::SETTING_SERVER_API_TOKEN, '' ),
+			self::SETTING_MESSAGE_STREAM        => $this->get_setting( self::SETTING_MESSAGE_STREAM, 'outbound' ),
 			self::SETTING_FROM_EMAIL            => $this->get_setting( self::SETTING_FROM_EMAIL, '' ),
 			self::SETTING_FORCE_FROM_EMAIL      => $this->get_setting( self::SETTING_FORCE_FROM_EMAIL, false ),
 			self::SETTING_FROM_NAME             => $this->get_setting( self::SETTING_FROM_NAME, '' ),
@@ -275,6 +283,27 @@ class Connector_Postmark extends Connector_Base {
 							'size'               => 'size-l',
 							'spacing'            => 6,
 							'value'              => $this->get_setting( self::SETTING_SERVER_API_TOKEN, '' ),
+						),
+					),
+					array(
+						'component' => 'Input',
+						'props'     => array(
+							'labelAttributes'    => array(
+								'label'  => esc_html__( 'Message Stream', 'gravitysmtp' ),
+								'size'   => 'text-sm',
+								'weight' => 'medium',
+							),
+							'helpTextAttributes' => array(
+								'asHtml'  => true,
+								/* translators: 1: opening anchor tag, 2: closing anchor tag */
+								'content' => sprintf( __( 'Optional. Enter the name of a Message Stream through which messages should be sent. The Message Stream must already exist in the Postmark server. For more information, see %1$sPostmark Message Streams%2$s.', 'gravitysmtp' ), '<a class="gform-link gform-typography--size-text-xs" href="https://postmarkapp.com/support/article/how-to-create-and-send-through-message-streams" target="_blank" rel="noopener noreferrer">', '</a>' ),
+								'size'    => 'text-xs',
+								'weight'  => 'regular',
+							),
+							'name'               => self::SETTING_MESSAGE_STREAM,
+							'size'               => 'size-l',
+							'spacing'            => 6,
+							'value'              => $this->get_setting( self::SETTING_MESSAGE_STREAM, '' ),
 						),
 					),
 					array(

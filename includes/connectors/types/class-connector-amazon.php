@@ -127,8 +127,9 @@ class Connector_Amazon extends Connector_Base {
 		}
 
 		if ( ! empty( $attachments ) ) {
-			foreach ( $attachments as $attachment ) {
-				$this->php_mailer->addAttachment( $attachment );
+			foreach ( $attachments as $custom_name => $attachment ) {
+				$file_name = is_numeric( $custom_name ) ? '' : $custom_name;
+				$this->php_mailer->addAttachment( $attachment, $file_name );
 			}
 		}
 

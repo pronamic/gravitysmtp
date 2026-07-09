@@ -427,9 +427,12 @@ class Dashboard_Config extends Config {
 		$stats = $this->model->get_event_stats( $this->start, $this->end );
 		$total = array_sum( $stats );
 
+		// Count partially-sent emails as sent — they were successfully delivered to remaining recipients.
+		$sent_count = ( isset( $stats['sent'] ) ? $stats['sent'] : 0 ) + ( isset( $stats['partially-sent'] ) ? $stats['partially-sent'] : 0 );
+
 		return array(
 			'emails' => $total,
-			'sent'   => isset( $stats['sent'] ) ? $stats['sent'] : 0,
+			'sent'   => $sent_count,
 			'failed' => isset( $stats['failed'] ) ? $stats['failed'] : 0,
 		);
 	}

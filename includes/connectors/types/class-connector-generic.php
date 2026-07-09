@@ -119,8 +119,9 @@ class Connector_Generic extends Connector_Base {
 			if ( ! empty( $attachments ) ) {
 				$this->debug_logger->log_debug( $this->wrap_debug_with_details( __FUNCTION__, $email, 'Email attachments: ' . json_encode( $attachments ) ) );
 
-				foreach ( $attachments as $attachment ) {
-					$this->php_mailer->addAttachment( $attachment );
+				foreach ( $attachments as $custom_name => $attachment ) {
+					$file_name = is_numeric( $custom_name ) ? '' : $custom_name;
+					$this->php_mailer->addAttachment( $attachment, $file_name );
 				}
 			}
 

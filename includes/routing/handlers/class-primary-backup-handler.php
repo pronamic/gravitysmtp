@@ -36,7 +36,7 @@ class Primary_Backup_Handler implements Routing_Handler {
 		self::$backup_attempted  = false;
 	}
 
-	public function handle( $current_connector, $email_data ) {
+	public function handle( $current_connector, $email_data, $source = '' ) {
 
 		// A backup was already attempted; no more connections to check, return false.
 		if ( self::$backup_attempted ) {
@@ -74,7 +74,7 @@ class Primary_Backup_Handler implements Routing_Handler {
 
 		if ( ! $type ) {
 			$this->logger->log_warning( $this->error_prefix() . __( 'Primary integration not set, checking for Backup integration.', 'gravitysmtp' ) );
-			return $this->handle( $type, $email_data );
+			return $this->handle( $type, $email_data, $source );
 		}
 
 		$enabled = $this->data_router->get_setting( $type, Connector_Base::SETTING_ENABLED, false );
@@ -85,7 +85,7 @@ class Primary_Backup_Handler implements Routing_Handler {
 		// Primary connection not enabled; immediately try backup connection.
 		if ( ! $enabled ) {
 			$this->logger->log_warning( $this->error_prefix() . __( 'Primary integration not enabled, moving on to Backup integration.', 'gravitysmtp' ) );
-			return $this->handle( $type, $email_data );
+			return $this->handle( $type, $email_data, $source );
 		}
 
 		// Primary connection found and is enabled.

@@ -126,7 +126,7 @@ class Connector_Zoho extends Connector_Base {
 		$headers                 = $this->get_request_headers();
 		$headers['Content-Type'] = 'application/octet-stream';
 
-		foreach ( $attachments as $attachment ) {
+		foreach ( $attachments as $custom_name => $attachment ) {
 			if ( ! file_exists( $attachment ) ) {
 				continue;
 			}
@@ -137,7 +137,7 @@ class Connector_Zoho extends Connector_Base {
 				continue;
 			}
 
-			$file_name = basename( $attachment );
+			$file_name = is_numeric( $custom_name ) ? basename( $attachment ) : $custom_name;
 
 			// Upload the attachment via Zoho API.
 			$url = add_query_arg(
