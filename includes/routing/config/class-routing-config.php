@@ -74,7 +74,7 @@ class Routing_Config extends Config {
 			'move_rule_down_label'             => esc_html__( 'Move rule down.', 'gravitysmtp' ),
 			'move_rule_up_label'               => esc_html__( 'Move rule up.', 'gravitysmtp' ),
 			'or_label'                         => esc_html__( 'or', 'gravitysmtp' ),
-			'preset_add_button_label'          => esc_html__( 'Add This Recipe', 'gravitysmtp' ),
+			'preset_add_button_label'          => esc_html__( 'Add This Preset', 'gravitysmtp' ),
 			'presets_button_label'             => esc_html__( 'Add from Preset', 'gravitysmtp' ),
 			'presets_dialog_heading'           => esc_html__( 'Add a Preset Rule', 'gravitysmtp' ),
 			'presets_heading'                  => esc_html__( 'Start With a Preset', 'gravitysmtp' ),

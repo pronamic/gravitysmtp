@@ -1,3 +1,6 @@
+### 2.3.1 | 2026-07-09
+- Fixed an issue that can cause fatal errors when an email is sent with attachments as a string.
+
 ### 2.3.0 | 2026-07-08
 - Added a Filtered status for emails that had suppressed addresses removed from the to, cc, or bcc fields.
 - Added a Message Stream setting to the Postmark connector.
