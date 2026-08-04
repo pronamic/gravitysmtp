@@ -2,8 +2,10 @@
 
 namespace Gravity_Forms\Gravity_SMTP\Data_Store;
 
+use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Base;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Connector_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Enums\Connector_Status_Enum;
+use Gravity_Forms\Gravity_SMTP\Logging\Debug\Debug_Logger;
 
 class Data_Store_Router {
 
@@ -90,16 +92,39 @@ class Data_Store_Router {
 
 		$setting    = Connector_Status_Enum::setting_for_status( $status_type );
 		$connectors = $this->get_plugin_setting( $setting, array() );
-		$connectors = array_filter( $connectors, function( $enabled ) {
+		$connectors = array_filter( (array) $connectors, function( $enabled ) {
 			return ! empty( $enabled ) && $enabled !== false && $enabled !== 'false';
 		} );
-		$connector  = empty( $connectors ) ? false : array_key_first( $connectors );
 
-		if ( empty( $connector ) ) {
+		if ( empty( $connectors ) ) {
 			return $default;
 		}
 
-		return $connector;
+		// Primary/backup must be unique, but historical race conditions could persist
+		// multiple flagged connectors. Surface it and prefer the connector whose own
+		// settings agree — that is the one the integrations UI displays.
+		if ( count( $connectors ) > 1 && $status_type !== Connector_Status_Enum::ENABLED ) {
+			Debug_Logger::log_message( sprintf(
+				/* translators: %1$s: status type (primary/backup), %2$s: connector list */
+				__( 'Multiple connectors are flagged as the %1$s integration (%2$s); resolving to the one whose own settings agree.', 'gravitysmtp' ),
+				$status_type,
+				implode( ', ', array_keys( $connectors ) )
+			), 'warning' );
+
+			$connector_setting = $status_type === Connector_Status_Enum::PRIMARY ? Connector_Base::SETTING_IS_PRIMARY : Connector_Base::SETTING_IS_BACKUP;
+
+			foreach ( array_keys( $connectors ) as $slug ) {
+				$flag = $this->opts_data_store->get( $connector_setting, $slug );
+
+				if ( ! empty( $flag ) && $flag !== 'false' ) {
+					return $slug;
+				}
+			}
+		}
+
+		$connector = array_key_first( $connectors );
+
+		return empty( $connector ) ? $default : $connector;
 	}
 
 }

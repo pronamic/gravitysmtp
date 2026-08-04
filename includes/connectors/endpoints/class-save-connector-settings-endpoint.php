@@ -7,6 +7,7 @@ use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Factory;
 use Gravity_Forms\Gravity_SMTP\Logging\Debug\Debug_Logger;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Plugin_Opts_Data_Store;
 use Gravity_Forms\Gravity_SMTP\Users\Roles;
+use Gravity_Forms\Gravity_SMTP\Utils\Booliesh;
 use Gravity_Forms\Gravity_Tools\Endpoints\Endpoint;
 
 class Save_Connector_Settings_Endpoint extends Endpoint {
@@ -64,6 +65,15 @@ class Save_Connector_Settings_Endpoint extends Endpoint {
 		$type           = htmlspecialchars( $type );
 		$configured_key = sprintf( 'gsmtp_connector_configured_%s', $type );
 
+		// Snapshot state before writing so a failed credential validation below can
+		// roll back instead of leaving a half-applied primary/backup transition.
+		$previous_opts     = $this->data_store->get_opts( $type );
+		$previous_statuses = array(
+			self::SETTING_ENABLED_CONNECTOR => $this->plugin_data_store->get( self::SETTING_ENABLED_CONNECTOR ),
+			self::SETTING_PRIMARY_CONNECTOR => $this->plugin_data_store->get( self::SETTING_PRIMARY_CONNECTOR ),
+			self::SETTING_BACKUP_CONNECTOR  => $this->plugin_data_store->get( self::SETTING_BACKUP_CONNECTOR ),
+		);
+
 		$this->data_store->save_all( $settings, $type );
 		delete_transient( $configured_key );
 
@@ -95,6 +105,16 @@ class Save_Connector_Settings_Endpoint extends Endpoint {
 		$valid     = $no_validate ? true : $connector->is_configured();
 
 		if ( is_wp_error( $valid ) ) {
+			// The client treats this response as "nothing saved" — make that true.
+			$this->data_store->delete_all( $type );
+			$this->data_store->save_all( $previous_opts, $type );
+
+			foreach ( $previous_statuses as $status_type => $previous_value ) {
+				// A map that did not exist before restores as empty, not skipped —
+				// otherwise a failed first-ever save leaves the map it created behind.
+				$this->plugin_data_store->save( $status_type, is_null( $previous_value ) ? array() : $previous_value );
+			}
+
 			$error_message = $valid->get_error_message();
 			Debug_Logger::log_message( sprintf(
 				/* translators: %1$s is the connector, eg: SendGrid, %2$s is the error message */
@@ -111,6 +131,12 @@ class Save_Connector_Settings_Endpoint extends Endpoint {
 	/**
 	 * Save a connector's status (enabled, primary, backup) in the settings array.
 	 *
+	 * Primary and backup are exclusive: granting one to a connector clears the flag
+	 * from every other connector in the same write — in the status map and in each
+	 * demoted connector's own settings (which the integrations UI reads). Uniqueness
+	 * was previously the client's job via separate parallel unset requests, which
+	 * raced this read-modify-write and could persist multiple primaries.
+	 *
 	 * @param $type
 	 * @param $status_type
 	 * @param $enabled
@@ -124,7 +150,28 @@ class Save_Connector_Settings_Endpoint extends Endpoint {
 			$connector_values = array();
 		}
 
-		$connector_values[ $type ] = $enabled;
+		$exclusive_settings = array(
+			self::SETTING_PRIMARY_CONNECTOR => Connector_Base::SETTING_IS_PRIMARY,
+			self::SETTING_BACKUP_CONNECTOR  => Connector_Base::SETTING_IS_BACKUP,
+		);
+
+		if ( isset( $exclusive_settings[ $status_type ] ) && Booliesh::get( $enabled ) ) {
+			foreach ( array_keys( $connector_values ) as $slug ) {
+				if ( $slug === $type ) {
+					continue;
+				}
+
+				if ( Booliesh::get( $connector_values[ $slug ] ) ) {
+					$this->data_store->save( $exclusive_settings[ $status_type ], false, $slug );
+				}
+
+				$connector_values[ $slug ] = false;
+			}
+		}
+
+		// Normalize to a real boolean so the maps hold one type; readers no longer
+		// depend on catching the string 'false'.
+		$connector_values[ $type ] = Booliesh::get( $enabled );
 		$this->plugin_data_store->save( $status_type, $connector_values );
 	}
 

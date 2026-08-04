@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Gravity SMTP 2.3.1\n"
+"Project-Id-Version: Gravity SMTP 2.3.2\n"
 "Report-Msgid-Bugs-To: https://gravityforms.com/support\n"
 "Last-Translator: Gravity Forms <support@gravityforms.com>\n"
 "Language-Team: Gravity Forms <support@gravityforms.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-07-09T17:19:37+00:00\n"
+"POT-Creation-Date: 2026-08-03T13:37:31+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: gravitysmtp\n"
@@ -205,7 +205,7 @@ msgstr ""
 #: includes/connectors/endpoints/class-cleanup-data-endpoint.php:42
 #: includes/connectors/endpoints/class-get-connector-emails-endpoint.php:36
 #: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:44
-#: includes/connectors/endpoints/class-save-connector-settings-endpoint.php:58
+#: includes/connectors/endpoints/class-save-connector-settings-endpoint.php:59
 #: includes/connectors/endpoints/class-send-test-endpoint.php:166
 #: includes/environment/endpoints/class-uninstall-endpoint.php:20
 #: includes/handler/endpoints/class-resend-email-endpoint.php:57
@@ -2356,7 +2356,7 @@ msgid "Created"
 msgstr ""
 
 #. translators: %1$s is the connector, eg: SendGrid, %2$s is the error message
-#: includes/connectors/endpoints/class-save-connector-settings-endpoint.php:101
+#: includes/connectors/endpoints/class-save-connector-settings-endpoint.php:121
 msgid "Error saving settings for %1$s: %2$s"
 msgstr ""
 
@@ -3514,6 +3514,11 @@ msgstr ""
 
 #: includes/connectors/types/class-connector-zoho.php:556
 msgid "Disconnect from Zoho Mail"
+msgstr ""
+
+#. translators: %1$s: status type (primary/backup), %2$s: connector list
+#: includes/datastore/class-data-store-router.php:109
+msgid "Multiple connectors are flagged as the %1$s integration (%2$s); resolving to the one whose own settings agree."
 msgstr ""
 
 #: includes/email-management/class-managed-email-types.php:37

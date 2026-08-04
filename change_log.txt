@@ -1,3 +1,6 @@
+### 2.3.2 | 2026-08-03
+- Fixed an issue where multiple integrations could be flagged as the primary or backup connection at the same time, causing email to send through an integration other than the one shown as primary.
+
 ### 2.3.1 | 2026-07-09
 - Fixed an issue that can cause fatal errors when an email is sent with attachments as a string.
 
