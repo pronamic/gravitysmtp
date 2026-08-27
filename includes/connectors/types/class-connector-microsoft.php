@@ -4,10 +4,8 @@ namespace Gravity_Forms\Gravity_SMTP\Connectors\Types;
 
 use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Base;
 use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Service_Provider;
-use Gravity_Forms\Gravity_SMTP\Connectors\Oauth\Google_Oauth_Handler;
 use Gravity_Forms\Gravity_SMTP\Connectors\Oauth\Microsoft_Oauth_Handler;
 use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
-use Gravity_Forms\Gravity_SMTP\Utils\Booliesh;
 
 /**
  * Connector for 365 / Outlook
@@ -174,7 +172,14 @@ class Connector_Microsoft extends Connector_Base {
 			);
 
 			$request = wp_remote_post( 'https://graph.microsoft.com/v1.0/me/sendMail', $args );
-			$code    = wp_remote_retrieve_response_code( $request );
+
+			if ( is_wp_error( $request ) ) {
+				$this->log_failure( $email, $request->get_error_message() );
+
+				return $email;
+			}
+
+			$code = wp_remote_retrieve_response_code( $request );
 
 			if ( (int) $code === 202 ) {
 				$this->events->update( array( 'status' => 'sent' ), $email );
@@ -183,7 +188,8 @@ class Connector_Microsoft extends Connector_Base {
 				return true;
 			}
 
-			$this->log_failure( $email, wp_remote_retrieve_body( $request ) );
+			$response_body = wp_remote_retrieve_body( $request );
+			$this->log_failure( $email, $this->get_api_error_message( $response_body ) );
 
 			return $email;
 		} catch ( \Exception $e ) {
@@ -197,6 +203,25 @@ class Connector_Microsoft extends Connector_Base {
 	private function log_failure( $email, $message ) {
 		$this->events->update( array( 'status' => 'failed' ), $email );
 		$this->logger->log( $email, 'failed', $message );
+	}
+
+	/**
+	 * Parses a Microsoft Graph API error response into a human-readable message.
+	 *
+	 * @since 2.3.3
+	 *
+	 * @param string $body The raw response body.
+	 *
+	 * @return string The error message.
+	 */
+	private function get_api_error_message( $body ) {
+		$decoded = json_decode( $body, true );
+
+		if ( isset( $decoded['error']['code'] ) && $decoded['error']['code'] === 'MailboxNotEnabledForRESTAPI' ) {
+			return __( 'Microsoft could not send this email because the connected account does not have a mailbox enabled for Microsoft Graph API access. Verify that the account has an active Exchange Online mailbox and license, or contact your Microsoft 365 administrator. (MailboxNotEnabledForRESTAPI)', 'gravitysmtp' );
+		}
+
+		return $body;
 	}
 
 	private function get_raw_message() {
@@ -214,9 +239,14 @@ class Connector_Microsoft extends Connector_Base {
 	 * @return array
 	 */
 	public function connector_data() {
+		// Without a token, saved credentials belong to an unfinished connection attempt.
+		// Serve the fields empty so a reconnect is a fresh entry, and so the sign-in
+		// button never builds an authorize URL from an obfuscated placeholder value.
+		$has_stored_token = '' !== (string) $this->get_setting( self::SETTING_ACCESS_TOKEN, '' );
+
 		return array(
-			self::SETTING_CLIENT_ID             => $this->get_setting( self::SETTING_CLIENT_ID, '' ),
-			self::SETTING_CLIENT_SECRET         => $this->get_setting( self::SETTING_CLIENT_SECRET, '' ),
+			self::SETTING_CLIENT_ID             => $has_stored_token ? $this->get_setting( self::SETTING_CLIENT_ID, '' ) : '',
+			self::SETTING_CLIENT_SECRET         => $has_stored_token ? $this->get_setting( self::SETTING_CLIENT_SECRET, '' ) : '',
 			self::SETTING_ACCESS_TOKEN          => $this->get_setting( self::SETTING_ACCESS_TOKEN, '' ),
 			self::SETTING_FROM_EMAIL            => $this->get_setting( self::SETTING_FROM_EMAIL, '' ),
 			self::SETTING_FORCE_FROM_EMAIL      => $this->get_setting( self::SETTING_FORCE_FROM_EMAIL, false ),
@@ -241,7 +271,7 @@ class Connector_Microsoft extends Connector_Base {
 			'redirect_uri'  => urldecode( $oauth_handler->get_return_url() ),
 			'response_mode' => 'query',
 			'scope'         => $oauth_handler->get_scope(),
-			'state'         => 1,
+			'state'         => wp_create_nonce( Microsoft_Oauth_Handler::STATE_NONCE_ACTION ),
 		);
 
 		return http_build_query( $params );
@@ -259,8 +289,6 @@ class Connector_Microsoft extends Connector_Base {
 		 * @var Microsoft_Oauth_Handler $oauth_handler
 		 */
 		$oauth_handler = Gravity_SMTP::container()->get( Connector_Service_Provider::MICROSOFT_OAUTH_HANDLER );
-
-		$oauth_handler->handle_response( $this->name );
 
 		$token     = $oauth_handler->get_access_token( $this->name );
 		$has_token = $token && ! is_wp_error( $token );
@@ -311,28 +339,10 @@ class Connector_Microsoft extends Connector_Base {
 			);
 		}
 
-		if ( isset( $_GET['code'] ) && ! $has_token ) {
-			$settings['fields'][] = array(
-				'component' => 'Alert',
-				'props'     => array(
-					'customIconPrefix' => 'gravity-admin-icon',
-					'theme'            => 'cosmos',
-					'type'             => 'error',
-					'spacing'          => 3,
-				),
-				'fields'    => array(
-					array(
-						'component' => 'Text',
-						'props'     => array(
-							'content' => esc_html__( 'Error Connecting to Microsoft. Check your credentials and try again.', 'gravitysmtp' ),
-							'weight'  => 'medium',
-							'size'    => 'text-sm',
-							'spacing' => 2,
-							'tagName' => 'span',
-						),
-					),
-				),
-			);
+		$oauth_error = $oauth_handler->get_last_error();
+
+		if ( ! empty( $oauth_error ) ) {
+			$settings['fields'][] = $this->get_oauth_error_alert( $oauth_error );
 		}
 
 		$settings['fields'][] = array(
@@ -376,7 +386,8 @@ class Connector_Microsoft extends Connector_Base {
 					'name'               => self::SETTING_CLIENT_ID,
 					'spacing'            => 4,
 					'size'               => 'size-l',
-					'value'              => $this->get_setting( self::SETTING_CLIENT_ID, '' ),
+					// Always fresh entry: saved credentials without a token belong to an unfinished attempt.
+					'value'              => '',
 				),
 			);
 
@@ -408,7 +419,7 @@ class Connector_Microsoft extends Connector_Base {
 					'name'               => self::SETTING_CLIENT_SECRET,
 					'spacing'            => 6,
 					'size'               => 'size-l',
-					'value'              => $this->get_setting( self::SETTING_CLIENT_SECRET, '' ),
+					'value'              => '',
 				),
 			);
 
@@ -602,17 +613,7 @@ class Connector_Microsoft extends Connector_Base {
 	}
 
 	public function is_configured() {
-		if ( Booliesh::get( $this->get_setting( 'access_token', false ) ) ) {
-			/**
-			 * @var Microsoft_Oauth_Handler $oauth_handler
-			 */
-			$oauth_handler = Gravity_SMTP::container()->get( Connector_Service_Provider::MICROSOFT_OAUTH_HANDLER );
-			$token         = $oauth_handler->get_access_token();
-
-			return $token;
-		}
-
-		return false;
+		return $this->is_oauth_configured( Connector_Service_Provider::MICROSOFT_OAUTH_HANDLER );
 	}
 
 	/**

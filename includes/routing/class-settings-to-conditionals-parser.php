@@ -36,12 +36,12 @@ class Settings_to_Conditionals_Parser {
 			$source_subtype = $source_data['subtype'];
 		}
 
-		if ( ! is_array( $email_data['attachments'] ) ) {
-			$email_data['attachments'] = empty( $email_data['attachments'] ) ? array() : explode( "\n", str_replace( "\r\n", "\n", $email_data['attachments'] ) );
-		}
-
 		$connector->init( $email_data['to'], $email_data['subject'], $email_data['message'], $email_data['headers'], $email_data['attachments'], $source );
 		$parsed_data = $connector->get_email_data();
+
+		if ( ! is_array( $parsed_data['attachments'] ) ) {
+			$parsed_data['attachments'] = empty( $parsed_data['attachments'] ) ? array() : explode( "\n", str_replace( "\r\n", "\n", $parsed_data['attachments'] ) );
+		}
 
 		$attachment_size = $this->calculate_attachment_size( $parsed_data['attachments'] );
 

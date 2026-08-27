@@ -120,7 +120,7 @@ class Mail_Handler {
 		}
 
 		if ( ! empty( $attachments ) && ! is_array( $attachments ) ) {
-			$attachments = array( $attachments );
+			$attachments = explode( "\n", str_replace( "\r\n", "\n", $attachments ) );
 		}
 
 		/**

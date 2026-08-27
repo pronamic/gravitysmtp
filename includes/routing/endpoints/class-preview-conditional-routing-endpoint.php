@@ -18,7 +18,7 @@ class Preview_Conditional_Routing extends Endpoint {
 	const PARAM_EMAIL_DATA = 'email_data';
 	const PARAM_CONDITIONS = 'conditions';
 
-	protected $minimum_cap = Roles::VIEW_ROUTING;
+	protected $minimum_cap = Roles::EDIT_ROUTING;
 
 	protected function get_nonce_name() {
 		return self::ACTION_NAME;

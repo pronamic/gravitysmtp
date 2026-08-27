@@ -19,6 +19,7 @@ class Connector_Amazon extends Connector_Base {
 	const SETTING_CLIENT_ID     = 'access_key_id';
 	const SETTING_CLIENT_SECRET = 'secret_access_key';
 	const SETTING_REGION        = 'region';
+	const SETTING_TENANT        = 'tenant';
 
 	const REGION_US_EAST_N_VIRGINIA      = 'us-east-1';
 	const REGION_US_EAST_OHIO            = 'us-east-2';
@@ -185,7 +186,7 @@ class Connector_Amazon extends Connector_Base {
 				),
 			);
 
-			$request_data = $signature_handler->get_request_data( $body, $this->get_setting( self::SETTING_CLIENT_ID, '' ), $this->get_setting( self::SETTING_CLIENT_SECRET, '' ), $this->get_setting( self::SETTING_REGION, self::REGION_US_EAST_N_VIRGINIA ) );
+			$request_data = $signature_handler->get_request_data( $body, $this->get_setting( self::SETTING_CLIENT_ID, '' ), $this->get_setting( self::SETTING_CLIENT_SECRET, '' ), $this->get_setting( self::SETTING_REGION, self::REGION_US_EAST_N_VIRGINIA ), $this->get_setting( self::SETTING_TENANT, '' ) );
 
 			$response = wp_remote_post( $request_data['url'], array( 'headers' => $request_data['headers'], 'body' => $request_data['body'] ) );
 			$code     = wp_remote_retrieve_response_code( $response );
@@ -259,6 +260,7 @@ class Connector_Amazon extends Connector_Base {
 			self::SETTING_CLIENT_ID             => $this->get_setting( self::SETTING_CLIENT_ID, '' ),
 			self::SETTING_CLIENT_SECRET         => $this->get_setting( self::SETTING_CLIENT_SECRET, '' ),
 			self::SETTING_REGION                => $this->get_setting( self::SETTING_REGION, self::REGION_US_EAST_N_VIRGINIA ),
+			self::SETTING_TENANT               => $this->get_setting( self::SETTING_TENANT, '' ),
 			self::SETTING_FROM_EMAIL            => $this->get_setting( self::SETTING_FROM_EMAIL, '' ),
 			self::SETTING_FORCE_FROM_EMAIL      => $this->get_setting( self::SETTING_FORCE_FROM_EMAIL, false ),
 			self::SETTING_FROM_NAME             => $this->get_setting( self::SETTING_FROM_NAME, '' ),
@@ -350,6 +352,20 @@ class Connector_Amazon extends Connector_Base {
 							'spacing'         => 6,
 							'initialValue'    => $this->get_setting( self::SETTING_REGION, self::REGION_US_EAST_N_VIRGINIA ),
 							'options'         => $this->get_region_setting_options(),
+						),
+					),
+					array(
+						'component' => 'Input',
+						'props'     => array(
+							'labelAttributes' => array(
+								'label'  => esc_html__( 'Tenant', 'gravitysmtp' ),
+								'size'   => 'text-sm',
+								'weight' => 'medium',
+							),
+							'name'            => self::SETTING_TENANT,
+							'size'            => 'size-l',
+							'spacing'         => 6,
+							'value'           => $this->get_setting( self::SETTING_TENANT, '' ),
 						),
 					),
 					array(

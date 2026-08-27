@@ -6,6 +6,7 @@ use Gravity_Forms\Gravity_SMTP\Apps\App_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Plugin_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
+use Gravity_Forms\Gravity_SMTP\Users\Roles;
 use Gravity_Forms\Gravity_SMTP\Utils\Booliesh;
 use Gravity_Forms\Gravity_Tools\Config;
 use Gravity_Forms\Gravity_Tools\License\License_Statuses;
@@ -166,7 +167,7 @@ class Setup_Wizard_Config extends Config {
 						),
 						'license_key'         => array(
 							'default' => '',
-							'value'   => $is_valid ? $license_key : '',
+							'value'   => $is_valid && current_user_can( Roles::VIEW_LICENSE_KEY ) ? $license_key : '',
 						),
 						'license_key_is_valid'  => array(
 							'default' => false,

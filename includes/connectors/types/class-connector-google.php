@@ -7,9 +7,7 @@ use Google\Service\Gmail;
 use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Base;
 use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Connectors\Oauth\Google_Oauth_Handler;
-use Gravity_Forms\Gravity_SMTP\Connectors\Oauth_Handler;
 use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
-use Gravity_Forms\Gravity_SMTP\Utils\Booliesh;
 
 /**
  * Connector for Google / Gmail
@@ -234,9 +232,14 @@ class Connector_Google extends Connector_Base {
 	 * @return array
 	 */
 	public function connector_data() {
+		// Without a token, saved credentials belong to an unfinished connection attempt.
+		// Serve the fields empty so a reconnect is a fresh entry, and so the sign-in
+		// button never builds an authorize URL from an obfuscated placeholder value.
+		$has_stored_token = '' !== (string) $this->get_setting( self::SETTING_ACCESS_TOKEN, '' );
+
 		return array(
-			self::SETTING_CLIENT_ID             => $this->get_setting( self::SETTING_CLIENT_ID, '' ),
-			self::SETTING_CLIENT_SECRET         => $this->get_setting( self::SETTING_CLIENT_SECRET, '' ),
+			self::SETTING_CLIENT_ID             => $has_stored_token ? $this->get_setting( self::SETTING_CLIENT_ID, '' ) : '',
+			self::SETTING_CLIENT_SECRET         => $has_stored_token ? $this->get_setting( self::SETTING_CLIENT_SECRET, '' ) : '',
 			self::SETTING_ACCESS_TOKEN          => $this->get_setting( self::SETTING_ACCESS_TOKEN, '' ),
 			self::SETTING_FROM_EMAIL            => $this->get_setting( self::SETTING_FROM_EMAIL, '' ),
 			self::SETTING_FORCE_FROM_EMAIL      => $this->get_setting( self::SETTING_FORCE_FROM_EMAIL, false ),
@@ -258,10 +261,10 @@ class Connector_Google extends Connector_Base {
 
 		$params = array(
 			'response_type'          => 'code',
-			'redirect_uri'           => urldecode( $oauth_handler->get_return_url() ),
+			'redirect_uri'           => $oauth_handler->get_return_url( 'settings', false ),
 			'scope'                  => 'https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/gmail.readonly',
 			'include_granted_scopes' => 'true',
-			'state'                  => 1,
+			'state'                  => wp_create_nonce( Google_Oauth_Handler::STATE_NONCE_ACTION ),
 			'access_type'            => 'offline',
 			'prompt'                 => 'consent',
 		);
@@ -278,11 +281,9 @@ class Connector_Google extends Connector_Base {
 	 */
 	public function settings_fields() {
 		/**
-		 * @var Oauth_Handler $oauth_handler
+		 * @var Google_Oauth_Handler $oauth_handler
 		 */
 		$oauth_handler = Gravity_SMTP::container()->get( Connector_Service_Provider::GOOGLE_OAUTH_HANDLER );
-
-		$oauth_handler->handle_response( $this->name );
 
 		$token = $oauth_handler->get_access_token( $this->name );
 		$has_token = $token && ! is_wp_error( $token );
@@ -368,29 +369,10 @@ class Connector_Google extends Connector_Base {
 			);
 		}
 
-		if ( isset( $_GET['code'] ) && ! $has_token ) {
-			$settings['fields'][] = array(
-				'component' => 'Alert',
-				'props'     => array(
-					'id'               => 'google-connection-error',
-					'customIconPrefix' => 'gravity-admin-icon',
-					'theme'            => 'cosmos',
-					'type'             => 'error',
-					'spacing'          => 3,
-				),
-				'fields'    => array(
-					array(
-						'component' => 'Text',
-						'props'     => array(
-							'content'       => esc_html__( 'Error Connecting to Google. Check your credentials and try again.', 'gravitysmtp' ),
-							'weight'        => 'medium',
-							'size'          => 'text-sm',
-							'spacing'       => 2,
-							'tagName'       => 'span',
-						),
-					),
-				),
-			);
+		$oauth_error = $oauth_handler->get_last_error();
+
+		if ( ! empty( $oauth_error ) ) {
+			$settings['fields'][] = $this->get_oauth_error_alert( $oauth_error );
 		}
 
 		$settings['fields'][] = array(
@@ -434,7 +416,8 @@ class Connector_Google extends Connector_Base {
 					'name'               => self::SETTING_CLIENT_ID,
 					'spacing'            => 6,
 					'size'               => 'size-l',
-					'value'              => $this->get_setting( self::SETTING_CLIENT_ID, '' ),
+					// Always fresh entry: saved credentials without a token belong to an unfinished attempt.
+					'value'              => '',
 				),
 			);
 
@@ -466,7 +449,7 @@ class Connector_Google extends Connector_Base {
 					'name'               => self::SETTING_CLIENT_SECRET,
 					'spacing'            => 6,
 					'size'               => 'size-l',
-					'value'              => $this->get_setting( self::SETTING_CLIENT_SECRET, '' ),
+					'value'              => '',
 				),
 			);
 
@@ -493,7 +476,7 @@ class Connector_Google extends Connector_Base {
 					'customAttributes'     => array(
 						'readOnly' => true,
 					),
-					'value'                => urldecode( $oauth_handler->get_return_url( 'settings' ) ),
+					'value'                => $oauth_handler->get_return_url( 'settings', false ),
 					'helpTextAttributes' => array(
 						'content' => __( 'Copy this URL into the "Authorized redirect URIs" field of your Google web application.', 'gravitysmtp' ),
 						'size'    => 'text-xs',
@@ -610,17 +593,7 @@ class Connector_Google extends Connector_Base {
 	}
 
 	public function is_configured() {
-		if ( Booliesh::get( $this->get_setting( 'access_token', false ) ) ) {
-			/**
-			 * @var Google_Oauth_Handler $oauth_handler
-			 */
-			$oauth_handler = Gravity_SMTP::container()->get( Connector_Service_Provider::GOOGLE_OAUTH_HANDLER );
-			$token         = $oauth_handler->get_access_token();
-
-			return $token;
-		}
-
-		return false;
+		return $this->is_oauth_configured( Connector_Service_Provider::GOOGLE_OAUTH_HANDLER );
 	}
 
 	/**

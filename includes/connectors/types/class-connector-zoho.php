@@ -8,7 +8,6 @@ use Gravity_Forms\Gravity_SMTP\Connectors\Oauth\Zoho_Oauth_Handler;
 use Gravity_Forms\Gravity_SMTP\Enums\Zoho_Datacenters_Enum;
 use Gravity_Forms\Gravity_SMTP\Feature_Flags\Feature_Flag_Manager;
 use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
-use Gravity_Forms\Gravity_SMTP\Utils\Booliesh;
 
 /**
  * Connector for Zoho
@@ -94,8 +93,14 @@ class Connector_Zoho extends Connector_Base {
 	}
 
 	private function get_request_headers() {
+		/**
+		 * @var Zoho_Oauth_Handler $oauth_handler
+		 */
+		$oauth_handler = Gravity_SMTP::container()->get( Connector_Service_Provider::ZOHO_OAUTH_HANDLER );
+		$token = $oauth_handler->get_access_token();
+
 		return array(
-			'Authorization' => 'Zoho-oauthtoken ' . $this->get_setting( self::SETTING_ACCESS_TOKEN ),
+			'Authorization' => 'Zoho-oauthtoken ' . $token,
 			'Content-Type' => 'application/json',
 		);
 	}
@@ -103,11 +108,19 @@ class Connector_Zoho extends Connector_Base {
 	private function get_request_body( $atts ) {
 		$body = array(
 			'fromAddress' => $atts['from']['email'],
-			'toAddress'   => $atts['to']->first()->email,
+			'toAddress'   => $atts['to']->as_string( false ),
 			'subject'     => $atts['subject'],
 			'content'     => $atts['message'],
 			'encoding'    => 'UTF-8',
 		);
+
+		if ( ! empty( $atts['headers']['cc'] ) ) {
+			$body['ccAddress'] = $atts['headers']['cc']->as_string( false );
+		}
+
+		if ( ! empty( $atts['headers']['bcc'] ) ) {
+			$body['bccAddress'] = $atts['headers']['bcc']->as_string( false );
+		}
 
 		$is_html = ! empty( $atts['headers']['content-type'] ) && strpos( $atts['headers']['content-type'], 'text/html' ) !== false;
 
@@ -220,19 +233,61 @@ class Connector_Zoho extends Connector_Base {
 	 * @return array
 	 */
 	public function connector_data() {
+		// Without a token, saved credentials belong to an unfinished connection attempt.
+		// Serve the fields empty so a reconnect is a fresh entry, and so the sign-in
+		// button never builds an authorize URL from an obfuscated placeholder value.
+		$has_stored_token = '' !== (string) $this->get_setting( self::SETTING_ACCESS_TOKEN, '' );
+
 		return array(
-			self::SETTING_CLIENT_ID             => $this->get_setting( self::SETTING_CLIENT_ID, '' ),
-			self::SETTING_CLIENT_SECRET         => $this->get_setting( self::SETTING_CLIENT_SECRET, '' ),
+			self::SETTING_CLIENT_ID             => $has_stored_token ? $this->get_setting( self::SETTING_CLIENT_ID, '' ) : '',
+			self::SETTING_CLIENT_SECRET         => $has_stored_token ? $this->get_setting( self::SETTING_CLIENT_SECRET, '' ) : '',
 			self::SETTING_ACCESS_TOKEN          => $this->get_setting( self::SETTING_ACCESS_TOKEN, '' ),
+			self::SETTING_DATA_CENTER_REGION    => $this->get_setting( self::SETTING_DATA_CENTER_REGION, 'us' ),
 			self::SETTING_FROM_EMAIL            => $this->get_setting( self::SETTING_FROM_EMAIL, '' ),
 			self::SETTING_FORCE_FROM_EMAIL      => $this->get_setting( self::SETTING_FORCE_FROM_EMAIL, false ),
 			self::SETTING_FROM_NAME             => $this->get_setting( self::SETTING_FROM_NAME, '' ),
 			self::SETTING_FORCE_FROM_NAME       => $this->get_setting( self::SETTING_FORCE_FROM_NAME, false ),
 			self::SETTING_REPLY_TO_EMAIL        => $this->get_setting( self::SETTING_REPLY_TO_EMAIL, '' ),
 			self::SETTING_FORCE_REPLY_TO_EMAIL  => $this->get_setting( self::SETTING_FORCE_REPLY_TO_EMAIL, false ),
-			'oauth_url'                         => 'https://accounts.zoho.com/oauth/v2/auth',
+			'oauth_url'                         => $this->get_oauth_url(),
+			'oauth_urls'                        => $this->get_oauth_urls(),
 			'oauth_params'                      => '&' . $this->get_oauth_params(),
 		);
+	}
+
+	/**
+	 * Get the OAuth authorization URL for the currently configured Zoho datacenter.
+	 *
+	 * @since 2.3.3
+	 *
+	 * @return string
+	 */
+	protected function get_oauth_url() {
+		$data_center_location = $this->get_setting( self::SETTING_DATA_CENTER_REGION, 'us' );
+		$base                 = Zoho_Datacenters_Enum::accounts_url_for_datacenter( $data_center_location );
+
+		return trailingslashit( $base ) . 'oauth/v2/auth';
+	}
+
+	/**
+	 * Get the OAuth authorization URL for every Zoho datacenter, keyed by region.
+	 *
+	 * The sign-in button uses this map to follow the region selected in the form,
+	 * which can differ from the region that was saved when the page loaded.
+	 *
+	 * @since 2.3.3
+	 *
+	 * @return array
+	 */
+	protected function get_oauth_urls() {
+		$urls = array();
+
+		foreach ( Zoho_Datacenters_Enum::select_component_options() as $option ) {
+			$base                     = Zoho_Datacenters_Enum::accounts_url_for_datacenter( $option['value'] );
+			$urls[ $option['value'] ] = trailingslashit( $base ) . 'oauth/v2/auth';
+		}
+
+		return $urls;
 	}
 
 	protected function get_oauth_params() {
@@ -245,7 +300,7 @@ class Connector_Zoho extends Connector_Base {
 			'response_type' => 'code',
 			'redirect_uri'  => urldecode( $oauth_handler->get_return_url() ),
 			'scope'         => $oauth_handler->get_scope(),
-			'state'         => 1,
+			'state'         => wp_create_nonce( Zoho_Oauth_Handler::STATE_NONCE_ACTION ),
 			'access_type'   => 'offline',
 			'prompt'        => 'consent',
 		);
@@ -254,17 +309,7 @@ class Connector_Zoho extends Connector_Base {
 	}
 
 	public function is_configured() {
-		if ( Booliesh::get( $this->get_setting( 'access_token', false ) ) ) {
-			/**
-			 * @var Zoho_Oauth_Handler $oauth_handler
-			 */
-			$oauth_handler = Gravity_SMTP::container()->get( Connector_Service_Provider::ZOHO_OAUTH_HANDLER );
-			$token         = $oauth_handler->get_access_token();
-
-			return $token;
-		}
-
-		return false;
+		return $this->is_oauth_configured( Connector_Service_Provider::ZOHO_OAUTH_HANDLER );
 	}
 
 	/**
@@ -279,8 +324,6 @@ class Connector_Zoho extends Connector_Base {
 		 * @var Zoho_Oauth_Handler $oauth_handler
 		 */
 		$oauth_handler = Gravity_SMTP::container()->get( Connector_Service_Provider::ZOHO_OAUTH_HANDLER );
-
-		$oauth_handler->handle_response( $this->name );
 
 		$token     = $oauth_handler->get_access_token( $this->name );
 		$has_token = $token && ! is_wp_error( $token );
@@ -334,28 +377,10 @@ class Connector_Zoho extends Connector_Base {
 			);
 		}
 
-		if ( isset( $_GET['code'] ) && ! $has_token ) {
-			$settings['fields'][] = array(
-				'component' => 'Alert',
-				'props'     => array(
-					'customIconPrefix' => 'gravity-admin-icon',
-					'theme'            => 'cosmos',
-					'type'             => 'error',
-					'spacing'          => 3,
-				),
-				'fields'    => array(
-					array(
-						'component' => 'Text',
-						'props'     => array(
-							'content' => esc_html__( 'Error Connecting to Zoho Mail. Check your credentials and try again.', 'gravitysmtp' ),
-							'weight'  => 'medium',
-							'size'    => 'text-sm',
-							'spacing' => 2,
-							'tagName' => 'span',
-						),
-					),
-				),
-			);
+		$oauth_error = $oauth_handler->get_last_error();
+
+		if ( ! empty( $oauth_error ) ) {
+			$settings['fields'][] = $this->get_oauth_error_alert( $oauth_error );
 		}
 
 		$settings['fields'][] = array(
@@ -420,7 +445,8 @@ class Connector_Zoho extends Connector_Base {
 					'name'               => self::SETTING_CLIENT_ID,
 					'spacing'            => 4,
 					'size'               => 'size-l',
-					'value'              => $this->get_setting( self::SETTING_CLIENT_ID, '' ),
+					// Always fresh entry: saved credentials without a token belong to an unfinished attempt.
+					'value'              => '',
 				),
 			);
 
@@ -452,7 +478,7 @@ class Connector_Zoho extends Connector_Base {
 					'name'               => self::SETTING_CLIENT_SECRET,
 					'spacing'            => 6,
 					'size'               => 'size-l',
-					'value'              => $this->get_setting( self::SETTING_CLIENT_SECRET, '' ),
+					'value'              => '',
 				),
 			);
 

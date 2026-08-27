@@ -6,7 +6,10 @@ use Gravity_Forms\Gravity_SMTP\Data_Store\Data_Store_Router;
 use Gravity_Forms\Gravity_SMTP\Logging\Debug\Debug_Logger;
 use Gravity_Forms\Gravity_SMTP\Logging\Log\Logger;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Data_Store;
+use Gravity_Forms\Gravity_SMTP\Connectors\Oauth\Oauth_Callback_Handler;
+use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
 use Gravity_Forms\Gravity_SMTP\Models\Event_Model;
+use Gravity_Forms\Gravity_SMTP\Utils\Booliesh;
 use Gravity_Forms\Gravity_SMTP\Utils\Header_Parser;
 use Gravity_Forms\Gravity_SMTP\Utils\Recipient_Parser;
 
@@ -410,6 +413,10 @@ abstract class Connector_Base {
 			$atts['from_name'] = '';
 		}
 
+		if ( ! empty( $atts['attachments'] ) && ! is_array( $atts['attachments'] ) ) {
+			$atts['attachments'] = explode( "\n", str_replace( "\r\n", "\n", $atts['attachments'] ) );
+		}
+
 		$this->atts = $atts;
 
 		do_action( 'gravitysmtp_after_connector_init', $this->email, $this );
@@ -450,6 +457,10 @@ abstract class Connector_Base {
 	}
 
 	private function strip_sensitive_log_data( $params, $parse_headers = false ) {
+		if ( ! is_array( $params ) ) {
+			return array();
+		}
+
 		$header_whitelist = array(
 			'to',
 			'from',
@@ -1024,5 +1035,81 @@ abstract class Connector_Base {
 
 	protected function wrap_debug_with_details( $function, $email, $message ) {
 		return sprintf( '%s(): [EMAIL ID %s] - %s', $function, $email, $message );
+	}
+
+	/**
+	 * Determine whether an OAuth connector holds a working access token.
+	 *
+	 * @since 2.3.3
+	 *
+	 * @param string $handler_service The container key of the connector's OAuth handler.
+	 *
+	 * @return string|bool|\WP_Error The access token when connected, false otherwise.
+	 */
+	protected function is_oauth_configured( $handler_service ) {
+		if ( ! Booliesh::get( $this->get_setting( 'access_token', false ) ) ) {
+			return false;
+		}
+
+		$oauth_handler = Gravity_SMTP::container()->get( $handler_service );
+
+		return $oauth_handler->get_access_token();
+	}
+
+	/**
+	 * Map a stored OAuth callback error code to a user-facing message.
+	 *
+	 * @since 2.3.3
+	 *
+	 * @param string $error_code One of the Oauth_Callback_Handler ERROR_* constants.
+	 *
+	 * @return string
+	 */
+	protected function get_oauth_error_message( $error_code ) {
+		switch ( $error_code ) {
+			case Oauth_Callback_Handler::ERROR_INVALID_STATE:
+				/* translators: %s: the email provider name. */
+				return sprintf( esc_html__( 'The %s connection request could not be verified. Please try again.', 'gravitysmtp' ), $this->title );
+			case Oauth_Callback_Handler::ERROR_ACCESS_DENIED:
+				/* translators: %s: the email provider name. */
+				return sprintf( esc_html__( 'Access to %s was denied. Please approve the connection request to complete setup.', 'gravitysmtp' ), $this->title );
+			default:
+				/* translators: %s: the email provider name. */
+				return sprintf( esc_html__( 'Error Connecting to %s. Check your credentials and try again.', 'gravitysmtp' ), $this->title );
+		}
+	}
+
+	/**
+	 * Build the settings Alert field for a stored OAuth callback error.
+	 *
+	 * @since 2.3.3
+	 *
+	 * @param string $error_code One of the Oauth_Callback_Handler ERROR_* constants.
+	 *
+	 * @return array
+	 */
+	protected function get_oauth_error_alert( $error_code ) {
+		return array(
+			'component' => 'Alert',
+			'props'     => array(
+				'id'               => $this->name . '-connection-error',
+				'customIconPrefix' => 'gravity-admin-icon',
+				'theme'            => 'cosmos',
+				'type'             => 'error',
+				'spacing'          => 3,
+			),
+			'fields'    => array(
+				array(
+					'component' => 'Text',
+					'props'     => array(
+						'content' => $this->get_oauth_error_message( $error_code ),
+						'weight'  => 'medium',
+						'size'    => 'text-sm',
+						'spacing' => 2,
+						'tagName' => 'span',
+					),
+				),
+			),
+		);
 	}
 }

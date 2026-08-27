@@ -167,16 +167,26 @@ class Conditional_Routing_Handler implements Routing_Handler {
 					return false;
 				}
 
-				return $is_regex ? ( preg_match( '/' . $value . '/', $comparison_value ) !== 0 && preg_match( '/' . $value . '/', $comparison_value ) !== false ) : strpos( $comparison_value, $value ) !== false;
+				try {
+					return $is_regex ? ( self::preg_match_with_timeout( $value, $comparison_value )!== 0 && self::preg_match_with_timeout( $value, $comparison_value ) !== false ) : strpos( $comparison_value, $value ) !== false;
+				} catch( \Exception $e ) {
+					return false;
+				}
+				break;
 
 			case self::DNCONTAIN:
 				if ( $value === null || $value === '' ) {
 					return false;
 				}
 
-				$contains = $is_regex ? ( preg_match( '/' . $value . '/', $comparison_value ) !== 0 && preg_match( '/' . $value . '/', $comparison_value ) !== false ) : strpos( $comparison_value, $value ) !== false;
+				try {
+					$contains = $is_regex ? ( self::preg_match_with_timeout( $value, $comparison_value ) !== 0 && self::preg_match_with_timeout( $value, $comparison_value ) !== false ) : strpos( $comparison_value, $value ) !== false;
 
-				return ! $contains;
+					return ! $contains;
+				} catch( \Exception $e ) {
+					return false;
+				}
+				break;
 
 			case self::SW:
 				$value = (string) $value;
@@ -198,6 +208,24 @@ class Conditional_Routing_Handler implements Routing_Handler {
 
 			default:
 				return false;
+		}
+	}
+
+	private static function preg_match_with_timeout( $pattern, $value, $timeout = 5 ) {
+		$current_limit = ini_get( 'max_execution_time' );
+		set_time_limit( $timeout );
+
+		try {
+			$start = microtime( true );
+			$match = preg_match( '/' . $pattern . '/', $value );
+
+			if ( microtime( true ) - $start >= $timeout ) {
+				throw new \Exception( 'Regex match timeout.' );
+			}
+
+			return $match;
+		} finally {
+			set_time_limit( $current_limit );
 		}
 	}
 

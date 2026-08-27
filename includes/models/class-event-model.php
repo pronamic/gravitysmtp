@@ -76,6 +76,49 @@ class Event_Model {
 		return $wpdb->prefix . $this->table_name;
 	}
 
+	/**
+	 * Truncates a string to at most $max_bytes bytes without splitting a
+	 * multi-byte UTF-8 character. A plain substr() can land mid-character,
+	 * producing invalid UTF-8 that MySQL rejects, silently failing the insert.
+	 *
+	 * @param string $string
+	 * @param int    $max_bytes
+	 *
+	 * @return string
+	 */
+	protected function truncate_utf8_safe( $string, $max_bytes ) {
+		if ( strlen( $string ) <= $max_bytes ) {
+			return $string;
+		}
+
+		$truncated = substr( $string, 0, $max_bytes );
+
+		$last = strlen( $truncated ) - 1;
+		while ( $last >= 0 && ( ord( $truncated[ $last ] ) & 0xC0 ) === 0x80 ) {
+			$last--;
+		}
+
+		if ( $last < 0 ) {
+			return '';
+		}
+
+		$byte  = ord( $truncated[ $last ] );
+		$width = 1;
+		if ( ( $byte & 0xE0 ) === 0xC0 ) {
+			$width = 2;
+		} elseif ( ( $byte & 0xF0 ) === 0xE0 ) {
+			$width = 3;
+		} elseif ( ( $byte & 0xF8 ) === 0xF0 ) {
+			$width = 4;
+		}
+
+		if ( $last + $width > strlen( $truncated ) ) {
+			$truncated = substr( $truncated, 0, $last );
+		}
+
+		return $truncated;
+	}
+
 	public function get_latest_id() {
 		return $this->latest_id;
 	}
@@ -290,7 +333,7 @@ class Event_Model {
 				'date_updated' => current_time( 'mysql', true ),
 				'status'       => $status,
 				'service'      => $service,
-				'subject'      => substr( $subject, 0, 95 ), // DB Column is varchar(100), trim with some buffer space for non-Latin chars.
+				'subject'      => $this->truncate_utf8_safe( $subject, 95 ), // DB Column is varchar(100), trim with some buffer space for non-Latin chars.
 				'message'      => $message,
 				'extra'        => serialize( $extra ),
 			)
@@ -330,7 +373,7 @@ class Event_Model {
 		}
 
 		if ( isset( $values['subject'] ) ) {
-			$values['subject'] = substr( $values['subject'], 0, 95 ); // DB Column is varchar(100), trim with some buffer space for non-Latin chars
+			$values['subject'] = $this->truncate_utf8_safe( $values['subject'], 95 ); // DB Column is varchar(100), trim with some buffer space for non-Latin chars
 		}
 
 		if ( isset( $values['message'] ) && strlen( $values['message'] ) > 64500 ) {

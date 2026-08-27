@@ -33,7 +33,7 @@ class AWS_Signature_Handler {
 	 *
 	 * @return array
 	 */
-	public function get_request_data( $body, $id, $secret, $region ) {
+	public function get_request_data( $body, $id, $secret, $region, $tenant ) {
 		$this->id     = $id;
 		$this->secret = $secret;
 		$this->region = $region;
@@ -53,6 +53,10 @@ class AWS_Signature_Handler {
 		$headers['Authorization'] = $this->get_auth_header( $headers, $signature, $shortform_date );
 
 		$url = sprintf( 'https://%s/', $this->get_host() );
+
+		if ( ! empty( $tenant ) ) {
+			$headers['X-SES-TENANT'] = $tenant;
+		}
 
 		return array(
 			'body'    => $query_form,

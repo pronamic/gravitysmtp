@@ -183,6 +183,10 @@ class Apps_Config extends Config {
 			$return[] = $setting_name;
 		}
 
+		if ( defined( 'GF_LICENSE_KEY' ) ) {
+			$return[] = 'license_key';
+		}
+
 		return $return;
 	}
 

@@ -47,7 +47,7 @@ class Error_Handler {
 			return;
 		}
 
-		$error_prefix = __( 'A fatal error occured when sending', 'gravitysmtp' );
+		$error_prefix = __( 'A fatal error occurred when sending', 'gravitysmtp' );
 
 		$this->logger->log( $email_id, 'failed', sprintf( '%s: %s', $error_prefix, $error['message'] ) );
 

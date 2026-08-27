@@ -1,3 +1,37 @@
+### 2.3.3 | 2026-08-26
+- Security enhancements.
+- Added the ability to define a single license key constant to use between GF core and SMTP.
+- Added the ability to define a Tenant when sending with Amazon SES.
+- Added the routing capabilities to the Members plugin integration
+- Fixed a fatal error in strip_sensitive_log_data() when headers is a string
+- Fixed a PHP warning when a Zoho Mail OAuth token exchange returns an error response.
+- Fixed a typo in the fatal error message shown when sending fails.
+- Fixed an issue that caused the Zoho Mail integration to fail to connect and send email for accounts on non-US datacenters.
+- Fixed an issue that exposed license keys to users without permission to view them.
+- Fixed an issue that prevented the Gravity Forms license key from being used on the Gravity SMTP Settings page when the setup wizard was skipped.
+- Fixed an issue where a long email subject with multi-byte characters could prevent the message from being logged.
+- Fixed an issue where fast typing in the Email Log, Suppressions, and Debug Log search fields could remove entered characters.
+- Fixed an issue where removing and re-adding an integration retained its previous settings.
+- Fixed an issue where the Google OAuth callback could replay on page refresh, retain a stale connection error, and skip validation of the state parameter.
+- Fixed an issue where the integration URL parameter stayed in the address bar after the integration flyout closed, which reopened the flyout on refresh.
+- Fixed an issue where the Microsoft OAuth callback could replay on page refresh, retain a stale connection error, and skip validation of the state parameter.
+- Fixed an issue where the Zoho Mail OAuth callback could replay on page refresh, retain a stale connection error, and skip validation of the state parameter.
+- Fixed an issue where the Zoho Mail sign-in button used the authorization URL for the previously saved datacenter after the Datacenter Region setting changed.
+- Fixed an issue where Zoho Mail omitted CC, BCC, and additional To recipients.
+- Fixed an issue that can cause expired Zoho tokens not to refresh when the current token fails.
+- Fixed integration descriptions being truncated when adding a connection.
+- Fixed Microsoft connected account details and improved mailbox error guidance.
+- Fixed removed integrations still appearing as Send With options on the Send a Test tool
+- Fixed routing preview access to respect smart routing availability and permissions.
+- Fixed an issue that can cause MySQL errors when installing the plugin for the first time.
+- Fixed an issue that can cause string-formatted attachment headers to throw a fatal on send.
+- Updated the Google / Gmail integration to activate only after the OAuth connection completes, so a failed or abandoned connection attempt no longer shows as an active integration or becomes the primary connector.
+- Updated the Google / Gmail settings to require fresh credential entry when no connection exists, which prevents an obfuscated client ID from reaching the Google authorization URL.
+- Updated the Microsoft 365 / Outlook integration to activate only after the OAuth connection completes, so a failed or abandoned connection attempt no longer shows as an active integration or becomes the primary connector.
+- Updated the Microsoft 365 / Outlook settings to require fresh credential entry when no connection exists, so a reconnect after a failed or abandoned attempt starts clean.
+- Updated the Zoho Mail integration to activate only after the OAuth connection completes, so a failed or abandoned connection attempt no longer shows as an active integration or becomes the primary connector.
+- Updated the Zoho Mail settings to require fresh credential entry when no connection exists, which prevents an obfuscated client ID from reaching the Zoho authorization URL.
+
 ### 2.3.2 | 2026-08-03
 - Fixed an issue where multiple integrations could be flagged as the primary or backup connection at the same time, causing email to send through an integration other than the one shown as primary.
 

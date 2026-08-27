@@ -86,11 +86,11 @@ class Routing_Service_Provider extends Config_Service_Provider {
 			add_action( 'wp_ajax_' . Save_Routing_Settings_Endpoint::ACTION_NAME, function() use ( $container ) {
 				$container->get( self::SAVE_ENDPOINT )->handle();
 			}, 11 );
-		}
 
-		add_action( 'wp_ajax_' . Preview_Conditional_Routing::ACTION_NAME, function() use ( $container ) {
-			$container->get( self::PREVIEW_ENDPOINT )->handle();
-		}, 11 );
+			add_action( 'wp_ajax_' . Preview_Conditional_Routing::ACTION_NAME, function() use ( $container ) {
+				$container->get( self::PREVIEW_ENDPOINT )->handle();
+			}, 11 );
+		}
 	}
 
 }

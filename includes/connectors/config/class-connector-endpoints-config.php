@@ -4,6 +4,7 @@ namespace Gravity_Forms\Gravity_SMTP\Connectors\Config;
 
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Get_Single_Email_Data_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Cleanup_Data_Endpoint;
+use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Delete_Connector_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Migrate_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Connector_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Plugin_Settings_Endpoint;
@@ -40,6 +41,16 @@ class Connector_Endpoints_Config extends Config {
 						),
 						'nonce'  => array(
 							'value'   => wp_create_nonce( Save_Connector_Settings_Endpoint::ACTION_NAME ),
+							'default' => 'nonce',
+						),
+					),
+					Delete_Connector_Settings_Endpoint::ACTION_NAME => array(
+						'action' => array(
+							'value'   => Delete_Connector_Settings_Endpoint::ACTION_NAME,
+							'default' => 'mock_endpoint',
+						),
+						'nonce'  => array(
+							'value'   => wp_create_nonce( Delete_Connector_Settings_Endpoint::ACTION_NAME ),
 							'default' => 'nonce',
 						),
 					),

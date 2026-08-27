@@ -42,7 +42,7 @@ class Uninstall_Endpoint extends Endpoint {
 
 	private function delete_tables() {
 		global $wpdb;
-		$query = "DROP TABLE IF EXISTS {$wpdb->prefix}gravitysmtp_events, {$wpdb->prefix}gravitysmtp_event_logs";
+		$query = "DROP TABLE IF EXISTS {$wpdb->prefix}gravitysmtp_event_tracking, {$wpdb->prefix}gravitysmtp_debug_log, {$wpdb->prefix}gravitysmtp_suppressed_emails, {$wpdb->prefix}gravitysmtp_events, {$wpdb->prefix}gravitysmtp_event_logs";
 		$wpdb->query( $query );
 	}
 

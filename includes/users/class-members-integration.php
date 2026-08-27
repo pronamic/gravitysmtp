@@ -112,6 +112,8 @@ class Members_Integration {
 			Roles::VIEW_INTEGRATIONS               => esc_html__( 'View Integrations', 'gravitysmtp' ),
 			Roles::VIEW_LICENSE_KEY                => esc_html__( 'View License Key', 'gravitysmtp' ),
 			Roles::VIEW_NOTIFICATIONS_SETTINGS     => esc_html__( 'View Notifications Settings', 'gravitysmtp' ),
+			Roles::VIEW_ROUTING                    => esc_html__( 'View Routing', 'gravitysmtp' ),
+			Roles::EDIT_ROUTING                    => esc_html__( 'Edit Routing', 'gravitysmtp' ),
 			Roles::VIEW_TEST_MODE                  => esc_html__( 'View Test Mode', 'gravitysmtp' ),
 			Roles::VIEW_TOOLS                      => esc_html__( 'View Tools', 'gravitysmtp' ),
 			Roles::VIEW_TOOLS_SENDATEST            => esc_html__( 'View Tools Send a Test', 'gravitysmtp' ),

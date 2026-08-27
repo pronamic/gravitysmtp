@@ -42,6 +42,7 @@ class Settings_Config extends Config {
 		$plugin_data_store = $container->get( Connector_Service_Provider::DATA_STORE_ROUTER );
 
 		$license_key  = $plugin_data_store->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_LICENSE_KEY, '' );
+		$license_key  = self::resolve_license_key( $license_key, get_option( 'rg_gforms_key', '' ) );
 		$key_is_empty = empty( $license_key );
 		$is_valid     = null;
 
@@ -124,21 +125,28 @@ class Settings_Config extends Config {
 								'card_primary'                => esc_html__( 'Primary', 'gravitysmtp' ),
 								'card_backup'                 => esc_html__( 'Backup', 'gravitysmtp' ),
 								'integration_settings_error'  => esc_html__( 'There was an error saving your settings', 'gravitysmtp' ),
+								'integration_remove_error'    => esc_html__( 'There was an error removing the integration', 'gravitysmtp' ),
 								/* translators: %1$s is the integration name */
 								'set_primary_integration'     => esc_html__( '%1$s set as primary integration', 'gravitysmtp' ),
 								/* translators: %1$s is the integration name */
 								'set_backup_integration'      => esc_html__( '%1$s set as backup integration', 'gravitysmtp' ),
-								'primary_disabled_heading'    => esc_html__( 'Primary Integration Disabled', 'gravitysmtp' ),
-								'primary_disabled_content'    => esc_html__( 'You have disabled your primary email integration. To continue sending emails via Gravity SMTP, please enable a backup integration or set and enable a new primary integration.', 'gravitysmtp' ),
+								'primary_remove_heading'      => esc_html__( 'Remove Primary Integration', 'gravitysmtp' ),
+								'primary_remove_content'      => esc_html__( 'Are you sure you want to remove your primary email integration? Its settings will be permanently deleted. To continue sending emails via Gravity SMTP, you will need to enable a backup integration or set and enable a new primary integration.', 'gravitysmtp' ),
 								/* translators: %1$s is the integration name */
-								'integration_disabled'        => esc_html__( '%1$s integration has been disabled', 'gravitysmtp' ),
+								'integration_removed'         => esc_html__( '%1$s integration has been removed', 'gravitysmtp' ),
 								'flyout'                      => array(
 									'screen01' => array(
-										'heading'            => esc_html__( 'New Connection', 'gravitysmtp' ),
+										'heading'              => esc_html__( 'New Connection', 'gravitysmtp' ),
 										/* translators: {{suggest_link}} tags are replaced by opening and closing tags for a link to our suggest integration page */
-										'description'        => __( "Select and configure the integration you would like to use to send emails from this site. Don't see an integration you're looking for? {{suggest_link}}Suggest an integration.{{suggest_link}}", 'gravitysmtp' ),
-										'search_placeholder' => esc_html__( 'Search integration', 'gravitysmtp' ),
-										'search_label'       => esc_html__( 'Search integration', 'gravitysmtp' ),
+										'description'          => __( "Select and configure the integration you would like to use to send emails from this site. Don't see an integration you're looking for? {{suggest_link}}Suggest an integration.{{suggest_link}}", 'gravitysmtp' ),
+										'search_placeholder'   => esc_html__( 'Search integration', 'gravitysmtp' ),
+										'search_label'         => esc_html__( 'Search integration', 'gravitysmtp' ),
+										'show_more'            => esc_html__( 'Show more', 'gravitysmtp' ),
+										'show_less'            => esc_html__( 'Show less', 'gravitysmtp' ),
+										/* translators: %1$s is the integration name */
+										'show_more_aria_label' => esc_html__( 'Show more about %1$s', 'gravitysmtp' ),
+										/* translators: %1$s is the integration name */
+										'show_less_aria_label' => esc_html__( 'Show less about %1$s', 'gravitysmtp' ),
 									),
 									'screen02' => array(
 										'back_button_label'        => esc_html__( 'Back', 'gravitysmtp' ),
@@ -201,7 +209,7 @@ class Settings_Config extends Config {
 							),
 					),
 					'data'      => array(
-						'license_key'                => $license_key,
+						'license_key'                => current_user_can( Roles::VIEW_LICENSE_KEY ) ? $license_key : '',
 						'license_key_is_valid'       => $is_valid,
 						'version'                    => GF_GRAVITY_SMTP_VERSION,
 						'email_log_settings'         => array(
@@ -627,5 +635,20 @@ class Settings_Config extends Config {
 		);
 
 		return apply_filters( 'gravitysmtp_notifications_email_digest_frequency_options', $options );
+	}
+
+	/**
+	 * Resolve the license key to display, falling back to the Gravity Forms license key
+	 * when Gravity SMTP does not have its own key stored (e.g. the setup wizard was skipped).
+	 *
+	 * @since 2.3.2
+	 *
+	 * @param string $smtp_license_key   The license key stored for Gravity SMTP.
+	 * @param string $gforms_license_key The Gravity Forms license key (rg_gforms_key option).
+	 *
+	 * @return string
+	 */
+	public static function resolve_license_key( $smtp_license_key, $gforms_license_key ) {
+		return ! empty( $smtp_license_key ) ? $smtp_license_key : $gforms_license_key;
 	}
 }

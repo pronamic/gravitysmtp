@@ -204,7 +204,7 @@ class Gravity_SMTP {
 			    notes text,
 			    date_created datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
 			    PRIMARY KEY (id),
-			    FULLTEXT(email, notes)
+					FULLTEXT KEY email_notes (email, notes)
 		    ) $charset_collate;
 		";
 
