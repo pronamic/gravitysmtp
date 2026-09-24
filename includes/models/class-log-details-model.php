@@ -163,6 +163,11 @@ class Log_Details_Model {
 		$to     = $parser->parse( $to );
 		$to     = $to->as_string( true );
 
+		$reply_to = '';
+		if ( ! empty( $extra['headers']['reply-to'] ) ) {
+			$reply_to = $parser->parse( $extra['headers']['reply-to'] )->as_string( true );
+		}
+
 		$clean_from_email = $this->extract_email( $extra['from'] );
 
 		$cc = array();
@@ -192,6 +197,7 @@ class Log_Details_Model {
 			'from'                  => $extra['from'],
 			'fromHash'              => ! empty( $clean_from_email ) ? hash( 'sha256', strtolower( trim( $clean_from_email ) ) ) : '',
 			'to'                    => $to,
+			'reply_to'              => $reply_to,
 			'subject'               => $row['subject'],
 			'is_html'               => $row['message'] !== strip_tags( $row['message'] ),
 			'technical_information' => array(

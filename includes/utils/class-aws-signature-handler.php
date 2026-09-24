@@ -48,15 +48,15 @@ class AWS_Signature_Handler {
 			'X-Amz-Date'   => $longform_date,
 		);
 
+		if ( ! empty( $tenant ) ) {
+			$headers['X-SES-TENANT'] = $tenant;
+		}
+
 		$signature = $this->generate_auth_signature( $headers, $query_form, $longform_date, $shortform_date );
 
 		$headers['Authorization'] = $this->get_auth_header( $headers, $signature, $shortform_date );
 
 		$url = sprintf( 'https://%s/', $this->get_host() );
-
-		if ( ! empty( $tenant ) ) {
-			$headers['X-SES-TENANT'] = $tenant;
-		}
 
 		return array(
 			'body'    => $query_form,

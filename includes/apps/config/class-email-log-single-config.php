@@ -54,6 +54,7 @@ class Email_Log_Single_Config extends Config {
 				'main_box_cc_label'                 => esc_html__( 'CC', 'gravitysmtp' ),
 				'main_box_date_label'               => esc_html__( 'Date Sent', 'gravitysmtp' ),
 				'main_box_from_label'               => esc_html__( 'From', 'gravitysmtp' ),
+				'main_box_reply_to_label'           => esc_html__( 'Reply-To', 'gravitysmtp' ),
 				'main_box_to_label'                 => esc_html__( 'To', 'gravitysmtp' ),
 				'main_box_subject_label'            => esc_html__( 'Subject', 'gravitysmtp' ),
 				'nav_button_next_title'             => esc_html__( 'Navigate to the next log detail', 'gravitysmtp' ),

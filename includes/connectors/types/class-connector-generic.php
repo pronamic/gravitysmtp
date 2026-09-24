@@ -555,23 +555,6 @@ class Connector_Generic extends Connector_Base {
 	}
 
 	/**
-	 * Reset the PHPMailer instance to prevent carryover from previous send.
-	 *
-	 * @since 1.0
-	 *
-	 * @return void
-	 */
-	private function reset_phpmailer() {
-		$this->php_mailer->clearCustomHeaders();
-		$this->php_mailer->clearAddresses();
-		$this->php_mailer->clearBCCs();
-		$this->php_mailer->clearCCs();
-		$this->php_mailer->clearAllRecipients();
-		$this->php_mailer->clearReplyTos();
-		$this->php_mailer->clearAttachments();
-	}
-
-	/**
 	 * Configure the PHPMailer instance.
 	 *
 	 * @since 1.0

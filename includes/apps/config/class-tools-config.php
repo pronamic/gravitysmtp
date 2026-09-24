@@ -975,7 +975,14 @@ class Tools_Config extends Config {
 		$enabled_connectors = array();
 
 		foreach ( $connector_names as $slug => $label ) {
-			if ( array_key_exists( $slug, $connector_statuses ) && $connector_statuses[ $slug ] === 'true' ) {
+			// Status values can be a real bool or a legacy 'true'/'false' string,
+			// depending on when the connector was last saved. Accept both, matching
+			// Data_Store_Router::get_connector_status_of_type().
+			if (
+				array_key_exists( $slug, $connector_statuses ) &&
+				! empty( $connector_statuses[ $slug ] ) &&
+				$connector_statuses[ $slug ] !== 'false'
+			) {
 				$enabled_connectors[] = $label;
 			}
 		}

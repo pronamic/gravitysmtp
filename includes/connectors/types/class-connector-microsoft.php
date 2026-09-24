@@ -616,21 +616,4 @@ class Connector_Microsoft extends Connector_Base {
 		return $this->is_oauth_configured( Connector_Service_Provider::MICROSOFT_OAUTH_HANDLER );
 	}
 
-	/**
-	 * Reset the PHPMailer instance to prevent carryover from previous send.
-	 *
-	 * @since 1.0
-	 *
-	 * @return void
-	 */
-	private function reset_phpmailer() {
-		$this->php_mailer->clearCustomHeaders();
-		$this->php_mailer->clearAddresses();
-		$this->php_mailer->clearBCCs();
-		$this->php_mailer->clearCCs();
-		$this->php_mailer->clearAllRecipients();
-		$this->php_mailer->clearReplyTos();
-		$this->php_mailer->clearAttachments();
-	}
-
 }

@@ -466,6 +466,7 @@ abstract class Connector_Base {
 			'from',
 			'bcc',
 			'cc',
+			'reply-to',
 			'content-type',
 		);
 
@@ -614,6 +615,27 @@ abstract class Connector_Base {
 		$email_data = $this->get_email_from_header( 'Reply-To', $parsed_headers['reply-to'] );
 
 		return $return_as_array ? $email_data->as_array() : $email_data->as_string();
+	}
+
+	/**
+	 * Reset the PHPMailer instance to prevent carryover from previous send.
+	 *
+	 * @since 2.3.4
+	 *
+	 * @return void
+	 */
+	protected function reset_phpmailer() {
+		$this->php_mailer->clearCustomHeaders();
+		$this->php_mailer->clearAddresses();
+		$this->php_mailer->clearBCCs();
+		$this->php_mailer->clearCCs();
+		$this->php_mailer->clearAllRecipients();
+		$this->php_mailer->clearReplyTos();
+		$this->php_mailer->clearAttachments();
+
+		$this->php_mailer->Body        = '';
+		$this->php_mailer->AltBody     = '';
+		$this->php_mailer->ContentType = 'text/plain';
 	}
 
 	/**

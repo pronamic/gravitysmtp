@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Gravity SMTP 2.3.3\n"
+"Project-Id-Version: Gravity SMTP 2.3.4\n"
 "Report-Msgid-Bugs-To: https://gravityforms.com/support\n"
 "Last-Translator: Gravity Forms <support@gravityforms.com>\n"
 "Language-Team: Gravity Forms <support@gravityforms.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-26T16:15:25+00:00\n"
+"POT-Creation-Date: 2026-09-23T17:27:39+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: gravitysmtp\n"
@@ -573,7 +573,7 @@ msgstr ""
 
 #: includes/apps/config/class-email-log-config.php:1204
 #: includes/apps/config/class-email-log-config.php:1393
-#: includes/apps/config/class-email-log-single-config.php:58
+#: includes/apps/config/class-email-log-single-config.php:59
 #: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:88
 #: includes/routing/config/class-routing-config.php:507
 msgid "Subject"
@@ -587,7 +587,7 @@ msgstr ""
 #: includes/apps/config/class-email-log-config.php:1490
 #: includes/apps/config/class-email-log-config.php:1503
 #: includes/apps/config/class-email-log-config.php:1516
-#: includes/apps/config/class-tools-config.php:1161
+#: includes/apps/config/class-tools-config.php:1168
 #: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:90
 #: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:91
 msgid "Status"
@@ -619,7 +619,7 @@ msgid "Date Sent"
 msgstr ""
 
 #: includes/apps/config/class-email-log-config.php:1282
-#: includes/apps/config/class-tools-config.php:1197
+#: includes/apps/config/class-tools-config.php:1204
 #: includes/suppression/config/class-suppression-settings-config.php:219
 msgid "Actions"
 msgstr ""
@@ -983,91 +983,96 @@ msgid "Email Details"
 msgstr ""
 
 #: includes/apps/config/class-email-log-single-config.php:57
+#: includes/routing/config/class-routing-config.php:514
+msgid "Reply-To"
+msgstr ""
+
+#: includes/apps/config/class-email-log-single-config.php:58
 #: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:87
 #: includes/routing/config/class-routing-config.php:511
 msgid "To"
 msgstr ""
 
-#: includes/apps/config/class-email-log-single-config.php:59
+#: includes/apps/config/class-email-log-single-config.php:60
 msgid "Navigate to the next log detail"
 msgstr ""
 
-#: includes/apps/config/class-email-log-single-config.php:60
+#: includes/apps/config/class-email-log-single-config.php:61
 msgid "Navigate to the previous log detail"
 msgstr ""
 
-#: includes/apps/config/class-email-log-single-config.php:61
+#: includes/apps/config/class-email-log-single-config.php:62
 #: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:89
 msgid "Technical Information"
 msgstr ""
 
-#: includes/apps/config/class-email-log-single-config.php:62
+#: includes/apps/config/class-email-log-single-config.php:63
 #: includes/apps/config/class-tools-config.php:166
-#: includes/apps/config/class-tools-config.php:1185
+#: includes/apps/config/class-tools-config.php:1192
 msgid "Log"
 msgstr ""
 
-#: includes/apps/config/class-email-log-single-config.php:63
+#: includes/apps/config/class-email-log-single-config.php:64
 msgid "Headers"
 msgstr ""
 
-#: includes/apps/config/class-email-log-single-config.php:64
+#: includes/apps/config/class-email-log-single-config.php:65
 msgid "Log Details"
 msgstr ""
 
-#: includes/apps/config/class-email-log-single-config.php:65
+#: includes/apps/config/class-email-log-single-config.php:66
 msgid "Status:"
 msgstr ""
 
-#: includes/apps/config/class-email-log-single-config.php:66
+#: includes/apps/config/class-email-log-single-config.php:67
 #: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:92
 msgid "Service:"
 msgstr ""
 
-#: includes/apps/config/class-email-log-single-config.php:67
+#: includes/apps/config/class-email-log-single-config.php:68
 #: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:93
 msgid "Has attachment:"
 msgstr ""
 
-#: includes/apps/config/class-email-log-single-config.php:68
+#: includes/apps/config/class-email-log-single-config.php:69
 #: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:94
 msgid "Log ID:"
 msgstr ""
 
-#: includes/apps/config/class-email-log-single-config.php:69
+#: includes/apps/config/class-email-log-single-config.php:70
 #: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:95
 msgid "Source:"
 msgstr ""
 
-#: includes/apps/config/class-email-log-single-config.php:70
+#: includes/apps/config/class-email-log-single-config.php:71
 #: includes/connectors/endpoints/class-get-single-email-data-endpoint.php:96
 #: includes/routing/config/class-routing-config.php:104
 msgid "Attachments"
 msgstr ""
 
-#: includes/apps/config/class-email-log-single-config.php:71
+#: includes/apps/config/class-email-log-single-config.php:72
 msgid "Preview email in desktop mode"
 msgstr ""
 
-#: includes/apps/config/class-email-log-single-config.php:72
+#: includes/apps/config/class-email-log-single-config.php:73
 msgid "Preview email in mobile mode"
 msgstr ""
 
 #. translators: %1$s is the body of the ajax request.
-#: includes/apps/config/class-email-log-single-config.php:75
+#: includes/apps/config/class-email-log-single-config.php:76
 msgid "Resending email: %1$s"
 msgstr ""
 
 #. translators: %1$s is the error message.
-#: includes/apps/config/class-email-log-single-config.php:77
+#: includes/apps/config/class-email-log-single-config.php:78
 msgid "Error resending email: %1$s"
 msgstr ""
 
-#: includes/apps/config/class-email-log-single-config.php:78
+#: includes/apps/config/class-email-log-single-config.php:79
 msgid "Error resending email"
 msgstr ""
 
-#: includes/apps/config/class-email-log-single-config.php:79
+#: includes/apps/config/class-email-log-single-config.php:80
 msgid "Email successfully resent"
 msgstr ""
 
@@ -1168,7 +1173,7 @@ msgid "Enable Test Mode"
 msgstr ""
 
 #: includes/apps/config/class-settings-config.php:110
-#: includes/connectors/types/class-connector-amazon.php:374
+#: includes/connectors/types/class-connector-amazon.php:357
 #: includes/connectors/types/class-connector-brevo.php:298
 #: includes/connectors/types/class-connector-cloudflare.php:619
 #: includes/connectors/types/class-connector-elasticemail.php:305
@@ -1887,7 +1892,7 @@ msgstr ""
 
 #: includes/apps/config/class-tools-config.php:495
 #: includes/apps/config/class-tools-config.php:803
-#: includes/apps/config/class-tools-config.php:1024
+#: includes/apps/config/class-tools-config.php:1031
 msgid "Version"
 msgstr ""
 
@@ -1971,7 +1976,7 @@ msgstr ""
 
 #: includes/apps/config/class-tools-config.php:602
 #: includes/models/class-event-model.php:483
-#: includes/models/class-log-details-model.php:212
+#: includes/models/class-log-details-model.php:218
 #: includes/utils/class-source-parser.php:30
 #: includes/utils/class-source-parser.php:117
 msgid "N/A"
@@ -2061,82 +2066,82 @@ msgstr ""
 msgid "Debug Log Link"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:984
+#: includes/apps/config/class-tools-config.php:991
 msgid "No Integrations Enabled"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:988
+#: includes/apps/config/class-tools-config.php:995
 msgid "Enabled Integrations"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:993
+#: includes/apps/config/class-tools-config.php:1000
 msgid "No Primary Integration Enabled"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:994
+#: includes/apps/config/class-tools-config.php:1001
 msgid "No Backup Integration Enabled"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:997
+#: includes/apps/config/class-tools-config.php:1004
 msgid "Primary Integration"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:1003
+#: includes/apps/config/class-tools-config.php:1010
 msgid "Backup Integration"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:1019
+#: includes/apps/config/class-tools-config.php:1026
 msgid "Database Management System"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:1029
+#: includes/apps/config/class-tools-config.php:1036
 msgid "Database Character Set"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:1034
+#: includes/apps/config/class-tools-config.php:1041
 msgid "Database Collation"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:1054
+#: includes/apps/config/class-tools-config.php:1061
 msgid "Exists"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:1054
+#: includes/apps/config/class-tools-config.php:1061
 msgid "Missing"
 msgstr ""
 
 #. translators: 1: date, 2: time
 #. translators: 1: date, 2: time
-#: includes/apps/config/class-tools-config.php:1077
-#: includes/apps/config/class-tools-config.php:1086
+#: includes/apps/config/class-tools-config.php:1084
+#: includes/apps/config/class-tools-config.php:1093
 msgid "%1$s at %2$s"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:1093
+#: includes/apps/config/class-tools-config.php:1100
 msgid "WordPress (Local) Timezone"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:1098
+#: includes/apps/config/class-tools-config.php:1105
 msgid "MySQL - Universal time (UTC)"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:1103
+#: includes/apps/config/class-tools-config.php:1110
 msgid "MySQL - Local time"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:1108
+#: includes/apps/config/class-tools-config.php:1115
 msgid "PHP - Universal time (UTC)"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:1113
+#: includes/apps/config/class-tools-config.php:1120
 msgid "PHP - Local time"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:1149
+#: includes/apps/config/class-tools-config.php:1156
 msgid "ID"
 msgstr ""
 
-#: includes/apps/config/class-tools-config.php:1173
+#: includes/apps/config/class-tools-config.php:1180
 msgid "Date & Time"
 msgstr ""
 
@@ -2319,55 +2324,55 @@ msgstr ""
 msgid "Invalid license key."
 msgstr ""
 
-#: includes/connectors/class-connector-base.php:647
+#: includes/connectors/class-connector-base.php:669
 msgid "Default From Email"
 msgstr ""
 
-#: includes/connectors/class-connector-base.php:662
+#: includes/connectors/class-connector-base.php:684
 msgid "Force From Email"
 msgstr ""
 
-#: includes/connectors/class-connector-base.php:665
+#: includes/connectors/class-connector-base.php:687
 msgid "If Force Email is enabled, the Default From Email address will override other plugin settings for all outgoing emails."
 msgstr ""
 
-#: includes/connectors/class-connector-base.php:682
+#: includes/connectors/class-connector-base.php:704
 msgid "Default From Name"
 msgstr ""
 
-#: includes/connectors/class-connector-base.php:697
+#: includes/connectors/class-connector-base.php:719
 #: includes/connectors/types/class-connector-microsoft.php:607
 msgid "Force From Name"
 msgstr ""
 
-#: includes/connectors/class-connector-base.php:700
+#: includes/connectors/class-connector-base.php:722
 msgid "If Force Name is enabled, the Default From Name will override other plugin settings for all outgoing emails."
 msgstr ""
 
-#: includes/connectors/class-connector-base.php:729
+#: includes/connectors/class-connector-base.php:751
 msgid "Default Reply-To Email"
 msgstr ""
 
-#: includes/connectors/class-connector-base.php:744
+#: includes/connectors/class-connector-base.php:766
 msgid "Force Reply-To Email"
 msgstr ""
 
-#: includes/connectors/class-connector-base.php:747
+#: includes/connectors/class-connector-base.php:769
 msgid "If Force Reply-To Email is enabled, the Default Reply-To Email address will override other plugin settings for all outgoing emails."
 msgstr ""
 
 #. translators: %s: the email provider name.
-#: includes/connectors/class-connector-base.php:1072
+#: includes/connectors/class-connector-base.php:1094
 msgid "The %s connection request could not be verified. Please try again."
 msgstr ""
 
 #. translators: %s: the email provider name.
-#: includes/connectors/class-connector-base.php:1075
+#: includes/connectors/class-connector-base.php:1097
 msgid "Access to %s was denied. Please approve the connection request to complete setup."
 msgstr ""
 
 #. translators: %s: the email provider name.
-#: includes/connectors/class-connector-base.php:1078
+#: includes/connectors/class-connector-base.php:1100
 msgid "Error Connecting to %s. Check your credentials and try again."
 msgstr ""
 
@@ -2538,11 +2543,11 @@ msgstr ""
 msgid "Email successfully sent."
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:282
+#: includes/connectors/types/class-connector-amazon.php:265
 msgid "Amazon SES Settings"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:289
+#: includes/connectors/types/class-connector-amazon.php:272
 #: includes/connectors/types/class-connector-brevo.php:266
 #: includes/connectors/types/class-connector-cloudflare.php:566
 #: includes/connectors/types/class-connector-elasticemail.php:273
@@ -2568,113 +2573,113 @@ msgstr ""
 msgid "Configuration"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:313
+#: includes/connectors/types/class-connector-amazon.php:296
 msgid "Log in to your {{link}}AWS Console{{link}}, go to the IAM dashboard, and create a new access key for an IAM user with ses:SendEmail and ses:SendRawEmail permissions."
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:318
+#: includes/connectors/types/class-connector-amazon.php:301
 msgid "Access Key ID"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:332
+#: includes/connectors/types/class-connector-amazon.php:315
 msgid "Secret Access Key"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:346
+#: includes/connectors/types/class-connector-amazon.php:329
 #: includes/connectors/types/class-connector-mailgun.php:411
 #: includes/connectors/types/class-connector-sendgrid.php:288
 msgid "Region"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:361
+#: includes/connectors/types/class-connector-amazon.php:344
 msgid "Tenant"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:391
+#: includes/connectors/types/class-connector-amazon.php:374
 msgid "US East (N. Virginia)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:392
+#: includes/connectors/types/class-connector-amazon.php:375
 msgid "US East (Ohio)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:393
+#: includes/connectors/types/class-connector-amazon.php:376
 msgid "US West (N. California)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:394
+#: includes/connectors/types/class-connector-amazon.php:377
 msgid "US West (Oregon)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:395
+#: includes/connectors/types/class-connector-amazon.php:378
 msgid "Africa (Cape Town)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:396
+#: includes/connectors/types/class-connector-amazon.php:379
 msgid "Asia Pacific (Hong Kong)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:397
+#: includes/connectors/types/class-connector-amazon.php:380
 msgid "Asia Pacific (Jakarta)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:398
+#: includes/connectors/types/class-connector-amazon.php:381
 msgid "Asia Pacific (Mumbai)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:399
+#: includes/connectors/types/class-connector-amazon.php:382
 msgid "Asia Pacific (Osaka)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:400
+#: includes/connectors/types/class-connector-amazon.php:383
 msgid "Asia Pacific (Seoul)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:401
+#: includes/connectors/types/class-connector-amazon.php:384
 msgid "Asia Pacific (Singapore)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:402
+#: includes/connectors/types/class-connector-amazon.php:385
 msgid "Asia Pacific (Sydney)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:403
+#: includes/connectors/types/class-connector-amazon.php:386
 msgid "Asia Pacific (Tokyo)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:404
+#: includes/connectors/types/class-connector-amazon.php:387
 msgid "Canada (Central)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:405
+#: includes/connectors/types/class-connector-amazon.php:388
 msgid "Europe (Frankfurt)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:406
+#: includes/connectors/types/class-connector-amazon.php:389
 msgid "Europe (Ireland)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:407
+#: includes/connectors/types/class-connector-amazon.php:390
 msgid "Europe (London)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:408
+#: includes/connectors/types/class-connector-amazon.php:391
 msgid "Europe (Milan)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:409
+#: includes/connectors/types/class-connector-amazon.php:392
 msgid "Europe (Paris)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:410
+#: includes/connectors/types/class-connector-amazon.php:393
 msgid "Europe (Stockholm)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:411
+#: includes/connectors/types/class-connector-amazon.php:394
 msgid "Middle East (Bahrain)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:412
+#: includes/connectors/types/class-connector-amazon.php:395
 msgid "South America (São Paulo)"
 msgstr ""
 
@@ -4339,10 +4344,6 @@ msgstr ""
 
 #: includes/routing/config/class-routing-config.php:510
 msgid "From Name"
-msgstr ""
-
-#: includes/routing/config/class-routing-config.php:514
-msgid "Reply-To"
 msgstr ""
 
 #: includes/routing/config/class-routing-config.php:516

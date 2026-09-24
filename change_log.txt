@@ -1,3 +1,13 @@
+### 2.3.4 | 2026-09-23
+- Fixed an issue where the Email Log, Suppressions, and Debug Log search fields could stay out of sync with the results after a pending search was canceled.
+- Fixed the Amazon SES tenant setting not adding the X-SES-TENANT header to sent emails.
+- Fixed the System Report incorrectly listing enabled integrations as not enabled after resaving their settings.
+- Fixed an issue where Reply-To information was missing from Email Log Details.
+- Fixed PHPMailer message content carrying over between emails sent in the same request.
+- Removed the WOFF copies of the Inter font from the plugin package, WOFF2 covers all supported browsers.
+- Removed unused gravity-tools test and development files from the plugin package.
+- Updated the setup wizard hero image to WebP and fixed its path for custom plugin directories, reducing the plugin package size.
+
 ### 2.3.3 | 2026-08-26
 - Security enhancements.
 - Added the ability to define a single license key constant to use between GF core and SMTP.
