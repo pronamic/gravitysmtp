@@ -70,6 +70,9 @@ class Debug_Log_Model {
 		$sql = 'TRUNCATE %1$s;';
 
 		$wpdb->query( $wpdb->prepare( $sql, $this->get_table_name() ), ARRAY_A );
+
+		// TRUNCATE restarts the ids, so no remaining row predates the raw-storage upgrade.
+		delete_option( self::LAST_ENCODED_ID_OPTION );
 	}
 
 	public function slice( $count, $offset ) {
@@ -147,27 +150,35 @@ class Debug_Log_Model {
 		return $this->hydrate( $results );
 	}
 
+	/**
+	 * Option that holds the last debug log id written HTML-escaped. Rows up to it are decoded for display.
+	 *
+	 * @since 2.3.5
+	 */
+	const LAST_ENCODED_ID_OPTION = 'gravitysmtp_debug_log_last_encoded_id';
+
 	public function lines_as_data_grid( $lines ) {
-		$return = array();
+		$return          = array();
+		$last_encoded_id = (int) get_option( self::LAST_ENCODED_ID_OPTION, 0 );
 		$status_map = array(
 			'fatal'   => array(
-				'label'  => esc_html__( 'Fatal', 'gravitysmtp' ),
+				'label'  => __( 'Fatal', 'gravitysmtp' ),
 				'status' => 'error',
 			),
 			'error'   => array(
-				'label'  => esc_html__( 'Error', 'gravitysmtp' ),
+				'label'  => __( 'Error', 'gravitysmtp' ),
 				'status' => 'error',
 			),
 			'warning' => array(
-				'label'  => esc_html__( 'Warning', 'gravitysmtp' ),
+				'label'  => __( 'Warning', 'gravitysmtp' ),
 				'status' => 'warning',
 			),
 			'debug'   => array(
-				'label'  => esc_html__( 'Debug', 'gravitysmtp' ),
+				'label'  => __( 'Debug', 'gravitysmtp' ),
 				'status' => 'active',
 			),
 			'info'    => array(
-				'label'  => esc_html__( 'Info', 'gravitysmtp' ),
+				'label'  => __( 'Info', 'gravitysmtp' ),
 				'status' => 'gray',
 			),
 		);
@@ -207,7 +218,8 @@ class Debug_Log_Model {
 						'customClasses' => array( 'gravitysmtp-tools-app__debug-log-table-subject' ),
 						'data'          => array( 'id' => $line->id() ),
 						'disabled'      => false,
-						'label'         => str_replace( '&quot;', '"', $line->line() ),
+						// Lines are stored raw since 2.3.5. Rows written before the upgrade were HTML-escaped, so only those are decoded.
+						'label'         => (int) $line->id() <= $last_encoded_id ? htmlspecialchars_decode( $line->line(), ENT_QUOTES ) : $line->line(),
 						'type'          => 'unstyled',
 					),
 				),

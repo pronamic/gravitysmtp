@@ -49,12 +49,21 @@ class Slack_Alert_Connector implements Alert_Connector {
 
 	public function make_request( $url, $request_args ) {
 		$request = wp_safe_remote_post( $url, $request_args );
-		$code    = wp_remote_retrieve_response_code( $request );
+		$code    = (int) wp_remote_retrieve_response_code( $request );
 
-		if ( (int) $code !== 200 ) {
-			$this->debug_logger->log_error( wp_remote_retrieve_body( $request ) );
+		if ( $code < 200 || $code >= 300 ) {
+			$body = wp_remote_retrieve_body( $request );
 
-			return new \WP_Error( 'Could not send message via Slack.' );
+			if ( '' !== $body ) {
+				$this->debug_logger->log_error( $body );
+			}
+
+			if ( is_wp_error( $request ) ) {
+				return $request;
+			}
+
+			/* translators: %d: the HTTP status code returned by the remote service. */
+			return new \WP_Error( 'alert_request_failed', sprintf( __( 'Request failed with HTTP status %d.', 'gravitysmtp' ), $code ) );
 		}
 
 		return true;

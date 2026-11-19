@@ -66,7 +66,7 @@ class Header_Parser {
 	}
 
 	public function get_header_from_string( $string ) {
-		$parts = explode( ':', $string );
+		$parts = explode( ':', $string, 2 );
 
 		if ( count( $parts ) < 2 ) {
 			return false;

@@ -215,6 +215,10 @@ class Connector_Google extends Connector_Base {
 	}
 
 	private function get_raw_message() {
+		// PHPMailer only builds the message here. The default "mail" transport Q-encodes header values over 63 chars,
+		// which breaks URL headers such as List-Unsubscribe. "sendmail" mode allows 998 chars and, unlike "smtp",
+		// keeps the Bcc header in the raw message.
+		$this->php_mailer->Mailer = 'sendmail';
 		$this->php_mailer->preSend();
 		$raw    = $this->php_mailer->getSentMIMEMessage();
 		return str_replace(

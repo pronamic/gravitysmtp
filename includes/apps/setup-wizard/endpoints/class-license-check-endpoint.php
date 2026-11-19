@@ -2,6 +2,8 @@
 
 namespace Gravity_Forms\Gravity_SMTP\Apps\Setup_Wizard\Endpoints;
 
+use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Service_Provider;
+use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Plugin_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Gravity_SMTP;
 use Gravity_Forms\Gravity_SMTP\Users\Roles;
 use Gravity_Forms\Gravity_Tools\Endpoints\Endpoint;
@@ -29,6 +31,8 @@ class License_Check_Endpoint extends Endpoint {
 		$license_key = htmlspecialchars( $license_key );
 
 		$container    = Gravity_SMTP::container();
+		$stored_key   = $container->get( Connector_Service_Provider::DATA_STORE_PLUGIN_OPTS )->get( self::PARAM_LICENSE_KEY );
+		$license_key  = Save_Plugin_Settings_Endpoint::hash_license_key( $license_key, $stored_key );
 		$key_is_empty = empty( $license_key );
 		$is_valid     = false;
 

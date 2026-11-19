@@ -347,16 +347,158 @@ class Event_Model {
 		return $created_id;
 	}
 
-	public function get_records_over_limit( $limit ) {
+	/**
+	 * Get the record that marks the retention cutoff for a max-records limit:
+	 * the newest row that falls outside the kept range.
+	 *
+	 * Records are ordered by `date_created` and then `id`, so that records sharing
+	 * the same `date_created` second (e.g. several notifications sent by a single
+	 * form submission) still have a single, exact cutoff between them.
+	 *
+	 * Returns null when there are not more than `$limit` records, meaning
+	 * there is nothing to delete.
+	 *
+	 * @since 2.3.5
+	 *
+	 * @param int $limit
+	 *
+	 * @return array|null An array with `date_created` (GMT) and `id` keys, or null.
+	 */
+	public function get_retention_cutoff( $limit ) {
 		global $wpdb;
 
 		$table_name = $this->get_table_name();
 
-		$sql = $wpdb->prepare( "SELECT id FROM $table_name ORDER BY `date_created` DESC LIMIT %d, %d", $limit, PHP_INT_MAX );
+		$sql = $wpdb->prepare( "SELECT `date_created`, `id` FROM $table_name ORDER BY `date_created` DESC, `id` DESC LIMIT %d, 1", $limit );
+		$row = $wpdb->get_row( $sql, ARRAY_A );
 
-		$results = $wpdb->get_results( $sql, ARRAY_A );
+		if ( empty( $row ) ) {
+			return null;
+		}
 
-		return $results;
+		return array(
+			'date_created' => $row['date_created'],
+			'id'           => (int) $row['id'],
+		);
+	}
+
+	/**
+	 * Delete records created on or before the given (GMT) date, in bounded-size
+	 * chunks so a large log can be cleared without an unbounded transaction or
+	 * a single query that runs long enough to be killed mid-request.
+	 *
+	 * When `$max_id` is given, records created in the same second as `$date_gmt`
+	 * are only deleted up to and including that id. This keeps the newer records
+	 * of that second, which a date-only comparison would also delete.
+	 *
+	 * @since 2.3.5
+	 *
+	 * @param string   $date_gmt
+	 * @param int|null $max_id
+	 * @param int      $chunk_size
+	 *
+	 * @return bool False if a delete query failed, true otherwise.
+	 */
+	public function delete_before_in_chunks( $date_gmt, $max_id = null, $chunk_size = 5000 ) {
+		global $wpdb;
+
+		$table_name = $this->get_table_name();
+
+		if ( $max_id === null ) {
+			$where = $wpdb->prepare( "`date_created` <= %s", $date_gmt );
+		} else {
+			$where = $wpdb->prepare( "`date_created` < %s OR ( `date_created` = %s AND `id` <= %d )", $date_gmt, $date_gmt, $max_id );
+		}
+
+		$wpdb->query( "SET FOREIGN_KEY_CHECKS = 0;" );
+
+		if ( $this->is_attachment_deletion_enabled() ) {
+			return $this->delete_with_attachments_in_chunks( $where, $chunk_size );
+		}
+
+		$sql = "DELETE FROM $table_name WHERE $where LIMIT " . (int) $chunk_size;
+
+		do {
+			$deleted = $wpdb->query( $sql );
+
+			if ( $deleted === false ) {
+				return false;
+			}
+		} while ( $deleted >= $chunk_size );
+
+		return true;
+	}
+
+	/**
+	 * Delete expired events in chunks and remove the attachments the plugin saved for them.
+	 *
+	 * Each chunk is selected by id first, so the files removed always belong to the rows deleted in that chunk.
+	 *
+	 * @since 2.3.5
+	 *
+	 * @param string $where      Prepared WHERE clause that selects expired rows.
+	 * @param int    $chunk_size Rows per chunk.
+	 *
+	 * @return bool
+	 */
+	private function delete_with_attachments_in_chunks( $where, $chunk_size ) {
+		global $wpdb;
+
+		$table_name = $this->get_table_name();
+		$select     = "SELECT id, extra FROM $table_name WHERE $where LIMIT " . (int) $chunk_size;
+
+		do {
+			$rows = $wpdb->get_results( $select, ARRAY_A );
+
+			if ( ! is_array( $rows ) ) {
+				return false;
+			}
+
+			if ( empty( $rows ) ) {
+				return true;
+			}
+
+			foreach ( $rows as $row ) {
+				$this->delete_saved_attachments( $row['extra'] );
+			}
+
+			$ids = implode( ',', array_map( 'intval', wp_list_pluck( $rows, 'id' ) ) );
+
+			if ( $wpdb->query( "DELETE FROM $table_name WHERE id IN ( $ids )" ) === false ) {
+				return false;
+			}
+		} while ( count( $rows ) >= $chunk_size );
+
+		return true;
+	}
+
+	/**
+	 * Delete the attachment files the plugin saved for one event.
+	 *
+	 * Only files copied into the plugin uploads folder are deleted. Without the saved flag, the
+	 * paths in extra belong to whatever code called wp_mail() and must not be touched.
+	 *
+	 * @since 2.3.5
+	 *
+	 * @param string $extra Serialized extra data for the event.
+	 *
+	 * @return void
+	 */
+	private function delete_saved_attachments( $extra ) {
+		$extra = maybe_unserialize( $extra );
+
+		if ( empty( $extra['attachments_saved'] ) || empty( $extra['attachments'] ) || ! is_array( $extra['attachments'] ) ) {
+			return;
+		}
+
+		foreach ( $extra['attachments'] as $path ) {
+			if ( is_file( $path ) ) {
+				wp_delete_file( $path );
+			}
+
+			// Each event has its own folder. rmdir only succeeds once it is empty.
+			@rmdir( dirname( $path ) );
+		}
 	}
 
 	public function update( $values, $id ) {
@@ -658,6 +800,12 @@ class Event_Model {
 		$logging_enabled = $this->opts->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_ENABLED, 'true' );
 
 		return Booliesh::get( $logging_enabled );
+	}
+
+	private function is_attachment_deletion_enabled() {
+		$deletion_enabled = $this->opts->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_DELETE_ATTACHMENTS_ENABLED, 'false' );
+
+		return Booliesh::get( $deletion_enabled );
 	}
 
 	private function save_email_body() {

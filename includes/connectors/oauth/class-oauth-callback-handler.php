@@ -403,20 +403,20 @@ abstract class Oauth_Callback_Handler extends Oauth_Handler_Base {
 		$refresh_token = $this->get_refresh_token();
 
 		if ( empty( $refresh_token ) ) {
-			return new \WP_Error( __( 'Token is invalid or expired.', 'gravitysmtp' ) );
+			return new \WP_Error( 'invalid_or_expired_token', __( 'Token is invalid or expired.', 'gravitysmtp' ) );
 		}
 
 		$response = $this->request_refreshed_token( $refresh_token );
 		$code     = wp_remote_retrieve_response_code( $response );
 
 		if ( (int) $code !== 200 ) {
-			return new \WP_Error( __( 'Token is invalid or expired.', 'gravitysmtp' ) );
+			return new \WP_Error( 'invalid_or_expired_token', __( 'Token is invalid or expired.', 'gravitysmtp' ) );
 		}
 
 		$response_body = json_decode( wp_remote_retrieve_body( $response ), true );
 
 		if ( empty( $response_body[ $this->payload_access_token_name ] ) ) {
-			return new \WP_Error( __( 'Token is invalid or expired.', 'gravitysmtp' ) );
+			return new \WP_Error( 'invalid_or_expired_token', __( 'Token is invalid or expired.', 'gravitysmtp' ) );
 		}
 
 		$new_token = $response_body[ $this->payload_access_token_name ];

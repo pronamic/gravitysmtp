@@ -17,6 +17,7 @@ class Save_Plugin_Settings_Endpoint extends Endpoint {
 	const PARAM_EVENT_LOG_ENABLED                       = 'event_log_enabled';
 	const PARAM_SAVE_EMAIL_BODY_ENABLED                 = 'save_email_body_enabled';
 	const PARAM_SAVE_ATTACHMENTS_ENABLED                = 'save_attachments_enabled';
+	const PARAM_DELETE_ATTACHMENTS_ENABLED              = 'delete_attachments_enabled';
 	const PARAM_EVENT_LOG_RETENTION                     = 'event_log_retention';
 	const PARAM_DEBUG_LOG_ENABLED                       = 'debug_log_enabled';
 	const PARAM_DEBUG_LOG_RETENTION                     = 'debug_log_retention';
@@ -31,6 +32,14 @@ class Save_Plugin_Settings_Endpoint extends Endpoint {
 	const PARAM_NOTIFICATIONS_EMAIL_DIGEST_FREQUENCY  = 'notifications_email_digest_frequency';
 
 	const PARAM_SETUP_WIZARD_SHOULD_DISPLAY = 'setup_wizard_should_display';
+
+	/**
+	 * Retention period, in days, used when event_log_retention has never been saved.
+	 * Must match the "1 Week" default shown in Settings > Logging.
+	 *
+	 * @since 2.3.5
+	 */
+	const DEFAULT_EVENT_LOG_RETENTION = 7;
 
 	const ACTION_NAME = 'save_plugin_settings';
 
@@ -72,6 +81,10 @@ class Save_Plugin_Settings_Endpoint extends Endpoint {
 	}
 
 	protected function handle_bulk_settings( $settings ) {
+		if ( isset( $settings[ self::PARAM_LICENSE_KEY ] ) ) {
+			$settings[ self::PARAM_LICENSE_KEY ] = self::hash_license_key( $settings[ self::PARAM_LICENSE_KEY ], $this->data_store->get( self::PARAM_LICENSE_KEY ) );
+		}
+
 		$this->data_store->save_all( $settings );
 		$data = $settings;
 
@@ -94,7 +107,8 @@ class Save_Plugin_Settings_Endpoint extends Endpoint {
 
 		switch ( $key ) {
 			case self::PARAM_LICENSE_KEY:
-				$data = $this->handle_license_key_setting( $key, $value );
+				$value = self::hash_license_key( $value, $this->data_store->get( $key ) );
+				$data  = $this->handle_license_key_setting( $key, $value );
 				break;
 			default:
 				$this->data_store->save( $key, $value );
@@ -124,6 +138,50 @@ class Save_Plugin_Settings_Endpoint extends Endpoint {
 		$license_info = $this->api_connector->check_license( $license_key );
 
 		return array( 'license_is_valid' => License_Statuses::VALID_KEY === $license_info->get_status() );
+	}
+
+	/**
+	 * Hash a license key for storage. Gravity Forms stores and sends the MD5 hash, and the Gravity API accepts it.
+	 *
+	 * The settings screen and the setup wizard prefill the field with the stored hash or the Gravity Forms hash.
+	 * A submitted value equal to one of those is already a hash and is kept as is.
+	 *
+	 * @since 2.3.5
+	 *
+	 * @param string $key    The submitted license key.
+	 * @param string $stored The license key currently stored for Gravity SMTP.
+	 *
+	 * @return string The hash, or an empty string.
+	 */
+	public static function hash_license_key( $key, $stored = '' ) {
+		$key = trim( (string) $key );
+
+		if ( '' === $key || $key === trim( (string) $stored ) || $key === self::get_gforms_license_key_hash() ) {
+			return $key;
+		}
+
+		return md5( $key );
+	}
+
+	/**
+	 * Get the Gravity Forms license key hash, or an empty string when there is none.
+	 *
+	 * @since 2.3.5
+	 *
+	 * @return string
+	 */
+	public static function get_gforms_license_key_hash() {
+		if ( defined( 'GF_LICENSE_KEY' ) && GF_LICENSE_KEY ) {
+			return md5( GF_LICENSE_KEY );
+		}
+
+		$hash = (string) get_option( 'rg_gforms_key', '' );
+
+		if ( '' === $hash && is_multisite() && ! is_main_site() ) {
+			$hash = (string) get_network_option( null, 'rg_gforms_key', '' );
+		}
+
+		return $hash;
 	}
 
 	protected function validate() {

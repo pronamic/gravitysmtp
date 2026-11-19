@@ -1,3 +1,21 @@
+### 2.3.5 | 2026-11-18
+- Added a Delete Saved Attachments setting that removes an email's saved attachments from the uploads folder when the Log Retention Period deletes the email.
+- Added a notice to the Microsoft 365 / Outlook connector settings explaining that sending from an alias is not currently supported.
+- Fixed a fatal error on multisite subsites that have no administrator role.
+- Fixed a fatal memory error in the Email Log retention cron job on large logs.
+- Fixed an issue that can cause very-large Email Log tables to perform slowly.
+- Fixed an issue where scripts in a logged email could run when the email is viewed in the Email Log.
+- Fixed an issue where the license key was not reported correctly in the optional weekly usage report.
+- Fixed an issue where the Microsoft and Google connectors could not be reconnected after the stored token expired.
+- Fixed an issue where the Share Gravity SMTP Analytics setting was not applied correctly.
+- Fixed an issue where translated text and debug log entries with apostrophes or quotes displayed HTML codes such as &#039; instead of the character.
+- Fixed header values that contain a colon being cut off at the first colon, which broke headers such as List-Unsubscribe.
+- Fixed integrations not being listed in alphabetical order, with Custom SMTP last, in the Send With dropdown on Tools and throughout the Integrations settings.
+- Fixed the Log Retention cron deleting events one at a time, which could time out and never finish on large Email Logs.
+- Fixed the Log Retention Period default of 1 Week not being applied until the setting was saved at least once. Sites that never saved this setting will begin deleting emails older than 7 days.
+- Fixed webhook alerts reporting failure when the endpoint returned a 2xx response other than 200.
+- Updated license key handling to be consistent with Gravity Forms.
+
 ### 2.3.4 | 2026-09-23
 - Fixed an issue where the Email Log, Suppressions, and Debug Log search fields could stay out of sync with the results after a pending search was canceled.
 - Fixed the Amazon SES tenant setting not adding the X-SES-TENANT header to sent emails.

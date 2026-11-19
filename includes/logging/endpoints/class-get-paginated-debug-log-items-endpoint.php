@@ -48,10 +48,6 @@ class Get_Paginated_Debug_Log_Items_Endpoint extends Endpoint {
 			$max_date = htmlspecialchars( $max_date );
 		}
 
-		if ( ! empty( $search_term ) ) {
-			$search_term = htmlspecialchars( $search_term );
-		}
-
 		if ( ! empty( $search_type ) ) {
 			$search_type = htmlspecialchars( $search_type );
 		}

@@ -43,6 +43,8 @@ class Get_Email_Message_Endpoint extends Endpoint {
 		}
 
 		header( 'Content-Type: text/html' );
+		// Logged HTML is untrusted. The sandbox blocks scripts and forms but keeps images, styles and new-tab links.
+		header( 'Content-Security-Policy: sandbox allow-popups allow-popups-to-escape-sandbox' );
 		echo $this->format_email_content( $email[0]['message'] );
 		wp_die();
 	}

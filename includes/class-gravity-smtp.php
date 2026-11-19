@@ -9,6 +9,7 @@ use Gravity_Forms\Gravity_SMTP\Assets\Assets_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Base;
 use Gravity_Forms\Gravity_SMTP\Connectors\Connector_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Connector_Settings_Endpoint;
+use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Plugin_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Const_Data_Store;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Data_Store_Router;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Opts_Data_Store;
@@ -22,6 +23,7 @@ use Gravity_Forms\Gravity_SMTP\Errors\Error_Handler_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Handler\Handler_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Logging\Logging_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Migration\Migration_Service_Provider;
+use Gravity_Forms\Gravity_SMTP\Models\Debug_Log_Model;
 use Gravity_Forms\Gravity_SMTP\Notifications\Notifications_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Pages\Page_Service_Provider;
 use Gravity_Forms\Gravity_SMTP\Routing\Routing_Service_Provider;
@@ -86,6 +88,14 @@ class Gravity_SMTP {
 		// Ensure suppression table is set up properly
 		$routines->add( 'suppression_tables', array( self::class, 'create_suppression_table' ) );
 
+		// Store the license key as a hash, the same as Gravity Forms.
+		$routines->add( 'hash_license_key', array( self::class, 'hash_license_key' ) );
+
+		$routines->add( 'emails_tables_performance_updates', array( self::class, 'create_emails_tables' ) );
+
+		// Debug log lines are stored raw from here on. Remember where the HTML-escaped rows end.
+		$routines->add( 'debug_log_raw_lines', array( self::class, 'mark_last_encoded_debug_log_id' ) );
+
 		add_action( 'plugins_loaded', function() use ( $routines ) {
 			$routines->handle();
 		}, 10 );
@@ -128,6 +138,47 @@ class Gravity_SMTP {
 		$plugin->save( Save_Connector_Settings_Endpoint::SETTING_PRIMARY_CONNECTOR, $primaries );
 	}
 
+	/**
+	 * Replace the stored plain-text license key with its hash. A key copied from Gravity Forms is already a hash.
+	 *
+	 * @since 2.3.5
+	 *
+	 * @return void
+	 */
+	public static function hash_license_key() {
+		$opts = json_decode( get_option( 'gravitysmtp_config', '{}' ), true );
+		$key  = isset( $opts[ Save_Plugin_Settings_Endpoint::PARAM_LICENSE_KEY ] ) ? $opts[ Save_Plugin_Settings_Endpoint::PARAM_LICENSE_KEY ] : '';
+
+		if ( empty( $key ) || ! empty( $opts['license_key_hashed'] ) ) {
+			return;
+		}
+
+		// The marker goes in the same write as the hash, so a retry or a parallel request cannot hash the value twice.
+		$opts[ Save_Plugin_Settings_Endpoint::PARAM_LICENSE_KEY ] = Save_Plugin_Settings_Endpoint::hash_license_key( $key );
+		$opts['license_key_hashed']                                = true;
+
+		update_option( 'gravitysmtp_config', json_encode( $opts ) );
+	}
+
+	/**
+	 * Store the highest debug log id written before lines were stored raw, so only those rows are decoded on display.
+	 *
+	 * @since 2.3.5
+	 *
+	 * @return void
+	 */
+	public static function mark_last_encoded_debug_log_id() {
+		global $wpdb;
+
+		$table = $wpdb->prefix . 'gravitysmtp_debug_log';
+
+		if ( $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) ) !== $table ) {
+			return;
+		}
+
+		update_option( Debug_Log_Model::LAST_ENCODED_ID_OPTION, (int) $wpdb->get_var( "SELECT MAX(id) FROM {$table}" ), false );
+	}
+
 	public static function flush_rewrite_rules() {
 		flush_rewrite_rules( true );
 	}
@@ -143,14 +194,16 @@ class Gravity_SMTP {
 		$sql = "
 			CREATE TABLE $table_name (
 				id mediumint(9) NOT NULL AUTO_INCREMENT,
-			    date_created datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-			    date_updated datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+			    date_created datetime DEFAULT '1970-01-01 00:00:01' NOT NULL,
+			    date_updated datetime DEFAULT '1970-01-01 00:00:01' NOT NULL,
 			    status varchar(100) NOT NULL,
 			    service varchar(100) NOT NULL,
 			    subject varchar(100) NOT NULL,
 			    message text NOT NULL,
 			    extra mediumtext NOT NULL,
-			    PRIMARY KEY (id)
+			    PRIMARY KEY (id),
+					KEY date_created (date_created),
+					KEY subject (subject)
 		    ) $charset_collate;
 		";
 
@@ -164,9 +217,10 @@ class Gravity_SMTP {
                 event_id mediumint(9) NOT NULL,
 			    action_name varchar(100) NOT NULL,
 			    log_value text NOT NULL,
-			    date_created datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-			    date_updated datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-			    PRIMARY KEY (id)
+			    date_created datetime DEFAULT '1970-01-01 00:00:01' NOT NULL,
+			    date_updated datetime DEFAULT '1970-01-01 00:00:01' NOT NULL,
+			    PRIMARY KEY (id),
+					KEY event_id (event_id)
 		    ) $charset_collate;
 		";
 
@@ -179,8 +233,8 @@ class Gravity_SMTP {
 				id mediumint(9) NOT NULL AUTO_INCREMENT,
 			    priority varchar(100) NOT NULL,
 			    line text NOT NULL,
-			    date_created datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-			    date_updated datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+			    date_created datetime DEFAULT '1970-01-01 00:00:01' NOT NULL,
+			    date_updated datetime DEFAULT '1970-01-01 00:00:01' NOT NULL,
 			    PRIMARY KEY (id)
 		    ) $charset_collate;
 		";

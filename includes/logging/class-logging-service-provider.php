@@ -119,7 +119,7 @@ class Logging_Service_Provider extends Config_Service_Provider {
 		} );
 
 		$this->container->add( self::SCHEDULING_HANDLER, function () use ( $container ) {
-			return new Handler( $container->get( Connector_Service_Provider::DATA_STORE_ROUTER ), $container->get( Connector_Service_Provider::EVENT_MODEL ), $container->get( Connector_Service_Provider::LOG_DETAILS_MODEL ) );
+			return new Handler( $container->get( Connector_Service_Provider::DATA_STORE_ROUTER ), $container->get( Connector_Service_Provider::EVENT_MODEL ), $container->get( Connector_Service_Provider::LOG_DETAILS_MODEL ), $container->get( self::DEBUG_LOGGER ) );
 		} );
 
 		$this->container->add( self::DB_LOGGING_PROVIDER, function () use ( $container ) {

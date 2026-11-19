@@ -225,6 +225,10 @@ class Connector_Microsoft extends Connector_Base {
 	}
 
 	private function get_raw_message() {
+		// PHPMailer only builds the message here. The default "mail" transport Q-encodes header values over 63 chars,
+		// which breaks URL headers such as List-Unsubscribe. "sendmail" mode allows 998 chars and, unlike "smtp",
+		// keeps the Bcc header in the raw message.
+		$this->php_mailer->Mailer = 'sendmail';
 		$this->php_mailer->preSend();
 		$raw = $this->php_mailer->getSentMIMEMessage();
 
@@ -333,6 +337,40 @@ class Connector_Microsoft extends Connector_Base {
 							),
 							'href' => 'https://docs.gravitysmtp.com/category/integrations/microsoft/',
 							'target' => '_blank',
+						),
+					),
+				),
+			);
+		} else {
+			$settings['fields'][] = array(
+				'component' => 'Alert',
+				'props'     => array(
+					'id'               => 'microsoft-alias-notice',
+					'customIconPrefix' => 'gravity-admin-icon',
+					'theme'            => 'cosmos',
+					'type'             => 'info',
+					'spacing'          => 3,
+				),
+				'fields'    => array(
+					array(
+						'component' => 'LinkedText',
+						'external'  => true,
+						'links'     => array(
+							array(
+								'key'   => 'link',
+								'props' => array(
+									'href'   => 'https://docs.gravitysmtp.com/category/integrations/microsoft/',
+									'size'   => 'text-sm',
+									'target' => '_blank',
+								),
+							),
+						),
+						'props'     => array(
+							'customClasses' => array( 'gform--display-block' ),
+							'content'       => esc_html__( 'Important: Sending from a Microsoft 365 alias is not currently supported. Emails are delivered from the primary email address of the connected account, even when the Default From Email is set to an alias and sending from aliases is turned on in your Microsoft 365 tenant. For more information, please refer to our {{link}}documentation{{link}}.', 'gravitysmtp' ),
+							'weight'        => 'medium',
+							'size'          => 'text-sm',
+							'tagName'       => 'span',
 						),
 					),
 				),

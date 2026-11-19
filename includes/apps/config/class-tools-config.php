@@ -61,9 +61,6 @@ class Tools_Config extends Config {
 		$search_term = filter_input( INPUT_GET, 'search_term' );
 		$search_type = filter_input( INPUT_GET, 'search_type' );
 
-		if ( ! empty( $search_term ) ) {
-			$search_term = htmlspecialchars( $search_term );
-		}
 
 		if ( ! empty( $search_type ) ) {
 			$search_type = htmlspecialchars( $search_type );
@@ -84,32 +81,32 @@ class Tools_Config extends Config {
 						'nav_items'               => array(
 							array(
 								'param' => 'send-a-test',
-								'label' => esc_html__( 'Send a Test', 'gravitysmtp' ),
+								'label' => __( 'Send a Test', 'gravitysmtp' ),
 								'icon'  => 'beaker',
 							),
 							array(
 								'param' => 'scheduled-events',
-								'label' => esc_html__( 'Scheduled Events', 'gravitysmtp' ),
+								'label' => __( 'Scheduled Events', 'gravitysmtp' ),
 								'icon'  => 'clock',
 							),
 							array(
 								'param' => 'import-export',
-								'label' => esc_html__( 'Import/Export', 'gravitysmtp' ),
+								'label' => __( 'Import/Export', 'gravitysmtp' ),
 								'icon'  => 'switch-horizontal',
 							),
 							array(
 								'param' => 'debug-log',
-								'label' => esc_html__( 'Debug Log', 'gravitysmtp' ),
+								'label' => __( 'Debug Log', 'gravitysmtp' ),
 								'icon'  => 'debug',
 							),
 							array(
 								'param' => 'system-report',
-								'label' => esc_html__( 'System Report', 'gravitysmtp' ),
+								'label' => __( 'System Report', 'gravitysmtp' ),
 								'icon'  => 'report',
 							),
 							array(
 								'param' => 'permissions',
-								'label' => esc_html__( 'Permissions', 'gravitysmtp' ),
+								'label' => __( 'Permissions', 'gravitysmtp' ),
 								'icon'  => 'closed-lock',
 							),
 						),
@@ -141,69 +138,69 @@ class Tools_Config extends Config {
 						),
 					),
 					'i18n' => array(
-						'error_alert_title'           => esc_html__( 'Error Saving', 'gravitysmtp' ),
-						'error_alert_generic_message' => esc_html__( 'Could not save, please check your logs.', 'gravitysmtp' ),
-						'error_alert_close_text'      => esc_html__( 'Close', 'gravitysmtp' ),
+						'error_alert_title'           => __( 'Error Saving', 'gravitysmtp' ),
+						'error_alert_generic_message' => __( 'Could not save, please check your logs.', 'gravitysmtp' ),
+						'error_alert_close_text'      => __( 'Close', 'gravitysmtp' ),
 						'debug_log'                   => array(
-							'top_heading'              => esc_html__( 'Debug Log', 'gravitysmtp' ),
+							'top_heading'              => __( 'Debug Log', 'gravitysmtp' ),
 							'data_grid'                => array(
-								'top_heading'                       => esc_html__( 'Debug Results', 'gravitysmtp' ),
-								'clear_search_aria_label'           => esc_html__( 'Clear search', 'gravitysmtp' ),
-								'empty_title'                       => esc_html__( 'No debug logs', 'gravitysmtp' ),
-								'empty_message'                     => esc_html__( 'You will see debug log details when they occur on your site.', 'gravitysmtp' ),
-								'grid_controls_search_button_label' => esc_html__( 'Search', 'gravitysmtp' ),
-								'grid_controls_search_placeholder'  => esc_html__( 'Search', 'gravitysmtp' ),
-								'pagination_next'                   => esc_html__( 'Next', 'gravitysmtp' ),
-								'pagination_prev'                   => esc_html__( 'Previous', 'gravitysmtp' ),
-								'pagination_next_aria_label'        => esc_html__( 'Next Page', 'gravitysmtp' ),
-								'pagination_prev_aria_label'        => esc_html__( 'Previous Page', 'gravitysmtp' ),
-								'search_no_results_title'           => esc_html__( 'No results found', 'gravitysmtp' ),
-								'search_no_results_message'         => esc_html__( 'No results found for your search', 'gravitysmtp' ),
+								'top_heading'                       => __( 'Debug Results', 'gravitysmtp' ),
+								'clear_search_aria_label'           => __( 'Clear search', 'gravitysmtp' ),
+								'empty_title'                       => __( 'No debug logs', 'gravitysmtp' ),
+								'empty_message'                     => __( 'You will see debug log details when they occur on your site.', 'gravitysmtp' ),
+								'grid_controls_search_button_label' => __( 'Search', 'gravitysmtp' ),
+								'grid_controls_search_placeholder'  => __( 'Search', 'gravitysmtp' ),
+								'pagination_next'                   => __( 'Next', 'gravitysmtp' ),
+								'pagination_prev'                   => __( 'Previous', 'gravitysmtp' ),
+								'pagination_next_aria_label'        => __( 'Next Page', 'gravitysmtp' ),
+								'pagination_prev_aria_label'        => __( 'Previous Page', 'gravitysmtp' ),
+								'search_no_results_title'           => __( 'No results found', 'gravitysmtp' ),
+								'search_no_results_message'         => __( 'No results found for your search', 'gravitysmtp' ),
 							),
-							'details_dialog_heading'   => esc_html__( 'Debug Log Details', 'gravitysmtp' ),
-							'details_dialog_event'     => esc_html__( 'Event', 'gravitysmtp' ),
-							'details_dialog_date'      => esc_html__( 'Date', 'gravitysmtp' ),
-							'details_dialog_log'       => esc_html__( 'Log', 'gravitysmtp' ),
-							'snackbar_debug_log_error' => esc_html__( 'Error getting debug log for requested page', 'gravitysmtp' ),
+							'details_dialog_heading'   => __( 'Debug Log Details', 'gravitysmtp' ),
+							'details_dialog_event'     => __( 'Event', 'gravitysmtp' ),
+							'details_dialog_date'      => __( 'Date', 'gravitysmtp' ),
+							'details_dialog_log'       => __( 'Log', 'gravitysmtp' ),
+							'snackbar_debug_log_error' => __( 'Error getting debug log for requested page', 'gravitysmtp' ),
 						),
 						'debug_messages'              => array(
 							/* translators: %1$s is the body of the ajax request. */
-							'fetching_debug_log_page'       => esc_html__( 'Fetching debug log page: %1$s', 'gravitysmtp' ),
+							'fetching_debug_log_page'       => __( 'Fetching debug log page: %1$s', 'gravitysmtp' ),
 							/* translators: %1$s is the error message. */
-							'fetching_debug_log_page_error' => esc_html__( 'Error fetching debug log page: %1$s', 'gravitysmtp' ),
+							'fetching_debug_log_page_error' => __( 'Error fetching debug log page: %1$s', 'gravitysmtp' ),
 							/* translators: %1$s is the body of the ajax request. */
-							'sending_test_email'            => esc_html__( 'Sending test email: %1$s', 'gravitysmtp' ),
+							'sending_test_email'            => __( 'Sending test email: %1$s', 'gravitysmtp' ),
 							/* translators: %1$s is the error message. */
-							'sending_test_email_error'      => esc_html__( 'Error sending test email: %1$s', 'gravitysmtp' ),
+							'sending_test_email_error'      => __( 'Error sending test email: %1$s', 'gravitysmtp' ),
 						),
 						'send_a_test'                 => array(
-							'top_heading'                                   => esc_html__( 'Send a Test', 'gravitysmtp' ),
-							'top_content'                                   => esc_html__( 'Verify your SMTP setup to ensure reliable email delivery.', 'gravitysmtp' ),
-							'send_test_box_heading'                         => esc_html__( 'Send a Test Email', 'gravitysmtp' ),
-							'send_test_box_input_label'                     => esc_html__( 'Send To', 'gravitysmtp' ),
-							'send_test_box_input_placeholder'               => esc_html__( 'Enter an email address', 'gravitysmtp' ),
-							'send_test_box_input_description'               => esc_html__( 'Enter the email address you want to send the test email to.', 'gravitysmtp' ),
-							'send_test_box_from_label'                      => esc_html__( 'Send From', 'gravitysmtp' ),
-							'send_test_box_from_placeholder'                => esc_html__( 'Enter an email address', 'gravitysmtp' ),
-							'send_test_box_from_description'                => esc_html__( 'Enter the email address you want to send the test email from.', 'gravitysmtp' ),
-							'send_test_box_send_with_label'                 => esc_html__( 'Send With', 'gravitysmtp' ),
-							'send_test_box_send_with_description'           => esc_html__( 'Choose which integration to send the test with.', 'gravitysmtp' ),
-							'send_test_box_send_as_html_label'              => esc_html__( 'HTML', 'gravitysmtp' ),
-							'send_test_box_send_as_html_description'        => esc_html__( 'Send the test email as HTML.', 'gravitysmtp' ),
-							'send_test_box_alerts_button_label'             => esc_html__( 'Send Test', 'gravitysmtp' ),
-							'send_test_box_try_again_button_label'          => esc_html__( 'Try Again', 'gravitysmtp' ),
-							'send_test_box_error_issue_heading'             => esc_html__( 'Issue Detected:', 'gravitysmtp' ),
-							'send_test_box_error_possible_reasons_heading'  => esc_html__( 'Possible Reasons for Error:', 'gravitysmtp' ),
-							'send_test_box_error_recommended_steps_heading' => esc_html__( 'Recommended Steps:', 'gravitysmtp' ),
-							'send_test_box_view_log_button_label'           => esc_html__( 'View Full Error Log', 'gravitysmtp' ),
-							'send_test_box_copy_log_button_label'           => esc_html__( 'Copy Error Log', 'gravitysmtp' ),
-							'send_test_box_copy_log_success_message'        => esc_html__( 'Error log copied', 'gravitysmtp' ),
+							'top_heading'                                   => __( 'Send a Test', 'gravitysmtp' ),
+							'top_content'                                   => __( 'Verify your SMTP setup to ensure reliable email delivery.', 'gravitysmtp' ),
+							'send_test_box_heading'                         => __( 'Send a Test Email', 'gravitysmtp' ),
+							'send_test_box_input_label'                     => __( 'Send To', 'gravitysmtp' ),
+							'send_test_box_input_placeholder'               => __( 'Enter an email address', 'gravitysmtp' ),
+							'send_test_box_input_description'               => __( 'Enter the email address you want to send the test email to.', 'gravitysmtp' ),
+							'send_test_box_from_label'                      => __( 'Send From', 'gravitysmtp' ),
+							'send_test_box_from_placeholder'                => __( 'Enter an email address', 'gravitysmtp' ),
+							'send_test_box_from_description'                => __( 'Enter the email address you want to send the test email from.', 'gravitysmtp' ),
+							'send_test_box_send_with_label'                 => __( 'Send With', 'gravitysmtp' ),
+							'send_test_box_send_with_description'           => __( 'Choose which integration to send the test with.', 'gravitysmtp' ),
+							'send_test_box_send_as_html_label'              => __( 'HTML', 'gravitysmtp' ),
+							'send_test_box_send_as_html_description'        => __( 'Send the test email as HTML.', 'gravitysmtp' ),
+							'send_test_box_alerts_button_label'             => __( 'Send Test', 'gravitysmtp' ),
+							'send_test_box_try_again_button_label'          => __( 'Try Again', 'gravitysmtp' ),
+							'send_test_box_error_issue_heading'             => __( 'Issue Detected:', 'gravitysmtp' ),
+							'send_test_box_error_possible_reasons_heading'  => __( 'Possible Reasons for Error:', 'gravitysmtp' ),
+							'send_test_box_error_recommended_steps_heading' => __( 'Recommended Steps:', 'gravitysmtp' ),
+							'send_test_box_view_log_button_label'           => __( 'View Full Error Log', 'gravitysmtp' ),
+							'send_test_box_copy_log_button_label'           => __( 'Copy Error Log', 'gravitysmtp' ),
+							'send_test_box_copy_log_success_message'        => __( 'Error log copied', 'gravitysmtp' ),
 						),
 						'system_report'               => array(
-							'top_heading'          => esc_html__( 'System Report', 'gravitysmtp' ),
-							'top_content'          => esc_html__( 'The system report contains useful technical information to help troubleshooting issues.', 'gravitysmtp' ),
-							'copy_system_report'   => esc_html__( 'Copy System Report', 'gravitysmtp' ),
-							'system_report_copied' => esc_html__( 'System report copied to clipboard', 'gravitysmtp' ),
+							'top_heading'          => __( 'System Report', 'gravitysmtp' ),
+							'top_content'          => __( 'The system report contains useful technical information to help troubleshooting issues.', 'gravitysmtp' ),
+							'copy_system_report'   => __( 'Copy System Report', 'gravitysmtp' ),
+							'system_report_copied' => __( 'System report copied to clipboard', 'gravitysmtp' ),
 						),
 					),
 					'endpoints' => array(),
@@ -242,12 +239,12 @@ class Tools_Config extends Config {
 
 		$system_report = array(
 			array(
-				'title'  => esc_html__( 'Gravity SMTP', 'gravitysmtp' ),
+				'title'  => __( 'Gravity SMTP', 'gravitysmtp' ),
 				'groups' => $this->get_groups( $gravity_smtp_data ),
 				'key'    => 'gravitysmtp',
 			),
 			array(
-				'title'  => esc_html__( 'WordPress Environment', 'gravitysmtp' ),
+				'title'  => __( 'WordPress Environment', 'gravitysmtp' ),
 				'groups' => $this->get_groups( $wordpress_environment_data ),
 				'key'    => 'wordpress-environment',
 			),
@@ -255,7 +252,7 @@ class Tools_Config extends Config {
 
 		if ( ! empty( $active_theme_data ) ) {
 			$system_report[] = array(
-				'title'  => esc_html__( 'Active Theme', 'gravitysmtp' ),
+				'title'  => __( 'Active Theme', 'gravitysmtp' ),
 				'groups' => $this->get_groups( $active_theme_data, true ),
 				'key'    => 'active-theme',
 			);
@@ -263,7 +260,7 @@ class Tools_Config extends Config {
 
 		if ( ! empty( $active_plugins_data ) ) {
 			$system_report[] = array(
-				'title'  => esc_html__( 'Active Plugins', 'gravitysmtp' ),
+				'title'  => __( 'Active Plugins', 'gravitysmtp' ),
 				'groups' => $this->get_groups( $active_plugins_data, true ),
 				'key'    => 'active-plugins',
 			);
@@ -273,42 +270,42 @@ class Tools_Config extends Config {
 			$system_report,
 			array(
 				array(
-					'title'  => esc_html__( 'Web Server', 'gravitysmtp' ),
+					'title'  => __( 'Web Server', 'gravitysmtp' ),
 					'groups' => $this->get_groups( $web_server_data ),
 					'key'    => 'web-server',
 				),
 				array(
-					'title'  => esc_html__( 'PHP', 'gravitysmtp' ),
+					'title'  => __( 'PHP', 'gravitysmtp' ),
 					'groups' => $this->get_groups( $php_data ),
 					'key'    => 'php',
 				),
 				array(
-					'title'  => esc_html__( 'Database Server', 'gravitysmtp' ),
+					'title'  => __( 'Database Server', 'gravitysmtp' ),
 					'groups' => $this->get_groups( $database_server_data ),
 					'key'    => 'database-server',
 				),
 				array(
-					'title'  => esc_html__( 'Database Tables', 'gravitysmtp' ),
+					'title'  => __( 'Database Tables', 'gravitysmtp' ),
 					'groups' => $this->get_groups( $database_table_data ),
 					'key'    => 'database-tables',
 				),
 				array(
-					'title'  => esc_html__( 'Date and Time', 'gravitysmtp' ),
+					'title'  => __( 'Date and Time', 'gravitysmtp' ),
 					'groups' => $this->get_groups( $date_and_time_data ),
 					'key'    => 'date-and-time',
 				),
 				array(
-					'title' => esc_html__( 'Debug Log', 'gravitysmtp' ),
+					'title' => __( 'Debug Log', 'gravitysmtp' ),
 					'groups' => $this->get_groups( $debug_data ),
 					'key' => 'debug-log',
 				),
 				array(
-					'title' => esc_html__( 'Integration Settings', 'gravitysmtp' ),
+					'title' => __( 'Integration Settings', 'gravitysmtp' ),
 					'groups' => $this->get_groups( $integrations_data ),
 					'key' => 'integrations-settings',
 				),
 				array(
-					'title' => esc_html__( 'Translations', 'gravitysmtp' ),
+					'title' => __( 'Translations', 'gravitysmtp' ),
 					'groups' => $this->get_groups( $translations ),
 					'key' => 'translations',
 				),
@@ -317,7 +314,7 @@ class Tools_Config extends Config {
 
 		if ( ! empty( $constants_data ) ) {
 			$system_report[] = array(
-				'title' => esc_html__( 'Defined Constants', 'gravitysmtp' ),
+				'title' => __( 'Defined Constants', 'gravitysmtp' ),
 				'groups' => $this->get_groups( $constants_data ),
 				'key' => 'defined-constants',
 			);
@@ -355,7 +352,7 @@ class Tools_Config extends Config {
 	protected function get_translations_data() {
 		$items = array(
 			array(
-				'label'        => esc_html__( 'Site Locale', 'gravitysmtp' ),
+				'label'        => __( 'Site Locale', 'gravitysmtp' ),
 				'label_export' => 'Site Locale',
 				'value'        => get_locale(),
 			),
@@ -364,7 +361,7 @@ class Tools_Config extends Config {
 		if ( function_exists( 'get_user_locale' ) ) {
 			$items[] = array(
 				// translators: %d: The ID of the currently logged in user.
-				'label'        => sprintf( esc_html__( 'User (ID: %d) Locale', 'gravitysmtp' ), get_current_user_id() ),
+				'label'        => sprintf( __( 'User (ID: %d) Locale', 'gravitysmtp' ), get_current_user_id() ),
 				'label_export' => sprintf( 'User (ID: %d) Locale', get_current_user_id() ),
 				'value'        => get_user_locale(),
 			);
@@ -374,9 +371,9 @@ class Tools_Config extends Config {
 
 
 		$items[] = array(
-			'label'        => esc_html__( 'Installed Translations', 'gravitysmtp' ),
+			'label'        => __( 'Installed Translations', 'gravitysmtp' ),
 			'label_export' => 'Installed Translations',
-			'value'        => empty( $translations ) ? esc_html__( 'No translations installed', 'gravitysmtp' ) : implode( ', ', $translations ),
+			'value'        => empty( $translations ) ? __( 'No translations installed', 'gravitysmtp' ) : implode( ', ', $translations ),
 		);
 
 		return $items;
@@ -492,7 +489,7 @@ class Tools_Config extends Config {
 	protected function get_gravity_smtp_data() {
 		return array(
 			array(
-				'label'        => esc_html__( 'Version', 'gravitysmtp' ),
+				'label'        => __( 'Version', 'gravitysmtp' ),
 				'label_export' => 'Version',
 				'value'        => GF_GRAVITY_SMTP_VERSION,
 			),
@@ -530,76 +527,76 @@ class Tools_Config extends Config {
 
 		return array(
 			array(
-				'label'        => esc_html__( 'Home URL', 'gravitysmtp' ),
+				'label'        => __( 'Home URL', 'gravitysmtp' ),
 				'label_export' => 'Home URL',
 				'value'        => get_home_url(),
 			),
 			array(
-				'label'        => esc_html__( 'Site URL', 'gravitysmtp' ),
+				'label'        => __( 'Site URL', 'gravitysmtp' ),
 				'label_export' => 'Site URL',
 				'value'        => get_site_url(),
 			),
 			array(
-				'label'        => esc_html__( 'REST API Base URL', 'gravitysmtp' ),
+				'label'        => __( 'REST API Base URL', 'gravitysmtp' ),
 				'label_export' => 'REST API Base URL',
 				'value'        => rest_url(),
 			),
 			array(
-				'label'        => esc_html__( 'WordPress Version', 'gravitysmtp' ),
+				'label'        => __( 'WordPress Version', 'gravitysmtp' ),
 				'label_export' => 'WordPress Version',
 				'value'        => get_bloginfo( 'version' ),
 			),
 			array(
-				'label'        => esc_html__( 'WordPress Multisite', 'gravitysmtp' ),
+				'label'        => __( 'WordPress Multisite', 'gravitysmtp' ),
 				'label_export' => 'WordPress Multisite',
-				'value'        => is_multisite() ? esc_html__( 'Yes', 'gravitysmtp' ) : esc_html__( 'No', 'gravitysmtp' ),
+				'value'        => is_multisite() ? __( 'Yes', 'gravitysmtp' ) : __( 'No', 'gravitysmtp' ),
 				'value_export' => is_multisite() ? 'Yes' : 'No',
 			),
 			array(
-				'label'        => esc_html__( 'WordPress Memory Limit', 'gravitysmtp' ),
+				'label'        => __( 'WordPress Memory Limit', 'gravitysmtp' ),
 				'label_export' => 'WordPress Memory Limit',
 				'value'        => WP_MEMORY_LIMIT,
 			),
 			array(
-				'label'        => esc_html__( 'WordPress Debug Mode', 'gravitysmtp' ),
+				'label'        => __( 'WordPress Debug Mode', 'gravitysmtp' ),
 				'label_export' => 'WordPress Debug Mode',
-				'value'        => WP_DEBUG ? esc_html__( 'Yes', 'gravitysmtp' ) : esc_html__( 'No', 'gravitysmtp' ),
+				'value'        => WP_DEBUG ? __( 'Yes', 'gravitysmtp' ) : __( 'No', 'gravitysmtp' ),
 				'value_export' => WP_DEBUG ? 'Yes' : 'No',
 			),
 			array(
-				'label'        => esc_html__( 'WordPress Debug Log', 'gravitysmtp' ),
+				'label'        => __( 'WordPress Debug Log', 'gravitysmtp' ),
 				'label_export' => 'WordPress Debug Log',
-				'value'        => WP_DEBUG_LOG ? esc_html__( 'Yes', 'gravitysmtp' ) : esc_html__( 'No', 'gravitysmtp' ),
+				'value'        => WP_DEBUG_LOG ? __( 'Yes', 'gravitysmtp' ) : __( 'No', 'gravitysmtp' ),
 				'value_export' => WP_DEBUG_LOG ? 'Yes' : 'No',
 			),
 			array(
-				'label'        => esc_html__( 'WordPress Script Debug Mode', 'gravitysmtp' ),
+				'label'        => __( 'WordPress Script Debug Mode', 'gravitysmtp' ),
 				'label_export' => 'WordPress Script Debug Mode',
 				'value'        => SCRIPT_DEBUG ? __( 'Yes', 'gravitysmtp' ) : __( 'No', 'gravitysmtp' ),
 				'value_export' => SCRIPT_DEBUG ? 'Yes' : 'No',
 			),
 			array(
-				'label'        => esc_html__( 'WordPress Cron', 'gravitysmtp' ),
+				'label'        => __( 'WordPress Cron', 'gravitysmtp' ),
 				'label_export' => 'WordPress Cron',
 				'value'        => ! $wp_cron_disabled ? __( 'Yes', 'gravitysmtp' ) : __( 'No', 'gravitysmtp' ),
 				'value_export' => ! $wp_cron_disabled ? 'Yes' : 'No',
 			),
 			array(
-				'label'        => esc_html__( 'WordPress Alternate Cron', 'gravitysmtp' ),
+				'label'        => __( 'WordPress Alternate Cron', 'gravitysmtp' ),
 				'label_export' => 'WordPress Alternate Cron',
 				'value'        => $alternate_wp_cron ? __( 'Yes', 'gravitysmtp' ) : __( 'No', 'gravitysmtp' ),
 				'value_export' => $alternate_wp_cron ? 'Yes' : 'No',
 			),
 			array(
-				'label'        => esc_html__( 'Background Tasks', 'gravitysmtp' ),
+				'label'        => __( 'Background Tasks', 'gravitysmtp' ),
 				'label_export' => 'Background tasks',
 				'value'        => $background_tasks ? __( 'Yes', 'gravitysmtp' ) : __( 'No', 'gravitysmtp' ),
 				'value_export' => $background_tasks ? 'Yes' : 'No',
 			),
 			array(
-				'label'        => esc_html__( 'Registered Filters', 'gravitysmtp' ),
+				'label'        => __( 'Registered Filters', 'gravitysmtp' ),
 				'label_export' => 'Registered filters',
-				'value'        => empty( $registered_filters ) ? esc_html__( 'N/A', 'gravitysmtp' ) : join( ', ', $registered_filters ),
+				'value'        => empty( $registered_filters ) ? __( 'N/A', 'gravitysmtp' ) : join( ', ', $registered_filters ),
 				'value_export' => empty( $registered_filters ) ? 'N/A' : join( ', ', $registered_filters ),
 			),
 		);
@@ -772,17 +769,17 @@ class Tools_Config extends Config {
 	protected function get_web_server_data() {
 		return array(
 			array(
-				'label'        => esc_html__( 'Software', 'gravitysmtp' ),
+				'label'        => __( 'Software', 'gravitysmtp' ),
 				'label_export' => 'Software',
 				'value'        => esc_html( $_SERVER['SERVER_SOFTWARE'] ),
 			),
 			array(
-				'label'        => esc_html__( 'Port', 'gravitysmtp' ),
+				'label'        => __( 'Port', 'gravitysmtp' ),
 				'label_export' => 'Port',
 				'value'        => esc_html( $_SERVER['SERVER_PORT'] ),
 			),
 			array(
-				'label'        => esc_html__( 'Document Root', 'gravitysmtp' ),
+				'label'        => __( 'Document Root', 'gravitysmtp' ),
 				'label_export' => 'Document Root',
 				'value'        => esc_html( $_SERVER['DOCUMENT_ROOT'] ),
 			),
@@ -800,42 +797,42 @@ class Tools_Config extends Config {
 
 		return array(
 			array(
-				'label'        => esc_html__( 'Version', 'gravitysmtp' ),
+				'label'        => __( 'Version', 'gravitysmtp' ),
 				'label_export' => 'Version',
 				'value'        => esc_html( phpversion() ),
 			),
 			array(
-				'label'        => esc_html__( 'Memory Limit', 'gravitysmtp' ) . ' (memory_limit)',
+				'label'        => __( 'Memory Limit', 'gravitysmtp' ) . ' (memory_limit)',
 				'label_export' => 'Memory Limit',
 				'value'        => esc_html( ini_get( 'memory_limit' ) ),
 			),
 			array(
-				'label'        => esc_html__( 'Maximum Execution Time', 'gravitysmtp' ) . ' (max_execution_time)',
+				'label'        => __( 'Maximum Execution Time', 'gravitysmtp' ) . ' (max_execution_time)',
 				'label_export' => 'Maximum Execution Time',
 				'value'        => esc_html( ini_get( 'max_execution_time' ) ),
 			),
 			array(
-				'label'        => esc_html__( 'Maximum File Upload Size', 'gravitysmtp' ) . ' (upload_max_filesize)',
+				'label'        => __( 'Maximum File Upload Size', 'gravitysmtp' ) . ' (upload_max_filesize)',
 				'label_export' => 'Maximum File Upload Size',
 				'value'        => esc_html( ini_get( 'upload_max_filesize' ) ),
 			),
 			array(
-				'label'        => esc_html__( 'Maximum File Uploads', 'gravitysmtp' ) . ' (max_file_uploads)',
+				'label'        => __( 'Maximum File Uploads', 'gravitysmtp' ) . ' (max_file_uploads)',
 				'label_export' => 'Maximum File Uploads',
 				'value'        => esc_html( ini_get( 'max_file_uploads' ) ),
 			),
 			array(
-				'label'        => esc_html__( 'Maximum Post Size', 'gravitysmtp' ) . ' (post_max_size)',
+				'label'        => __( 'Maximum Post Size', 'gravitysmtp' ) . ' (post_max_size)',
 				'label_export' => 'Maximum Post Size',
 				'value'        => esc_html( ini_get( 'post_max_size' ) ),
 			),
 			array(
-				'label'        => esc_html__( 'Maximum Input Variables', 'gravitysmtp' ) . ' (max_input_vars)',
+				'label'        => __( 'Maximum Input Variables', 'gravitysmtp' ) . ' (max_input_vars)',
 				'label_export' => 'Maximum Input Variables',
 				'value'        => esc_html( ini_get( 'max_input_vars' ) ),
 			),
 			array(
-				'label'        => esc_html__( 'cURL Enabled', 'gravitysmtp' ),
+				'label'        => __( 'cURL Enabled', 'gravitysmtp' ),
 				'label_export' => 'cURL Enabled',
 				'value'        => function_exists( 'curl_init' )
 					? esc_html(
@@ -845,29 +842,29 @@ class Tools_Config extends Config {
 							$curl_version
 						)
 					)
-					: esc_html__( 'No', 'gravitysmtp' ),
+					: __( 'No', 'gravitysmtp' ),
 				'value_export' => function_exists( 'curl_init' ) ? sprintf( 'Yes (version %s)', $curl_version ) : 'No',
 			),
 			array(
-				'label'        => esc_html__( 'OpenSSL', 'gravitysmtp' ),
+				'label'        => __( 'OpenSSL', 'gravitysmtp' ),
 				'label_export' => 'OpenSSL',
 				'value'        => defined( 'OPENSSL_VERSION_TEXT' ) ? OPENSSL_VERSION_TEXT . ' (' . OPENSSL_VERSION_NUMBER . ')' : __( 'No', 'gravitysmtp' ),
 				'value_export' => defined( 'OPENSSL_VERSION_TEXT' ) ? OPENSSL_VERSION_TEXT . ' (' . OPENSSL_VERSION_NUMBER . ')' : 'No',
 			),
 			array(
-				'label'        => esc_html__( 'Mcrypt Enabled', 'gravitysmtp' ),
+				'label'        => __( 'Mcrypt Enabled', 'gravitysmtp' ),
 				'label_export' => 'Mcrypt Enabled',
-				'value'        => function_exists( 'mcrypt_encrypt' ) ? esc_html__( 'Yes', 'gravitysmtp' ) : esc_html__( 'No', 'gravitysmtp' ),
+				'value'        => function_exists( 'mcrypt_encrypt' ) ? __( 'Yes', 'gravitysmtp' ) : __( 'No', 'gravitysmtp' ),
 				'value_export' => function_exists( 'mcrypt_encrypt' ) ? 'Yes' : 'No',
 			),
 			array(
-				'label'        => esc_html__( 'Mbstring Enabled', 'gravitysmtp' ),
+				'label'        => __( 'Mbstring Enabled', 'gravitysmtp' ),
 				'label_export' => 'Mbstring Enabled',
-				'value'        => function_exists( 'mb_strlen' ) ? esc_html__( 'Yes', 'gravitysmtp' ) : esc_html__( 'No', 'gravitysmtp' ),
+				'value'        => function_exists( 'mb_strlen' ) ? __( 'Yes', 'gravitysmtp' ) : __( 'No', 'gravitysmtp' ),
 				'value_export' => function_exists( 'mb_strlen' ) ? 'Yes' : 'No',
 			),
 			array(
-				'label'        => esc_html__( 'Loaded Extensions', 'gravitysmtp' ),
+				'label'        => __( 'Loaded Extensions', 'gravitysmtp' ),
 				'label_export' => 'Loaded Extensions',
 				'value'        => join( ', ', get_loaded_extensions() ),
 			),
@@ -897,17 +894,17 @@ class Tools_Config extends Config {
 
 		return array(
 			array(
-				'label'        => esc_html__( 'Debug Log Enabled', 'gravitysmtp' ),
+				'label'        => __( 'Debug Log Enabled', 'gravitysmtp' ),
 				'label_export' => 'Debug Log Enabled',
 				'value'        => $enabled ? 'Yes' : 'No',
 			),
 			array(
-				'label'        => esc_html__( 'Debug Retention Period', 'gravitysmtp' ),
+				'label'        => __( 'Debug Retention Period', 'gravitysmtp' ),
 				'label_export' => 'Debug Retention Period',
 				'value'        => $retention,
 			),
 			array(
-				'label'        => esc_html__( 'Debug Log Link', 'gravitysmtp' ),
+				'label'        => __( 'Debug Log Link', 'gravitysmtp' ),
 				'label_as_html' => false,
 				'value_as_html' => true,
 				'label_export' => 'Debug Log Link',
@@ -988,11 +985,11 @@ class Tools_Config extends Config {
 		}
 
 		if ( empty( $enabled_connectors ) ) {
-			$enabled_connectors[] = esc_html__( 'No Integrations Enabled', 'gravitysmtp' );
+			$enabled_connectors[] = __( 'No Integrations Enabled', 'gravitysmtp' );
 		}
 
 		$values[] = array(
-			'label'        => esc_html__( 'Enabled Integrations', 'gravitysmtp' ),
+			'label'        => __( 'Enabled Integrations', 'gravitysmtp' ),
 			'label_export' => 'Enabled Integrations',
 			'value'        => implode( ', ', $enabled_connectors ),
 		);
@@ -1001,13 +998,13 @@ class Tools_Config extends Config {
 		$backup_connector  = $data->get_connector_status_of_type( Connector_Status_Enum::BACKUP, __( 'No Backup Integration Enabled', 'gravitysmtp' ) );
 
 		$values[] = array(
-			'label'        => esc_html__( 'Primary Integration', 'gravitysmtp' ),
+			'label'        => __( 'Primary Integration', 'gravitysmtp' ),
 			'label_export' => 'Primary Integration',
 			'value'        => isset( $connector_names[ $primary_connector ] ) ? $connector_names[ $primary_connector ] : $primary_connector,
 		);
 
 		$values[] = array(
-			'label'        => esc_html__( 'Backup Integration', 'gravitysmtp' ),
+			'label'        => __( 'Backup Integration', 'gravitysmtp' ),
 			'label_export' => 'Backup Integration',
 			'value'        => isset( $connector_names[ $backup_connector ] ) ? $connector_names[ $backup_connector ] : $backup_connector,
 		);
@@ -1023,22 +1020,22 @@ class Tools_Config extends Config {
 
 		return array(
 			array(
-				'label'        => esc_html__( 'Database Management System', 'gravitysmtp' ),
+				'label'        => __( 'Database Management System', 'gravitysmtp' ),
 				'label_export' => 'Database Management System',
 				'value'        => esc_html( $db_type ),
 			),
 			array(
-				'label'        => esc_html__( 'Version', 'gravitysmtp' ),
+				'label'        => __( 'Version', 'gravitysmtp' ),
 				'label_export' => 'Version',
 				'value'        => esc_html( $db_version ),
 			),
 			array(
-				'label'        => esc_html__( 'Database Character Set', 'gravitysmtp' ),
+				'label'        => __( 'Database Character Set', 'gravitysmtp' ),
 				'label_export' => 'Database Character Set',
 				'value'        => esc_html( ( Common::get_dbms_type() === 'SQLite' ) ? $wpdb->charset : $wpdb->get_var( 'SELECT @@character_set_database' ) ),
 			),
 			array(
-				'label'        => esc_html__( 'Database Collation', 'gravitysmtp' ),
+				'label'        => __( 'Database Collation', 'gravitysmtp' ),
 				'label_export' => 'Database Collation',
 				'value'        => esc_html( ( Common::get_dbms_type() === 'SQLite' ) ? ( empty( $wpdb->collate ) ? 'N/A' : $wpdb->collate ) : $wpdb->get_var( 'SELECT @@collation_database' ) ),
 			),
@@ -1058,7 +1055,7 @@ class Tools_Config extends Config {
 			$data[] = array(
 				'label'        => $table,
 				'label_export' => $table,
-				'value'        => $table_exists ? esc_html__( 'Exists', 'gravitysmtp' ) : esc_html__( 'Missing', 'gravitysmtp' ),
+				'value'        => $table_exists ? __( 'Exists', 'gravitysmtp' ) : __( 'Missing', 'gravitysmtp' ),
 				'value_export' => $table_exists ? 'Exists' : 'Missing',
 			);
 		}
@@ -1097,27 +1094,27 @@ class Tools_Config extends Config {
 
 		return array(
 			array(
-				'label'        => esc_html__( 'WordPress (Local) Timezone', 'gravitysmtp' ),
+				'label'        => __( 'WordPress (Local) Timezone', 'gravitysmtp' ),
 				'label_export' => 'WordPress (Local) Timezone',
 				'value'        => $this->get_timezone(),
 			),
 			array(
-				'label'        => esc_html__( 'MySQL - Universal time (UTC)', 'gravitysmtp' ),
+				'label'        => __( 'MySQL - Universal time (UTC)', 'gravitysmtp' ),
 				'label_export' => 'MySQL (UTC)',
 				'value'        => esc_html( $db_date ),
 			),
 			array(
-				'label'        => esc_html__( 'MySQL - Local time', 'gravitysmtp' ),
+				'label'        => __( 'MySQL - Local time', 'gravitysmtp' ),
 				'label_export' => 'MySQL (Local)',
 				'value'        => esc_html( $formatted_local_db_date ),
 			),
 			array(
-				'label'        => esc_html__( 'PHP - Universal time (UTC)', 'gravitysmtp' ),
+				'label'        => __( 'PHP - Universal time (UTC)', 'gravitysmtp' ),
 				'label_export' => 'PHP (UTC)',
 				'value'        => esc_html( $php_date ),
 			),
 			array(
-				'label'        => esc_html__( 'PHP - Local time', 'gravitysmtp' ),
+				'label'        => __( 'PHP - Local time', 'gravitysmtp' ),
 				'label_export' => 'PHP (Local)',
 				'value'        => esc_html( $formatted_local_php_date ),
 			),
@@ -1153,7 +1150,7 @@ class Tools_Config extends Config {
 				'hideWhenLoading' => true,
 				'key'             => 'id',
 				'props'           => array(
-					'content' => esc_html__( 'ID', 'gravitysmtp' ),
+					'content' => __( 'ID', 'gravitysmtp' ),
 					'size'    => 'text-sm',
 					'weight'  => 'medium',
 				),
@@ -1165,7 +1162,7 @@ class Tools_Config extends Config {
 				'hideWhenLoading' => true,
 				'key'             => 'status',
 				'props'           => array(
-					'content' => esc_html__( 'Status', 'gravitysmtp' ),
+					'content' => __( 'Status', 'gravitysmtp' ),
 					'size'    => 'text-sm',
 					'weight'  => 'medium',
 				),
@@ -1189,7 +1186,7 @@ class Tools_Config extends Config {
 				'hideWhenLoading' => true,
 				'key'             => 'log',
 				'props'           => array(
-					'content' => esc_html__( 'Log', 'gravitysmtp' ),
+					'content' => __( 'Log', 'gravitysmtp' ),
 					'size'    => 'text-sm',
 					'weight'  => 'medium',
 				),
@@ -1201,7 +1198,7 @@ class Tools_Config extends Config {
 				'hideWhenLoading' => true,
 				'key'             => 'actions',
 				'props'           => array(
-					'content' => esc_html__( 'Actions', 'gravitysmtp' ),
+					'content' => __( 'Actions', 'gravitysmtp' ),
 					'size'    => 'text-sm',
 					'weight'  => 'medium',
 				),
@@ -1240,9 +1237,6 @@ class Tools_Config extends Config {
 
 		$search_term = filter_input( INPUT_GET, 'search_term' );
 		$search_type = filter_input( INPUT_GET, 'search_type' );
-		if ( ! empty( $search_term ) ) {
-			$search_term = htmlspecialchars( $search_term );
-		}
 
 		if ( ! empty( $search_type ) ) {
 			$search_type = htmlspecialchars( $search_type );

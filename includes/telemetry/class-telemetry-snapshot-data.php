@@ -6,6 +6,7 @@ use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Connector_Settings_Endp
 use Gravity_Forms\Gravity_SMTP\Connectors\Endpoints\Save_Plugin_Settings_Endpoint;
 use Gravity_Forms\Gravity_SMTP\Data_Store\Data_Store_Router;
 use Gravity_Forms\Gravity_SMTP\Models\Event_Model;
+use Gravity_Forms\Gravity_SMTP\Utils\Booliesh;
 use Gravity_Forms\Gravity_Tools\Logging\Logger;
 use Gravity_Forms\Gravity_Tools\Telemetry\Telemetry_Data;
 use Gravity_Forms\Gravity_Tools\Utils\Common;
@@ -58,6 +59,7 @@ class Telemetry_Snapshot_Data extends Telemetry_Data {
 		}
 
 		$is_allowed = $this->plugin_settings->get_plugin_setting( $this->enabled_setting_name, true );
+		$is_allowed = Booliesh::get( $is_allowed, true );
 
 		return $is_allowed;
 	}
@@ -195,7 +197,7 @@ class Telemetry_Snapshot_Data extends Telemetry_Data {
 			'gravitysmtp_config' => array(
 				Save_Plugin_Settings_Endpoint::PARAM_TEST_MODE              => $this->plugin_settings->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_TEST_MODE, false ),
 				Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_ENABLED      => $this->plugin_settings->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_ENABLED, true ),
-				Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_RETENTION    => $this->plugin_settings->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_RETENTION, 180 ),
+				Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_RETENTION    => $this->plugin_settings->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_EVENT_LOG_RETENTION, Save_Plugin_Settings_Endpoint::DEFAULT_EVENT_LOG_RETENTION ),
 				Save_Plugin_Settings_Endpoint::PARAM_USAGE_ANALYTICS        => $this->plugin_settings->get_plugin_setting( Save_Plugin_Settings_Endpoint::PARAM_USAGE_ANALYTICS, true ),
 				Save_Connector_Settings_Endpoint::SETTING_ENABLED_CONNECTOR => $this->plugin_settings->get_plugin_setting( Save_Connector_Settings_Endpoint::SETTING_ENABLED_CONNECTOR ),
 				self::METRIC_MIGRATIONS_RUN => $this->plugin_settings->get_plugin_setting( self::METRIC_MIGRATIONS_RUN, array() ),

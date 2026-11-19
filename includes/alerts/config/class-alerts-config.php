@@ -64,32 +64,32 @@ class Alerts_Config extends Config {
 	protected function i18n_values() {
 		return array(
 			'alerts' => array(
-				'top_heading'                        => esc_html__( 'Alerts', 'gravitysmtp' ),
+				'top_heading'                        => __( 'Alerts', 'gravitysmtp' ),
 				'top_content'                        => __( "Use these settings to configure alerts for failed email sending attempts. Set up notifications through Webhooks or SMS (via Twilio) to ensure you're informed when an email fails to send. Multiple integrations can be added and managed.", 'gravitysmtp' ),
-				'alerts_box_heading'                 => esc_html__( 'Alerts Settings', 'gravitysmtp' ),
-				'notify_heading'                     => esc_html__( 'When to Notify', 'gravitysmtp' ),
-				'email_request_fails_label'          => esc_html__( 'Email send request fails', 'gravitysmtp' ),
-				'email_request_fails_help_text'      => esc_html__( 'Enable this option send an alert when an email send attempt fails for any reason.', 'gravitysmtp' ),
-				'alert_threshold_count_label'        => esc_html__( 'Failure Amount', 'gravitysmtp' ),
-				'alert_threshold_count_help_text'    => esc_html__( 'The number of failures to trigger an alert.', 'gravitysmtp' ),
-				'alert_threshold_interval_label'     => esc_html__( 'Alert Rate', 'gravitysmtp' ),
-				'alert_threshold_interval_help_text' => esc_html__( 'Interval for sending alerts about failures (in minutes).', 'gravitysmtp' ),
-				'slack_heading'                      => esc_html__( 'Webhooks', 'gravitysmtp' ),
-				'slack_alerts_label'                 => esc_html__( 'Webhook Alerts', 'gravitysmtp' ),
-				'slack_alerts_help_text'             => esc_html__( "Get notified via webhook or SMS (Twilio) when emails fail to send. Webhooks can be used with services like Slack, Zapier, and more.", 'gravitysmtp' ),
-				'slack_webhook_add_button_label'     => esc_html__( 'Add Webhook', 'gravitysmtp' ),
-				'slack_webhook_delete_button_label'  => esc_html__( 'Delete', 'gravitysmtp' ),
-				'start_sending_test_alert'           => esc_html__( 'Sending a test alert from the alerts settings page.', 'gravitysmtp' ),
-				'snackbar_test_alert_success'        => esc_html__( 'Alert successfully configured!', 'gravitysmtp' ),
-				'snackbar_test_alert_error'          => esc_html__( 'Could not send alert. Check Debug Log for details.', 'gravitysmtp' ),
-				'twilio_heading'                     => esc_html__( 'Twilio', 'gravitysmtp' ),
-				'twilio_alerts_block_heading'        => esc_html__( 'Twilio Account: %s', 'gravitysmtp' ),
-				'twilio_alerts_label'                => esc_html__( 'SMS via Twilio Alerts', 'gravitysmtp' ),
+				'alerts_box_heading'                 => __( 'Alerts Settings', 'gravitysmtp' ),
+				'notify_heading'                     => __( 'When to Notify', 'gravitysmtp' ),
+				'email_request_fails_label'          => __( 'Email send request fails', 'gravitysmtp' ),
+				'email_request_fails_help_text'      => __( 'Enable this option send an alert when an email send attempt fails for any reason.', 'gravitysmtp' ),
+				'alert_threshold_count_label'        => __( 'Failure Amount', 'gravitysmtp' ),
+				'alert_threshold_count_help_text'    => __( 'The number of failures to trigger an alert.', 'gravitysmtp' ),
+				'alert_threshold_interval_label'     => __( 'Alert Rate', 'gravitysmtp' ),
+				'alert_threshold_interval_help_text' => __( 'Interval for sending alerts about failures (in minutes).', 'gravitysmtp' ),
+				'slack_heading'                      => __( 'Webhooks', 'gravitysmtp' ),
+				'slack_alerts_label'                 => __( 'Webhook Alerts', 'gravitysmtp' ),
+				'slack_alerts_help_text'             => __( "Get notified via webhook or SMS (Twilio) when emails fail to send. Webhooks can be used with services like Slack, Zapier, and more.", 'gravitysmtp' ),
+				'slack_webhook_add_button_label'     => __( 'Add Webhook', 'gravitysmtp' ),
+				'slack_webhook_delete_button_label'  => __( 'Delete', 'gravitysmtp' ),
+				'start_sending_test_alert'           => __( 'Sending a test alert from the alerts settings page.', 'gravitysmtp' ),
+				'snackbar_test_alert_success'        => __( 'Alert successfully configured!', 'gravitysmtp' ),
+				'snackbar_test_alert_error'          => __( 'Could not send alert. Check Debug Log for details.', 'gravitysmtp' ),
+				'twilio_heading'                     => __( 'Twilio', 'gravitysmtp' ),
+				'twilio_alerts_block_heading'        => __( 'Twilio Account: %s', 'gravitysmtp' ),
+				'twilio_alerts_label'                => __( 'SMS via Twilio Alerts', 'gravitysmtp' ),
 				'twilio_alerts_help_text'            => __( "Enter the Twilio account you'd like to use to send alerts when email sending fails.", 'gravitysmtp' ),
-				'twilio_account_add_button_label'    => esc_html__( 'Add Another Account', 'gravitysmtp' ),
-				'twilio_account_delete_button_label' => esc_html__( 'Delete', 'gravitysmtp' ),
-				'save_settings_button_label'         => esc_html__( 'Save Settings', 'gravitysmtp' ),
-				'drag_button_label'                  => esc_html__( 'Click to toggle drag and drop.', 'gravitysmtp' ),
+				'twilio_account_add_button_label'    => __( 'Add Another Account', 'gravitysmtp' ),
+				'twilio_account_delete_button_label' => __( 'Delete', 'gravitysmtp' ),
+				'save_settings_button_label'         => __( 'Save Settings', 'gravitysmtp' ),
+				'drag_button_label'                  => __( 'Click to toggle drag and drop.', 'gravitysmtp' ),
 				'begin_drag_notice'                  => __( 'Entering drag and drop for item %1$s.', 'gravitysmtp' ),
 				'end_drag_notice'                    => __( 'Exiting drag and drop for item %1$s.', 'gravitysmtp' ),
 				'end_drop_notice'                    => __( 'Item %1$s moved to position %2$s.', 'gravitysmtp' ),
@@ -100,7 +100,7 @@ class Alerts_Config extends Config {
 
 	private function empty_twilio_item() {
 		return array(
-			'repeater_item_block_content_title' => esc_html__( 'Twilio Account:', 'gravitysmtp' ),
+			'repeater_item_block_content_title' => __( 'Twilio Account:', 'gravitysmtp' ),
 			'repeater_item_collapsed'           => false,
 			'repeater_item_id'                  => 'repeater-twilio-alerts-0',
 			'twilio_account_name'               => '',
@@ -163,8 +163,11 @@ class Alerts_Config extends Config {
 						array(
 							'component' => 'Input',
 							'props'     => array(
+								'customAttributes' => array(
+									'data-test-id' => 'alerts-settings-slack-webhook-url',
+								),
 								'labelAttributes' => array(
-									'label'     => esc_html__( 'Webhook URL', 'gravitysmtp' ),
+									'label'     => __( 'Webhook URL', 'gravitysmtp' ),
 									'isVisible' => false,
 								),
 								'name'            => self::SETTING_SLACK_WEBHOOK_URL,
@@ -173,7 +176,10 @@ class Alerts_Config extends Config {
 						array(
 							'component' => 'Button',
 							'props'     => array(
-								'label'        => esc_html__( 'Test Webhook', 'gravitysmtp' ),
+								'customAttributes' => array(
+									'data-test-id' => 'alerts-settings-slack-test-webhook',
+								),
+								'label'        => __( 'Test Webhook', 'gravitysmtp' ),
 								'icon'         => 'play',
 								'iconPosition' => 'leading',
 								'iconPrefix'   => 'gravity-admin-icon',
@@ -191,7 +197,7 @@ class Alerts_Config extends Config {
 							'component' => 'Input',
 							'props'     => array(
 								'labelAttributes' => array(
-									'label'  => esc_html__( 'Account Name', 'gravitysmtp' ),
+									'label'  => __( 'Account Name', 'gravitysmtp' ),
 									'size'   => 'text-sm',
 									'weight' => 'medium',
 								),
@@ -202,7 +208,7 @@ class Alerts_Config extends Config {
 							'component' => 'Input',
 							'props'     => array(
 								'labelAttributes' => array(
-									'label'  => esc_html__( 'Twilio Account SID', 'gravitysmtp' ),
+									'label'  => __( 'Twilio Account SID', 'gravitysmtp' ),
 									'size'   => 'text-sm',
 									'weight' => 'medium',
 								),
@@ -213,7 +219,7 @@ class Alerts_Config extends Config {
 							'component' => 'Input',
 							'props'     => array(
 								'labelAttributes' => array(
-									'label'  => esc_html__( 'Twilio Auth Token', 'gravitysmtp' ),
+									'label'  => __( 'Twilio Auth Token', 'gravitysmtp' ),
 									'size'   => 'text-sm',
 									'weight' => 'medium',
 								),
@@ -224,7 +230,7 @@ class Alerts_Config extends Config {
 							'component' => 'Input',
 							'props'     => array(
 								'labelAttributes' => array(
-									'label'  => esc_html__( 'From Phone Number', 'gravitysmtp' ),
+									'label'  => __( 'From Phone Number', 'gravitysmtp' ),
 									'size'   => 'text-sm',
 									'weight' => 'medium',
 								),
@@ -235,7 +241,7 @@ class Alerts_Config extends Config {
 							'component' => 'Input',
 							'props'     => array(
 								'labelAttributes' => array(
-									'label'  => esc_html__( 'To Phone Number', 'gravitysmtp' ),
+									'label'  => __( 'To Phone Number', 'gravitysmtp' ),
 									'size'   => 'text-sm',
 									'weight' => 'medium',
 								),
@@ -246,7 +252,7 @@ class Alerts_Config extends Config {
 							'component' => 'Button',
 							'props'     => array(
 								'customClasses' => [ 'gravitysmtp-alerts-settings__twilio-test-connection' ],
-								'label'        => esc_html__( 'Test Connection', 'gravitysmtp' ),
+								'label'        => __( 'Test Connection', 'gravitysmtp' ),
 								'icon'         => 'play',
 								'iconPosition' => 'leading',
 								'iconPrefix'   => 'gravity-admin-icon',

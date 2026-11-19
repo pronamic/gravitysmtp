@@ -36,10 +36,6 @@ class Log_Item_Endpoint extends Endpoint {
 		$message  = filter_input( INPUT_POST, self::PARAM_LOG_MESSAGE );
 		$priority = filter_input( INPUT_POST, self::PARAM_PRIORITY );
 
-		if ( ! empty( $message ) ) {
-			$message = htmlspecialchars( $message );
-		}
-
 		$this->logger->log( $message, $priority );
 
 		wp_send_json_success( array( 'message' => __( 'Message logged', 'gravitysmtp' ) ), 200 );

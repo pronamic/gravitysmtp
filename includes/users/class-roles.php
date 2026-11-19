@@ -105,6 +105,12 @@ class Roles {
 
 	public function register() {
 		$admin = get_role( 'administrator' );
+
+		// A multisite subsite can have no administrator role. Nothing to grant then.
+		if ( ! $admin ) {
+			return;
+		}
+
 		foreach ( $this->caps as $cap ) {
 			// this ensures that capability is not re-granted after having been denied via Members plugin
 			if ( ! array_key_exists( $cap, $admin->capabilities ) ) {

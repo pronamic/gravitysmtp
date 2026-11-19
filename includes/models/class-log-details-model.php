@@ -90,6 +90,43 @@ class Log_Details_Model {
 		$wpdb->delete( $this->get_table_name(), array( 'event_id' => $id ) );
 	}
 
+	/**
+	 * Delete log rows whose parent event no longer exists, in bounded-size
+	 * chunks so cleanup after a large retention run stays fast and memory-flat.
+	 *
+	 * @since 2.3.5
+	 *
+	 * @param int $chunk_size
+	 *
+	 * @return bool False if a delete query failed, true otherwise.
+	 */
+	public function delete_orphaned_in_chunks( $chunk_size = 5000 ) {
+		global $wpdb;
+
+		$table_name        = $this->get_table_name();
+		$events_table_name = $this->get_events_table_name();
+
+		// A multi-table DELETE...JOIN doesn't support LIMIT, so the chunk of ids to
+		// delete is selected first, from a materialized derived table (MySQL
+		// disallows selecting from the table being deleted from directly).
+		do {
+			$deleted = $wpdb->query( $wpdb->prepare(
+				"DELETE FROM $table_name WHERE id IN (
+					SELECT id FROM (
+						SELECT l.id FROM $table_name l LEFT JOIN $events_table_name e ON e.id = l.event_id WHERE e.id IS NULL LIMIT %d
+					) AS orphaned_ids
+				)",
+				$chunk_size
+			) );
+
+			if ( $deleted === false ) {
+				return false;
+			}
+		} while ( $deleted >= $chunk_size );
+
+		return true;
+	}
+
 	public function delete_all() {
 		global $wpdb;
 		$table_name = $this->get_table_name();

@@ -556,29 +556,6 @@ class Connector_Service_Provider extends Config_Service_Provider {
 				return $data;
 			}
 
-			$order = array(
-				'amazon-ses',
-				'brevo',
-				'cloudflare',
-				'elastic_email',
-				'emailit',
-				'generic',
-				'google-gmail',
-				'mailchimp',
-				'mailersend',
-			'mailgun',
-			'mailjet',
-			'mailtrap',
-			'microsoft',
-				'phpmail',
-				'postmark',
-				'sendgrid',
-				'smtpcom',
-				'smtp2go',
-				'sparkpost',
-				'zoho-mail',
-			);
-
 			// todo: setup wizard data should only be injected if should display is true for the app: includes/apps/setup-wizard/config/class-setup-wizard-config.php:18
 			foreach ( array( 'settings', 'setup_wizard', 'tools' ) as $app ) {
 				if ( empty( $data['components'][ $app ]['data']['integrations'] ) ) {
@@ -587,15 +564,16 @@ class Connector_Service_Provider extends Config_Service_Provider {
 
 				$integrations = $data['components'][ $app ]['data']['integrations'];
 
-				usort( $integrations, function ( $a, $b ) use ( $order ) {
-					$a_pos = array_search( $a['id'], $order );
-					$b_pos = array_search( $b['id'], $order );
+				// Sort alphabetically by title, keeping Custom SMTP last.
+				usort( $integrations, function ( $a, $b ) {
+					$a_is_custom = $a['id'] === 'generic';
+					$b_is_custom = $b['id'] === 'generic';
 
-					if ( $a_pos === $b_pos ) {
-						return 0;
+					if ( $a_is_custom !== $b_is_custom ) {
+						return $a_is_custom ? 1 : - 1;
 					}
 
-					return $a_pos < $b_pos ? - 1 : 1;
+					return strcasecmp( $a['title'], $b['title'] );
 				} );
 
 				$data['components'][ $app ]['data']['integrations'] = $integrations;

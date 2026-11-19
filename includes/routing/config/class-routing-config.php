@@ -44,84 +44,84 @@ class Routing_Config extends Config {
 
 	private function i18n_values() {
 		return array(
-			'add_condition_button_label'       => esc_html__( 'And', 'gravitysmtp' ),
-			'add_new_condition_button_label'   => esc_html__( 'Add New Condition', 'gravitysmtp' ),
-			'add_new_routing_button_label'     => esc_html__( 'Add New Rule', 'gravitysmtp' ),
-			'and_label'                        => esc_html__( 'and', 'gravitysmtp' ),
-			'cancel_button_label'              => esc_html__( 'Cancel', 'gravitysmtp' ),
-			'choose_provider_label'            => esc_html__( 'Choose Provider', 'gravitysmtp' ),
-			'comparator_label'                 => esc_html__( 'Comparator', 'gravitysmtp' ),
-			'condition_field_label'            => esc_html__( 'Condition field', 'gravitysmtp' ),
+			'add_condition_button_label'       => __( 'And', 'gravitysmtp' ),
+			'add_new_condition_button_label'   => __( 'Add New Condition', 'gravitysmtp' ),
+			'add_new_routing_button_label'     => __( 'Add New Rule', 'gravitysmtp' ),
+			'and_label'                        => __( 'and', 'gravitysmtp' ),
+			'cancel_button_label'              => __( 'Cancel', 'gravitysmtp' ),
+			'choose_provider_label'            => __( 'Choose Provider', 'gravitysmtp' ),
+			'comparator_label'                 => __( 'Comparator', 'gravitysmtp' ),
+			'condition_field_label'            => __( 'Condition field', 'gravitysmtp' ),
 			/* translators: %s: a condition value that is matched as a regular expression. */
-			'condition_regex_value'            => esc_html__( '%s (regex)', 'gravitysmtp' ),
-			'delete_button_label'              => esc_html__( 'Delete', 'gravitysmtp' ),
-			'delete_dialog_confirm_label'      => esc_html__( 'Delete', 'gravitysmtp' ),
-			'delete_dialog_content'            => esc_html__( 'Are you sure you want to delete this rule? This action cannot be undone.', 'gravitysmtp' ),
-			'delete_dialog_title'              => esc_html__( 'Delete Rule', 'gravitysmtp' ),
-			'dropdown_search_placeholder'      => esc_html__( 'Search', 'gravitysmtp' ),
+			'condition_regex_value'            => __( '%s (regex)', 'gravitysmtp' ),
+			'delete_button_label'              => __( 'Delete', 'gravitysmtp' ),
+			'delete_dialog_confirm_label'      => __( 'Delete', 'gravitysmtp' ),
+			'delete_dialog_content'            => __( 'Are you sure you want to delete this rule? This action cannot be undone.', 'gravitysmtp' ),
+			'delete_dialog_title'              => __( 'Delete Rule', 'gravitysmtp' ),
+			'dropdown_search_placeholder'      => __( 'Search', 'gravitysmtp' ),
 			/* translators: {{provider}} tags are replaced by a select input for the provider. */
-			'edit_conditions_intro'            => esc_html__( 'Send with {{provider}}{{provider}} if the following conditions are met:', 'gravitysmtp' ),
-			'edit_routing_button_label'        => esc_html__( 'Edit Rule', 'gravitysmtp' ),
-			'enabled_toggle_label'             => esc_html__( 'Enable rule', 'gravitysmtp' ),
-			'fallback_recipe_name'             => esc_html__( 'Rule', 'gravitysmtp' ),
+			'edit_conditions_intro'            => __( 'Send with {{provider}}{{provider}} if the following conditions are met:', 'gravitysmtp' ),
+			'edit_routing_button_label'        => __( 'Edit Rule', 'gravitysmtp' ),
+			'enabled_toggle_label'             => __( 'Enable rule', 'gravitysmtp' ),
+			'fallback_recipe_name'             => __( 'Rule', 'gravitysmtp' ),
 			/* translators: %s: name of an integration that is no longer configured and active. */
-			'invalid_provider_option_label'    => esc_html__( '%s (unavailable)', 'gravitysmtp' ),
-			'invalid_regex_error'              => esc_html__( 'Invalid regular expression.', 'gravitysmtp' ),
-			'invalid_rule_badge_label'         => esc_html__( 'Invalid', 'gravitysmtp' ),
-			'invalid_rules_alert'              => esc_html__( 'One or more routing rules are invalid because their sending integration is no longer configured and active. Please review the highlighted rules below and choose an available integration.', 'gravitysmtp' ),
+			'invalid_provider_option_label'    => __( '%s (unavailable)', 'gravitysmtp' ),
+			'invalid_regex_error'              => __( 'Invalid regular expression.', 'gravitysmtp' ),
+			'invalid_rule_badge_label'         => __( 'Invalid', 'gravitysmtp' ),
+			'invalid_rules_alert'              => __( 'One or more routing rules are invalid because their sending integration is no longer configured and active. Please review the highlighted rules below and choose an available integration.', 'gravitysmtp' ),
 			/* translators: %s: an email source (plugin, theme, or WordPress) that is no longer installed. */
-			'invalid_source_option_label'      => esc_html__( '%s (unavailable)', 'gravitysmtp' ),
-			'move_rule_down_label'             => esc_html__( 'Move rule down.', 'gravitysmtp' ),
-			'move_rule_up_label'               => esc_html__( 'Move rule up.', 'gravitysmtp' ),
-			'or_label'                         => esc_html__( 'or', 'gravitysmtp' ),
-			'preset_add_button_label'          => esc_html__( 'Add This Preset', 'gravitysmtp' ),
-			'presets_button_label'             => esc_html__( 'Add from Preset', 'gravitysmtp' ),
-			'presets_dialog_heading'           => esc_html__( 'Add a Preset Rule', 'gravitysmtp' ),
-			'presets_heading'                  => esc_html__( 'Start With a Preset', 'gravitysmtp' ),
+			'invalid_source_option_label'      => __( '%s (unavailable)', 'gravitysmtp' ),
+			'move_rule_down_label'             => __( 'Move rule down.', 'gravitysmtp' ),
+			'move_rule_up_label'               => __( 'Move rule up.', 'gravitysmtp' ),
+			'or_label'                         => __( 'or', 'gravitysmtp' ),
+			'preset_add_button_label'          => __( 'Add This Preset', 'gravitysmtp' ),
+			'presets_button_label'             => __( 'Add from Preset', 'gravitysmtp' ),
+			'presets_dialog_heading'           => __( 'Add a Preset Rule', 'gravitysmtp' ),
+			'presets_heading'                  => __( 'Start With a Preset', 'gravitysmtp' ),
 			/* translators: {{provider}} tags are replaced by a text component for the provider. */
-			'preview_conditions_intro'         => esc_html__( 'Send with {{provider}}{{provider}} if', 'gravitysmtp' ),
-			'recipe_name_label'                => esc_html__( 'Rule name', 'gravitysmtp' ),
-			'regex_toggle_label'               => esc_html__( 'Use Regex', 'gravitysmtp' ),
-			'routing_unavailable_message'      => esc_html__( 'You must have at least 2 integrations configured and active to use email routing.', 'gravitysmtp' ),
-			'routing_unavailable_rules_note'   => esc_html__( 'Your existing rules have been disabled and cannot be enabled or edited until at least 2 integrations are configured and active. They will be restored automatically.', 'gravitysmtp' ),
+			'preview_conditions_intro'         => __( 'Send with {{provider}}{{provider}} if', 'gravitysmtp' ),
+			'recipe_name_label'                => __( 'Rule name', 'gravitysmtp' ),
+			'regex_toggle_label'               => __( 'Use Regex', 'gravitysmtp' ),
+			'routing_unavailable_message'      => __( 'You must have at least 2 integrations configured and active to use email routing.', 'gravitysmtp' ),
+			'routing_unavailable_rules_note'   => __( 'Your existing rules have been disabled and cannot be enabled or edited until at least 2 integrations are configured and active. They will be restored automatically.', 'gravitysmtp' ),
 			/* translators: %2$s: the rule's new list position. */
-			'rule_moved_announcement'          => esc_html__( 'Rule moved to position %2$s.', 'gravitysmtp' ),
-			'save_settings_button_label'       => esc_html__( 'Save Rule', 'gravitysmtp' ),
-			'snackbar_preset_add_success'      => esc_html__( 'Routing preset added.', 'gravitysmtp' ),
-			'source_group_mu_plugins'          => esc_html__( 'MU Plugins', 'gravitysmtp' ),
-			'source_group_plugins'             => esc_html__( 'Plugins', 'gravitysmtp' ),
-			'source_group_themes'              => esc_html__( 'Themes', 'gravitysmtp' ),
-			'snackbar_delete_error'            => esc_html__( 'There was an error deleting the rule.', 'gravitysmtp' ),
-			'snackbar_delete_success'          => esc_html__( 'Rule deleted.', 'gravitysmtp' ),
-			'snackbar_save_error'              => esc_html__( 'There was an error saving routing settings.', 'gravitysmtp' ),
-			'snackbar_save_success'            => esc_html__( 'Routing settings saved.', 'gravitysmtp' ),
-			'test_email_routing_button_label'  => esc_html__( 'Test Email Routing', 'gravitysmtp' ),
-			'test_modal_aria_collapse'         => esc_html__( 'Collapse section', 'gravitysmtp' ),
-			'test_modal_aria_expand'           => esc_html__( 'Expand section', 'gravitysmtp' ),
-			'test_modal_cancel_label'          => esc_html__( 'Cancel', 'gravitysmtp' ),
-			'test_modal_close_label'           => esc_html__( 'Close', 'gravitysmtp' ),
-			'test_modal_description'           => esc_html__( 'Fill in only the fields you want to test. Blank fields use the same defaults as a real email. The test runs against all enabled routing rules as shown on this screen, including unsaved changes.', 'gravitysmtp' ),
-			'test_modal_group_attachments'     => esc_html__( 'Attachments', 'gravitysmtp' ),
-			'test_modal_group_content'         => esc_html__( 'Content', 'gravitysmtp' ),
-			'test_modal_group_other'           => esc_html__( 'Other', 'gravitysmtp' ),
-			'test_modal_group_recipients'      => esc_html__( 'Recipients', 'gravitysmtp' ),
-			'test_modal_group_sender'          => esc_html__( 'Sender', 'gravitysmtp' ),
-			'test_modal_group_source'          => esc_html__( 'Source', 'gravitysmtp' ),
-			'test_modal_result_error'          => esc_html__( 'There was an error testing the routing. Please try again.', 'gravitysmtp' ),
-			'test_modal_result_match_heading'  => esc_html__( 'Match found', 'gravitysmtp' ),
+			'rule_moved_announcement'          => __( 'Rule moved to position %2$s.', 'gravitysmtp' ),
+			'save_settings_button_label'       => __( 'Save Rule', 'gravitysmtp' ),
+			'snackbar_preset_add_success'      => __( 'Routing preset added.', 'gravitysmtp' ),
+			'source_group_mu_plugins'          => __( 'MU Plugins', 'gravitysmtp' ),
+			'source_group_plugins'             => __( 'Plugins', 'gravitysmtp' ),
+			'source_group_themes'              => __( 'Themes', 'gravitysmtp' ),
+			'snackbar_delete_error'            => __( 'There was an error deleting the rule.', 'gravitysmtp' ),
+			'snackbar_delete_success'          => __( 'Rule deleted.', 'gravitysmtp' ),
+			'snackbar_save_error'              => __( 'There was an error saving routing settings.', 'gravitysmtp' ),
+			'snackbar_save_success'            => __( 'Routing settings saved.', 'gravitysmtp' ),
+			'test_email_routing_button_label'  => __( 'Test Email Routing', 'gravitysmtp' ),
+			'test_modal_aria_collapse'         => __( 'Collapse section', 'gravitysmtp' ),
+			'test_modal_aria_expand'           => __( 'Expand section', 'gravitysmtp' ),
+			'test_modal_cancel_label'          => __( 'Cancel', 'gravitysmtp' ),
+			'test_modal_close_label'           => __( 'Close', 'gravitysmtp' ),
+			'test_modal_description'           => __( 'Fill in only the fields you want to test. Blank fields use the same defaults as a real email. The test runs against all enabled routing rules as shown on this screen, including unsaved changes.', 'gravitysmtp' ),
+			'test_modal_group_attachments'     => __( 'Attachments', 'gravitysmtp' ),
+			'test_modal_group_content'         => __( 'Content', 'gravitysmtp' ),
+			'test_modal_group_other'           => __( 'Other', 'gravitysmtp' ),
+			'test_modal_group_recipients'      => __( 'Recipients', 'gravitysmtp' ),
+			'test_modal_group_sender'          => __( 'Sender', 'gravitysmtp' ),
+			'test_modal_group_source'          => __( 'Source', 'gravitysmtp' ),
+			'test_modal_result_error'          => __( 'There was an error testing the routing. Please try again.', 'gravitysmtp' ),
+			'test_modal_result_match_heading'  => __( 'Match found', 'gravitysmtp' ),
 			/* translators: %1$s: routing rule name, %2$s: connector name. */
-			'test_modal_result_match_message'  => esc_html__( '%1$s matched. This email would send with %2$s.', 'gravitysmtp' ),
-			'test_modal_result_no_match_heading' => esc_html__( 'No match', 'gravitysmtp' ),
-			'test_modal_result_no_match_message' => esc_html__( 'No routing rule matched. This email would send with your default provider.', 'gravitysmtp' ),
-			'test_modal_select_any_label'      => esc_html__( 'Any', 'gravitysmtp' ),
-			'test_modal_send_label'            => esc_html__( 'Run Test', 'gravitysmtp' ),
-			'test_modal_test_again_label'      => esc_html__( 'Test Again', 'gravitysmtp' ),
-			'test_modal_title'                 => esc_html__( 'Test Email Routing', 'gravitysmtp' ),
+			'test_modal_result_match_message'  => __( '%1$s matched. This email would send with %2$s.', 'gravitysmtp' ),
+			'test_modal_result_no_match_heading' => __( 'No match', 'gravitysmtp' ),
+			'test_modal_result_no_match_message' => __( 'No routing rule matched. This email would send with your default provider.', 'gravitysmtp' ),
+			'test_modal_select_any_label'      => __( 'Any', 'gravitysmtp' ),
+			'test_modal_send_label'            => __( 'Run Test', 'gravitysmtp' ),
+			'test_modal_test_again_label'      => __( 'Test Again', 'gravitysmtp' ),
+			'test_modal_title'                 => __( 'Test Email Routing', 'gravitysmtp' ),
 			/* translators: {{docs_link}} tags are replaced by opening and closing tags for a link to our email routing documentation. */
-			'top_content'                      => esc_html__( 'Create conditional routing rules to choose which provider sends each email. Rules are evaluated top to bottom and the first matching rule is used. {{docs_link}}Learn more about email routing.{{docs_link}}', 'gravitysmtp' ),
-			'top_heading'                      => esc_html__( 'Email Routing', 'gravitysmtp' ),
-			'value_label'                      => esc_html__( 'Value', 'gravitysmtp' ),
-			'value_required_error'             => esc_html__( 'Value is required.', 'gravitysmtp' ),
+			'top_content'                      => __( 'Create conditional routing rules to choose which provider sends each email. Rules are evaluated top to bottom and the first matching rule is used. {{docs_link}}Learn more about email routing.{{docs_link}}', 'gravitysmtp' ),
+			'top_heading'                      => __( 'Email Routing', 'gravitysmtp' ),
+			'value_label'                      => __( 'Value', 'gravitysmtp' ),
+			'value_required_error'             => __( 'Value is required.', 'gravitysmtp' ),
 		);
 	}
 
@@ -148,7 +148,7 @@ class Routing_Config extends Config {
 		$presets = array(
 			$this->preset_recipe(
 				'admin_notifications',
-				esc_html__( 'Admin Notifications', 'gravitysmtp' ),
+				__( 'Admin Notifications', 'gravitysmtp' ),
 				$this->or_conditions( array(
 					$this->and_conditions( array(
 						$this->condition( 'source_subtype', '=', 'core' ),
@@ -159,7 +159,7 @@ class Routing_Config extends Config {
 			),
 			$this->preset_recipe(
 				'handle_large_emails',
-				esc_html__( 'Handle Large Emails', 'gravitysmtp' ),
+				__( 'Handle Large Emails', 'gravitysmtp' ),
 				$this->or_conditions( array(
 					$this->and_conditions( array(
 						$this->condition( 'message_size', '>', '500' ),
@@ -172,7 +172,7 @@ class Routing_Config extends Config {
 			),
 			$this->preset_recipe(
 				'high_volume_notification',
-				esc_html__( 'High-Volume Notification', 'gravitysmtp' ),
+				__( 'High-Volume Notification', 'gravitysmtp' ),
 				$this->or_conditions( array(
 					$this->and_conditions( array(
 						$this->condition( 'to_count', '>', '5' ),
@@ -185,7 +185,7 @@ class Routing_Config extends Config {
 		if ( class_exists( 'GFForms' ) ) {
 			$presets[] = $this->preset_recipe(
 				'gravity_forms_form_submissions_with_files',
-				esc_html__( 'Gravity Forms Form Submissions with Files', 'gravitysmtp' ),
+				__( 'Gravity Forms Form Submissions with Files', 'gravitysmtp' ),
 				$this->or_conditions( array(
 					$this->and_conditions( array(
 						$this->condition( 'source', '=', 'gravityforms' ),
@@ -199,7 +199,7 @@ class Routing_Config extends Config {
 		if ( class_exists( 'WooCommerce' ) ) {
 			$presets[] = $this->preset_recipe(
 				'woocommerce_priority_orders',
-				esc_html__( 'WooCommerce Priority Orders', 'gravitysmtp' ),
+				__( 'WooCommerce Priority Orders', 'gravitysmtp' ),
 				$this->or_conditions( array(
 					$this->and_conditions( array(
 						$this->condition( 'source', '=', 'woocommerce' ),
@@ -269,7 +269,7 @@ class Routing_Config extends Config {
 
 		foreach ( $groups as $group_index => $group ) {
 			if ( $group_index > 0 ) {
-				$segments[] = esc_html__( 'or', 'gravitysmtp' );
+				$segments[] = __( 'or', 'gravitysmtp' );
 			}
 
 			$rule_segments = array();
@@ -283,12 +283,12 @@ class Routing_Config extends Config {
 				$rule_segments[] = trim( sprintf( '%s %s %s', $field_label, $comparator_label, $value_text ) );
 			}
 
-			$segments[] = implode( sprintf( ' %s ', esc_html__( 'and', 'gravitysmtp' ) ), $rule_segments );
+			$segments[] = implode( sprintf( ' %s ', __( 'and', 'gravitysmtp' ) ), $rule_segments );
 		}
 
 		return sprintf(
 			/* translators: %1$s: connector name, %2$s: conditions. */
-			esc_html__( 'Send with %1$s if %2$s', 'gravitysmtp' ),
+			__( 'Send with %1$s if %2$s', 'gravitysmtp' ),
 			$this->connector_label( $connector ),
 			implode( ' ', $segments )
 		);
@@ -296,7 +296,7 @@ class Routing_Config extends Config {
 
 	private function connector_label( $connector ) {
 		if ( empty( $connector ) ) {
-			return esc_html__( 'Choose Provider', 'gravitysmtp' );
+			return __( 'Choose Provider', 'gravitysmtp' );
 		}
 
 		$data_map = Gravity_SMTP::container()->get( Connector_Service_Provider::CONNECTOR_DATA_MAP );
@@ -504,24 +504,24 @@ class Routing_Config extends Config {
 		$equality = $this->equality_comparators();
 
 		return array(
-			$this->field_option( 'subject', esc_html__( 'Subject', 'gravitysmtp' ), 'text', $text ),
-			$this->field_option( 'message', esc_html__( 'Message', 'gravitysmtp' ), 'text', $text ),
-			$this->field_option( 'from_email', esc_html__( 'From Email', 'gravitysmtp' ), 'text', $text ),
-			$this->field_option( 'from_name', esc_html__( 'From Name', 'gravitysmtp' ), 'text', $text ),
-			$this->field_option( 'to', esc_html__( 'To', 'gravitysmtp' ), 'text', $text ),
-			$this->field_option( 'cc', esc_html__( 'CC', 'gravitysmtp' ), 'text', $text ),
-			$this->field_option( 'bcc', esc_html__( 'BCC', 'gravitysmtp' ), 'text', $text ),
-			$this->field_option( 'reply_to', esc_html__( 'Reply-To', 'gravitysmtp' ), 'text', $text ),
-			$this->field_option( 'source', esc_html__( 'Source', 'gravitysmtp' ), 'source', $equality, $this->flattened_source_options() ),
-			$this->field_option( 'source_subtype', esc_html__( 'Source Type', 'gravitysmtp' ), 'source_type', $equality, $this->source_type_options() ),
-			$this->field_option( 'to_count', esc_html__( 'To Count', 'gravitysmtp' ), 'number', $number ),
-			$this->field_option( 'cc_count', esc_html__( 'CC Count', 'gravitysmtp' ), 'number', $number ),
-			$this->field_option( 'bcc_count', esc_html__( 'BCC Count', 'gravitysmtp' ), 'number', $number ),
-			$this->field_option( 'has_attachments', esc_html__( 'Has Attachments', 'gravitysmtp' ), 'boolean', array( '=' ), $this->boolean_options() ),
-			$this->field_option( 'attachments_count', esc_html__( 'Attachments Count', 'gravitysmtp' ), 'number', $number ),
-			$this->field_option( 'content_type', esc_html__( 'Content Type', 'gravitysmtp' ), 'content_type', $equality, $this->content_type_options() ),
-			$this->field_option( 'message_size', esc_html__( 'Message Size (KB)', 'gravitysmtp' ), 'number', $number ),
-			$this->field_option( 'attachment_size', esc_html__( 'Attachment Size (KB)', 'gravitysmtp' ), 'number', $number ),
+			$this->field_option( 'subject', __( 'Subject', 'gravitysmtp' ), 'text', $text ),
+			$this->field_option( 'message', __( 'Message', 'gravitysmtp' ), 'text', $text ),
+			$this->field_option( 'from_email', __( 'From Email', 'gravitysmtp' ), 'text', $text ),
+			$this->field_option( 'from_name', __( 'From Name', 'gravitysmtp' ), 'text', $text ),
+			$this->field_option( 'to', __( 'To', 'gravitysmtp' ), 'text', $text ),
+			$this->field_option( 'cc', __( 'CC', 'gravitysmtp' ), 'text', $text ),
+			$this->field_option( 'bcc', __( 'BCC', 'gravitysmtp' ), 'text', $text ),
+			$this->field_option( 'reply_to', __( 'Reply-To', 'gravitysmtp' ), 'text', $text ),
+			$this->field_option( 'source', __( 'Source', 'gravitysmtp' ), 'source', $equality, $this->flattened_source_options() ),
+			$this->field_option( 'source_subtype', __( 'Source Type', 'gravitysmtp' ), 'source_type', $equality, $this->source_type_options() ),
+			$this->field_option( 'to_count', __( 'To Count', 'gravitysmtp' ), 'number', $number ),
+			$this->field_option( 'cc_count', __( 'CC Count', 'gravitysmtp' ), 'number', $number ),
+			$this->field_option( 'bcc_count', __( 'BCC Count', 'gravitysmtp' ), 'number', $number ),
+			$this->field_option( 'has_attachments', __( 'Has Attachments', 'gravitysmtp' ), 'boolean', array( '=' ), $this->boolean_options() ),
+			$this->field_option( 'attachments_count', __( 'Attachments Count', 'gravitysmtp' ), 'number', $number ),
+			$this->field_option( 'content_type', __( 'Content Type', 'gravitysmtp' ), 'content_type', $equality, $this->content_type_options() ),
+			$this->field_option( 'message_size', __( 'Message Size (KB)', 'gravitysmtp' ), 'number', $number ),
+			$this->field_option( 'attachment_size', __( 'Attachment Size (KB)', 'gravitysmtp' ), 'number', $number ),
 		);
 	}
 
@@ -554,24 +554,24 @@ class Routing_Config extends Config {
 
 	private function boolean_options() {
 		return array(
-			array( 'label' => esc_html__( 'True', 'gravitysmtp' ), 'value' => 'true' ),
-			array( 'label' => esc_html__( 'False', 'gravitysmtp' ), 'value' => 'false' ),
+			array( 'label' => __( 'True', 'gravitysmtp' ), 'value' => 'true' ),
+			array( 'label' => __( 'False', 'gravitysmtp' ), 'value' => 'false' ),
 		);
 	}
 
 	private function content_type_options() {
 		return array(
-			array( 'label' => esc_html__( 'HTML', 'gravitysmtp' ), 'value' => 'html' ),
-			array( 'label' => esc_html__( 'Text', 'gravitysmtp' ), 'value' => 'text' ),
+			array( 'label' => __( 'HTML', 'gravitysmtp' ), 'value' => 'html' ),
+			array( 'label' => __( 'Text', 'gravitysmtp' ), 'value' => 'text' ),
 		);
 	}
 
 	private function source_type_options() {
 		return array(
-			array( 'label' => esc_html__( 'Core', 'gravitysmtp' ), 'value' => 'core' ),
-			array( 'label' => esc_html__( 'Plugin', 'gravitysmtp' ), 'value' => 'plugin' ),
-			array( 'label' => esc_html__( 'Theme', 'gravitysmtp' ), 'value' => 'theme' ),
-			array( 'label' => esc_html__( 'MU Plugin', 'gravitysmtp' ), 'value' => 'mu_plugin' ),
+			array( 'label' => __( 'Core', 'gravitysmtp' ), 'value' => 'core' ),
+			array( 'label' => __( 'Plugin', 'gravitysmtp' ), 'value' => 'plugin' ),
+			array( 'label' => __( 'Theme', 'gravitysmtp' ), 'value' => 'theme' ),
+			array( 'label' => __( 'MU Plugin', 'gravitysmtp' ), 'value' => 'mu_plugin' ),
 		);
 	}
 
@@ -588,16 +588,16 @@ class Routing_Config extends Config {
 
 	private function comparator_options() {
 		return array(
-			array( 'label' => esc_html__( 'is', 'gravitysmtp' ), 'value' => '=' ),
-			array( 'label' => esc_html__( 'is not', 'gravitysmtp' ), 'value' => '!=' ),
-			array( 'label' => esc_html__( 'greater than', 'gravitysmtp' ), 'value' => '>' ),
-			array( 'label' => esc_html__( 'greater than or equal to', 'gravitysmtp' ), 'value' => '>=' ),
-			array( 'label' => esc_html__( 'less than', 'gravitysmtp' ), 'value' => '<' ),
-			array( 'label' => esc_html__( 'less than or equal to', 'gravitysmtp' ), 'value' => '<=' ),
-			array( 'label' => esc_html__( 'contains', 'gravitysmtp' ), 'value' => 'contains' ),
-			array( 'label' => esc_html__( 'does not contain', 'gravitysmtp' ), 'value' => 'does_not_contain' ),
-			array( 'label' => esc_html__( 'starts with', 'gravitysmtp' ), 'value' => 'starts_with' ),
-			array( 'label' => esc_html__( 'ends with', 'gravitysmtp' ), 'value' => 'ends_with' ),
+			array( 'label' => __( 'is', 'gravitysmtp' ), 'value' => '=' ),
+			array( 'label' => __( 'is not', 'gravitysmtp' ), 'value' => '!=' ),
+			array( 'label' => __( 'greater than', 'gravitysmtp' ), 'value' => '>' ),
+			array( 'label' => __( 'greater than or equal to', 'gravitysmtp' ), 'value' => '>=' ),
+			array( 'label' => __( 'less than', 'gravitysmtp' ), 'value' => '<' ),
+			array( 'label' => __( 'less than or equal to', 'gravitysmtp' ), 'value' => '<=' ),
+			array( 'label' => __( 'contains', 'gravitysmtp' ), 'value' => 'contains' ),
+			array( 'label' => __( 'does not contain', 'gravitysmtp' ), 'value' => 'does_not_contain' ),
+			array( 'label' => __( 'starts with', 'gravitysmtp' ), 'value' => 'starts_with' ),
+			array( 'label' => __( 'ends with', 'gravitysmtp' ), 'value' => 'ends_with' ),
 		);
 	}
 
@@ -615,7 +615,7 @@ class Routing_Config extends Config {
 
 			$recipes[] = array(
 				'repeater_item_id' => sprintf( 'repeater-routing-%d', $index ),
-				'name'             => isset( $recipe['name'] ) ? $recipe['name'] : sprintf( '%s %d', esc_html__( 'Rule', 'gravitysmtp' ), $index + 1 ),
+				'name'             => isset( $recipe['name'] ) ? $recipe['name'] : sprintf( '%s %d', __( 'Rule', 'gravitysmtp' ), $index + 1 ),
 				'enabled'          => isset( $recipe['enabled'] ) ? Booliesh::get( $recipe['enabled'] ) : true,
 				'connector'        => isset( $recipe['connector'] ) ? $recipe['connector'] : '',
 				'conditions'       => isset( $recipe['conditions'] ) && is_array( $recipe['conditions'] ) ? $recipe['conditions'] : $this->default_conditions(),

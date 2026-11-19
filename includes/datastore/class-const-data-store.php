@@ -25,21 +25,19 @@ class Const_Data_Store implements Data_Store {
 
 	public function get_plugin_const( $setting_name ) {
 		$const_name = sprintf( 'GRAVITYSMTP_%s', strtoupper( $setting_name ) );
+		$value      = null;
 
 		if ( defined( $const_name ) ) {
-			return constant( $const_name );
+			$value = constant( $const_name );
+		} elseif ( isset( $this->fallbacks[ $setting_name ] ) && defined( $this->fallbacks[ $setting_name ] ) ) {
+			$value = constant( $this->fallbacks[ $setting_name ] );
 		}
 
-		foreach( $this->fallbacks as $fallback_key => $fallback_constant ) {
-			if ( $setting_name !== $fallback_key ) {
-				continue;
-			}
-
-			if ( defined( $fallback_constant ) ) {
-				return constant( $fallback_constant );
-			}
+		// License key constants hold the plain key. Only the hash leaves the site, the same as Gravity Forms.
+		if ( 'license_key' === $setting_name && $value ) {
+			return md5( trim( $value ) );
 		}
 
-		return null;
+		return $value;
 	}
 }

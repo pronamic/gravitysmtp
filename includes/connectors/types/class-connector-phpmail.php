@@ -39,6 +39,9 @@ class Connector_Phpmail extends Connector_Base {
 
 		$this->reset_phpmailer();
 
+		// The PHPMailer instance is shared with the other connectors, which may have changed the transport.
+		$this->php_mailer->isMail();
+
 		if ( ! empty( $headers['content-type'] ) ) {
 			$headers['content-type'] = $this->get_att( 'content_type', $headers['content-type'] );
 		}
