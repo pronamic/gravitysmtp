@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Gravity SMTP 2.3.5\n"
+"Project-Id-Version: Gravity SMTP 2.3.6\n"
 "Report-Msgid-Bugs-To: https://gravityforms.com/support\n"
 "Last-Translator: Gravity Forms <support@gravityforms.com>\n"
 "Language-Team: Gravity Forms <support@gravityforms.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-18T16:30:20+00:00\n"
+"POT-Creation-Date: 2026-11-20T18:50:06+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: gravitysmtp\n"
@@ -1180,7 +1180,7 @@ msgid "Enable Test Mode"
 msgstr ""
 
 #: includes/apps/config/class-settings-config.php:111
-#: includes/connectors/types/class-connector-amazon.php:361
+#: includes/connectors/types/class-connector-amazon.php:364
 #: includes/connectors/types/class-connector-brevo.php:298
 #: includes/connectors/types/class-connector-cloudflare.php:619
 #: includes/connectors/types/class-connector-elasticemail.php:305
@@ -2356,7 +2356,7 @@ msgid "Default From Name"
 msgstr ""
 
 #: includes/connectors/class-connector-base.php:719
-#: includes/connectors/types/class-connector-microsoft.php:645
+#: includes/connectors/types/class-connector-microsoft.php:648
 msgid "Force From Name"
 msgstr ""
 
@@ -2558,25 +2558,25 @@ msgstr ""
 msgid "Email successfully sent."
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:269
+#: includes/connectors/types/class-connector-amazon.php:272
 msgid "Amazon SES Settings"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:276
+#: includes/connectors/types/class-connector-amazon.php:279
 #: includes/connectors/types/class-connector-brevo.php:266
 #: includes/connectors/types/class-connector-cloudflare.php:566
 #: includes/connectors/types/class-connector-elasticemail.php:273
 #: includes/connectors/types/class-connector-emailit.php:298
 #: includes/connectors/types/class-connector-generic.php:268
-#: includes/connectors/types/class-connector-google.php:385
-#: includes/connectors/types/class-connector-google.php:562
+#: includes/connectors/types/class-connector-google.php:388
+#: includes/connectors/types/class-connector-google.php:565
 #: includes/connectors/types/class-connector-mailchimp.php:290
 #: includes/connectors/types/class-connector-mailersend.php:284
 #: includes/connectors/types/class-connector-mailgun.php:340
 #: includes/connectors/types/class-connector-mailjet.php:308
 #: includes/connectors/types/class-connector-mailtrap.php:376
-#: includes/connectors/types/class-connector-microsoft.php:389
-#: includes/connectors/types/class-connector-microsoft.php:602
+#: includes/connectors/types/class-connector-microsoft.php:392
+#: includes/connectors/types/class-connector-microsoft.php:605
 #: includes/connectors/types/class-connector-postmark.php:245
 #: includes/connectors/types/class-connector-resend.php:289
 #: includes/connectors/types/class-connector-sendgrid.php:249
@@ -2588,113 +2588,113 @@ msgstr ""
 msgid "Configuration"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:300
+#: includes/connectors/types/class-connector-amazon.php:303
 msgid "Log in to your {{link}}AWS Console{{link}}, go to the IAM dashboard, and create a new access key for an IAM user with ses:SendEmail and ses:SendRawEmail permissions."
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:305
+#: includes/connectors/types/class-connector-amazon.php:308
 msgid "Access Key ID"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:319
+#: includes/connectors/types/class-connector-amazon.php:322
 msgid "Secret Access Key"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:333
+#: includes/connectors/types/class-connector-amazon.php:336
 #: includes/connectors/types/class-connector-mailgun.php:411
 #: includes/connectors/types/class-connector-sendgrid.php:288
 msgid "Region"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:348
+#: includes/connectors/types/class-connector-amazon.php:351
 msgid "Tenant"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:378
+#: includes/connectors/types/class-connector-amazon.php:381
 msgid "US East (N. Virginia)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:379
+#: includes/connectors/types/class-connector-amazon.php:382
 msgid "US East (Ohio)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:380
+#: includes/connectors/types/class-connector-amazon.php:383
 msgid "US West (N. California)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:381
+#: includes/connectors/types/class-connector-amazon.php:384
 msgid "US West (Oregon)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:382
+#: includes/connectors/types/class-connector-amazon.php:385
 msgid "Africa (Cape Town)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:383
+#: includes/connectors/types/class-connector-amazon.php:386
 msgid "Asia Pacific (Hong Kong)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:384
+#: includes/connectors/types/class-connector-amazon.php:387
 msgid "Asia Pacific (Jakarta)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:385
+#: includes/connectors/types/class-connector-amazon.php:388
 msgid "Asia Pacific (Mumbai)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:386
+#: includes/connectors/types/class-connector-amazon.php:389
 msgid "Asia Pacific (Osaka)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:387
+#: includes/connectors/types/class-connector-amazon.php:390
 msgid "Asia Pacific (Seoul)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:388
+#: includes/connectors/types/class-connector-amazon.php:391
 msgid "Asia Pacific (Singapore)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:389
+#: includes/connectors/types/class-connector-amazon.php:392
 msgid "Asia Pacific (Sydney)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:390
+#: includes/connectors/types/class-connector-amazon.php:393
 msgid "Asia Pacific (Tokyo)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:391
+#: includes/connectors/types/class-connector-amazon.php:394
 msgid "Canada (Central)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:392
+#: includes/connectors/types/class-connector-amazon.php:395
 msgid "Europe (Frankfurt)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:393
+#: includes/connectors/types/class-connector-amazon.php:396
 msgid "Europe (Ireland)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:394
+#: includes/connectors/types/class-connector-amazon.php:397
 msgid "Europe (London)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:395
+#: includes/connectors/types/class-connector-amazon.php:398
 msgid "Europe (Milan)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:396
+#: includes/connectors/types/class-connector-amazon.php:399
 msgid "Europe (Paris)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:397
+#: includes/connectors/types/class-connector-amazon.php:400
 msgid "Europe (Stockholm)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:398
+#: includes/connectors/types/class-connector-amazon.php:401
 msgid "Middle East (Bahrain)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-amazon.php:399
+#: includes/connectors/types/class-connector-amazon.php:402
 msgid "South America (São Paulo)"
 msgstr ""
 
@@ -2918,20 +2918,20 @@ msgid "SMTP Port"
 msgstr ""
 
 #: includes/connectors/types/class-connector-generic.php:337
-#: includes/connectors/types/class-connector-google.php:575
+#: includes/connectors/types/class-connector-google.php:578
 #: includes/connectors/types/class-connector-mailchimp.php:336
 #: includes/connectors/types/class-connector-mailgun.php:384
-#: includes/connectors/types/class-connector-microsoft.php:615
+#: includes/connectors/types/class-connector-microsoft.php:618
 #: includes/connectors/types/class-connector-phpmail.php:269
 #: includes/connectors/types/class-connector-sparkpost.php:376
 msgid "If Return Path is enabled this adds the return path to the email header which indicates where non-deliverable notifications should be sent. Bounce messages may be lost if not enabled."
 msgstr ""
 
 #: includes/connectors/types/class-connector-generic.php:345
-#: includes/connectors/types/class-connector-google.php:583
+#: includes/connectors/types/class-connector-google.php:586
 #: includes/connectors/types/class-connector-mailchimp.php:344
 #: includes/connectors/types/class-connector-mailgun.php:392
-#: includes/connectors/types/class-connector-microsoft.php:623
+#: includes/connectors/types/class-connector-microsoft.php:626
 #: includes/connectors/types/class-connector-phpmail.php:277
 #: includes/connectors/types/class-connector-sparkpost.php:384
 msgid "Return Path"
@@ -3001,72 +3001,72 @@ msgstr ""
 msgid "Starting email send for Google connector."
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:296
+#: includes/connectors/types/class-connector-google.php:299
 msgid "Google / Gmail Settings"
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:315
+#: includes/connectors/types/class-connector-google.php:318
 msgid "Before proceeding, make sure to save your settings with the Client ID and Client Secret."
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:325
+#: includes/connectors/types/class-connector-google.php:328
 msgid "Read our Google / Gmail documentation"
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:366
+#: includes/connectors/types/class-connector-google.php:369
 msgid "Important: To use alias email addresses with Gravity SMTP, ensure your primary Google account is authenticated, then add and verify your alias in your Google account settings. For detailed instructions, please refer to our {{link}}documentation article{{link}}."
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:411
+#: includes/connectors/types/class-connector-google.php:414
 msgid "To obtain a Client ID from Google / Gmail, log in to your {{link}}Google Cloud Console{{link}} and generate the Client ID."
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:416
+#: includes/connectors/types/class-connector-google.php:419
 #: includes/connectors/types/class-connector-zoho.php:441
 msgid "Client ID"
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:444
+#: includes/connectors/types/class-connector-google.php:447
 msgid "To obtain a Client Secret from Google / Gmail, log in to your {{link}}Google Cloud Console{{link}} and generate the Client ID."
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:449
-#: includes/connectors/types/class-connector-microsoft.php:453
+#: includes/connectors/types/class-connector-google.php:452
+#: includes/connectors/types/class-connector-microsoft.php:456
 #: includes/connectors/types/class-connector-zoho.php:474
 msgid "Client Secret"
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:470
-#: includes/connectors/types/class-connector-microsoft.php:474
-#: includes/connectors/types/class-connector-microsoft.php:506
+#: includes/connectors/types/class-connector-google.php:473
+#: includes/connectors/types/class-connector-microsoft.php:477
+#: includes/connectors/types/class-connector-microsoft.php:509
 #: includes/connectors/types/class-connector-zoho.php:495
 msgid "Copy"
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:473
+#: includes/connectors/types/class-connector-google.php:476
 msgid "Authorized redirect URI"
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:485
+#: includes/connectors/types/class-connector-google.php:488
 msgid "Copy this URL into the \"Authorized redirect URIs\" field of your Google web application."
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:495
-#: includes/connectors/types/class-connector-microsoft.php:531
+#: includes/connectors/types/class-connector-google.php:498
+#: includes/connectors/types/class-connector-microsoft.php:534
 #: includes/connectors/types/class-connector-zoho.php:520
 msgid "Authorization"
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:509
+#: includes/connectors/types/class-connector-google.php:512
 msgid "Sign in with Google"
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:538
-#: includes/connectors/types/class-connector-microsoft.php:578
+#: includes/connectors/types/class-connector-google.php:541
+#: includes/connectors/types/class-connector-microsoft.php:581
 msgid "Connected with email account:"
 msgstr ""
 
-#: includes/connectors/types/class-connector-google.php:553
+#: includes/connectors/types/class-connector-google.php:556
 msgid "Disconnect from Google"
 msgstr ""
 
@@ -3243,59 +3243,59 @@ msgstr ""
 msgid "Microsoft could not send this email because the connected account does not have a mailbox enabled for Microsoft Graph API access. Verify that the account has an active Exchange Online mailbox and license, or contact your Microsoft 365 administrator. (MailboxNotEnabledForRESTAPI)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:301
+#: includes/connectors/types/class-connector-microsoft.php:304
 msgid "365 / Outlook Settings"
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:319
+#: includes/connectors/types/class-connector-microsoft.php:322
 msgid "Please click the button below to initiate a connection with your Microsoft account. Remember to fill out both the Client ID and Client Secret fields before proceeding."
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:329
+#: includes/connectors/types/class-connector-microsoft.php:332
 msgid "Read our Microsoft 365 / Outlook documentation"
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:370
+#: includes/connectors/types/class-connector-microsoft.php:373
 msgid "Important: Sending from a Microsoft 365 alias is not currently supported. Emails are delivered from the primary email address of the connected account, even when the Default From Email is set to an alias and sending from aliases is turned on in your Microsoft 365 tenant. For more information, please refer to our {{link}}documentation{{link}}."
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:415
+#: includes/connectors/types/class-connector-microsoft.php:418
 msgid "To obtain an Application ID from 365 / Outlook, login to your {{link}}Microsoft Azure{{link}} dashboard and generate an Application ID."
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:420
+#: includes/connectors/types/class-connector-microsoft.php:423
 msgid "Application ID"
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:448
+#: includes/connectors/types/class-connector-microsoft.php:451
 msgid "To obtain a Client Secret password, log in to your {{link}}Microsoft Azure{{link}} dashboard and generate a new client secret. Then, copy the secret value (not the secret ID) into this field."
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:477
+#: includes/connectors/types/class-connector-microsoft.php:480
 msgid "Redirect URI (Personal Accounts)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:489
+#: includes/connectors/types/class-connector-microsoft.php:492
 msgid "If your app is set up to support Personal Accounts, copy this URL and enter it as a Redirect URI in your App Settings."
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:509
+#: includes/connectors/types/class-connector-microsoft.php:512
 msgid "Redirect URI (School or Work Accounts)"
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:521
+#: includes/connectors/types/class-connector-microsoft.php:524
 msgid "If your app is set up to support School and Work accounts, copy this URL and enter it as a Redirect URI in your App Settings."
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:544
+#: includes/connectors/types/class-connector-microsoft.php:547
 msgid "Sign in with Microsoft"
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:593
+#: includes/connectors/types/class-connector-microsoft.php:596
 msgid "Disconnect from Microsoft"
 msgstr ""
 
-#: includes/connectors/types/class-connector-microsoft.php:649
+#: includes/connectors/types/class-connector-microsoft.php:652
 msgid "Microsoft automatically forces the From Name associated with the From Email configured within their system."
 msgstr ""
 

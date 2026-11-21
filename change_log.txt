@@ -1,3 +1,6 @@
+### 2.3.6 | 2026-11-20
+- Fixed an issue where HTML emails sent with the Microsoft integration can show quoted-printable codes and broken HTML.
+
 ### 2.3.5 | 2026-11-18
 - Added a Delete Saved Attachments setting that removes an email's saved attachments from the uploads folder when the Log Retention Period deletes the email.
 - Added a notice to the Microsoft 365 / Outlook connector settings explaining that sending from an alias is not currently supported.

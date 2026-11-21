@@ -221,6 +221,9 @@ class Connector_Google extends Connector_Base {
 		$this->php_mailer->Mailer = 'sendmail';
 		$this->php_mailer->preSend();
 		$raw    = $this->php_mailer->getSentMIMEMessage();
+
+		// "sendmail" mode ends lines with PHP_EOL, which is a bare LF on Linux. A MIME message must use CRLF.
+		$raw = preg_replace( '/\r\n|\r|\n/', "\r\n", $raw );
 		return str_replace(
 			[ '+', '/', '=' ],
 			[ '-', '_', '' ],
